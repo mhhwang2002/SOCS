@@ -1,4 +1,9 @@
-﻿
+#########################################################
+# Simulation and Optimization of Complex Systems (SOCS) #
+# Author: moon.hwang@gmail.com                          #
+#   Date: Oct.26.2026                                   #
+#########################################################
+
 """Attributed graph with support for parallel edges."""
 
 from dataclasses import dataclass

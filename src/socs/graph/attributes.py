@@ -1,4 +1,9 @@
-﻿"""Dictionary with optional attribute-style access."""
+#########################################################
+# Simulation and Optimization of Complex Systems (SOCS) #
+# Author: moon.hwang@gmail.com                          #
+#   Date: Oct.26.2026                                   #
+#########################################################
+"""Dictionary with optional attribute-style access."""
 
 class AttrDict(dict):
     """A dictionary supporting both key and attribute access."""
