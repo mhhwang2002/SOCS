@@ -41,8 +41,7 @@ class Simulatable(TES, XY, Manager):
         raise NotImplementedError("Simulatable.delta_y() must be overridden.")
 
     def Delta_0(self, t):
-        """Reset the model state and clock at time t."""
-        Clock.tNow = t
+        """Reset the model state and clock at time t.""" 
         self.t_last_update = t
         self.StatePercentage = {}
 

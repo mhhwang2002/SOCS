@@ -16,13 +16,13 @@ class Clock:
       '''time advance from last schedule time to next event time ta()=tN-tL'''
       return self.tN - self.tL
 
-   def tr(self):
-      '''time remaining from the Clock.tNow to the next event time tN'''
-      return self.tN - Clock.tNow
+   def tr(self, tNow):
+      '''time remaining from the given tNow to the next event time tN'''
+      return self.tN - tNow
 
-   def te(self):
-      '''time elapsed from the last update time tL to the Clock.tNow'''
-      return Clock.tNow - self.tL
+   def te(self, tNow):
+      '''time elapsed from the last update time tL to the given tNow'''
+      return tNow - self.tL
 
    def __str__(self):
       '''convert itself to a string'''
@@ -58,13 +58,13 @@ class Manager:
       ''' set the next event time '''
       self.clock.tN = tN
 
-   def timeRemaining(self) :
-      '''time remaining to next schedule time from Clock.tNow: tN - Clock.tNow '''
-      return  self.clock.tr()
+   def timeRemaining(self, tNow) :
+      '''time remaining to next schedule time from the given tNow: tN - tNow '''
+      return  self.clock.tr(tNow)
 
-   def timeElapsed(self) :
+   def timeElapsed(self, tNow) :
       '''time elapsed from last update to the time t: t - tL'''
-      return self.clock.te()
+      return self.clock.te(tNow)
 
    def timeNext(self):
       '''time for next schedule: tN '''
@@ -85,12 +85,11 @@ class Manager:
 if __name__ == '__main__' :
    print("-------- Clock and Manager test -------- ")
    c = Clock(10)
-   print(c)
-   Clock.tNow = 15
-   print("tNow=%s, ta=%s, tr()=%s, te()=%s" % (Clock.tNow, c.ta(), c.tr(), c.te()))
+   print(c) 
+   print("tNow=%s, ta=%s, tr()=%s, te()=%s" % (15, c.ta(), c.tr(15), c.te(15)))
    print()
 
 
    tm = Manager(10, 20)
    print(tm)
-   print("tm.ta()=%s, tm.tr()=%s, tm.te()=%s" % (tm.timeAdvance(), tm.timeRemaining(), tm.timeElapsed()))
+   print("tNow=%s,tm.ta()=%s, tm.tr()=%s, tm.te()=%s" % (15, tm.timeAdvance(), tm.timeRemaining(15), tm.timeElapsed(15)))

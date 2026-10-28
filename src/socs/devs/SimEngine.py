@@ -32,12 +32,11 @@ def findCmdIndex(command, text):
             return index
     return -1
 
-
-class SimEngine(threading.Thread):
+class SimEngineBase():
     """Real-time execution engine for a Simulatable model."""
     def __init__(self, sim, inject_CBF=None, 
-                 TimeIntervalContinuous=float("inf"), 
-                 TimeIntervalAnimation=float("inf"), TimeSimulationEnd=float("inf")):
+                    TimeIntervalContinuous=float("inf"), 
+                    TimeIntervalAnimation=float("inf"), TimeSimulationEnd=float("inf")):
         super().__init__()
         if not isinstance(sim, Simulatable):
             raise TypeError(f"{sim!s} is not a Simulatable")
@@ -56,7 +55,6 @@ class SimEngine(threading.Thread):
         self.TimeIntervalAnimation = TimeIntervalAnimation
         self._tSimEnd = TimeSimulationEnd 
 
-
         self.simTimeBound = float("inf")
         self.bVerbose = True
         self.iSimRun = 1
@@ -64,57 +62,7 @@ class SimEngine(threading.Thread):
         self.TotalSimRuns = 1
         self.TrajStatistics = []
         self.last_progress = 0.0
-    
         self.reset("")
-
-#    def compute_tNow(self):
-#        if self.sfactor == float("inf"):
-#            if (
-#                self.model.timeNext() == float("inf")
-#                and self.simTimeBound == float("inf")
-#            ):
-#                print(
-#                    "\nNext schedule reaches infinity in discrete-event-only "
-#                    f"mode at time {self.tNow:.3f}."
-#                )
-#                self.pause()
-#            else:
-#                self.tNow = min(self.model.timeNext(), self.simTimeBound)
-#        else:
-#            now_real_time = time.perf_counter()
-#            elapsed_real_time = now_real_time - self.t_segment_start
-#            scaled_time = self.t_segment_end + elapsed_real_time * self.sfactor
-#            self.tNow = min(
-#                self.model.timeNext(), scaled_time, self.simTimeBound
-#            )
-#
-#        if self.tNow >= self.simTimeBound:
-#            print(
-#                f"\nSimulation run time is bounded by "
-#                f"{self.simTimeBound:.3f}.\n"
-#            )
-#            self.tNow = self.simTimeBound
-#            if self.bAutoresetByTimebound:
-#                self.TrajStatistics.append(self.model.get_statistics_str())
-#                self.reset("")
-#                print(f"Iter={self.iSimRun}")
-#                if self.iSimRun < self.TotalSimRuns:
-#                    self.iSimRun += 1
-#                else:
-#                    print("############################################")
-#                    print("   Multiple Simulation Run is completed!")
-#                    print("############################################")
-#                    self.pause()
-#            else:
-#                self.pause()
-
-    def exp_handling(self):
-        """Report the active exception and pause the simulation."""
-        print(
-            f"Exception {sys.exc_info()[0]} occurs at time {self.tNow:.3f}."
-        )
-        exception_handling()
-        self.pause()
 
     def print_src_and_event_segment(self, src_state_str, z, tnow):
         """Print the source state and event segment."""
@@ -130,32 +78,32 @@ class SimEngine(threading.Thread):
     def doAnimation(self):  # Override this method to implement animation logic
         pass
 
-    def executeAnimation(self):
+    def executeAnimation(self, tNow):
         self.doAnimation() 
-        self._tNextAnimation = self.tNow + self.TimeIntervalAnimation  # update next one 
+        self._tNextAnimation = tNow + self.TimeIntervalAnimation  # update next one 
         #self._NbAnimationExecutions += 1
 
-    def executeContinuous(self):
+    def executeContinuous(self, tNow):
         if self.model is not None:
-            self.model.Delta_null(self.tNow)  # do continuous change 
-        self._tNextContinuous = self.tNow + self.TimeIntervalContinuous  # update next one
+            self.model.Delta_null(tNow)  # do continuous change 
+        self._tNextContinuous = tNow + self.TimeIntervalContinuous  # update next one
         #self._NbContinuousExecutions += 1
 
-    def executeDEVS_star(self):
+    def executeDEVS_star(self,tNow):
         if(self.model is not None):
             src_str = ""
             if self.bVerbose:
                 src_str = self.model.qstate_to_s()
-            z = self.model.Delta_y(self.tNow)  # execute DEVS* transition  
+            z = self.model.Delta_y(tNow)  # execute DEVS* transition  
             if self.bVerbose:
-                self.print_src_and_event_segment(src_str, z, self.tNow)
+                self.print_src_and_event_segment(src_str, z, tNow)
          #self._NbDEVSSExecutions += 1
 
-    def executeDEVS_x(self, target_md, ipv): 
+    def executeDEVS_x(self, tNow, target_md, ipv): 
         if target_md is not None:
             if self.bVerbose:
                 self.print_src_and_event_segment(
-                    self.model.qstate_to_s(), ipv, self.tNow
+                    self.model.qstate_to_s(), ipv, tNow
                 )
             target_md.Delta_x(ipv, self.tNow) 
         if target_md is not self.model and target_md.parent is not None:
@@ -186,15 +134,15 @@ class SimEngine(threading.Thread):
 
         if next_type == ExecutionType.X_BUFFER:
             target_md, ipv = self.XBuffer.pop()  
-            self.executeDEVS_x(target_md, ipv)
+            self.executeDEVS_x(self.tNow, target_md, ipv)
             bDESExecuted = True
         elif next_type == ExecutionType.DEVS:
-            self.executeDEVS_star()
+            self.executeDEVS_star(self.tNow)
             bDESExecuted = True
         elif next_type == ExecutionType.CONTINUOUS:
-            self.executeContinuous()
+            self.executeContinuous(self.tNow)
         elif next_type == ExecutionType.ANIMATION:
-            self.executeAnimation()
+            self.executeAnimation(self.tNow)
         elif next_type == ExecutionType.END:
             if self.tNow == float("inf"):
                 print(
@@ -226,6 +174,24 @@ class SimEngine(threading.Thread):
 
         return bNeedToPause, bDESExecuted
 
+    
+class SimEngine(threading.Thread, SimEngineBase):
+    """Real-time execution engine for a Simulatable model."""
+    def __init__(self, sim, inject_CBF=None, 
+                 TimeIntervalContinuous=float("inf"), 
+                 TimeIntervalAnimation=float("inf"), TimeSimulationEnd=float("inf")):
+        super().__init__()
+        SimEngineBase.__init__(self, sim, inject_CBF, TimeIntervalContinuous, TimeIntervalAnimation, TimeSimulationEnd)  
+
+    def exp_handling(self):
+        """Report the active exception and pause the simulation."""
+        print(
+            f"Exception {sys.exc_info()[0]} occurs at time {self.tNow:.3f}."
+        )
+        exception_handling()
+        self.pause()
+
+    
     def run(self):
         """Run the simulation loop in this thread."""
         while not self.ToBeKilled:
@@ -245,10 +211,10 @@ class SimEngine(threading.Thread):
         """Reset the associated model state."""
         self.last_progress = 0.0
         self.tNow = 0.0
-        self.executeContinuous()
-        self.executeAnimation()
+        self.executeContinuous(self.tNow)
+        self.executeAnimation(self.tNow)
         if self.model is not None:
-            self.model.Delta_0(0.0) 
+            self.model.Delta_0(self.tNow) 
         self.XBuffer.clear() 
         
         if len(command) > 1 and command[1] == "-a":
