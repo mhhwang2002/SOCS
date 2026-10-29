@@ -25,12 +25,12 @@ class ExecutionType(Enum):
     DEVS = 4       # when DEVS event happens 
     END = 5        # when time reaches simulation end time 
 
-def findCmdIndex(command, text):
-    """Return the index of text in command, or -1 if it is absent."""
-    for index, item in enumerate(command):
-        if item == text:
-            return index
-    return -1
+class ExecutionResult(Enum):
+    NoEventOccurred = 1           # when continuous/animation execution occurs but no event happens
+    UnscheduledEventOccurred  =2  # when continuous/animation execution occurs but an unscheduled event happens
+    ExternalEventOccurred = 3     # when an external event occurs
+    ScheduledEventOccurred = 4    # when DEVS event happens
+    TimeBoundReached = 5          # when time reaches simulation end time 
 
 class SimEngineBase():
     """Real-time execution engine for a Simulatable model."""
@@ -53,9 +53,8 @@ class SimEngineBase():
         self.StepByStep = False
         self.TimeIntervalContinuous = TimeIntervalContinuous
         self.TimeIntervalAnimation = TimeIntervalAnimation
-        self._tSimEnd = TimeSimulationEnd 
-
-        self.simTimeBound = float("inf")
+        self._tSimBound = TimeSimulationEnd 
+ 
         self.bVerbose = True
         self.iSimRun = 1
         self.bAutoresetByTimebound = False
@@ -79,45 +78,43 @@ class SimEngineBase():
         pass
 
     def executeAnimation(self, tNow):
+        unscheduleEventHappend = self.model.Delta_null(tNow) if self.model is not None else False
         self.doAnimation() 
         self._tNextAnimation = tNow + self.TimeIntervalAnimation  # update next one 
+        return ExecutionResult.UnscheduledEventOccurred if(unscheduleEventHappend) else ExecutionResult.NoEventOccurred
         #self._NbAnimationExecutions += 1
 
-    def executeContinuous(self, tNow):
-        if self.model is not None:
-            self.model.Delta_null(tNow)  # do continuous change 
+    def executeContinuous(self, tNow): 
+        unscheduleEventHappend = self.model.Delta_null(tNow) if self.model is not None else False   
         self._tNextContinuous = tNow + self.TimeIntervalContinuous  # update next one
+        return ExecutionResult.UnscheduledEventOccurred if(unscheduleEventHappend) else ExecutionResult.NoEventOccurred
         #self._NbContinuousExecutions += 1
 
     def executeDEVS_star(self,tNow):
         if(self.model is not None):
-            src_str = ""
-            if self.bVerbose:
-                src_str = self.model.qstate_to_s()
+            src_str = self.model.qstate_to_s() if self.bVerbose else ""
             z = self.model.Delta_y(tNow)  # execute DEVS* transition  
-            if self.bVerbose:
-                self.print_src_and_event_segment(src_str, z, tNow)
-         #self._NbDEVSSExecutions += 1
+            self.print_src_and_event_segment(src_str, z, tNow) if self.bVerbose else None
+            #self._NbDEVSSExecutions += 1
+        return ExecutionResult.ScheduledEventOccurred        
 
-    def executeDEVS_x(self, tNow, target_md, ipv): 
-        if target_md is not None:
-            if self.bVerbose:
-                self.print_src_and_event_segment(
-                    self.model.qstate_to_s(), ipv, tNow
-                )
-            target_md.Delta_x(ipv, self.tNow) 
+    def executeDEVS_x(self, tNow, target_md, ipv):  
+        self.print_src_and_event_segment(
+                    self.model.qstate_to_s(), ipv, tNow) if self.bVerbose else None
+        target_md.Delta_x(ipv, self.tNow) if target_md is not None else None
         if target_md is not self.model and target_md.parent is not None:
             target_md.parent.update_tN(update_parent=True) 
             self._tLastDEVS = self.tNow  # update last one
             self._tNextDEVS = self.model.timeNext()  # update next one
             #self._NbDEVSSExecutions += 1
-
+        return ExecutionResult.ExternalEventOccurred
+    
     def PickNextExecutionTime_Type(self):
         if(len(self.XBuffer) > 0):
             return self.tNow, ExecutionType.X_BUFFER
         tNextDEVS = self.model.timeNext()    
-        next_time = min(self._tNextContinuous, self._tNextAnimation, tNextDEVS, self._tSimEnd)
-        if(next_time == self._tSimEnd):
+        next_time = min(self._tNextContinuous, self._tNextAnimation, tNextDEVS, self._tSimBound)
+        if(next_time == self._tSimBound):
             return next_time, ExecutionType.END
         if(next_time == self._tNextContinuous):
             return next_time, ExecutionType.CONTINUOUS
@@ -128,53 +125,41 @@ class SimEngineBase():
 
     def executeOneStep(self):
         """Execute one simulation step."""
-        bNeedToPause = False
-        bDESExecuted = False
+        executionResult = ExecutionResult.NoEventOccurred
         (self.tNow, next_type) = self.PickNextExecutionTime_Type()
 
         if next_type == ExecutionType.X_BUFFER:
             target_md, ipv = self.XBuffer.pop()  
-            self.executeDEVS_x(self.tNow, target_md, ipv)
-            bDESExecuted = True
+            executionResult = self.executeDEVS_x(self.tNow, target_md, ipv) 
         elif next_type == ExecutionType.DEVS:
-            self.executeDEVS_star(self.tNow)
-            bDESExecuted = True
+            executionResult =self.executeDEVS_star(self.tNow)         
         elif next_type == ExecutionType.CONTINUOUS:
-            self.executeContinuous(self.tNow)
+            executionResult = self.executeContinuous(self.tNow)
         elif next_type == ExecutionType.ANIMATION:
-            self.executeAnimation(self.tNow)
-        elif next_type == ExecutionType.END:
-            if self.tNow == float("inf"):
-                print(
-                    "\nNext schedule reaches infinity in "
-                    "discrete-event-only mode at time "
-                    f"{self.tNow:.3f}."
-                )
-                bNeedToPause = True 
-            elif self.tNow >= self.simTimeBound:
-                print(
-                    f"\nSimulation run time is bounded by "
-                    f"{self.simTimeBound:.3f}.\n"
-                ) 
-                if self.bAutoresetByTimebound:
-                    self.TrajStatistics.append(
-                        self.model.get_statistics_str()
-                    )
-                    self.reset("")
-                    print(f"Iter={self.iSimRun}")
-                    if self.iSimRun < self.TotalSimRuns:
-                        self.iSimRun += 1
-                    else:
-                        print("############################################")
-                        print("   Multiple Simulation Run is completed!")
-                        print("############################################")
-                        bNeedToPause = True
-                else:
-                    bNeedToPause = True
+            executionResult = self.executeAnimation(self.tNow)
+        elif next_type == ExecutionType.END: 
+            print(
+                "\nNext schedule reaches the simulation time bound " 
+                f"{self.tNow:.3f}."
+            ) 
+            executionResult = ExecutionResult.TimeBoundReached
+            
+        return executionResult
 
-        return bNeedToPause, bDESExecuted
+    def executeSteps(self):
+        """Execute simulation steps until a pause is needed."""
+        executionResult = ExecutionResult.NoEventOccurred
+        while executionResult is not ExecutionResult.TimeBoundReached:
+            executionResult = self.executeOneStep() 
+            self.display_q()
 
-    
+def findCmdIndex(command, text):
+    """Return the index of text in command, or -1 if it is absent."""
+    for index, item in enumerate(command):
+        if item == text:
+            return index
+    return -1
+
 class SimEngine(threading.Thread, SimEngineBase):
     """Real-time execution engine for a Simulatable model."""
     def __init__(self, sim, inject_CBF=None, 
@@ -197,10 +182,24 @@ class SimEngine(threading.Thread, SimEngineBase):
         while not self.ToBeKilled:
             if not self.SkipLoop:
                 try:
-                    bNeedToPause, bDESExecuted = self.executeOneStep()
-                    if bNeedToPause or (bDESExecuted and self.StepByStep):
+                    executionResult = self.executeOneStep()
+                    if executionResult is not ExecutionResult.NoEventOccurred and self.StepByStep:
                         self.pause()
                     self.display_q()
+                    if executionResult is ExecutionResult.TimeBoundReached:
+                        if self.bAutoresetByTimebound:
+                            self.TrajStatistics.append(
+                                self.model.get_statistics_str()
+                            )
+                            self.reset("")
+                            print(f"Iter={self.iSimRun}")
+                            if self.iSimRun < self.TotalSimRuns:
+                                self.iSimRun += 1
+                                self.make_run()
+                            else:
+                                print("############################################")
+                                print("      Simulation Run is completed!")
+                                print("############################################")    
                 except Exception:
                     self.exp_handling()
                 time.sleep(0.001)
@@ -235,7 +234,7 @@ class SimEngine(threading.Thread, SimEngineBase):
         print(f"scale factor for speed = {self.sfactor}, -speed sf")
         print(f"display time mode = {Clock.DisplayMode}, -dtm")
         print(f"Verbose mode = {self.bVerbose}, -vb")
-        print(f"simulation time bound = {self.simTimeBound:.3f}, -stb time")
+        print(f"simulation time bound = {self._tSimBound:.3f}, -stb time")
         print(f"Autoreset mode by timebound = {self.bAutoresetByTimebound}, -ar")
         print(f"Total#ofSimRuns = {self.TotalSimRuns}, -tsr n")
         print()
@@ -255,8 +254,8 @@ class SimEngine(threading.Thread, SimEngineBase):
         i = findCmdIndex(command, "-stb")
         if i > -1 and len(command) > i + 1:
             stb = command[i + 1]
-            self.simTimeBound = float("inf") if stb == "inf" else float(stb)
-            print(f"new stb={self.simTimeBound:.3f}")
+            self._tSimBound = float("inf") if stb == "inf" else float(stb)
+            print(f"new stb={self._tSimBound:.3f}")
 
         i = findCmdIndex(command, "-ar")
         if i > -1:
@@ -371,9 +370,9 @@ class SimEngine(threading.Thread, SimEngineBase):
 
     def displayProgress(self):
         """Display a simple progress indicator."""
-        if self.simTimeBound in (0, float("inf")):
+        if self._tSimBound in (0, float("inf")):
             return
-        progress = (self.tNow / self.simTimeBound) * 100.0
+        progress = (self.tNow / self._tSimBound) * 100.0
         diff_progress = int(progress / 10) - int(self.last_progress / 10)
         self.last_progress = progress
         if diff_progress > 0:

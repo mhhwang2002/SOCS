@@ -3,7 +3,7 @@ import math
 from socs.devs import CoupledDEVS, FDDEVS
 from socs.devs.DEVSTime import Clock
 from socs.devs.DEVSInterfaces import PortValue
-from socs.devs.SimEngine import SimEngine
+from socs.devs.SimEngine import SimEngine, ExecutionResult
 
 
 class PeriodicModel(FDDEVS):
@@ -132,10 +132,9 @@ def test_execute_one_step_routes_output_to_connected_model():
 
     engine = make_engine(root)
     try:
-        needs_pause, event_executed = engine.executeOneStep()
-
-        assert needs_pause is False
-        assert event_executed is True
+        executionResult = engine.executeOneStep()
+ 
+        assert executionResult == ExecutionResult.ScheduledEventOccurred
         #assert Clock.tNow == 1.0
         assert sink.received == [42]
     finally:
