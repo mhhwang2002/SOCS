@@ -7,12 +7,13 @@
 Simulatable classes for Classic Discrete Event System Specification (DEVS).
 Originally written in 2011 and modernized for Python 3.
 """
-
+from copy import deepcopy
 from .DEVSInterfaces import XY
 from .DEVSTime import Manager, Clock
 from .DEVSBase import TES
+from .Snapshot import ModelSnapshot
 
-
+from uuid import UUID
 class Simulatable(TES, XY, Manager):
     """Simulatable using Classic Discrete Event System Specification (DEVS)."""
 
@@ -23,6 +24,11 @@ class Simulatable(TES, XY, Manager):
 
         self.t_last_update = tl
         self.StatePercentage = {}
+        self._model_id = None
+
+    @property
+    def model_id(self) -> UUID | None:
+        return self._model_id
 
     def delta_0(self):
         """Create the initial state."""
@@ -76,9 +82,10 @@ class Simulatable(TES, XY, Manager):
         return y
 
     def Delta_null(self, t):
-        """Update time-dependent statistics without a state transition."""
+        """update continuous state transition and return True denoting unscheduled event; otherwise, return False"""
         self.updateStatistics(t)
-
+        return False
+    
     def updateStatistics(self, t):
         """Accumulate time spent in each statistics state."""
         state = self.get_statistics_state()
@@ -123,6 +130,136 @@ class Simulatable(TES, XY, Manager):
             return f"({self.name}:{state},{self.clock})"
         return f"({self.name}:{self.clock})"
 
+# --------------------------------------------------
+    # Snapshot
+    # --------------------------------------------------
+
+    def capture_state(self):
+        """Capture this model's dynamic state and its descendants."""
+        get_state = getattr(self, "get_state", None)
+        set_state = getattr(self, "set_state", None)
+
+        if callable(get_state) != callable(set_state):
+            raise TypeError(
+                f"{self.path}: get_state() and set_state() "
+                "must be implemented together."
+            )
+
+        has_model_state = callable(get_state)
+        model_state = deepcopy(get_state()) if has_model_state else None
+
+        children = {}
+
+        for child in self.children:
+            if not isinstance(child, Simulatable):
+                raise TypeError(
+                    f"{self.path}: child {child.name!r} is not Simulatable."
+                )
+
+            if child.name in children:
+                raise ValueError(
+                    f"{self.path}: duplicate child name {child.name!r}."
+                )
+
+            children[child.name] = child.capture_state()
+
+        return ModelSnapshot(
+            model_id=id(self),
+            model_path=self.path,
+            common_state={
+                "time_last": self.timeLast(),
+                "time_next": self.timeNext(),
+                "t_last_update": self.t_last_update,
+                "state_percentage": deepcopy(self.StatePercentage),
+            },
+            model_state=model_state,
+            has_model_state=has_model_state,
+            children=children,
+        )
+
+    def restore_state(self, snapshot):
+        """Restore this model and its descendants from a ModelSnapshot."""
+        self._validate_snapshot(snapshot)
+
+        if snapshot.has_model_state:
+            self.set_state(deepcopy(snapshot.model_state))
+
+        common_state = snapshot.common_state
+
+        self.set_timeLast(common_state["time_last"])
+        self.set_timeNext(common_state["time_next"])
+
+        self.t_last_update = common_state["t_last_update"]
+        self.StatePercentage = deepcopy(common_state["state_percentage"])
+
+        for child in self.children:
+            child.restore_state(snapshot.children[child.name])
+
+        self._after_restore_state()
+
+    def _validate_snapshot(self, snapshot):
+        """Validate snapshot identity and hierarchy before restoration."""
+        if not isinstance(snapshot, ModelSnapshot):
+            raise TypeError("snapshot must be a ModelSnapshot instance.")
+
+        if snapshot.model_id != id(self):
+            raise ValueError(
+                f"Snapshot model mismatch: expected {self.path!r}, "
+                f"got {snapshot.model_path!r}."
+            )
+
+        current_child_names = [child.name for child in self.children]
+
+        if len(current_child_names) != len(set(current_child_names)):
+            raise ValueError(
+                f"{self.path}: duplicate child names in model hierarchy."
+            )
+
+        if set(current_child_names) != set(snapshot.children):
+            raise ValueError(
+                f"{self.path}: snapshot hierarchy does not match "
+                "the current model hierarchy."
+            )
+
+        get_state = getattr(self, "get_state", None)
+        set_state = getattr(self, "set_state", None)
+
+        supports_model_state = callable(get_state) and callable(set_state)
+
+        if callable(get_state) != callable(set_state):
+            raise TypeError(
+                f"{self.path}: get_state() and set_state() "
+                "must be implemented together."
+            )
+
+        if supports_model_state != snapshot.has_model_state:
+            raise ValueError(
+                f"{self.path}: snapshot model-state contract "
+                "does not match the model."
+            )
+
+        if not isinstance(snapshot.common_state, dict):
+            raise TypeError(
+                f"{self.path}: snapshot common_state must be a dictionary."
+            )
+
+        required_keys = {
+            "time_last",
+            "time_next",
+            "t_last_update",
+            "state_percentage",
+        }
+
+        if not required_keys.issubset(snapshot.common_state):
+            raise ValueError(
+                f"{self.path}: snapshot common_state is incomplete."
+            )
+
+        for child in self.children:
+            child._validate_snapshot(snapshot.children[child.name])
+
+    def _after_restore_state(self):
+        """Rebuild derived runtime state after restoration."""
 
 #class DEVS(Simulatable):
 #    """Classic DEVS atomic model base class."""

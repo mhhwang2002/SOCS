@@ -4,7 +4,8 @@ import pytest
 
 from socs.devs import CoupledDEVS, FDDEVS
 from socs.devs.DEVSInterfaces import PortValue
-
+from socs.devs.CoupledDEVS import CoupledDEVS
+from socs.devs.ModelRegistry import ModelRegistry
 
 class TimedModel(FDDEVS):
     """Small deterministic model for CoupledDEVS tests."""
@@ -246,3 +247,53 @@ def test_format_tree_shows_nested_model_hierarchy():
     assert "root" in tree
     assert "nested" in tree
     assert "child" in tree
+
+def test_root_coupled_devs_owns_model_registry():
+    root = CoupledDEVS("Root")
+
+    assert root.model_registry is not None
+    assert isinstance(root.model_registry, ModelRegistry)
+
+
+def test_child_coupled_devs_uses_root_registry():
+    root = CoupledDEVS("Root")
+    child = CoupledDEVS("Child", parent=root)
+
+    assert child.model_registry is root.model_registry
+
+def test_add_child_registers_child_model():
+    root = CoupledDEVS("Root")
+    child = FDDEVS("Child")
+
+    root.add_child(child)
+
+    assert child.model_id is not None
+    assert root.model_registry.get(child.model_id) is child
+
+
+def test_add_child_registers_entire_subtree():
+    root = CoupledDEVS("Root")
+    child = CoupledDEVS("Child")
+    grandchild = FDDEVS("Grandchild")
+
+    child.add_child(grandchild)
+    root.add_child(child)
+
+    assert root.model_registry.get(child.model_id) is child
+    assert root.model_registry.get(grandchild.model_id) is grandchild
+    assert child.model_registry is root.model_registry
+
+
+def test_add_child_rejects_duplicate_model_uuid():
+    root = CoupledDEVS("Root")
+    child_a = FDDEVS("A")
+    child_b = FDDEVS("B")
+
+    root.add_child(child_a)
+    child_b._model_id = child_a.model_id
+
+    with pytest.raises(ValueError):
+        root.add_child(child_b)
+
+    assert child_b not in root.children
+    assert len(root.model_registry) == 2

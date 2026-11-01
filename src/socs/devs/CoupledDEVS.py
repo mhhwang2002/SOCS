@@ -9,6 +9,7 @@
 from .Simulatable import Simulatable
 from .DEVSInterfaces import Port, InputPort, OutputPort, PortValue
 from .FDDEVS import FDDEVS
+from .ModelRegistry import ModelRegistry
 
 class CoupledDEVS(Simulatable):
     """Coupled DEVS model containing child components and port couplings."""
@@ -17,20 +18,41 @@ class CoupledDEVS(Simulatable):
         super().__init__(name, parent, tl, tn)
         self.Z = {}
         self.IMM = set()
+        self._model_registry = None
+
+        if parent is None:
+            self._model_registry = ModelRegistry()
+            self._model_registry.register(self)
 
     @property
     def M(self):
         """Return the coupled model's child components."""
         return self.children
+    
+    @property
+    def model_registry(self):
+        """Return the root model registry."""
+        if self.parent is None:
+            return self._model_registry
+
+        return self.parent.model_registry
 
     def add_child(self, child):
         """Add a coupled or FD-DEVS child model."""
         if not isinstance(child, (CoupledDEVS, FDDEVS)):
             raise TypeError(
-                "A CoupledDEVS child must be a CoupledDEVS or FDDEVS instance."
+                "A CoupledDEVS child must be a CoupledDEVS or FD-DEVS instance."
             )
 
         super().add_child(child)
+
+        try:
+            self.model_registry.register(child)
+        except Exception:
+            self.children.remove(child)
+            child.parent = None
+            raise
+
         self.update_tN(update_parent=True)
 
     def addComponents(self, *args):
@@ -48,6 +70,10 @@ class CoupledDEVS(Simulatable):
         """Add multiple (source_port, destination_port) couplings."""
         for src_port, dest_port in couples:
             self.addCouple(src_port, dest_port)
+
+    def _after_restore_state(self):
+        """Recompute derived scheduling state after restoring descendants."""
+        self.update_tN(update_parent=False)
 
     def update_tN(self, update_parent=False):
         """Update imminent components and this model's next event time."""

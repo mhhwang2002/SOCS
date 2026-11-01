@@ -16,6 +16,7 @@ import time
 from .Simulatable import Simulatable
 from .Base import exception_handling
 from .DEVSTime import Clock
+from .Snapshot import SystemSnapshot
 from enum import Enum, auto
 
 class ExecutionType(Enum):
@@ -54,7 +55,8 @@ class SimEngineBase():
         self.TimeIntervalContinuous = TimeIntervalContinuous
         self.TimeIntervalAnimation = TimeIntervalAnimation
         self._tSimBound = TimeSimulationEnd 
- 
+        self._tNextContinuous = float("inf")
+        self._tNextAnimation = float("inf")
         self.bVerbose = True
         self.iSimRun = 1
         self.bAutoresetByTimebound = False
@@ -62,6 +64,37 @@ class SimEngineBase():
         self.TrajStatistics = []
         self.last_progress = 0.0
         self.reset("")
+
+    def _ensure_snapshot_safe(self):
+        """Require the engine to be paused before snapshot operations."""
+        if not self.SkipLoop:
+            raise RuntimeError(
+                "Snapshot capture and restore require a paused simulation engine."
+            )
+
+    def capture_snapshot(self) -> SystemSnapshot:
+        """Capture engine time and the complete root-model hierarchy."""
+        self._ensure_snapshot_safe()
+        if self.model is None:
+            raise RuntimeError("Cannot capture a snapshot without a root model.")
+
+        return SystemSnapshot(
+            t_now=self.tNow,
+            root_model=self.model.capture_state(),
+        )
+
+    def restore_snapshot(self, snapshot: SystemSnapshot) -> None:
+        """Restore engine time and the root-model hierarchy from a snapshot."""
+        self._ensure_snapshot_safe()
+        if not isinstance(snapshot, SystemSnapshot):
+            raise TypeError("snapshot must be a SystemSnapshot instance.")
+        if self.model is None:
+            raise RuntimeError("Cannot restore a snapshot without a root model.")
+
+        # Validate the full hierarchy before changing any model state.
+        self.model._validate_snapshot(snapshot.root_model)
+        self.model.restore_state(snapshot.root_model)
+        self.tNow = snapshot.t_now
 
     def print_src_and_event_segment(self, src_state_str, z, tnow):
         """Print the source state and event segment."""
@@ -77,8 +110,11 @@ class SimEngineBase():
     def doAnimation(self):  # Override this method to implement animation logic
         pass
 
-    def executeAnimation(self, tNow):
-        unscheduleEventHappend = self.model.Delta_null(tNow) if self.model is not None else False
+    def executeAnimation(self, tNow, prevStepExeTime):
+        if(tNow>prevStepExeTime):
+            unscheduleEventHappend = self.model.Delta_null(tNow) if self.model is not None else False
+        else:
+            unscheduleEventHappend = False
         self.doAnimation() 
         self._tNextAnimation = tNow + self.TimeIntervalAnimation  # update next one 
         return ExecutionResult.UnscheduledEventOccurred if(unscheduleEventHappend) else ExecutionResult.NoEventOccurred
@@ -125,6 +161,7 @@ class SimEngineBase():
 
     def executeOneStep(self):
         """Execute one simulation step."""
+        prevStepExeTime = self.tNow
         executionResult = ExecutionResult.NoEventOccurred
         (self.tNow, next_type) = self.PickNextExecutionTime_Type()
 
@@ -136,7 +173,7 @@ class SimEngineBase():
         elif next_type == ExecutionType.CONTINUOUS:
             executionResult = self.executeContinuous(self.tNow)
         elif next_type == ExecutionType.ANIMATION:
-            executionResult = self.executeAnimation(self.tNow)
+            executionResult = self.executeAnimation(self.tNow, prevStepExeTime)
         elif next_type == ExecutionType.END: 
             print(
                 "\nNext schedule reaches the simulation time bound " 
@@ -210,10 +247,12 @@ class SimEngine(threading.Thread, SimEngineBase):
         """Reset the associated model state."""
         self.last_progress = 0.0
         self.tNow = 0.0
-        self.executeContinuous(self.tNow)
-        self.executeAnimation(self.tNow)
         if self.model is not None:
             self.model.Delta_0(self.tNow) 
+            self._tNextContinuous = self.tNow+self.TimeIntervalContinuous
+   
+        self.executeAnimation(self.tNow,self.tNow)
+   
         self.XBuffer.clear() 
         
         if len(command) > 1 and command[1] == "-a":
