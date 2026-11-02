@@ -297,3 +297,207 @@ def test_add_child_rejects_duplicate_model_uuid():
 
     assert child_b not in root.children
     assert len(root.model_registry) == 2
+
+    
+def test_remove_child_unregisters_model():
+    root = CoupledDEVS("Root")
+    child = FDDEVS("Child")
+
+    root.add_child(child)
+    child_id = child.model_id
+
+    root.remove_child(child)
+
+    assert child.parent is None
+    assert child not in root.children
+    assert child.model_id == child_id
+    assert child_id not in root.model_registry
+
+
+def test_remove_child_unregisters_entire_subtree():
+    root = CoupledDEVS("Root")
+    child = CoupledDEVS("Child")
+    grandchild = FDDEVS("Grandchild")
+
+    child.add_child(grandchild)
+    root.add_child(child)
+
+    child_id = child.model_id
+    grandchild_id = grandchild.model_id
+
+    root.remove_child(child)
+
+    assert child.parent is None
+    assert grandchild.parent is child
+
+    assert child_id not in root.model_registry
+    assert grandchild_id not in root.model_registry
+
+    assert child.model_id == child_id
+    assert grandchild.model_id == grandchild_id
+
+
+def test_remove_child_preserves_other_registered_models():
+    root = CoupledDEVS("Root")
+    child_a = FDDEVS("A")
+    child_b = FDDEVS("B")
+
+    root.add_child(child_a)
+    root.add_child(child_b)
+
+    root.remove_child(child_a)
+
+    assert child_b in root.children
+    assert root.model_registry.get(child_b.model_id) is child_b
+    assert len(root.model_registry) == 2
+
+
+def test_removed_subtree_can_be_registered_again():
+    root = CoupledDEVS("Root")
+    child = CoupledDEVS("Child")
+    grandchild = FDDEVS("Grandchild")
+
+    child.add_child(grandchild)
+    root.add_child(child)
+
+    child_id = child.model_id
+    grandchild_id = grandchild.model_id
+
+    root.remove_child(child)
+    root.add_child(child)
+
+    assert child.model_id == child_id
+    assert grandchild.model_id == grandchild_id
+
+    assert root.model_registry.get(child_id) is child
+    assert root.model_registry.get(grandchild_id) is grandchild
+
+
+
+def test_move_child_to_preserves_model_identity_and_registry():
+    root = CoupledDEVS("Root")
+    parent_a = CoupledDEVS("A")
+    parent_b = CoupledDEVS("B")
+    child = FDDEVS("Child")
+
+    root.add_child(parent_a)
+    root.add_child(parent_b)
+    parent_a.add_child(child)
+
+    child_id = child.model_id
+    registry = root.model_registry
+
+    parent_a.move_child_to(child, parent_b)
+
+    assert child.parent is parent_b
+    assert child not in parent_a.children
+    assert child in parent_b.children
+
+    assert child.model_id == child_id
+    assert root.model_registry is registry
+    assert registry.get(child_id) is child
+
+
+def test_move_child_to_updates_path():
+    root = CoupledDEVS("Root")
+    parent_a = CoupledDEVS("A")
+    parent_b = CoupledDEVS("B")
+    child = FDDEVS("Child")
+
+    root.add_child(parent_a)
+    root.add_child(parent_b)
+    parent_a.add_child(child)
+
+    parent_a.move_child_to(child, parent_b)
+
+    assert child.path == "Root.B.Child"
+
+
+def test_move_child_to_preserves_subtree():
+    root = CoupledDEVS("Root")
+    parent_a = CoupledDEVS("A")
+    parent_b = CoupledDEVS("B")
+    child = CoupledDEVS("Child")
+    grandchild = FDDEVS("Grandchild")
+
+    root.add_child(parent_a)
+    root.add_child(parent_b)
+    parent_a.add_child(child)
+    child.add_child(grandchild)
+
+    parent_a.move_child_to(child, parent_b)
+
+    assert child.parent is parent_b
+    assert grandchild.parent is child
+    assert grandchild in child.children
+    assert grandchild.path == "Root.B.Child.Grandchild"
+    assert root.model_registry.get(grandchild.model_id) is grandchild
+
+
+def test_move_child_to_rejects_cycle():
+    root = CoupledDEVS("Root")
+    parent = CoupledDEVS("Parent")
+    child = CoupledDEVS("Child")
+
+    root.add_child(parent)
+    parent.add_child(child)
+
+    with pytest.raises(ValueError):
+        root.move_child_to(parent, child)
+
+    assert parent.parent is root
+    assert child.parent is parent
+
+
+def test_move_child_to_rejects_duplicate_name():
+    root = CoupledDEVS("Root")
+    parent_a = CoupledDEVS("A")
+    parent_b = CoupledDEVS("B")
+
+    child_a = FDDEVS("Child")
+    child_b = FDDEVS("Child")
+
+    root.add_child(parent_a)
+    root.add_child(parent_b)
+    parent_a.add_child(child_a)
+    parent_b.add_child(child_b)
+
+    with pytest.raises(ValueError):
+        parent_a.move_child_to(child_a, parent_b)
+
+    assert child_a.parent is parent_a
+    assert child_a in parent_a.children
+
+
+def test_move_child_to_rejects_different_system():
+    root_a = CoupledDEVS("RootA")
+    root_b = CoupledDEVS("RootB")
+
+    parent_a = CoupledDEVS("A")
+    parent_b = CoupledDEVS("B")
+    child = FDDEVS("Child")
+
+    root_a.add_child(parent_a)
+    root_b.add_child(parent_b)
+    parent_a.add_child(child)
+
+    with pytest.raises(ValueError):
+        parent_a.move_child_to(child, parent_b)
+
+    assert child.parent is parent_a
+
+
+def test_move_child_to_rejects_non_child():
+    root = CoupledDEVS("Root")
+    parent_a = CoupledDEVS("A")
+    parent_b = CoupledDEVS("B")
+    child = FDDEVS("Child")
+
+    root.add_child(parent_a)
+    root.add_child(parent_b)
+
+    with pytest.raises(ValueError):
+        parent_a.move_child_to(child, parent_b)
+
+    assert child.parent is None
+    assert child not in parent_b.children

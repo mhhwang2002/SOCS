@@ -91,6 +91,29 @@ class HierNamedObj(NamedObj):
         child.parent = self
 
 
+    def remove_child(self, child):
+        """Remove a child while preserving model-tree consistency."""
+        if not isinstance(child, HierNamedObj):
+            raise TypeError("Child must be a HierNamedObj instance.")
+
+        if child.parent is not self:
+            raise ValueError("Child does not belong to this parent.")
+
+        child_index = next(
+            (
+                index
+                for index, existing in enumerate(self.children)
+                if existing is child
+            ),
+            None,
+        )
+
+        if child_index is None:
+            raise ValueError("Child is not present in the children list.")
+
+        del self.children[child_index]
+        child.parent = None
+
 
 class TES(HierNamedObj):
     """Timed event system with a class-level current time."""

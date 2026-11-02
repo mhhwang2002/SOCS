@@ -60,6 +60,79 @@ class CoupledDEVS(Simulatable):
         for component in args:
             self.add_child(component)
 
+    def remove_child(self, child):
+        """Remove a child model and unregister its subtree."""
+        if not isinstance(child, (CoupledDEVS, FDDEVS)):
+            raise TypeError(
+                "A CoupledDEVS child must be a CoupledDEVS or FD-DEVS instance."
+            )
+
+        if child.parent is not self or not any(
+            existing is child for existing in self.children
+        ):
+            raise ValueError("Child does not belong to this coupled model.")
+
+        # Unregister the complete subtree before detaching it.
+        self.model_registry.unregister(child, recursive=True)
+
+        super().remove_child(child)
+
+        self.update_tN(update_parent=True)
+
+    def move_child_to(self, child, new_parent):
+        """Move a child model to another parent within the same system."""
+        if not isinstance(child, (CoupledDEVS, FDDEVS)):
+            raise TypeError(
+                "Child must be a CoupledDEVS or FD-DEVS instance."
+            )
+
+        if not isinstance(new_parent, CoupledDEVS):
+            raise TypeError("New parent must be a CoupledDEVS instance.")
+
+        old_parent = self
+
+        # Validate the source relationship.
+        if child.parent is not old_parent or not any(
+            existing is child for existing in old_parent.children
+        ):
+            raise ValueError("Child does not belong to this coupled model.")
+
+        if old_parent is new_parent:
+            return
+
+        # Both parents must belong to the same system.
+        if old_parent.model_registry is not new_parent.model_registry:
+            raise ValueError("Models must belong to the same system.")
+
+        # Prevent cycles.
+        ancestor = new_parent
+        while ancestor is not None:
+            if ancestor is child:
+                raise ValueError("Moving this child would create a cycle.")
+            ancestor = ancestor.parent
+
+        # Validate sibling name uniqueness at the destination.
+        if any(
+            existing.name == child.name
+            for existing in new_parent.children
+        ):
+            raise ValueError(f"Duplicate child name: {child.name}")
+
+        # Update the hierarchy without changing the model registry.
+        child_index = next(
+            index
+            for index, existing in enumerate(old_parent.children)
+            if existing is child
+        )
+        del old_parent.children[child_index]
+
+        new_parent.children.append(child)
+        child.parent = new_parent
+
+        # Recompute scheduling information in both affected branches.
+        old_parent.update_tN(update_parent=True)
+        new_parent.update_tN(update_parent=True)
+
     def addCouple(self, src_port, dest_port):
         """Connect a source port to a destination port."""
         if not isinstance(src_port, Port) or not isinstance(dest_port, Port):
