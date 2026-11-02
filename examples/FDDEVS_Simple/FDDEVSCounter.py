@@ -37,11 +37,11 @@ class Counter(FDDEVS):
 
     def get_state(self):
         """Return the complete model state."""
-        return self.phase, self.count, self.sum
+        return self.phase, self.count, self.sum, self.count_no
 
     def set_state(self, state):
         """Restore the complete model state."""
-        self.phase, self.count, self.sum = state
+        self.phase, self.count, self.sum, self.count_no = state
 
 
 def runSimulation(model):
