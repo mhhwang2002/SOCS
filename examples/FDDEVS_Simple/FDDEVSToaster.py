@@ -2,7 +2,7 @@
 
 from socs.devs.FDDEVS import FDDEVS
 from socs.devs.DEVSInterfaces import PortValue
-from socs.devs.SimEngine import SimEngine
+from socs.devs.SimEngine import SimEngineThread
 
 
 class Toaster(FDDEVS):
@@ -55,7 +55,7 @@ def make_input_event(model):
 
 def runSimulation(model):
     """Run the toaster model with the interactive simulation engine."""
-    engine = SimEngine(model, make_input_event)
+    engine = SimEngineThread(model, make_input_event)
     engine.StepByStep = True
     engine.sfactor = float("inf")
     engine.runInteractiveMenu()

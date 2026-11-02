@@ -7,7 +7,7 @@ from socs.decision.simulation_evaluator import SimulationDecisionEvaluator
 from socs.devs.CoupledDEVS import CoupledDEVS
 from socs.devs.DEVSInterfaces import PortValue
 from socs.devs.FDDEVS import FDDEVS
-from socs.devs.SimEngine import SimEngine
+from socs.devs.SimEngine import SimEngineThread
 from socs.tree import DecisionTree
 
 
@@ -71,7 +71,7 @@ def simulation_system():
     root.addCouple(root.IP["decision"], nested.IP["external"])
     nested.addCouple(nested.IP["external"], atomic.IP["in"])
 
-    engine = SimEngine(
+    engine = SimEngineThread(
         root,
         TimeIntervalContinuous=math.inf,
         TimeIntervalAnimation=math.inf,

@@ -1,6 +1,6 @@
 from socs.devs.CoupledDEVS import CoupledDEVS
 from socs.devs.FDDEVS import FDDEVS
-from socs.devs.SimEngine import SimEngine
+from socs.devs.SimEngine import SimEngineThread
 from socs.devs.Snapshot import SystemSnapshot
 
 
@@ -35,7 +35,7 @@ class SnapshotTestAtomic(FDDEVS):
 
 def test_engine_snapshot_restores_time_and_atomic_model_state():
     model = SnapshotTestAtomic("atomic", delay=5)
-    engine = SimEngine(model)
+    engine = SimEngineThread(model)
 
     snapshot = engine.capture_snapshot()
     assert isinstance(snapshot, SystemSnapshot)
@@ -63,7 +63,7 @@ def test_engine_snapshot_restores_nested_models_and_imminent_set():
     second = SnapshotTestAtomic("second", delay=5)
     root.add_child(first)
     root.add_child(second)
-    engine = SimEngine(root)
+    engine = SimEngineThread(root)
 
     snapshot = engine.capture_snapshot()
     assert root.IMM == {first, second}
@@ -90,7 +90,7 @@ def test_engine_snapshot_restores_nested_models_and_imminent_set():
 
 def test_snapshot_operations_require_paused_engine():
     model = SnapshotTestAtomic("atomic")
-    engine = SimEngine(model)
+    engine = SimEngineThread(model)
     engine.SkipLoop = False
 
     try:

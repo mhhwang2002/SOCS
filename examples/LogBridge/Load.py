@@ -2,7 +2,7 @@
 
 from socs.devs.FDDEVS import FDDEVS
 from socs.devs.DEVSInterfaces import PortValue
-from socs.devs.SimEngine import SimEngine  
+from socs.devs.SimEngine import SimEngineThread  
 
 class Load(FDDEVS):
     """Atomic load model with walker speeds."""
@@ -52,7 +52,7 @@ class Load(FDDEVS):
 if __name__ == "__main__":
     
     Load = Load("L1", length=100, int_walker_speed=5)
-    engine = SimEngine(Load)
+    engine = SimEngineThread(Load)
     engine.StepByStep = True
     engine.sfactor = float("inf")
     engine.runInteractiveMenu()

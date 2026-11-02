@@ -3,7 +3,7 @@ import math
 import pytest
 
 from socs.devs.Simulatable import Simulatable
-from socs.devs.SimEngine import ExecutionResult, SimEngine
+from socs.devs.SimEngine import ExecutionResult, SimEngineBase, SimEngineThread
 from socs.decision.decision import Decision
 from socs.decision.simulation_evaluator import SimulationDecisionEvaluator
 
@@ -58,7 +58,7 @@ class CounterEvaluator(SimulationDecisionEvaluator):
 @pytest.fixture
 def engine_and_model():
     model = CounterModel()
-    engine = SimEngine(
+    engine = SimEngineThread(
         model,
         TimeIntervalContinuous=math.inf,
         TimeIntervalAnimation=math.inf,

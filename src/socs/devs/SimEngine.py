@@ -36,8 +36,8 @@ class ExecutionResult(Enum):
     ScheduledEventOccurred = 4    # when DEVS event happens
     TimeBoundReached = 5          # when time reaches simulation end time 
 
-class SimEngineBase():
-    """Real-time execution engine for a Simulatable model."""
+class SimEngineBase:
+    """Synchronous simulation engine for a Simulatable model."""
     def __init__(self, sim, inject_CBF=None, 
                     TimeIntervalContinuous=float("inf"), 
                     TimeIntervalAnimation=float("inf"), TimeSimulationEnd=float("inf")):
@@ -67,6 +67,21 @@ class SimEngineBase():
         self.TrajStatistics = []
         self.last_progress = 0.0
         self.reset("")
+
+    def reset(self, command=""):
+        """Reset the simulation model and engine state."""
+        self.last_progress = 0.0
+        self.tNow = 0.0
+        if self.model is not None:
+            self.model.Delta_0(self.tNow)
+            self._tNextContinuous = self.tNow + self.TimeIntervalContinuous
+
+        self.executeAnimation(self.tNow, self.tNow)
+        self.XBuffer.clear()
+
+        if len(command) > 1 and command[1] == "-a":
+            self.TrajStatistics = []
+            self.iSimRun = 1
 
     def _ensure_snapshot_safe(self):
         """Require the engine to be paused before snapshot operations."""
@@ -279,8 +294,8 @@ def findCmdIndex(command, text):
             return index
     return -1
 
-class SimEngine(threading.Thread, SimEngineBase):
-    """Real-time execution engine for a Simulatable model."""
+class SimEngineThread(threading.Thread, SimEngineBase):
+    """Run a SimEngineBase instance in a dedicated thread."""
     def __init__(self, sim, inject_CBF=None, 
                  TimeIntervalContinuous=float("inf"), 
                  TimeIntervalAnimation=float("inf"), TimeSimulationEnd=float("inf")):
@@ -324,22 +339,6 @@ class SimEngine(threading.Thread, SimEngineBase):
                 time.sleep(0.001)
             else:
                 time.sleep(0.01)
-
-    def reset(self, command):
-        """Reset the associated model state."""
-        self.last_progress = 0.0
-        self.tNow = 0.0
-        if self.model is not None:
-            self.model.Delta_0(self.tNow) 
-            self._tNextContinuous = self.tNow+self.TimeIntervalContinuous
-   
-        self.executeAnimation(self.tNow,self.tNow)
-   
-        self.XBuffer.clear() 
-        
-        if len(command) > 1 and command[1] == "-a":
-            self.TrajStatistics = []
-            self.iSimRun = 1
 
     def make_run(self, command=""):
         """Start or resume the simulation loop."""

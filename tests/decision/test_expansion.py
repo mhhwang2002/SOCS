@@ -12,7 +12,7 @@ from socs.decision import (
 )
 from socs.decision.simulation_evaluator import SimulationDecisionEvaluator
 from socs.devs.Simulatable import Simulatable
-from socs.devs.SimEngine import SimEngine
+from socs.devs.SimEngine import SimEngineThread
 from socs.tree import DecisionTree
 
 
@@ -74,7 +74,7 @@ class FailingEvaluator(SimulationDecisionEvaluator):
 @pytest.fixture
 def controller_context():
     model = CounterModel()
-    engine = SimEngine(
+    engine = SimEngineThread(
         model,
         TimeIntervalContinuous=math.inf,
         TimeIntervalAnimation=math.inf,

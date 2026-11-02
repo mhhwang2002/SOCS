@@ -46,9 +46,9 @@ class Counter(FDDEVS):
 
 def runSimulation(model):
     """Run the model with the interactive simulation engine."""
-    from socs.devs.SimEngine import SimEngine
+    from socs.devs.SimEngine import SimEngineThread
 
-    engine = SimEngine(model)
+    engine = SimEngineThread(model)
     engine.StepByStep = True
     engine.sfactor = float("inf")
     engine.runInteractiveMenu()

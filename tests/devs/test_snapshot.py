@@ -6,7 +6,7 @@ import math
 import pytest
 
 from socs.devs import CoupledDEVS, FDDEVS
-from socs.devs.SimEngine import SimEngine
+from socs.devs.SimEngine import SimEngineThread
 from socs.devs.Snapshot import SystemSnapshot
 
 
@@ -56,7 +56,7 @@ def make_engine():
     model = BranchModel("Model")
     root.add_child(model)
 
-    engine = SimEngine(
+    engine = SimEngineThread(
         root,
         TimeIntervalContinuous=3.0,
         TimeIntervalAnimation=7.0,

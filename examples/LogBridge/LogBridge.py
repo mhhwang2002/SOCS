@@ -2,7 +2,7 @@
 
 from socs.devs.FDDEVS import FDDEVS
 from socs.devs.DEVSInterfaces import PortValue
-from socs.devs.SimEngine import SimEngine  
+from socs.devs.SimEngine import SimEngineThread  
 from socs.devs.Base import isnumeric
 
 class LogBridge(FDDEVS):

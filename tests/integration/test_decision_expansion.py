@@ -4,7 +4,7 @@ import pytest
 
 from examples.FDDEVS_Simple.FDDEVSCounter import Counter
 
-from socs.devs.SimEngine import SimEngine
+from socs.devs.SimEngine import SimEngineBase
 from socs.decision.decision import Decision
 from socs.decision.generator import DecisionGenerator
 from socs.decision.manager import DecisionManager
@@ -14,14 +14,7 @@ from socs.decision.expansion import (
     ExpansionStatus,
 )
 from socs.tree.decision_tree import DecisionTree
-
-class IntegrationSimEngine(SimEngine):
-    def __init__(self, model):
-        super().__init__(model)
-        self.bVerbose = False
-
-    def start(self):
-        pass
+ 
  
 @dataclass(frozen=True)
 class SetCountLimitDecision(Decision):
@@ -42,7 +35,7 @@ class CounterDecisionEvaluator(SimulationDecisionEvaluator):
 @pytest.fixture
 def expansion_system():
     model = Counter(name="counter", count_no=2)
-    engine = IntegrationSimEngine(model)
+    engine = SimEngineBase(model)
     engine.bVerbose = False
 
     evaluator = CounterDecisionEvaluator(

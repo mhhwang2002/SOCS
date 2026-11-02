@@ -3,7 +3,7 @@
 from socs.devs.FDDEVS import FDDEVS
 from socs.devs.CoupledDEVS import CoupledDEVS
 from socs.devs.DEVSInterfaces import PortValue
-from socs.devs.SimEngine import SimEngine
+from socs.devs.SimEngine import SimEngineThread
 
 
 class Player(FDDEVS):
@@ -65,7 +65,7 @@ def makeModel():
 
 def runSimulation(model):
     """Run the model in the interactive simulation engine."""
-    engine = SimEngine(model)
+    engine = SimEngineThread(model)
     engine.StepByStep = True
     engine.sfactor = float("inf")
     engine.runInteractiveMenu()

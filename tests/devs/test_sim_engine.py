@@ -3,7 +3,7 @@ import math
 from socs.devs import CoupledDEVS, FDDEVS
 from socs.devs.DEVSTime import Clock
 from socs.devs.DEVSInterfaces import PortValue
-from socs.devs.SimEngine import SimEngine, ExecutionResult
+from socs.devs.SimEngine import SimEngineThread, ExecutionResult
 
 
 class PeriodicModel(FDDEVS):
@@ -87,7 +87,7 @@ class SinkModel(FDDEVS):
 
 
 def make_engine(root):
-    engine = SimEngine(root)
+    engine = SimEngineThread(root)
     engine.sfactor = math.inf
     engine.bVerbose = False
     return engine

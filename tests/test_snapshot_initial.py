@@ -65,7 +65,7 @@ def test_snapshot_is_independent_from_later_model_changes():
 
     assert snapshot.model_state == saved_state
     model.restore_state(snapshot)
-    assert model.get_state() == ("C", 1, 0)
+    assert model.get_state() == ("C", 1, 0, 5)
 
 
 def test_snapshot_deep_copies_mutable_model_state():
@@ -104,12 +104,12 @@ def test_coupled_snapshot_restores_children_and_recomputes_imm():
 
     first.Delta_y(5)
     root.update_tN()
-    assert first.get_state() == ("C", 2, 1)
+    assert first.get_state() == ("C", 2, 1, 3)
 
     root.restore_state(snapshot)
 
-    assert first.get_state() == ("C", 1, 0)
-    assert second.get_state() == ("C", 1, 0)
+    assert first.get_state() == ("C", 1, 0, 3)
+    assert second.get_state() == ("C", 1, 0, 3)
     assert root.timeLast() == 0
     assert root.timeNext() == 5
     assert root.IMM == {first, second}
@@ -141,8 +141,8 @@ def test_snapshot_branch_independence():
     snapshot = model.capture_state()
 
     # Branch A: Modify the model state and schedule.
-    phase, count, total = initial_state
-    model.set_state((phase, count + 10, total + 100))
+    phase, count, total, count_no = initial_state
+    model.set_state((phase, count + 10, total + 100, count_no))
     model.set_timeLast(4.0)
     model.set_timeNext(9.0)
 
@@ -157,7 +157,7 @@ def test_snapshot_branch_independence():
     assert model.timeNext() == 5.0
 
     # Branch B: Explore a different state from the same snapshot.
-    model.set_state((phase, count + 1, total + 10))
+    model.set_state((phase, count + 1, total + 10, count_no))
 
     branch_b_state = model.get_state()
     assert branch_b_state != branch_a_state

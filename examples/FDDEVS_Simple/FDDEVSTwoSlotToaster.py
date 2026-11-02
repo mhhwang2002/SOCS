@@ -9,7 +9,7 @@ output coupling exposes each toaster's completion event.
 
 from socs.devs.CoupledDEVS import CoupledDEVS
 from socs.devs.DEVSInterfaces import PortValue
-from socs.devs.SimEngine import SimEngine
+from socs.devs.SimEngine import SimEngineThread
 
 from FDDEVSToaster import Toaster
 
