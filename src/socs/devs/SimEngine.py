@@ -12,12 +12,15 @@ Originally written in 2011 and modernized for Python 3.
 import sys
 import threading
 import time
+from copy import deepcopy
 
 from .Simulatable import Simulatable
 from .Base import exception_handling
 from .DEVSTime import Clock
 from .Snapshot import SystemSnapshot
 from enum import Enum, auto
+from collections import deque
+import math
 
 class ExecutionType(Enum):
     CONTINUOUS = 1 # when continuous model updates
@@ -49,7 +52,7 @@ class SimEngineBase():
         self.ToBeKilled = False
         self.t_segment_start = self.t_segment_end = time.perf_counter()
         self.tNow = 0.0
-        self.XBuffer = []
+        self.XBuffer = deque()
         self.sfactor = 1.0
         self.StepByStep = False
         self.TimeIntervalContinuous = TimeIntervalContinuous
@@ -72,29 +75,108 @@ class SimEngineBase():
                 "Snapshot capture and restore require a paused simulation engine."
             )
 
+    def _collect_models_by_identity(self) -> dict[int, Simulatable]:
+        """Return all models in the current hierarchy keyed by Python identity."""
+        models = {}
+
+        def visit(model):
+            model_identity = id(model)
+            if model_identity in models:
+                raise ValueError("The model hierarchy contains a repeated object.")
+            models[model_identity] = model
+
+            for child in model.children:
+                if not isinstance(child, Simulatable):
+                    raise TypeError(
+                        f"{model.path}: child {child.name!r} is not Simulatable."
+                    )
+                visit(child)
+
+        visit(self.model)
+        return models
+
     def capture_snapshot(self) -> SystemSnapshot:
-        """Capture engine time and the complete root-model hierarchy."""
+        """Capture model state, engine schedules, and pending external inputs."""
         self._ensure_snapshot_safe()
         if self.model is None:
             raise RuntimeError("Cannot capture a snapshot without a root model.")
 
+        models_by_identity = self._collect_models_by_identity()
+        x_buffer = []
+
+        for target_model, input_value in self.XBuffer:
+            if target_model is None:
+                target_model_id = None
+            else:
+                target_model_id = id(target_model)
+                if target_model_id not in models_by_identity:
+                    raise ValueError(
+                        "XBuffer contains a target model outside the root hierarchy."
+                    )
+            x_buffer.append((target_model_id, deepcopy(input_value)))
+
         return SystemSnapshot(
             t_now=self.tNow,
             root_model=self.model.capture_state(),
+            t_next_continuous=self._tNextContinuous,
+            t_next_animation=self._tNextAnimation,
+            x_buffer=x_buffer,
         )
 
     def restore_snapshot(self, snapshot: SystemSnapshot) -> None:
-        """Restore engine time and the root-model hierarchy from a snapshot."""
+        """Restore model state, engine schedules, and pending external inputs."""
         self._ensure_snapshot_safe()
         if not isinstance(snapshot, SystemSnapshot):
             raise TypeError("snapshot must be a SystemSnapshot instance.")
         if self.model is None:
             raise RuntimeError("Cannot restore a snapshot without a root model.")
 
-        # Validate the full hierarchy before changing any model state.
+        # Resolve and copy queued inputs before changing the current model state.
+        models_by_identity = self._collect_models_by_identity()
+        restored_x_buffer = deque()
+
+        for target_model_id, input_value in snapshot.x_buffer:
+            if target_model_id is None:
+                target_model = None
+            else:
+                try:
+                    target_model = models_by_identity[target_model_id]
+                except KeyError as exc:
+                    raise ValueError(
+                        "Snapshot XBuffer refers to a model outside the current hierarchy."
+                    ) from exc
+
+            restored_x_buffer.append((target_model, deepcopy(input_value)))
+
+        # Validate the full model hierarchy before changing any model state.
         self.model._validate_snapshot(snapshot.root_model)
+
+        # Restore model state first; model restoration may recompute schedules.
         self.model.restore_state(snapshot.root_model)
+
+        # Restore engine values last so recomputation cannot overwrite them.
         self.tNow = snapshot.t_now
+        self._tNextContinuous = snapshot.t_next_continuous
+        self._tNextAnimation = snapshot.t_next_animation
+        self.XBuffer = restored_x_buffer
+ 
+
+    def set_simulation_time_bound(self, end_time: float) -> None:
+        """Set the absolute simulation time bound."""
+        self._ensure_snapshot_safe()
+
+        if isinstance(end_time, bool) or not isinstance(end_time, (int, float)):
+            raise TypeError("end_time must be a real number.")
+
+        if not math.isfinite(end_time):
+            raise ValueError("end_time must be finite.")
+
+        if end_time < self.tNow:
+            raise ValueError(
+                "end_time cannot be earlier than the current simulation time."
+            )
+
+        self._tSimBound = float(end_time)
 
     def print_src_and_event_segment(self, src_state_str, z, tnow):
         """Print the source state and event segment."""
@@ -166,7 +248,7 @@ class SimEngineBase():
         (self.tNow, next_type) = self.PickNextExecutionTime_Type()
 
         if next_type == ExecutionType.X_BUFFER:
-            target_md, ipv = self.XBuffer.pop()  
+            target_md, ipv = self.XBuffer.popleft()  
             executionResult = self.executeDEVS_x(self.tNow, target_md, ipv) 
         elif next_type == ExecutionType.DEVS:
             executionResult =self.executeDEVS_star(self.tNow)         
