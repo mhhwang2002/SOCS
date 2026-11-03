@@ -124,3 +124,49 @@ def test_expand_returns_no_decision_when_no_candidate_exists():
     assert tree.get_children(root_id) == []
     assert manager.is_exhausted(root_id)
     assert manager.is_complete(root_id)
+
+from socs.decision.manager import DecisionManager, DecisionStatus
+
+def test_expand_marks_decision_failed_on_evaluator_error():
+    engine, root_snapshot = make_root_snapshot()
+
+    tree = DecisionTree()
+    root_id = tree.add_root(root_snapshot)
+
+    manager = DecisionManager()
+
+    class FailingEvaluator(LogBridgeDecisionEvaluator):
+        def evaluate(self, state, decision):
+            raise RuntimeError("Intentional evaluation failure")
+
+    evaluator = FailingEvaluator(
+        engine=engine,
+        end_time=70.0,
+    )
+
+    controller = DecisionExpansionController(
+        tree=tree,
+        decision_manager=manager,
+        evaluator=evaluator,
+    )
+
+    controller.register_node(
+        root_id,
+        LogBridgeDecisionGenerator(),
+    )
+
+    result = controller.expand(root_id)
+
+    assert result.status == ExpansionStatus.FAILED
+    assert result.decision_id is not None
+    assert result.child_node_id is None
+
+    record = manager.get_record(result.decision_id)
+
+    assert record.status == DecisionStatus.FAILED
+    assert "Intentional evaluation failure" in str(record.error)
+
+    assert tree.get_children(root_id) == []
+
+    assert manager.get_pending_decisions(root_id) == []
+    assert manager.is_complete(root_id) is False
