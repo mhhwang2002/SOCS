@@ -15,6 +15,7 @@ import time
 from copy import deepcopy
 
 from .Simulatable import Simulatable
+from .DEVSInterfaces import InputPort, PortValue
 from .Base import exception_handling
 from .DEVSTime import Clock
 from .Snapshot import SystemSnapshot
@@ -414,8 +415,31 @@ class SimEngineThread(threading.Thread, SimEngineBase):
             self.model.Delta_null(self.tNow)
             self.SkipLoop = True
 
-    def inject(self):
-        """Inject an input event through a port using the callback."""
+    def inject(self, target_model=None, input_value=None):
+        """Queue an external input, or use the interactive injection callback.
+
+        Direct use queues the event without starting the simulation loop:
+            engine.inject(target_model, PortValue(target_model.IP["?port"], value))
+
+        Calling inject() without arguments preserves the interactive menu behavior.
+        """
+        if target_model is not None or input_value is not None:
+            if target_model is None or input_value is None:
+                raise ValueError("target_model and input_value must be provided together.")
+            if not isinstance(target_model, Simulatable):
+                raise TypeError("target_model must be a Simulatable instance.")
+            if not isinstance(input_value, PortValue):
+                raise TypeError("input_value must be a PortValue instance.")
+            if not isinstance(input_value.port, InputPort):
+                raise TypeError("input_value.port must be an InputPort.")
+            if input_value.port.parent is not target_model:
+                raise ValueError("The input port must belong to target_model.")
+            if id(target_model) not in self._collect_models_by_identity():
+                raise ValueError("target_model is outside the simulation hierarchy.")
+
+            self.XBuffer.append((target_model, input_value))
+            return
+
         if self.inject_CBF is None:
             print("no callback function defined\n")
             return
@@ -423,7 +447,7 @@ class SimEngineThread(threading.Thread, SimEngineBase):
         try:
             target_md, pvalue = self.inject_CBF(self.model)
             if pvalue is not None:
-                self.XBuffer.append((target_md, pvalue))
+                self.inject(target_md, pvalue)
                 self.make_run()
             else:
                 print("None event generated!")

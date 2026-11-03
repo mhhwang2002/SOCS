@@ -2,7 +2,6 @@
 
 from socs.devs.FDDEVS import FDDEVS
 from socs.devs.DEVSInterfaces import PortValue
-from socs.devs.SimEngine import SimEngineThread  
 
 class LoadPassive(FDDEVS):
     """Atomic load model with walker speeds."""
@@ -25,7 +24,7 @@ class LoadPassive(FDDEVS):
         
     def tau(self):
         """Return the time until the next internal event."""
-        if self.phase == "B" and self.walker_speed:
+        if self.phase == "B" and self.walker_speed > 0:
             return self.length/self.walker_speed
         elif self.phase == "S":
             return 0
@@ -34,9 +33,10 @@ class LoadPassive(FDDEVS):
 
     def delta_x(self, x):
         """Handle a push event and reschedule if a walker exists"""
-        if self.phase == "I" and x.port == self.IP["?in"]: 
+        if self.phase == "I" and x.port == self.IP["?in"]:
             self.walker_speed = x.value
-            return True 
+            self.phase = "B"
+            return True
         elif self.phase == "W" and x.port == self.IP["?go"]:
             self.phase = "S"
             return True 
@@ -49,8 +49,9 @@ class LoadPassive(FDDEVS):
             self.phase = "W"
             return None
         elif self.phase == "S":
+            walker_speed = self.walker_speed
             self.phase = "I"
-            return PortValue(self.OP["!out"], self.walker_speed) 
+            return PortValue(self.OP["!out"], walker_speed)
         else:
             return None
 

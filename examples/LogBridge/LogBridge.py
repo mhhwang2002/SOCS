@@ -2,7 +2,6 @@
 
 from socs.devs.FDDEVS import FDDEVS
 from socs.devs.DEVSInterfaces import PortValue
-from socs.devs.SimEngine import SimEngineThread  
 from socs.devs.Base import isnumeric
 
 class LogBridge(FDDEVS):
@@ -43,10 +42,11 @@ class LogBridge(FDDEVS):
     def delta_y(self):
         """Emit the walker poping from walkers and return it."""
         if (self.Phase == "S1" or self.Phase == "S2") and self.walker_speed > 0:
+            completed_phase = self.Phase
             walker_speed = self.walker_speed
             self.walker_speed = 0
             self.Phase = "I"
-            portname = "!out1" if self.Phase == "S1" else "!out2"
+            portname = "!out1" if completed_phase == "S1" else "!out2"
             return PortValue(self.OP[portname], walker_speed)
         return None
 
