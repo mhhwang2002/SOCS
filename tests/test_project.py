@@ -1,4 +1,4 @@
-﻿import socs
+import socs
 
 
 def test_package_import():

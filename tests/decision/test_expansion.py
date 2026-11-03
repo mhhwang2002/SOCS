@@ -6,11 +6,11 @@ from socs.decision import (
     Decision,
     DecisionExpansionController,
     DecisionGenerator,
-    DecisionManager,
+    DecisionLifeCycleManager,
     ExpansionStatus,
     DecisionStatus,
 )
-from socs.decision.simulation_evaluator import SimulationDecisionEvaluator
+from socs.decision.simulation_executor import SimulationDecisionExecutor
 from socs.devs.Simulatable import Simulatable
 from socs.devs.SimEngine import SimEngineThread
 from socs.tree import DecisionTree
@@ -61,12 +61,12 @@ class AddDecisionGenerator(DecisionGenerator):
             yield AddDecision(amount)
 
 
-class CounterEvaluator(SimulationDecisionEvaluator):
+class CounterEvaluator(SimulationDecisionExecutor):
     def apply_decision(self, model, decision):
         model.value += decision.amount
 
 
-class FailingEvaluator(SimulationDecisionEvaluator):
+class FailingEvaluator(SimulationDecisionExecutor):
     def apply_decision(self, model, decision):
         raise RuntimeError("decision application failed")
 
@@ -83,7 +83,7 @@ def controller_context():
 
     tree = DecisionTree()
     root_id = tree.add_root(engine.capture_snapshot())
-    manager = DecisionManager()
+    manager = DecisionLifeCycleManager()
     evaluator = CounterEvaluator(engine, end_time=5.0)
     controller = DecisionExpansionController(tree, manager, evaluator)
     return engine, model, tree, manager, controller, root_id

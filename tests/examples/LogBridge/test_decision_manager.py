@@ -1,5 +1,5 @@
 
-from socs.decision import DecisionManager, DecisionStatus
+from socs.decision import DecisionLifeCycleManager, DecisionStatus
 
 from examples.LogBridge.decisions import EnterBridgeDecision
 from examples.LogBridge.decision_generator import LogBridgeDecisionGenerator
@@ -12,7 +12,7 @@ from tests.examples.LogBridge.test_decision_generator import (
 def test_manager_registers_and_generates_logbridge_decisions():
     snapshot = make_system_snapshot()
 
-    manager = DecisionManager()
+    manager = DecisionLifeCycleManager()
     manager.register_node(1, snapshot, LogBridgeDecisionGenerator())
 
     records = manager.generate_decisions(1)
@@ -29,7 +29,7 @@ def test_manager_registers_and_generates_logbridge_decisions():
 def test_manager_selects_logbridge_decisions_in_fifo_order():
     snapshot = make_system_snapshot()
 
-    manager = DecisionManager()
+    manager = DecisionLifeCycleManager()
     manager.register_node(1, snapshot, LogBridgeDecisionGenerator())
     manager.generate_decisions(1)
 
@@ -48,7 +48,7 @@ def test_manager_selects_logbridge_decisions_in_fifo_order():
 def test_manager_tracks_logbridge_decision_execution():
     snapshot = make_system_snapshot()
 
-    manager = DecisionManager()
+    manager = DecisionLifeCycleManager()
     manager.register_node(1, snapshot, LogBridgeDecisionGenerator())
     manager.generate_decisions(1)
 

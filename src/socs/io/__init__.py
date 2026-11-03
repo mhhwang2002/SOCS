@@ -1,1 +1,1 @@
-﻿"""SOCS module."""
+"""SOCS module."""

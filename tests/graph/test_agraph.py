@@ -1,4 +1,4 @@
-﻿import pytest
+import pytest
 
 from socs.graph.agraph import AGraph, Edge
 

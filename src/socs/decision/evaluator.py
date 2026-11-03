@@ -1,21 +1,7 @@
-from abc import ABC, abstractmethod
-from typing import Generic, TypeVar
+"""Backward-compatible imports for decision execution."""
 
-from .decision import Decision
+from .executor import DecisionExecutor
 
+DecisionEvaluator = DecisionExecutor
 
-StateT = TypeVar("StateT")
-DecisionT = TypeVar("DecisionT", bound=Decision)
-
-
-class DecisionEvaluator(ABC, Generic[StateT, DecisionT]):
-    """Base class for evaluating decisions against system states."""
-
-    @abstractmethod
-    def evaluate(
-        self,
-        state: StateT,
-        decision: DecisionT,
-    ) -> StateT:
-        """Evaluate a decision and return the resulting state."""
-        raise NotImplementedError
+__all__ = ["DecisionExecutor", "DecisionEvaluator"]

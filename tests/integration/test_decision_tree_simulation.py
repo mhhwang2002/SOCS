@@ -3,7 +3,7 @@ import math
 import pytest
 
 from socs.decision.decision import Decision
-from socs.decision.simulation_evaluator import SimulationDecisionEvaluator
+from socs.decision.simulation_executor import SimulationDecisionExecutor
 from socs.devs.CoupledDEVS import CoupledDEVS
 from socs.devs.DEVSInterfaces import PortValue
 from socs.devs.FDDEVS import FDDEVS
@@ -47,7 +47,7 @@ class NestedCounter(FDDEVS):
         self.events = state["events"]
 
 
-class NestedCounterEvaluator(SimulationDecisionEvaluator):
+class NestedCounterEvaluator(SimulationDecisionExecutor):
     def apply_decision(self, model, decision):
         model.Delta_x(
             PortValue(model.IP["decision"], decision.amount),
@@ -85,7 +85,7 @@ def atomic_state(snapshot):
     return snapshot.root_model.children["nested"].children["atomic"].model_state
 
 
-def test_decision_tree_branches_simulation_evaluator_results(simulation_system):
+def test_decision_tree_branches_simulation_executor_results(simulation_system):
     engine, root, nested, atomic = simulation_system
     initial_snapshot = engine.capture_snapshot()
 
@@ -94,7 +94,7 @@ def test_decision_tree_branches_simulation_evaluator_results(simulation_system):
 
     first_evaluator = NestedCounterEvaluator(engine, end_time=7.0)
     first_decision = AddInputDecision(10)
-    first_snapshot = first_evaluator.evaluate(
+    first_snapshot = first_evaluator.execute(
         tree.get_snapshot(root_id), first_decision
     )
     first_id = tree.add_child(root_id, first_decision, first_snapshot)
@@ -102,13 +102,13 @@ def test_decision_tree_branches_simulation_evaluator_results(simulation_system):
     branch_evaluator = NestedCounterEvaluator(engine, end_time=14.0)
 
     decision_a = AddInputDecision(100)
-    snapshot_a = branch_evaluator.evaluate(
+    snapshot_a = branch_evaluator.execute(
         tree.get_snapshot(first_id), decision_a
     )
     node_a = tree.add_child(first_id, decision_a, snapshot_a)
 
     decision_b = AddInputDecision(200)
-    snapshot_b = branch_evaluator.evaluate(
+    snapshot_b = branch_evaluator.execute(
         tree.get_snapshot(first_id), decision_b
     )
     node_b = tree.add_child(first_id, decision_b, snapshot_b)
@@ -150,14 +150,14 @@ def test_decision_tree_branch_snapshot_can_be_re_evaluated(simulation_system):
 
     first_evaluator = NestedCounterEvaluator(engine, end_time=7.0)
     first_decision = AddInputDecision(10)
-    first_snapshot = first_evaluator.evaluate(initial_snapshot, first_decision)
+    first_snapshot = first_evaluator.execute(initial_snapshot, first_decision)
     first_id = tree.add_child(root_id, first_decision, first_snapshot)
 
     evaluator = NestedCounterEvaluator(engine, end_time=14.0)
     decision = AddInputDecision(50)
 
-    result_1 = evaluator.evaluate(tree.get_snapshot(first_id), decision)
-    result_2 = evaluator.evaluate(tree.get_snapshot(first_id), decision)
+    result_1 = evaluator.execute(tree.get_snapshot(first_id), decision)
+    result_2 = evaluator.execute(tree.get_snapshot(first_id), decision)
 
     assert atomic_state(result_1) == atomic_state(result_2)
     assert result_1.t_now == result_2.t_now == 14.0

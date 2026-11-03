@@ -1,4 +1,4 @@
-﻿import pytest
+import pytest
 
 from socs.graph.attributes import AttrDict
 

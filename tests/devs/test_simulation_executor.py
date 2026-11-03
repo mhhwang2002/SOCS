@@ -5,7 +5,7 @@ import pytest
 from socs.devs.Simulatable import Simulatable
 from socs.devs.SimEngine import ExecutionResult, SimEngineBase, SimEngineThread
 from socs.decision.decision import Decision
-from socs.decision.simulation_evaluator import SimulationDecisionEvaluator
+from socs.decision.simulation_executor import SimulationDecisionExecutor
 
 
 class CounterModel(Simulatable):
@@ -48,7 +48,7 @@ class AddDecision(Decision):
         self.amount = amount
 
 
-class CounterEvaluator(SimulationDecisionEvaluator):
+class CounterEvaluator(SimulationDecisionExecutor):
     """Evaluator that applies an additive decision to the counter model."""
 
     def apply_decision(self, model, decision):
@@ -122,8 +122,8 @@ def test_evaluator_runs_independent_branches_from_same_snapshot(engine_and_model
     initial_snapshot = engine.capture_snapshot()
     evaluator = CounterEvaluator(engine, end_time=5.0)
 
-    branch_a = evaluator.evaluate(initial_snapshot, AddDecision(10))
-    branch_b = evaluator.evaluate(initial_snapshot, AddDecision(20))
+    branch_a = evaluator.execute(initial_snapshot, AddDecision(10))
+    branch_b = evaluator.execute(initial_snapshot, AddDecision(20))
 
     assert branch_a.root_model.model_state == {"value": 12, "events": 2}
     assert branch_b.root_model.model_state == {"value": 22, "events": 2}

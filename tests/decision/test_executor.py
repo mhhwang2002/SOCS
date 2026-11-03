@@ -4,7 +4,7 @@ from dataclasses import dataclass
 import pytest
 
 from socs.decision import Decision
-from socs.decision.evaluator import DecisionEvaluator
+from socs.decision.executor import DecisionExecutor
 
 
 @dataclass(frozen=True)
@@ -18,10 +18,10 @@ class IncrementDecision(Decision):
 
 
 class IncrementEvaluator(
-    DecisionEvaluator[SampleState, IncrementDecision]
+    DecisionExecutor[SampleState, IncrementDecision]
 ):
 
-    def evaluate(
+    def execute(
         self,
         state: SampleState,
         decision: IncrementDecision,
@@ -36,7 +36,7 @@ def test_evaluator_returns_new_state():
     decision = IncrementDecision(amount=5)
 
     evaluator = IncrementEvaluator()
-    next_state = evaluator.evaluate(state, decision)
+    next_state = evaluator.execute(state, decision)
 
     assert next_state.value == 15
 
@@ -46,7 +46,7 @@ def test_evaluator_does_not_modify_input_state():
     decision = IncrementDecision(amount=5)
 
     evaluator = IncrementEvaluator()
-    next_state = evaluator.evaluate(state, decision)
+    next_state = evaluator.execute(state, decision)
 
     assert state.value == 10
     assert next_state.value == 15
@@ -55,4 +55,4 @@ def test_evaluator_does_not_modify_input_state():
 
 def test_evaluator_is_abstract():
     with pytest.raises(TypeError):
-        DecisionEvaluator()
+        DecisionExecutor()

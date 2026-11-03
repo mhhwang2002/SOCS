@@ -5,7 +5,7 @@ from socs.tree.decision_tree import DecisionTree
 
 from examples.LogBridge.LoadPassive_LogBridge import makeModel
 from examples.LogBridge.decisions import EnterBridgeDecision
-from examples.LogBridge.decision_evaluator import LogBridgeDecisionEvaluator
+from examples.LogBridge.decision_executor import LogBridgeDecisionExecutor
 
 
 def make_root_snapshot():
@@ -44,14 +44,14 @@ def get_model_states(snapshot):
 def test_evaluate_l11_decision():
     engine, root_snapshot = make_root_snapshot()
 
-    evaluator = LogBridgeDecisionEvaluator(
+    evaluator = LogBridgeDecisionExecutor(
         engine=engine,
         end_time=70.0,
     )
 
     decision = EnterBridgeDecision(load_name="L11")
 
-    result = evaluator.evaluate(root_snapshot, decision)
+    result = evaluator.execute(root_snapshot, decision)
     states = get_model_states(result)
 
     assert states["L11"][0] == "I"
@@ -65,14 +65,14 @@ def test_evaluate_l11_decision():
 def test_evaluate_l21_decision():
     engine, root_snapshot = make_root_snapshot()
 
-    evaluator = LogBridgeDecisionEvaluator(
+    evaluator = LogBridgeDecisionExecutor(
         engine=engine,
         end_time=70.0,
     )
 
     decision = EnterBridgeDecision(load_name="L21")
 
-    result = evaluator.evaluate(root_snapshot, decision)
+    result = evaluator.execute(root_snapshot, decision)
     states = get_model_states(result)
 
     assert states["L21"][0] == "I"
@@ -86,19 +86,19 @@ def test_evaluate_l21_decision():
 def test_branch_evaluation_is_independent():
     engine, root_snapshot = make_root_snapshot()
 
-    evaluator = LogBridgeDecisionEvaluator(
+    evaluator = LogBridgeDecisionExecutor(
         engine=engine,
         end_time=70.0,
     )
 
     # Evaluate the first branch.
-    result_l11 = evaluator.evaluate(
+    result_l11 = evaluator.execute(
         root_snapshot,
         EnterBridgeDecision(load_name="L11"),
     )
 
     # Evaluate another branch from exactly the same root.
-    result_l21 = evaluator.evaluate(
+    result_l21 = evaluator.execute(
         root_snapshot,
         EnterBridgeDecision(load_name="L21"),
     )

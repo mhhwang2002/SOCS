@@ -6,8 +6,8 @@ from typing import Hashable
 
 from .decision import Decision
 from .generator import DecisionGenerator
-from .manager import DecisionManager, DecisionStatus
-from .evaluator import DecisionEvaluator
+from .lifecycle import DecisionLifeCycleManager, DecisionStatus
+from .executor import DecisionExecutor
 from ..devs.Snapshot import SystemSnapshot
 from ..tree.decision_tree import DecisionTree
 
@@ -42,19 +42,19 @@ class DecisionExpansionController:
     def __init__(
         self,
         tree: DecisionTree,
-        decision_manager: DecisionManager,
-        evaluator: DecisionEvaluator[SystemSnapshot, Decision],
+        lifecycle_manager: DecisionLifeCycleManager,
+        executor: DecisionExecutor[SystemSnapshot, Decision],
     ) -> None:
         if not isinstance(tree, DecisionTree):
             raise TypeError("tree must be a DecisionTree instance.")
-        if not isinstance(decision_manager, DecisionManager):
-            raise TypeError("decision_manager must be a DecisionManager instance.")
-        if not isinstance(evaluator, DecisionEvaluator):
-            raise TypeError("evaluator must be a DecisionEvaluator instance.")
+        if not isinstance(lifecycle_manager, DecisionLifeCycleManager):
+            raise TypeError("lifecycle_manager must be a DecisionLifeCycleManager instance.")
+        if not isinstance(executor, DecisionExecutor):
+            raise TypeError("executor must be a DecisionExecutor instance.")
 
         self.tree = tree
-        self.decision_manager = decision_manager
-        self.evaluator = evaluator
+        self.lifecycle_manager = lifecycle_manager
+        self.executor = executor
         self._node_generators: dict[Hashable, DecisionGenerator] = {}
 
     def register_node(
@@ -67,7 +67,7 @@ class DecisionExpansionController:
             raise ValueError(f"Node {node_id!r} is already registered.")
 
         snapshot = self.tree.get_snapshot(node_id)
-        self.decision_manager.register_node(node_id, snapshot, generator)
+        self.lifecycle_manager.register_node(node_id, snapshot, generator)
         self._node_generators[node_id] = generator
 
     def expand(self, node_id: Hashable) -> ExpansionResult:
@@ -82,11 +82,11 @@ class DecisionExpansionController:
         except KeyError:
             raise KeyError(f"Node {node_id!r} is not registered for expansion.") from None
 
-        pending = self.decision_manager.get_pending_decisions(node_id)
+        pending = self.lifecycle_manager.get_pending_decisions(node_id)
         if not pending:
-            self.decision_manager.generate_decisions(node_id, max_count=1)
+            self.lifecycle_manager.generate_decisions(node_id, max_count=1)
 
-        record = self.decision_manager.select_decision(node_id)
+        record = self.lifecycle_manager.select_decision(node_id)
         if record is None:
             return ExpansionResult(
                 parent_node_id=node_id,
@@ -96,7 +96,7 @@ class DecisionExpansionController:
         child_node_id = None
         try:
             parent_snapshot = self.tree.get_snapshot(node_id)
-            result_snapshot = self.evaluator.evaluate(
+            result_snapshot = self.executor.execute(
                 parent_snapshot,
                 record.decision,
             )
@@ -106,7 +106,7 @@ class DecisionExpansionController:
                 result_snapshot,
             )
             try:
-                self.decision_manager.register_node(
+                self.lifecycle_manager.register_node(
                     child_node_id,
                     result_snapshot,
                     generator,
@@ -117,7 +117,7 @@ class DecisionExpansionController:
                 raise
 
             self._node_generators[child_node_id] = generator
-            self.decision_manager.mark_executed(
+            self.lifecycle_manager.mark_executed(
                 record.decision_id,
                 child_node_id,
             )
@@ -129,7 +129,7 @@ class DecisionExpansionController:
             )
         except Exception as exc:
             if record.status is DecisionStatus.EXECUTING:
-                self.decision_manager.mark_failed(record.decision_id, exc)
+                self.lifecycle_manager.mark_failed(record.decision_id, exc)
             return ExpansionResult(
                 parent_node_id=node_id,
                 status=ExpansionStatus.FAILED,

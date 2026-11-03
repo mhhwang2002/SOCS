@@ -1,11 +1,11 @@
 from socs.decision.expansion import ExpansionStatus
-from socs.decision.manager import DecisionManager
+from socs.decision.lifecycle import DecisionLifeCycleManager
 
 from examples.LogBridge.decision_generator import (
     LogBridgeDecisionGenerator,
 )
-from examples.LogBridge.decision_evaluator import (
-    LogBridgeDecisionEvaluator,
+from examples.LogBridge.decision_executor import (
+    LogBridgeDecisionExecutor,
 )
 from socs.decision.expansion import DecisionExpansionController
 from socs.tree.decision_tree import DecisionTree
@@ -13,7 +13,7 @@ from socs.tree.decision_tree import DecisionTree
 from tests.examples.LogBridge.test_decision_generator import (
     make_system_snapshot,
 )
-from tests.examples.LogBridge.test_decision_evaluator import (
+from tests.examples.LogBridge.test_decision_executor import (
     make_root_snapshot,
 )
 
@@ -25,15 +25,15 @@ def test_expand_root_into_two_branches():
 
     generator = LogBridgeDecisionGenerator()
 
-    evaluator = LogBridgeDecisionEvaluator(
+    evaluator = LogBridgeDecisionExecutor(
         engine=engine,
         end_time=70.0,
     )
 
     controller = DecisionExpansionController(
         tree=tree,
-        decision_manager=DecisionManager(),
-        evaluator=evaluator,
+        lifecycle_manager=DecisionLifeCycleManager(),
+        executor=evaluator,
     )
 
     controller.register_node(root_id, generator)
@@ -99,12 +99,12 @@ def test_expand_returns_no_decision_when_no_candidate_exists():
     tree = DecisionTree()
     root_id = tree.add_root(root_snapshot)
 
-    manager = DecisionManager()
+    manager = DecisionLifeCycleManager()
     engine, _ = make_root_snapshot()
     controller = DecisionExpansionController(
         tree=tree,
-        decision_manager=manager,
-        evaluator=LogBridgeDecisionEvaluator(
+        lifecycle_manager=manager,
+        executor=LogBridgeDecisionExecutor(
             engine=engine,
             end_time=70.0,
         ),
@@ -125,7 +125,7 @@ def test_expand_returns_no_decision_when_no_candidate_exists():
     assert manager.is_exhausted(root_id)
     assert manager.is_complete(root_id)
 
-from socs.decision.manager import DecisionManager, DecisionStatus
+from socs.decision.lifecycle import DecisionLifeCycleManager, DecisionStatus
 
 def test_expand_marks_decision_failed_on_evaluator_error():
     engine, root_snapshot = make_root_snapshot()
@@ -133,10 +133,10 @@ def test_expand_marks_decision_failed_on_evaluator_error():
     tree = DecisionTree()
     root_id = tree.add_root(root_snapshot)
 
-    manager = DecisionManager()
+    manager = DecisionLifeCycleManager()
 
-    class FailingEvaluator(LogBridgeDecisionEvaluator):
-        def evaluate(self, state, decision):
+    class FailingEvaluator(LogBridgeDecisionExecutor):
+        def execute(self, state, decision):
             raise RuntimeError("Intentional evaluation failure")
 
     evaluator = FailingEvaluator(
@@ -146,8 +146,8 @@ def test_expand_marks_decision_failed_on_evaluator_error():
 
     controller = DecisionExpansionController(
         tree=tree,
-        decision_manager=manager,
-        evaluator=evaluator,
+        lifecycle_manager=manager,
+        executor=evaluator,
     )
 
     controller.register_node(

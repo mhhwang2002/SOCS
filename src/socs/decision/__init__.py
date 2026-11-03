@@ -1,19 +1,26 @@
 from .decision import Decision
 from .generator import DecisionGenerator
-from .evaluator import DecisionEvaluator
-from .manager import (
-    DecisionManager,
+from .executor import DecisionExecutor
+from .lifecycle import (
+    DecisionLifeCycleManager,
     DecisionRecord,
     DecisionStatus,
 )
 
+# Backward-compatible class aliases.
+DecisionManager = DecisionLifeCycleManager
+DecisionEvaluator = DecisionExecutor
+
+
 __all__ = [
     "Decision",
     "DecisionGenerator",
-    "DecisionEvaluator",
-    "DecisionManager",
+    "DecisionExecutor",
+    "DecisionLifeCycleManager",
     "DecisionRecord",
     "DecisionStatus",
+    "DecisionManager",
+    "DecisionEvaluator",
     "DecisionExpansionController",
     "ExpansionResult",
     "ExpansionStatus",

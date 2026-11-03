@@ -7,7 +7,7 @@ from socs.devs.FDDEVS import FDDEVS
 from socs.devs.DEVSInterfaces import PortValue
 from socs.devs.SimEngine import SimEngineThread
 from socs.decision.decision import Decision
-from socs.decision.simulation_evaluator import SimulationDecisionEvaluator
+from socs.decision.simulation_executor import SimulationDecisionExecutor
 
 
 class NestedCounter(FDDEVS):
@@ -46,7 +46,7 @@ class AddInputDecision(Decision):
         self.amount = amount
 
 
-class NestedCounterEvaluator(SimulationDecisionEvaluator):
+class NestedCounterEvaluator(SimulationDecisionExecutor):
     def apply_decision(self, model, decision):
         model.Delta_x(
             PortValue(model.IP["decision"], decision.amount),
@@ -107,7 +107,7 @@ def test_nested_branches_are_independent_and_keep_schedule_consistent(
     initial = engine.capture_snapshot()
     evaluator = NestedCounterEvaluator(engine, end_time=7.0)
 
-    branch_a = evaluator.evaluate(initial, AddInputDecision(10))
+    branch_a = evaluator.execute(initial, AddInputDecision(10))
 
     assert branch_a.t_now == 7.0
     assert branch_a.root_model.children["nested"].children["atomic"].model_state == {
@@ -115,7 +115,7 @@ def test_nested_branches_are_independent_and_keep_schedule_consistent(
         "events": 2,
     }
 
-    branch_b = evaluator.evaluate(initial, AddInputDecision(20))
+    branch_b = evaluator.execute(initial, AddInputDecision(20))
 
     assert branch_b.t_now == 7.0
     assert branch_b.root_model.children["nested"].children["atomic"].model_state == {
@@ -141,8 +141,8 @@ def test_nested_branch_can_be_repeated_deterministically(nested_system):
     initial = engine.capture_snapshot()
     evaluator = NestedCounterEvaluator(engine, end_time=7.0)
 
-    first = evaluator.evaluate(initial, AddInputDecision(5))
-    second = evaluator.evaluate(initial, AddInputDecision(5))
+    first = evaluator.execute(initial, AddInputDecision(5))
+    second = evaluator.execute(initial, AddInputDecision(5))
 
     assert first.root_model.children["nested"].children["atomic"].model_state == (
         second.root_model.children["nested"].children["atomic"].model_state

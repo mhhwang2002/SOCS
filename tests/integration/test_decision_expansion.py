@@ -7,8 +7,8 @@ from examples.FDDEVS_Simple.FDDEVSCounter import Counter
 from socs.devs.SimEngine import SimEngineBase
 from socs.decision.decision import Decision
 from socs.decision.generator import DecisionGenerator
-from socs.decision.manager import DecisionManager
-from socs.decision.simulation_evaluator import SimulationDecisionEvaluator
+from socs.decision.lifecycle import DecisionLifeCycleManager
+from socs.decision.simulation_executor import SimulationDecisionExecutor
 from socs.decision.expansion import (
     DecisionExpansionController,
     ExpansionStatus,
@@ -27,7 +27,7 @@ class CounterDecisionGenerator(DecisionGenerator):
         yield SetCountLimitDecision(4)
 
 
-class CounterDecisionEvaluator(SimulationDecisionEvaluator):
+class CounterDecisionExecutor(SimulationDecisionExecutor):
     def apply_decision(self, model, decision):
         model.count_no = decision.count_no
 
@@ -38,7 +38,7 @@ def expansion_system():
     engine = SimEngineBase(model)
     engine.bVerbose = False
 
-    evaluator = CounterDecisionEvaluator(
+    evaluator = CounterDecisionExecutor(
         engine=engine,
         end_time=25,
     )
@@ -47,11 +47,11 @@ def expansion_system():
     root_snapshot = engine.capture_snapshot()
     root_id = tree.add_root(root_snapshot)
 
-    manager = DecisionManager()
+    manager = DecisionLifeCycleManager()
     controller = DecisionExpansionController(
         tree=tree,
-        decision_manager=manager,
-        evaluator=evaluator,
+        lifecycle_manager=manager,
+        executor=evaluator,
     )
 
     generator = CounterDecisionGenerator()
