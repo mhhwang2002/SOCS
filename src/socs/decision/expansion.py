@@ -6,8 +6,9 @@ from typing import Hashable
 
 from .decision import Decision
 from .generator import DecisionGenerator
-from .lifecycle import DecisionLifeCycleManager, DecisionStatus
+from .lifecycle import DecisionLifeCycleManager, DecisionRecord, DecisionStatus
 from .executor import DecisionExecutor
+from .selector import DecisionSelector, FIFOSelector
 from ..devs.Snapshot import SystemSnapshot
 from ..tree.decision_tree import DecisionTree
 
@@ -32,7 +33,7 @@ class ExpansionResult:
 
 
 class DecisionExpansionController:
-    """Connect a decision manager, evaluator, and decision tree.
+    """Connect a lifecycle manager, selector, executor, and decision tree.
 
     A node must first be registered with a generator. When an expansion
     succeeds, the resulting child node is registered automatically with the
@@ -44,6 +45,7 @@ class DecisionExpansionController:
         tree: DecisionTree,
         lifecycle_manager: DecisionLifeCycleManager,
         executor: DecisionExecutor[SystemSnapshot, Decision],
+        selector: DecisionSelector | None = None,
     ) -> None:
         if not isinstance(tree, DecisionTree):
             raise TypeError("tree must be a DecisionTree instance.")
@@ -51,10 +53,15 @@ class DecisionExpansionController:
             raise TypeError("lifecycle_manager must be a DecisionLifeCycleManager instance.")
         if not isinstance(executor, DecisionExecutor):
             raise TypeError("executor must be a DecisionExecutor instance.")
+        if selector is None:
+            selector = FIFOSelector()
+        if not isinstance(selector, DecisionSelector):
+            raise TypeError("selector must be a DecisionSelector instance.")
 
         self.tree = tree
         self.lifecycle_manager = lifecycle_manager
         self.executor = executor
+        self.selector = selector
         self._node_generators: dict[Hashable, DecisionGenerator] = {}
 
     def register_node(
@@ -86,12 +93,26 @@ class DecisionExpansionController:
         if not pending:
             self.lifecycle_manager.generate_decisions(node_id, max_count=1)
 
-        record = self.lifecycle_manager.select_decision(node_id)
-        if record is None:
+        pending = self.lifecycle_manager.get_pending_decisions(node_id)
+        selected = self.selector.select(pending)
+        if selected is None:
             return ExpansionResult(
                 parent_node_id=node_id,
                 status=ExpansionStatus.NO_DECISION,
             )
+
+        if not isinstance(selected, DecisionRecord):
+            raise TypeError(
+                "DecisionSelector must return a DecisionRecord or None."
+            )
+        candidates_by_id = {
+            candidate.decision_id: candidate for candidate in pending
+        }
+        if candidates_by_id.get(selected.decision_id) is not selected:
+            raise ValueError(
+                "DecisionSelector must return one of the supplied candidates."
+            )
+        record = self.lifecycle_manager.mark_executing(selected.decision_id)
 
         child_node_id = None
         try:

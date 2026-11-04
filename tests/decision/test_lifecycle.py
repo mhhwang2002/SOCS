@@ -170,3 +170,25 @@ def test_generator_must_yield_decision_instances():
 
     with pytest.raises(TypeError):
         manager.generate_decisions(1)
+
+
+def test_mark_executing_changes_pending_record_status():
+    manager = DecisionLifeCycleManager()
+    manager.register_node(1, 0, SampleGenerator(1))
+    record = manager.generate_decisions(1)[0]
+
+    selected = manager.mark_executing(record.decision_id)
+
+    assert selected is record
+    assert record.status is DecisionStatus.EXECUTING
+    assert manager.get_pending_decisions(1) == []
+
+
+def test_mark_executing_rejects_non_pending_record():
+    manager = DecisionLifeCycleManager()
+    manager.register_node(1, 0, SampleGenerator(1))
+    record = manager.generate_decisions(1)[0]
+    manager.mark_executing(record.decision_id)
+
+    with pytest.raises(ValueError):
+        manager.mark_executing(record.decision_id)

@@ -1,5 +1,6 @@
 from .decision import Decision
 from .generator import DecisionGenerator
+from .selector import DecisionSelector, FIFOSelector, FixedPrioritySelector
 from .executor import DecisionExecutor
 from .lifecycle import (
     DecisionLifeCycleManager,
@@ -15,6 +16,9 @@ DecisionEvaluator = DecisionExecutor
 __all__ = [
     "Decision",
     "DecisionGenerator",
+    "DecisionSelector",
+    "FIFOSelector",
+    "FixedPrioritySelector",
     "DecisionExecutor",
     "DecisionLifeCycleManager",
     "DecisionRecord",
@@ -24,6 +28,8 @@ __all__ = [
     "DecisionExpansionController",
     "ExpansionResult",
     "ExpansionStatus",
+    "DecisionRuntimeController",
+    "DecisionRuntimeStep",
 ]
 
 
@@ -43,6 +49,14 @@ def __getattr__(name):
             "DecisionExpansionController": DecisionExpansionController,
             "ExpansionResult": ExpansionResult,
             "ExpansionStatus": ExpansionStatus,
+        }[name]
+
+    if name in {"DecisionRuntimeController", "DecisionRuntimeStep"}:
+        from .runtime import DecisionRuntimeController, DecisionRuntimeStep
+
+        return {
+            "DecisionRuntimeController": DecisionRuntimeController,
+            "DecisionRuntimeStep": DecisionRuntimeStep,
         }[name]
 
     raise AttributeError(

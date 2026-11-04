@@ -118,16 +118,25 @@ class DecisionLifeCycleManager:
             if self._records[decision_id].status is DecisionStatus.PENDING
         ]
 
-    def select_decision(self, node_id: Hashable) -> DecisionRecord | None:
-        """Select the first pending decision and mark it as executing.
+    def mark_executing(self, decision_id: int) -> DecisionRecord:
+        """Mark a pending decision as executing and return its record."""
+        record = self.get_record(decision_id)
+        if record.status is not DecisionStatus.PENDING:
+            raise ValueError(
+                f"Decision {record.decision_id} is not pending."
+            )
+        record.status = DecisionStatus.EXECUTING
+        return record
 
-        Selection is FIFO within the specified node. Returns None when no
-        pending decision is currently available.
+    def select_decision(self, node_id: Hashable) -> DecisionRecord | None:
+        """Select the first pending decision using the legacy FIFO behavior.
+
+        New code should use a DecisionSelector and mark_executing().
         """
-        for record in self.get_pending_decisions(node_id):
-            record.status = DecisionStatus.EXECUTING
-            return record
-        return None
+        pending = self.get_pending_decisions(node_id)
+        if not pending:
+            return None
+        return self.mark_executing(pending[0].decision_id)
 
     def get_record(self, decision_id: int) -> DecisionRecord:
         """Return the manager record for a decision ID."""

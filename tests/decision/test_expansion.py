@@ -9,6 +9,7 @@ from socs.decision import (
     DecisionLifeCycleManager,
     ExpansionStatus,
     DecisionStatus,
+    DecisionSelector,
 )
 from socs.decision.simulation_executor import SimulationDecisionExecutor
 from socs.devs.Simulatable import Simulatable
@@ -69,6 +70,11 @@ class CounterEvaluator(SimulationDecisionExecutor):
 class FailingEvaluator(SimulationDecisionExecutor):
     def apply_decision(self, model, decision):
         raise RuntimeError("decision application failed")
+
+
+class LastDecisionSelector(DecisionSelector):
+    def select(self, records):
+        return records[-1] if records else None
 
 
 @pytest.fixture
@@ -187,3 +193,55 @@ def test_unknown_or_duplicate_node_registration_is_rejected(controller_context):
 
     with pytest.raises(KeyError):
         controller.expand(999)
+
+
+def test_custom_selector_chooses_from_pending_candidates(controller_context):
+    _, _, tree, manager, _, root_id = controller_context
+    generator = AddDecisionGenerator([10, 20])
+    selector = LastDecisionSelector()
+    controller = DecisionExpansionController(
+        tree,
+        manager,
+        CounterEvaluator(
+            controller_context[0],
+            end_time=5.0,
+        ),
+        selector=selector,
+    )
+    controller.register_node(root_id, generator)
+    manager.generate_decisions(root_id, max_count=2)
+
+    result = controller.expand(root_id)
+
+    assert result.status is ExpansionStatus.EXECUTED
+    assert manager.get_record(result.decision_id).decision.amount == 20
+    assert manager.get_record(1).status is DecisionStatus.PENDING
+    assert manager.get_record(2).status is DecisionStatus.EXECUTED
+
+
+class InvalidDecisionSelector(DecisionSelector):
+    def select(self, records):
+        if not records:
+            return None
+        return type(records[0])(
+            decision_id=records[0].decision_id,
+            node_id=records[0].node_id,
+            decision=records[0].decision,
+        )
+
+
+def test_selector_must_return_original_candidate_record(controller_context):
+    engine, _, tree, manager, _, root_id = controller_context
+    controller = DecisionExpansionController(
+        tree,
+        manager,
+        CounterEvaluator(engine, end_time=5.0),
+        selector=InvalidDecisionSelector(),
+    )
+    controller.register_node(root_id, AddDecisionGenerator([10]))
+
+    with pytest.raises(ValueError, match="one of the supplied candidates"):
+        controller.expand(root_id)
+
+    assert manager.get_record(1).status is DecisionStatus.PENDING
+    assert tree.get_children(root_id) == []
