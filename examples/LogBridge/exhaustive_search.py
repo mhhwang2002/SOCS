@@ -133,11 +133,19 @@ class LogBridgeMakespanEvaluator:
 def run_logbridge_exhaustive_search(
     model,
     end_time: float = 200.0,
+    engine: SimEngineBase | None = None,
 ) -> ExhaustiveSearchResult:
-    """Generate all finite Decision paths and minimize total completion time."""
-    from socs.devs.SimEngine import SimEngineThread
+    """Generate all finite Decision paths and minimize total completion time.
 
-    engine = SimEngineThread(model)
+    An existing engine may be supplied so its model instances can also be
+    reused later to replay and validate the resulting DecisionTree snapshots.
+    """
+    if engine is None:
+        from socs.devs.SimEngine import SimEngineThread
+
+        engine = SimEngineThread(model)
+    elif engine.model is not model:
+        raise ValueError("The supplied engine must own the supplied model instance.")
     engine.bVerbose = False
 
     generator = LogBridgeDecisionGenerator()

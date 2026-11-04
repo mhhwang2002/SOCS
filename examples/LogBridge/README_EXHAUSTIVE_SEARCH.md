@@ -76,3 +76,17 @@ The two optimal decision sequences are:
 
 The two schedules tie because the Loads have different travel times and their
 destination-side travel can overlap with the next bridge crossing.
+
+## Replay validation
+
+To replay every terminal path and compare each generated Snapshot with the
+corresponding Snapshot stored in the DecisionTree, run from the repository root:
+
+```bash
+python -m examples.LogBridge.validate_paths
+```
+
+The search and validator must share the same `SimEngine` model instance because
+Snapshots are bound to the identities of the model objects that created them.
+The example therefore passes the engine into `run_logbridge_exhaustive_search`
+and reuses it for `DecisionPathValidator`.

@@ -80,3 +80,5 @@ def __getattr__(name):
     raise AttributeError(
         f"module {__name__!r} has no attribute {name!r}"
     )
+from .path_validator import DecisionPathValidator, PathValidationResult
+__all__ += ["DecisionPathValidator", "PathValidationResult"]
