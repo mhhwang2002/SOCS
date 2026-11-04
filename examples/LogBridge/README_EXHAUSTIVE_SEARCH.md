@@ -90,3 +90,15 @@ The search and validator must share the same `SimEngine` model instance because
 Snapshots are bound to the identities of the model objects that created them.
 The example therefore passes the engine into `run_logbridge_exhaustive_search`
 and reuses it for `DecisionPathValidator`.
+
+The validator now reports four layers of checks for every terminal path:
+
+- Snapshot continuity immediately before each Decision (`pre` count)
+- Snapshot equality immediately after each Decision (`post` count)
+- Final Snapshot equality and terminal classification (`COMPLETED`, `DEADLOCK`, or `TIME_LIMIT`)
+- Makespan equality between the stored terminal Snapshot and the replayed terminal Snapshot
+
+A successful report shows `Final state: MATCH`, identical terminal classifications,
+and identical makespan values. The terminal classifier and cost evaluator are
+provided by the example because terminal semantics and objective values belong to
+the application domain, not to the SOCS Core validator.
