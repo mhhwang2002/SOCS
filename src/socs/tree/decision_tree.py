@@ -17,6 +17,7 @@ class DecisionTree(AGraph):
     def __init__(self):
         super().__init__()
         self._next_node_id = 1
+        self._next_edge_id = 1
         self._root_id = self.INVALID_VERTEX_ID
 
     @property
@@ -66,9 +67,15 @@ class DecisionTree(AGraph):
         self._validate_snapshot(snapshot)
 
         node_id = self._allocate_node_id()
+        edge_id = self._next_edge_id
+        self._next_edge_id += 1
         super().add_vertex(node_id, {"snapshot": snapshot})
         try:
-            super().add_edge(parent_id, node_id, {"decision": decision})
+            super().add_edge(
+                parent_id,
+                node_id,
+                {"decision": decision, "edge_id": edge_id},
+            )
         except Exception:
             super().remove_vertex(node_id)
             raise
@@ -124,6 +131,79 @@ class DecisionTree(AGraph):
 
         path.reverse()
         return path
+
+
+    def get_edge_id(self, edge: Edge) -> int:
+        """Return the stable ID assigned to an edge by this decision tree."""
+        self.get_decision(edge)
+        return edge.attrs.edge_id
+
+    def format_path(
+        self,
+        node_id: int,
+        node_formatter=None,
+        edge_formatter=None,
+    ) -> str:
+        """Return a root-to-node path with node and decision-edge details.
+
+        Formatters receive ``(node_id, snapshot)`` and ``(edge_id, decision)``
+        respectively. They must return strings.
+        """
+        if node_id not in self.V:
+            raise KeyError(f"Vertex {node_id!r} is not registered.")
+
+        node_formatter = node_formatter or (
+            lambda current_id, snapshot: f"Node {current_id}"
+        )
+        edge_formatter = edge_formatter or (
+            lambda current_id, decision: f"Edge {current_id}: {decision}"
+        )
+
+        nodes = [node_id]
+        edges = []
+        current_id = node_id
+        while current_id != self._root_id:
+            incoming = self.in_edges(current_id)
+            if len(incoming) != 1:
+                raise RuntimeError(
+                    "Decision tree contains an invalid parent relation."
+                )
+            edge = incoming[0]
+            edges.append(edge)
+            current_id = edge.src
+            nodes.append(current_id)
+
+        nodes.reverse()
+        edges.reverse()
+
+        lines = []
+        for index, current_id in enumerate(nodes):
+            snapshot = self.get_snapshot(current_id)
+            node_text = node_formatter(current_id, snapshot)
+            if not isinstance(node_text, str):
+                raise TypeError("node_formatter must return a string.")
+            lines.append(node_text)
+
+            if index < len(edges):
+                edge = edges[index]
+                edge_text = edge_formatter(
+                    self.get_edge_id(edge),
+                    self.get_decision(edge),
+                )
+                if not isinstance(edge_text, str):
+                    raise TypeError("edge_formatter must return a string.")
+                lines.append(f"  -- {edge_text} -->")
+
+        return "\n".join(lines)
+
+    def print_path(
+        self,
+        node_id: int,
+        node_formatter=None,
+        edge_formatter=None,
+    ) -> None:
+        """Print the root-to-node path."""
+        print(self.format_path(node_id, node_formatter, edge_formatter))
 
     def add_vertex(self, vertex, attrs=None):
         """Prevent direct vertex insertion from bypassing tree invariants."""

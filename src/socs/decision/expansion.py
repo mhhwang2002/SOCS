@@ -77,6 +77,24 @@ class DecisionExpansionController:
         self.lifecycle_manager.register_node(node_id, snapshot, generator)
         self._node_generators[node_id] = generator
 
+    def expand_all(self, node_id: Hashable) -> list[ExpansionResult]:
+        """Execute every Decision generated for one node.
+
+        The generator is fully consumed before execution begins, so every
+        alternative from the same parent Snapshot is preserved as a branch.
+        """
+        self.lifecycle_manager.generate_decisions(node_id)
+
+        results: list[ExpansionResult] = []
+        if not self.lifecycle_manager.get_pending_decisions(node_id):
+            return [self.expand(node_id)]
+
+        while self.lifecycle_manager.get_pending_decisions(node_id):
+            result = self.expand(node_id)
+            results.append(result)
+
+        return results
+
     def expand(self, node_id: Hashable) -> ExpansionResult:
         """Execute one pending decision from a node and add its child node.
 

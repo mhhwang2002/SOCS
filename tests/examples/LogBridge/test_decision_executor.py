@@ -4,7 +4,7 @@ from socs.devs.SimEngine import SimEngineThread
 from socs.tree.decision_tree import DecisionTree
 
 from examples.LogBridge.LoadPassive_LogBridge import makeModel
-from examples.LogBridge.decisions import EnterBridgeDecision
+from socs.decision.decision import ControlDecision
 from examples.LogBridge.decision_executor import LogBridgeDecisionExecutor
 
 
@@ -49,7 +49,7 @@ def test_evaluate_l11_decision():
         end_time=70.0,
     )
 
-    decision = EnterBridgeDecision(load_name="L11")
+    decision = ControlDecision("Load_LogBridge.L11", "?go")
 
     result = evaluator.execute(root_snapshot, decision)
     states = get_model_states(result)
@@ -70,7 +70,7 @@ def test_evaluate_l21_decision():
         end_time=70.0,
     )
 
-    decision = EnterBridgeDecision(load_name="L21")
+    decision = ControlDecision("Load_LogBridge.L21", "?go")
 
     result = evaluator.execute(root_snapshot, decision)
     states = get_model_states(result)
@@ -94,13 +94,13 @@ def test_branch_evaluation_is_independent():
     # Evaluate the first branch.
     result_l11 = evaluator.execute(
         root_snapshot,
-        EnterBridgeDecision(load_name="L11"),
+        ControlDecision("Load_LogBridge.L11", "?go"),
     )
 
     # Evaluate another branch from exactly the same root.
     result_l21 = evaluator.execute(
         root_snapshot,
-        EnterBridgeDecision(load_name="L21"),
+        ControlDecision("Load_LogBridge.L21", "?go"),
     )
 
     states_l11 = get_model_states(result_l11)

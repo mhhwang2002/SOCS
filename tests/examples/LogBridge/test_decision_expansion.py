@@ -1,6 +1,7 @@
 from socs.decision.expansion import ExpansionStatus
 from socs.decision.lifecycle import DecisionLifeCycleManager
 
+from socs.decision.decision import NoControl
 from examples.LogBridge.decision_generator import (
     LogBridgeDecisionGenerator,
 )
@@ -50,17 +51,23 @@ def test_expand_root_into_two_branches():
     assert result2.status == ExpansionStatus.EXECUTED
     assert result2.child_node_id is not None
 
-    # Both decisions must create separate child nodes.
-    children = tree.get_children(root_id)
+    # The explicit Wait alternative creates a third independent branch.
+    result3 = controller.expand(root_id)
+    assert result3.status == ExpansionStatus.EXECUTED
+    assert result3.child_node_id is not None
 
-    assert len(children) == 2
+    children = tree.get_children(root_id)
+    assert len(children) == 3
 
     # Verify the decisions stored in the tree.
     path1 = tree.get_path(children[0])
     path2 = tree.get_path(children[1])
 
-    assert path1[0].load_name == "L11"
-    assert path2[0].load_name == "L21"
+    assert path1[0].target_model.endswith(".L11")
+    assert path2[0].target_model.endswith(".L21")
+
+    path3 = tree.get_path(children[2])
+    assert path3[0] == NoControl()
 
     # Verify the resulting snapshots.
     states1 = {
@@ -78,6 +85,14 @@ def test_expand_root_into_two_branches():
 
     assert states2["L11"][0] == "W"
     assert states2["L21"][0] == "I"
+
+    states3 = {
+        name: child.model_state
+        for name, child in tree.get_snapshot(children[2]).root_model.children.items()
+    }
+    assert states3["L11"][0] == "W"
+    assert states3["L21"][0] == "W"
+    assert states3["LB"][0] == "I"
 
     # The root must remain unchanged.
     root_states = {

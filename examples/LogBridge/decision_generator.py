@@ -1,13 +1,14 @@
 from collections.abc import Iterator, Sequence
 
+from socs.decision.decision import Decision
 from socs.decision.generator import DecisionGenerator
 from socs.devs.Snapshot import SystemSnapshot
 
-from .decisions import EnterBridgeDecision
+from socs.decision.decision import ControlDecision, NoControl
 
 
 class LogBridgeDecisionGenerator(DecisionGenerator[SystemSnapshot]):
-    """Generate feasible bridge-entry decisions from a simulation snapshot."""
+    """Generate feasible bridge-entry and wait decisions from a snapshot."""
 
     def __init__(
         self,
@@ -23,17 +24,13 @@ class LogBridgeDecisionGenerator(DecisionGenerator[SystemSnapshot]):
         if len(set(self.candidate_load_names)) != len(self.candidate_load_names):
             raise ValueError("Candidate Load names must be unique.")
 
-    def generate(
-        self,
-        state: SystemSnapshot,
-    ) -> Iterator[EnterBridgeDecision]:
-        """Yield one decision for each eligible source Load."""
+    def generate(self, state: SystemSnapshot) -> Iterator[Decision]:
+        """Yield entry alternatives and an explicit wait alternative."""
 
         if not isinstance(state, SystemSnapshot):
             raise TypeError("state must be a SystemSnapshot instance.")
 
-        root = state.root_model
-        children = root.children
+        children = state.root_model.children
 
         if self.bridge_name not in children:
             raise ValueError(
@@ -48,7 +45,6 @@ class LogBridgeDecisionGenerator(DecisionGenerator[SystemSnapshot]):
                 f"Candidate Load models are missing from the snapshot: {missing_loads!r}"
             )
 
-        # Do not authorize another action while an external input is queued.
         if state.x_buffer:
             return
 
@@ -56,26 +52,29 @@ class LogBridgeDecisionGenerator(DecisionGenerator[SystemSnapshot]):
         if not bridge_state.has_model_state or not bridge_state.model_state:
             raise ValueError("Bridge snapshot does not contain a valid model state.")
 
-        bridge_phase = bridge_state.model_state[0]
-        if bridge_phase != "I":
+        if bridge_state.model_state[0] != "I":
             return
 
-        load_states = {
-            name: children[name].model_state
-            for name in self.candidate_load_names
-        }
-
-        for name, load_state in load_states.items():
-            if not children[name].has_model_state or not load_state:
+        load_states = {}
+        for name in self.candidate_load_names:
+            child = children[name]
+            if not child.has_model_state or not child.model_state:
                 raise ValueError(
                     f"Load {name!r} snapshot does not contain a valid model state."
                 )
+            load_states[name] = child.model_state
 
-        # A Load in phase S has already received authorization and is about
-        # to transfer its walker to the Bridge.
         if any(load_state[0] == "S" for load_state in load_states.values()):
             return
 
-        for name, load_state in load_states.items():
-            if load_state[0] == "W":
-                yield EnterBridgeDecision(load_name=name)
+        waiting_loads = [
+            name for name, load_state in load_states.items()
+            if load_state[0] == "W"
+        ]
+        if not waiting_loads:
+            return
+
+        for name in waiting_loads:
+            yield ControlDecision(f"{state.root_model.model_path}.{name}", "?go")
+
+        yield NoControl()

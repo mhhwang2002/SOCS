@@ -8,6 +8,10 @@ from .LoadPassive import LoadPassive
 from .LogBridge import LogBridge
 from .FixedPriorityController import FixedPriorityController
 from .FIFOController import FIFOController
+from socs.decision import DecisionRuntimeController, FixedPrioritySelector
+from .decision_generator import LogBridgeDecisionGenerator
+from .runtime_executor import LogBridgeRuntimeExecutor
+from socs.decision.decision import ControlDecision, NoControl
  
 
 def makeModel():
@@ -94,6 +98,81 @@ def runAutomaticFIFOSimulation(model, end_time=300.0):
     return engine, controller
 
 
+
+def runDecisionRuntimeSimulation(model, end_time=100.0):
+    """Run LogBridge through the SOCS runtime decision cycle."""
+    engine = SimEngineThread(model)
+    engine.bVerbose = False
+    engine.set_simulation_time_bound(end_time)
+
+    def get_priority(decision):
+        if isinstance(decision, ControlDecision) and decision.target_model is not None:
+            return {"Load_LogBridge.L11": 20, "Load_LogBridge.L21": 10}.get(decision.target_model, 0)
+        if isinstance(decision, NoControl):
+            return 0
+        return -1
+
+    controller = DecisionRuntimeController(
+        engine=engine,
+        generator=LogBridgeDecisionGenerator(),
+        selector=FixedPrioritySelector(priority=get_priority),
+        executor=LogBridgeRuntimeExecutor(),
+    )
+
+    dispatch_history = []
+    while True:
+        step = controller.execute_one_step()
+
+        if step.decision_error is not None:
+            raise step.decision_error
+
+        if (
+            step.selected_record is not None
+            and isinstance(step.selected_record.decision, ControlDecision)
+            and step.selected_record.decision.target_model is not None
+        ):
+            dispatch_history.append(
+                (engine.tNow, step.selected_record.decision.target_model.rsplit(".", 1)[-1])
+            )
+
+        if step.execution_result.name == "TimeBoundReached":
+            break
+
+    return engine, controller, dispatch_history
+
+
+def runExhaustiveOptimization(
+    model=None,
+    end_time=200.0,
+    include_snapshot_details=True,
+    show_state_percentage=False,
+):
+    """Enumerate all LogBridge decision paths and minimize makespan."""
+    from .exhaustive_search import run_logbridge_exhaustive_search
+
+    if model is None:
+        model = makeModel()
+
+    result = run_logbridge_exhaustive_search(model, end_time=end_time)
+    print("Decision-tree nodes:", result.node_count)
+    print("Terminal paths:", result.leaf_count)
+    print("Optimal makespan:", result.best_cost)
+    print("Number of optimal paths:", len(result.optimal_node_ids))
+    for index, node_id in enumerate(result.optimal_node_ids, start=1):
+        print(f"Optimal path {index}:")
+        if include_snapshot_details:
+            from socs.tree import SnapshotFormatter
+
+            formatter = SnapshotFormatter(
+                simulation_time_bound=end_time,
+                show_state_percentage=show_state_percentage,
+            )
+            result.tree.print_path(node_id, node_formatter=formatter)
+        else:
+            result.tree.print_path(node_id)
+    return result
+
+
 def runVerification(model):
     """Placeholder for the legacy verification workflow."""
     inputs = []
@@ -106,13 +185,19 @@ if __name__ == "__main__":
 
     running = True
     while running:
-        command = input("(s)im, (a)uto, (f)ifo, (v)eri, e(x)it> ").strip().lower()
+        command = input("(s)im, (a)uto, (f)ifo, (d)ecision, (o)ptimize, (v)eri, e(x)it> ").strip().lower()
         if command in ("s", "sim"):
             runSimulation(model)
         elif command in ("a", "auto"):
             runAutomaticSimulation(model)
         elif command in ("f", "fifo"):
             runAutomaticFIFOSimulation(model)
+        elif command in ("d", "decision"):
+            engine, controller, history = runDecisionRuntimeSimulation(model)
+            print("Decision dispatches:", history)
+            print("DEVS executions:", controller.devs_execution_count)
+        elif command in ("o", "optimize"):
+            runExhaustiveOptimization(makeModel())
         elif command in ("v", "veri"):
             runVerification(model)
         elif command in ("x", "exit"):

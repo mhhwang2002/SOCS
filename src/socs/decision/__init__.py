@@ -1,7 +1,11 @@
-from .decision import Decision
+from .decision import Decision, ControlDecision, NoControl
 from .generator import DecisionGenerator
 from .selector import DecisionSelector, FIFOSelector, FixedPrioritySelector
 from .executor import DecisionExecutor
+from .control_executor import (
+    ControlRuntimeExecutor,
+    ControlSimulationDecisionExecutor,
+)
 from .lifecycle import (
     DecisionLifeCycleManager,
     DecisionRecord,
@@ -15,11 +19,15 @@ DecisionEvaluator = DecisionExecutor
 
 __all__ = [
     "Decision",
+    "ControlDecision",
+    "NoControl",
     "DecisionGenerator",
     "DecisionSelector",
     "FIFOSelector",
     "FixedPrioritySelector",
     "DecisionExecutor",
+    "ControlRuntimeExecutor",
+    "ControlSimulationDecisionExecutor",
     "DecisionLifeCycleManager",
     "DecisionRecord",
     "DecisionStatus",
@@ -30,6 +38,8 @@ __all__ = [
     "ExpansionStatus",
     "DecisionRuntimeController",
     "DecisionRuntimeStep",
+    "ExhaustiveDecisionTreeSearch",
+    "ExhaustiveSearchResult",
 ]
 
 
@@ -49,6 +59,14 @@ def __getattr__(name):
             "DecisionExpansionController": DecisionExpansionController,
             "ExpansionResult": ExpansionResult,
             "ExpansionStatus": ExpansionStatus,
+        }[name]
+
+    if name in {"ExhaustiveDecisionTreeSearch", "ExhaustiveSearchResult"}:
+        from .search import ExhaustiveDecisionTreeSearch, ExhaustiveSearchResult
+
+        return {
+            "ExhaustiveDecisionTreeSearch": ExhaustiveDecisionTreeSearch,
+            "ExhaustiveSearchResult": ExhaustiveSearchResult,
         }[name]
 
     if name in {"DecisionRuntimeController", "DecisionRuntimeStep"}:

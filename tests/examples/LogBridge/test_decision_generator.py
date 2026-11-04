@@ -2,7 +2,7 @@ import pytest
 
 from socs.devs.Snapshot import ModelSnapshot, SystemSnapshot
 
-from examples.LogBridge.decisions import EnterBridgeDecision
+from socs.decision.decision import ControlDecision, NoControl
 from examples.LogBridge.decision_generator import LogBridgeDecisionGenerator
 
 
@@ -54,8 +54,9 @@ def test_generates_decisions_for_both_waiting_source_loads():
     decisions = list(generator.generate(make_system_snapshot()))
 
     assert decisions == [
-        EnterBridgeDecision("L11"),
-        EnterBridgeDecision("L21"),
+        ControlDecision("Load_LogBridge.L11", "?go"),
+        ControlDecision("Load_LogBridge.L21", "?go"),
+        NoControl(),
     ]
 
 
@@ -65,7 +66,7 @@ def test_generates_decision_only_for_waiting_source_load():
 
     decisions = list(generator.generate(state))
 
-    assert decisions == [EnterBridgeDecision("L11")]
+    assert decisions == [ControlDecision("Load_LogBridge.L11", "?go"), NoControl()]
 
 
 def test_does_not_generate_when_bridge_is_busy():
@@ -105,7 +106,7 @@ def test_candidate_load_names_can_be_configured():
     generator = LogBridgeDecisionGenerator(candidate_load_names=("L21",))
     decisions = list(generator.generate(make_system_snapshot()))
 
-    assert decisions == [EnterBridgeDecision("L21")]
+    assert decisions == [ControlDecision("Load_LogBridge.L21", "?go"), NoControl()]
 
 
 def test_rejects_missing_candidate_load():

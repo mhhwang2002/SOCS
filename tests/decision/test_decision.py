@@ -23,3 +23,29 @@ def test_decision_is_immutable():
         assert False, "Decision should be immutable."
     except AttributeError:
         pass
+from socs.decision.decision import ControlDecision, NoControl
+
+
+def test_control_decision_represents_target_and_external_event():
+    decision = ControlDecision("Root.LoadA", ("?go", 3))
+
+    assert isinstance(decision, Decision)
+    assert decision.target_model == "Root.LoadA"
+    assert decision.xevent == ("?go", 3)
+
+
+def test_no_control_is_an_explicit_control_decision():
+    decision = NoControl()
+
+    assert isinstance(decision, ControlDecision)
+    assert decision.target_model is None
+    assert decision.xevent is None
+
+
+def test_control_decision_validates_target_and_event_pair():
+    import pytest
+
+    with pytest.raises(ValueError):
+        ControlDecision(None, "?go")
+    with pytest.raises(ValueError):
+        ControlDecision("Root.LoadA", None)

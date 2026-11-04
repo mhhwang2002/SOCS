@@ -1,10 +1,15 @@
-from dataclasses import dataclass
-
-from socs.decision.decision import Decision
+from socs.decision.decision import ControlDecision, NoControl
 
 
-@dataclass(frozen=True)
-class EnterBridgeDecision(Decision):
-    """Authorize one waiting Load to enter the LogBridge."""
+class EnterBridgeDecision(ControlDecision):
+    """Backward-compatible factory for a LogBridge entry control."""
 
-    load_name: str
+    def __init__(self, load_name: str):
+        super().__init__(f"Load_LogBridge.{load_name}", "?go")
+        object.__setattr__(self, "load_name", load_name)
+
+
+class WaitDecision(NoControl):
+    """Backward-compatible name for an explicit no-control decision."""
+
+    pass
