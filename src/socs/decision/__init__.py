@@ -40,6 +40,9 @@ __all__ = [
     "DecisionRuntimeStep",
     "ExhaustiveDecisionTreeSearch",
     "ExhaustiveSearchResult",
+    "SearchResultValidator",
+    "SearchResultValidationResult",
+    "SearchResultIssue",
 ]
 
 
@@ -67,6 +70,19 @@ def __getattr__(name):
         return {
             "ExhaustiveDecisionTreeSearch": ExhaustiveDecisionTreeSearch,
             "ExhaustiveSearchResult": ExhaustiveSearchResult,
+        }[name]
+
+    if name in {"SearchResultValidator", "SearchResultValidationResult", "SearchResultIssue"}:
+        from .search_validator import (
+            SearchResultValidator,
+            SearchResultValidationResult,
+            SearchResultIssue,
+        )
+
+        return {
+            "SearchResultValidator": SearchResultValidator,
+            "SearchResultValidationResult": SearchResultValidationResult,
+            "SearchResultIssue": SearchResultIssue,
         }[name]
 
     if name in {"DecisionRuntimeController", "DecisionRuntimeStep"}:

@@ -3,6 +3,7 @@
 import math
 
 from socs.decision.path_validator import DecisionPathValidator
+from socs.decision.search_validator import SearchResultValidator
 from socs.devs.SimEngine import SimEngineThread
 from socs.tree import DecisionTreeValidator
 
@@ -51,6 +52,11 @@ def main() -> int:
     print("Decision-tree nodes:", result.node_count)
     print("Terminal paths:", result.leaf_count)
     print("Optimal makespan:", result.best_cost)
+
+    search_validation = SearchResultValidator(result).validate()
+    print("\n" + search_validation.format())
+    if not search_validation.valid:
+        return 1
 
     tree_validation = DecisionTreeValidator(result.tree).validate()
     print()
