@@ -3,9 +3,7 @@
 from collections.abc import Callable
 import math
 
-from socs.decision.expansion import DecisionExpansionController
-from socs.decision.lifecycle import DecisionLifeCycleManager
-from socs.decision.search import ExhaustiveDecisionTreeSearch, ExhaustiveSearchResult
+from socs.decision.optimizer import ExhaustiveOptimizer, OptimizationResult
 from socs.devs.SimEngine import ExecutionResult, SimEngineBase
 from socs.devs.Snapshot import SystemSnapshot
 from socs.tree.decision_tree import DecisionTree
@@ -134,7 +132,7 @@ def run_logbridge_exhaustive_search(
     model,
     end_time: float = 200.0,
     engine: SimEngineBase | None = None,
-) -> ExhaustiveSearchResult:
+) -> OptimizationResult:
     """Generate all finite Decision paths and minimize total completion time.
 
     An existing engine may be supplied so its model instances can also be
@@ -160,22 +158,16 @@ def run_logbridge_exhaustive_search(
     tree = DecisionTree()
     root_id = tree.add_root(root_snapshot)
 
-    lifecycle_manager = DecisionLifeCycleManager()
     executor = LogBridgePathExecutor(
         engine=engine,
         end_time=end_time,
         generator=generator,
         completion_evaluator=evaluator,
     )
-    expansion_controller = DecisionExpansionController(
+    optimizer = ExhaustiveOptimizer(
         tree=tree,
-        lifecycle_manager=lifecycle_manager,
+        generator=generator,
         executor=executor,
+        objective=evaluator,
     )
-    expansion_controller.register_node(root_id, generator)
-
-    search = ExhaustiveDecisionTreeSearch(
-        expansion_controller=expansion_controller,
-        evaluator=evaluator,
-    )
-    return search.run(root_id)
+    return optimizer.run(root_id)

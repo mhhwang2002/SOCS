@@ -33,13 +33,10 @@ __all__ = [
     "DecisionStatus",
     "DecisionManager",
     "DecisionEvaluator",
-    "DecisionExpansionController",
-    "ExpansionResult",
-    "ExpansionStatus",
     "DecisionRuntimeController",
     "DecisionRuntimeStep",
-    "ExhaustiveDecisionTreeSearch",
-    "ExhaustiveSearchResult",
+    "ExhaustiveOptimizer",
+    "OptimizationResult",
     "SearchResultValidator",
     "SearchResultValidationResult",
     "SearchResultIssue",
@@ -47,29 +44,12 @@ __all__ = [
 
 
 def __getattr__(name):
-    if name in {
-        "DecisionExpansionController",
-        "ExpansionResult",
-        "ExpansionStatus",
-    }:
-        from .expansion import (
-            DecisionExpansionController,
-            ExpansionResult,
-            ExpansionStatus,
-        )
+    if name in {"ExhaustiveOptimizer", "OptimizationResult"}:
+        from .optimizer import ExhaustiveOptimizer, OptimizationResult
 
         return {
-            "DecisionExpansionController": DecisionExpansionController,
-            "ExpansionResult": ExpansionResult,
-            "ExpansionStatus": ExpansionStatus,
-        }[name]
-
-    if name in {"ExhaustiveDecisionTreeSearch", "ExhaustiveSearchResult"}:
-        from .search import ExhaustiveDecisionTreeSearch, ExhaustiveSearchResult
-
-        return {
-            "ExhaustiveDecisionTreeSearch": ExhaustiveDecisionTreeSearch,
-            "ExhaustiveSearchResult": ExhaustiveSearchResult,
+            "ExhaustiveOptimizer": ExhaustiveOptimizer,
+            "OptimizationResult": OptimizationResult,
         }[name]
 
     if name in {"SearchResultValidator", "SearchResultValidationResult", "SearchResultIssue"}:

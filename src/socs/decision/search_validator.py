@@ -6,7 +6,7 @@ from typing import Hashable
 
 from socs.tree.validators import DecisionTreeValidator
 
-from .search import ExhaustiveSearchResult
+from .optimizer import OptimizationResult
 
 
 @dataclass(frozen=True)
@@ -74,9 +74,9 @@ class SearchResultValidator:
     It does not rerun the simulation or the search algorithm.
     """
 
-    def __init__(self, result: ExhaustiveSearchResult):
-        if not isinstance(result, ExhaustiveSearchResult):
-            raise TypeError("result must be an ExhaustiveSearchResult instance.")
+    def __init__(self, result: OptimizationResult):
+        if not isinstance(result, OptimizationResult):
+            raise TypeError("result must be an OptimizationResult instance.")
         self.result = result
 
     def validate(self) -> SearchResultValidationResult:
