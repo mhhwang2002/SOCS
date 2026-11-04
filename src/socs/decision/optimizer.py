@@ -3,7 +3,7 @@
 from collections import deque
 from dataclasses import dataclass
 import math
-from typing import Callable, Hashable
+from typing import Callable
 
 from .decision import Decision
 from .generator import DecisionGenerator
@@ -17,12 +17,12 @@ class OptimizationResult:
     """Summary of an optimization run."""
 
     tree: DecisionTree
-    root_node_id: Hashable
-    leaf_node_ids: tuple[Hashable, ...]
-    costs: dict[Hashable, float | None]
-    best_node_id: Hashable | None
+    root_node_id: int
+    leaf_node_ids: tuple[int, ...]
+    costs: dict[int, float | None]
+    best_node_id: int | None
     best_cost: float | None
-    optimal_node_ids: tuple[Hashable, ...]
+    optimal_node_ids: tuple[int, ...]
 
     @property
     def node_count(self) -> int:
@@ -65,7 +65,7 @@ class ExhaustiveOptimizer:
         self.executor = executor
         self.objective = objective
 
-    def run(self, root_node_id: Hashable) -> OptimizationResult:
+    def run(self, root_node_id: int) -> OptimizationResult:
         """Expand all generated alternatives and evaluate terminal snapshots."""
         if root_node_id not in self.tree.V:
             raise KeyError(f"Root node {root_node_id!r} is not in the DecisionTree.")
@@ -73,7 +73,7 @@ class ExhaustiveOptimizer:
             raise ValueError("root_node_id must be the DecisionTree root.")
 
         queue = deque([root_node_id])
-        leaves: list[Hashable] = []
+        leaves: list[int] = []
 
         while queue:
             node_id = queue.popleft()

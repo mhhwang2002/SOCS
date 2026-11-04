@@ -1,3 +1,4 @@
+
 from .decision import Decision, ControlDecision, NoControl
 from .generator import DecisionGenerator
 from .selector import DecisionSelector, FIFOSelector, FixedPrioritySelector
@@ -11,6 +12,8 @@ from .lifecycle import (
     DecisionRecord,
     DecisionStatus,
 )
+from .path_validator import DecisionPathValidator, PathValidationResult
+
 
 # Backward-compatible class aliases.
 DecisionManager = DecisionLifeCycleManager
@@ -33,6 +36,8 @@ __all__ = [
     "DecisionStatus",
     "DecisionManager",
     "DecisionEvaluator",
+    "DecisionPathValidator",
+    "PathValidationResult",
     "DecisionRuntimeController",
     "DecisionRuntimeStep",
     "ExhaustiveOptimizer",
@@ -52,7 +57,11 @@ def __getattr__(name):
             "OptimizationResult": OptimizationResult,
         }[name]
 
-    if name in {"SearchResultValidator", "SearchResultValidationResult", "SearchResultIssue"}:
+    if name in {
+        "SearchResultValidator",
+        "SearchResultValidationResult",
+        "SearchResultIssue",
+    }:
         from .search_validator import (
             SearchResultValidator,
             SearchResultValidationResult,
@@ -76,5 +85,3 @@ def __getattr__(name):
     raise AttributeError(
         f"module {__name__!r} has no attribute {name!r}"
     )
-from .path_validator import DecisionPathValidator, PathValidationResult
-__all__ += ["DecisionPathValidator", "PathValidationResult"]

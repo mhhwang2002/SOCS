@@ -1,3 +1,4 @@
+
 """Replay and validate paths stored in a DecisionTree."""
 
 from dataclasses import dataclass
@@ -27,9 +28,24 @@ class PathValidationResult:
     expected_terminal_status: Any = None
     actual_terminal_status: Any = None
     termination_matches: bool | None = None
-    expected_makespan: float | None = None
-    actual_makespan: float | None = None
-    makespan_matches: bool | None = None
+    expected_cost: float | None = None
+    actual_cost: float | None = None
+    cost_matches: bool | None = None
+
+    @property
+    def expected_makespan(self) -> float | None:
+        """Backward-compatible alias for expected_cost."""
+        return self.expected_cost
+
+    @property
+    def actual_makespan(self) -> float | None:
+        """Backward-compatible alias for actual_cost."""
+        return self.actual_cost
+
+    @property
+    def makespan_matches(self) -> bool | None:
+        """Backward-compatible alias for cost_matches."""
+        return self.cost_matches
 
 
 class DecisionPathValidator:
@@ -132,7 +148,7 @@ class DecisionPathValidator:
         expected_status = actual_status = None
         termination_matches = None
         expected_cost = actual_cost = None
-        makespan_matches = None
+        cost_matches = None
 
         if self.terminal_classifier is not None:
             expected_status = self.terminal_classifier(expected_final)
@@ -142,27 +158,28 @@ class DecisionPathValidator:
         if self.cost_evaluator is not None:
             expected_cost = self.cost_evaluator(expected_final)
             actual_cost = self.cost_evaluator(replay_snapshot)
-            makespan_matches = self._costs_match(expected_cost, actual_cost)
+            cost_matches = self._costs_match(expected_cost, actual_cost)
 
         valid = (
             final_matches
             and termination_matches is not False
-            and makespan_matches is not False
+            and cost_matches is not False
         )
+
         return PathValidationResult(
             valid=valid,
             node_id=node_id,
             validated_edges=validated,
             expected_snapshot=expected_final,
             actual_snapshot=replay_snapshot,
-            error=None if valid else "Final state, termination status, or makespan mismatch.",
+            error=None if valid else "Final state, termination status, or cost mismatch.",
             pre_decision_checks=pre_checks,
             post_decision_checks=post_checks,
             final_state_matches=final_matches,
             expected_terminal_status=expected_status,
             actual_terminal_status=actual_status,
             termination_matches=termination_matches,
-            expected_makespan=expected_cost,
-            actual_makespan=actual_cost,
-            makespan_matches=makespan_matches,
+            expected_cost=expected_cost,
+            actual_cost=actual_cost,
+            cost_matches=cost_matches,
         )
