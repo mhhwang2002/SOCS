@@ -22,17 +22,17 @@ class LogBridgePathExecutor(LogBridgeDecisionExecutor):
         engine: SimEngineBase,
         end_time: float,
         generator: LogBridgeDecisionGenerator,
-        completion_evaluator: Callable[[SystemSnapshot], float | None],
+        completion_condition: Callable[[SystemSnapshot], bool],
     ) -> None:
         super().__init__(engine=engine, end_time=end_time)
         self.generator = generator
-        self.completion_evaluator = completion_evaluator
+        self.completion_condition = completion_condition
 
     def run_branch(self) -> None:
         """Stop at a new decision point, completion, deadlock, or time bound."""
         while True:
             snapshot = self.engine.capture_snapshot()
-            if self.completion_evaluator(snapshot) is not None:
+            if self.completion_condition(snapshot):
                 return
 
             if not self.engine.XBuffer and not math.isfinite(
@@ -49,9 +49,9 @@ class LogBridgePathExecutor(LogBridgeDecisionExecutor):
                 ExecutionResult.ExternalEventOccurred,
             ):
                 snapshot = self.engine.capture_snapshot()
-                if self.completion_evaluator(snapshot) is not None:
+                if self.completion_condition(snapshot):
                     return
-                if next(self.generator.generate(snapshot), None) is not None:
+                if self.generator.has_decisions(snapshot):
                     return
 
 
@@ -80,7 +80,7 @@ def advance_to_first_decision_point(
             ExecutionResult.ExternalEventOccurred,
         ):
             snapshot = engine.capture_snapshot()
-            if next(generator.generate(snapshot), None) is not None:
+            if generator.has_decisions(snapshot):
                 return snapshot
 
 
@@ -97,8 +97,8 @@ class LogBridgeMakespanEvaluator:
         self.destination_load_names = tuple(destination_load_names)
         self.bridge_name = bridge_name
 
-    def __call__(self, snapshot: SystemSnapshot) -> float | None:
-        """Return makespan for completed schedules, or None if infeasible."""
+    def is_complete(self, snapshot: SystemSnapshot) -> bool:
+        """Return whether all LogBridge loads have completed their transfers."""
         children = snapshot.root_model.children
         required = (
             set(self.source_load_names)
@@ -124,6 +124,12 @@ class LogBridgeMakespanEvaluator:
         bridge_idle = states[self.bridge_name] == "I"
 
         if sources_idle and destinations_complete and bridge_idle:
+            return True
+        return False
+
+    def __call__(self, snapshot: SystemSnapshot) -> float | None:
+        """Return makespan for completed schedules, or None if infeasible."""
+        if self.is_complete(snapshot):
             return snapshot.t_now
         return None
 
@@ -162,7 +168,7 @@ def run_logbridge_exhaustive_search(
         engine=engine,
         end_time=end_time,
         generator=generator,
-        completion_evaluator=evaluator,
+        completion_condition=evaluator.is_complete,
     )
     optimizer = ExhaustiveOptimizer(
         tree=tree,

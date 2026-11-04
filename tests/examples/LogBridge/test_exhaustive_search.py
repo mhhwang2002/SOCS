@@ -79,3 +79,20 @@ def test_optimization_report_can_hide_snapshot_details(capsys):
     assert "Optimal path 1:" in output
     assert "-- Edge" in output
     assert "Simulation time:" not in output
+
+
+def test_completion_condition_is_separate_from_objective_value():
+    from examples.LogBridge.exhaustive_search import LogBridgeMakespanEvaluator
+
+    evaluator = LogBridgeMakespanEvaluator()
+    result = run_logbridge_exhaustive_search(makeModel())
+
+    completed = result.tree.get_snapshot(result.best_node_id)
+    incomplete = result.tree.get_snapshot(
+        next(node_id for node_id, cost in result.costs.items() if cost is None)
+    )
+
+    assert evaluator.is_complete(completed)
+    assert evaluator(completed) == completed.t_now
+    assert not evaluator.is_complete(incomplete)
+    assert evaluator(incomplete) is None

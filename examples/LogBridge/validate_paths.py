@@ -28,7 +28,7 @@ def main() -> int:
         engine=engine,
         end_time=200.0,
         generator=LogBridgeDecisionGenerator(),
-        completion_evaluator=evaluator,
+        completion_condition=evaluator.is_complete,
     )
 
     def classify_terminal(snapshot):

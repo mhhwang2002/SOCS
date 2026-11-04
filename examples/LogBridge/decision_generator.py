@@ -24,9 +24,21 @@ class LogBridgeDecisionGenerator(DecisionGenerator[SystemSnapshot]):
         if len(set(self.candidate_load_names)) != len(self.candidate_load_names):
             raise ValueError("Candidate Load names must be unique.")
 
+    def has_decisions(self, state: SystemSnapshot) -> bool:
+        """Return whether the snapshot is a decision point without generating decisions."""
+        return bool(self._waiting_loads(state))
+
     def generate(self, state: SystemSnapshot) -> Iterator[Decision]:
         """Yield entry alternatives and an explicit wait alternative."""
+        waiting_loads = self._waiting_loads(state)
+        for name in waiting_loads:
+            yield ControlDecision(f"{state.root_model.model_path}.{name}", "?go")
 
+        if waiting_loads:
+            yield NoControl()
+
+    def _waiting_loads(self, state: SystemSnapshot) -> list[str]:
+        """Return eligible waiting loads for a decision-point snapshot."""
         if not isinstance(state, SystemSnapshot):
             raise TypeError("state must be a SystemSnapshot instance.")
 
@@ -46,14 +58,14 @@ class LogBridgeDecisionGenerator(DecisionGenerator[SystemSnapshot]):
             )
 
         if state.x_buffer:
-            return
+            return []
 
         bridge_state = children[self.bridge_name]
         if not bridge_state.has_model_state or not bridge_state.model_state:
             raise ValueError("Bridge snapshot does not contain a valid model state.")
 
         if bridge_state.model_state[0] != "I":
-            return
+            return []
 
         load_states = {}
         for name in self.candidate_load_names:
@@ -65,16 +77,10 @@ class LogBridgeDecisionGenerator(DecisionGenerator[SystemSnapshot]):
             load_states[name] = child.model_state
 
         if any(load_state[0] == "S" for load_state in load_states.values()):
-            return
+            return []
 
-        waiting_loads = [
-            name for name, load_state in load_states.items()
+        return [
+            name
+            for name, load_state in load_states.items()
             if load_state[0] == "W"
         ]
-        if not waiting_loads:
-            return
-
-        for name in waiting_loads:
-            yield ControlDecision(f"{state.root_model.model_path}.{name}", "?go")
-
-        yield NoControl()

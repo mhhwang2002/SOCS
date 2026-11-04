@@ -114,3 +114,24 @@ def test_rejects_missing_candidate_load():
 
     with pytest.raises(ValueError, match="missing"):
         list(generator.generate(make_system_snapshot()))
+
+
+def test_has_decisions_matches_generated_alternatives():
+    generator = LogBridgeDecisionGenerator()
+
+    assert generator.has_decisions(make_system_snapshot())
+    assert not generator.has_decisions(
+        make_system_snapshot(bridge_state=("S1", 5))
+    )
+
+
+def test_has_decisions_does_not_consume_generated_decisions():
+    generator = LogBridgeDecisionGenerator()
+    state = make_system_snapshot()
+
+    assert generator.has_decisions(state)
+    assert list(generator.generate(state)) == [
+        ControlDecision("Load_LogBridge.L11", "?go"),
+        ControlDecision("Load_LogBridge.L21", "?go"),
+        NoControl(),
+    ]
