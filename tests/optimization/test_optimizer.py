@@ -1,12 +1,16 @@
 from copy import deepcopy
-from unittest import result
 
 import pytest
 
 from socs.decision.decision import Decision
-from socs.optimization.optimizer import Optimizer, OptimizationResult
+from socs.optimization.optimizer import (
+    Optimizer,
+    OptimizationResult,
+    TerminalBranchKind,
+    TerminalOutcome,
+)
 from socs.devs.Snapshot import ModelSnapshot, SystemSnapshot
-from socs.tree import DecisionTree
+from socs.graph.decision_graph import DecisionGraph
 
 
 class AddDecision(Decision):
@@ -14,11 +18,8 @@ class AddDecision(Decision):
         self.amount = amount
 
 
-def make_generator(decisions):
-    def generate(state):
-        if state.root_model.model_state == 0:
-            yield from decisions
-    return generate
+class NoOpDecision(Decision):
+    pass
 
 
 class CounterExecutor:
@@ -31,10 +32,6 @@ class CounterExecutor:
 class NoOpExecutor:
     def execute(self, state, decision):
         return state
-
-
-class NoOpDecision(Decision):
-    pass
 
 
 def make_snapshot(value=0):
@@ -53,115 +50,195 @@ def make_snapshot(value=0):
     )
 
 
-def test_optimizer_expands_every_decision_and_selects_best():
-    tree = DecisionTree()
-    root_id = tree.add_root(make_snapshot())
+def test_optimizer_expands_decisions_and_selects_best_outcome():
+    graph = DecisionGraph()
+    root_id = graph.add_root(make_snapshot())
     decisions = [AddDecision(10), AddDecision(20)]
-    generator = make_generator(decisions)
-    executor = CounterExecutor()
 
-    optimizer = Optimizer(
-        tree=tree,
-        generator=generator,
-        executor=executor,
-        objective=lambda snapshot: snapshot.root_model.model_state,
-    )
-    result = optimizer.run(root_id)
+    def generator(snapshot):
+        if snapshot.root_model.model_state == 0:
+            yield from decisions
+
+    result = Optimizer(
+        graph,
+        generator,
+        CounterExecutor(),
+        lambda snapshot: snapshot.root_model.model_state,
+    ).run(root_id)
 
     assert isinstance(result, OptimizationResult)
     assert result.node_count == 3
-    assert result.leaf_count == 2
+    assert result.outcome_count == 2
     assert result.best_cost == 10
-    assert result.optimal_node_ids == (2,)
+    assert len(result.optimal_outcomes) == 1
     assert result.optimal_paths() == [[decisions[0]]]
+    assert result.terminal_outcomes[0].edge_ids == (1,)
 
 
-def test_optimizer_treats_empty_decision_set_as_leaf():
-    tree = DecisionTree()
-    root_id = tree.add_root(make_snapshot())
-
-    result = Optimizer(
-        tree=tree,
-        generator=make_generator([]),
-        executor=CounterExecutor(),
-        objective=lambda snapshot: snapshot.root_model.model_state,
-    ).run(root_id)
-
-    assert result.leaf_node_ids == (root_id,)
-    assert result.costs == {root_id: 0}
-    assert result.optimal_node_ids == (root_id,)
-    assert result.optimal_paths() == [[]]
-
-def test_optimizer_stops_an_unchanged_branch():
-    tree = DecisionTree()
-    root_id = tree.add_root(make_snapshot())
+def test_empty_generator_creates_terminal_outcome():
+    graph = DecisionGraph()
+    root_id = graph.add_root(make_snapshot())
 
     result = Optimizer(
-        tree=tree,
-        generator=make_generator([NoOpDecision()]),
-        executor=NoOpExecutor(),
-        objective=lambda snapshot: snapshot.t_now,
+        graph,
+        lambda snapshot: (),
+        CounterExecutor(),
+        lambda snapshot: snapshot.root_model.model_state,
     ).run(root_id)
 
-    assert result.node_count == 2
-    assert result.leaf_count == 1
-    assert result.leaf_node_ids == (2,)
-
-
-def test_optimizer_requires_tree_root():
-    tree = DecisionTree()
-    root_id = tree.add_root(make_snapshot())
-    child_id = tree.add_child(root_id, NoOpDecision(), make_snapshot())
-
-    optimizer = Optimizer(
-        tree=tree,
-        generator=make_generator([]),
-        executor=NoOpExecutor(),
-        objective=lambda snapshot: 0,
+    assert result.outcome_count == 1
+    branch = result.terminal_branches[0]
+    assert branch.kind is TerminalBranchKind.EMPTY_GENERATOR
+    assert result.terminal_outcomes == (
+        TerminalOutcome(
+            edge_ids=(), terminal_branch_id=branch.branch_id, cost=0.0
+        ),
     )
+    assert result.optimal_paths() == [[]]
+    assert result.terminal_node_id(result.terminal_outcomes[0]) == root_id
 
-    with pytest.raises(ValueError, match="DecisionTree root"):
-        optimizer.run(child_id)
 
-def test_optimizer_excludes_infeasible_leaves():
-    tree = DecisionTree()
-    root_id = tree.add_root(make_snapshot())
+def test_noop_decision_creates_outcome_without_graph_edge_or_node():
+    graph = DecisionGraph()
+    root_id = graph.add_root(make_snapshot())
+    decision = NoOpDecision()
+
+    result = Optimizer(
+        graph,
+        lambda snapshot: [decision],
+        NoOpExecutor(),
+        lambda snapshot: 7,
+    ).run(root_id)
+
+    assert result.node_count == 1
+    assert result.graph.E == {}
+    assert result.outcome_count == 1
+    outcome = result.terminal_outcomes[0]
+    assert outcome.edge_ids == ()
+    branch = result.get_terminal_branch(outcome.terminal_branch_id)
+    assert branch.kind is TerminalBranchKind.NO_OP_DECISION
+    assert branch.decision is decision
+    assert outcome.cost == 7
+    assert result.optimal_paths() == [[decision]]
+
+
+def test_merged_node_preserves_distinct_path_outcomes():
+    graph = DecisionGraph()
+    root_id = graph.add_root(make_snapshot())
+    plus_one = AddDecision(1)
+    plus_two = AddDecision(2)
+
+    def generator(snapshot):
+        value = snapshot.root_model.model_state
+        if value == 0:
+            yield plus_one
+            yield plus_two
+        elif value == 1:
+            yield plus_two
+        elif value == 2:
+            yield plus_one
+
+    result = Optimizer(
+        graph,
+        generator,
+        CounterExecutor(),
+        lambda snapshot: snapshot.root_model.model_state,
+    ).run(root_id)
+
+    assert result.node_count == 4
+    assert result.outcome_count == 2
+    assert {outcome.edge_ids for outcome in result.terminal_outcomes} == {
+        (1, 3),
+        (2, 4),
+    }
+    assert all(outcome.cost == 3 for outcome in result.terminal_outcomes)
+    assert len(result.optimal_outcomes) == 2
+
+
+def test_multiple_noop_decisions_create_separate_outcomes():
+    graph = DecisionGraph()
+    root_id = graph.add_root(make_snapshot())
+    decisions = [NoOpDecision(), NoOpDecision()]
+
+    result = Optimizer(
+        graph,
+        lambda snapshot: decisions,
+        NoOpExecutor(),
+        lambda snapshot: 1,
+    ).run(root_id)
+
+    assert result.outcome_count == 2
+    assert [
+        result.get_terminal_branch(item.terminal_branch_id).decision
+        for item in result.terminal_outcomes
+    ] == decisions
+    assert len({item.terminal_branch_id for item in result.terminal_outcomes}) == 2
+
+
+def test_infeasible_outcomes_are_excluded_from_optimum():
+    graph = DecisionGraph()
+    root_id = graph.add_root(make_snapshot())
     decisions = [AddDecision(10), AddDecision(20)]
+
+    def generator(snapshot):
+        if snapshot.root_model.model_state == 0:
+            yield from decisions
 
     def objective(snapshot):
         value = snapshot.root_model.model_state
-        return float("inf") if value == 10 else value
+        return math.inf if value == 10 else value
 
-    result = Optimizer(
-        tree=tree,
-        generator=make_generator(decisions),
-        executor=CounterExecutor(),
-        objective=objective,
-    ).run(root_id)
+    import math
 
-    assert result.leaf_count == 2
-    assert result.costs == {
-        2: float("inf"),
-        3: 20,
-    }
-    assert result.best_cost == 20 
-    assert result.optimal_node_ids == (3,)
+    result = Optimizer(graph, generator, CounterExecutor(), objective).run(root_id)
+
+    assert sorted(outcome.cost for outcome in result.terminal_outcomes) == [20.0, math.inf]
+    assert result.best_cost == 20
+    assert len(result.optimal_outcomes) == 1
     assert result.optimal_paths() == [[decisions[1]]]
 
 
-def test_optimizer_returns_no_solution_when_all_leaves_are_infeasible():
-    tree = DecisionTree()
-    root_id = tree.add_root(make_snapshot())
+def test_all_infeasible_outcomes_have_no_optimum():
+    graph = DecisionGraph()
+    root_id = graph.add_root(make_snapshot())
+
+    def generator(snapshot):
+        if snapshot.root_model.model_state == 0:
+            yield AddDecision(1)
+            yield AddDecision(2)
 
     result = Optimizer(
-        tree=tree,
-        generator=make_generator([AddDecision(10), AddDecision(20)]),
-        executor=CounterExecutor(),
-        objective=lambda snapshot: float("inf"),
+        graph,
+        generator,
+        CounterExecutor(),
+        lambda snapshot: float("inf"),
     ).run(root_id)
 
-    assert result.leaf_count == 2
-    assert all(cost == float("inf") for cost in result.costs.values())
+    assert result.outcome_count == 2
     assert result.best_cost is None
-    assert result.optimal_node_ids == ()
+    assert result.optimal_outcomes == ()
     assert result.optimal_paths() == []
+
+
+def test_optimizer_requires_graph_root():
+    graph = DecisionGraph()
+    root_id = graph.add_root(make_snapshot())
+    other_id, _ = graph.add_or_get_node(make_snapshot(1))
+    optimizer = Optimizer(graph, lambda snapshot: (), NoOpExecutor(), lambda snapshot: 0)
+
+    with pytest.raises(ValueError, match="DecisionGraph root"):
+        optimizer.run(other_id)
+
+
+def test_objective_rejects_nan_and_negative_infinity():
+    for invalid_cost in (float("nan"), -float("inf")):
+        graph = DecisionGraph()
+        root_id = graph.add_root(make_snapshot())
+        optimizer = Optimizer(
+            graph,
+            lambda snapshot: (),
+            NoOpExecutor(),
+            lambda snapshot, cost=invalid_cost: cost,
+        )
+        with pytest.raises(ValueError, match="valid cost"):
+            optimizer.run(root_id)

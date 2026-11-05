@@ -1,18 +1,17 @@
+"""Replay and validate explicit paths stored in a DecisionGraph."""
 
-"""Replay and validate paths stored in a DecisionTree."""
-
+from collections.abc import Iterable
 from dataclasses import dataclass
 import math
 from typing import Any, Callable
 
 from socs.devs.Snapshot import SystemSnapshot
-from socs.tree import DecisionTree
-
+from socs.graph.decision_graph import DecisionGraph, Edge
 
 
 @dataclass(frozen=True)
 class PathValidationResult:
-    """Outcome and detailed checks from replaying a DecisionTree path."""
+    """Outcome and detailed checks from replaying a DecisionGraph path."""
 
     valid: bool
     node_id: int
@@ -48,17 +47,17 @@ class PathValidationResult:
 
 
 class DecisionPathValidator:
-    """Replay a stored path and compare its intermediate and terminal results."""
+    """Replay an explicit edge-ID path and compare its states and metrics."""
 
     def __init__(
         self,
-        tree: DecisionTree,
+        graph: DecisionGraph,
         executor,
         terminal_classifier: Callable[[SystemSnapshot], Any] | None = None,
         cost_evaluator: Callable[[SystemSnapshot], float | None] | None = None,
     ):
-        if not isinstance(tree, DecisionTree):
-            raise TypeError("tree must be a DecisionTree instance.")
+        if not isinstance(graph, DecisionGraph):
+            raise TypeError("graph must be a DecisionGraph instance.")
         if not callable(getattr(executor, "execute", None)):
             raise TypeError("executor must provide an execute(state, decision) method.")
         if terminal_classifier is not None and not callable(terminal_classifier):
@@ -66,7 +65,7 @@ class DecisionPathValidator:
         if cost_evaluator is not None and not callable(cost_evaluator):
             raise TypeError("cost_evaluator must be callable or None.")
 
-        self.tree = tree
+        self.graph = graph
         self.executor = executor
         self.terminal_classifier = terminal_classifier
         self.cost_evaluator = cost_evaluator
@@ -77,32 +76,67 @@ class DecisionPathValidator:
             return expected is None and actual is None
         return math.isclose(expected, actual, rel_tol=1e-9, abs_tol=1e-9)
 
-    def validate(self, node_id: int) -> PathValidationResult:
-        """Replay root-to-node and validate continuity, states, and terminal metrics."""
-        if node_id not in self.tree.V:
-            raise KeyError(f"Vertex {node_id!r} is not registered.")
+    def _edge_index(self) -> dict[int, Edge]:
+        """Build an edge-ID lookup and reject ambiguous IDs."""
+        index: dict[int, Edge] = {}
+        for edge in self.graph.edges():
+            edge_id = self.graph.get_edge_id(edge)
+            if edge_id in index:
+                raise ValueError(f"Duplicate edge ID {edge_id!r} in DecisionGraph.")
+            index[edge_id] = edge
+        return index
 
-        chain = []
-        current_id = node_id
-        while current_id != self.tree.root_id:
-            incoming = self.tree.in_edges(current_id)
-            if len(incoming) != 1:
-                raise RuntimeError("Decision tree contains an invalid parent relation.")
-            edge = incoming[0]
-            chain.append((edge, edge.src, current_id))
-            current_id = edge.src
-        chain.reverse()
+    def validate(self, edge_ids: Iterable[int]) -> PathValidationResult:
+        """Replay an ordered edge-ID path starting at the graph root.
 
-        replay_snapshot = self.tree.get_snapshot(self.tree.root_id)
+        An empty sequence represents the zero-edge path at the root.
+        """
+        if isinstance(edge_ids, (str, bytes)):
+            raise TypeError("edge_ids must be an iterable of integer edge IDs.")
+
+        try:
+            requested_ids = tuple(edge_ids)
+        except TypeError:
+            raise TypeError(
+                "edge_ids must be an iterable of integer edge IDs."
+            ) from None
+
+        if any(
+            not isinstance(edge_id, int) or isinstance(edge_id, bool)
+            for edge_id in requested_ids
+        ):
+            raise TypeError("Every edge ID must be an integer.")
+
+        if self.graph.root_id not in self.graph.V:
+            raise RuntimeError("DecisionGraph does not have a registered root.")
+
+        edge_index = self._edge_index()
+        current_id = self.graph.root_id
+        selected_edges: list[tuple[int, Edge]] = []
+
+        for edge_id in requested_ids:
+            edge = edge_index.get(edge_id)
+            if edge is None:
+                raise KeyError(f"Edge ID {edge_id!r} is not registered.")
+            if edge.src != current_id:
+                raise ValueError(
+                    f"Edge ID {edge_id!r} starts at node {edge.src!r}, "
+                    f"but the current path node is {current_id!r}."
+                )
+            selected_edges.append((edge_id, edge))
+            current_id = edge.dst
+
+        node_id = current_id
+        replay_snapshot = self.graph.get_snapshot(self.graph.root_id)
         pre_checks = 0
         post_checks = 0
         validated = 0
 
-        for edge, parent_id, child_id in chain:
-            expected_before = self.tree.get_snapshot(parent_id)
+        for edge_id, edge in selected_edges:
+            expected_before = self.graph.get_snapshot(edge.src)
             if replay_snapshot != expected_before:
                 return PathValidationResult(
-                    False, node_id, validated, self.tree.get_edge_id(edge),
+                    False, node_id, validated, edge_id,
                     expected_snapshot=expected_before,
                     actual_snapshot=replay_snapshot,
                     error="Snapshot immediately before Decision does not match its parent Node.",
@@ -115,24 +149,24 @@ class DecisionPathValidator:
             try:
                 actual_after = self.executor.execute(
                     replay_snapshot,
-                    self.tree.get_decision(edge),
+                    self.graph.get_decision(edge),
                 )
             except Exception as exc:
                 return PathValidationResult(
-                    False, node_id, validated, self.tree.get_edge_id(edge),
-                    expected_snapshot=self.tree.get_snapshot(child_id),
+                    False, node_id, validated, edge_id,
+                    expected_snapshot=self.graph.get_snapshot(edge.dst),
                     error=f"{type(exc).__name__}: {exc}",
                     pre_decision_checks=pre_checks,
                     post_decision_checks=post_checks,
                 )
 
-            expected_after = self.tree.get_snapshot(child_id)
+            expected_after = self.graph.get_snapshot(edge.dst)
             if actual_after != expected_after:
                 return PathValidationResult(
-                    False, node_id, validated, self.tree.get_edge_id(edge),
+                    False, node_id, validated, edge_id,
                     expected_snapshot=expected_after,
                     actual_snapshot=actual_after,
-                    error="Snapshot immediately after Decision does not match its child Node.",
+                    error="Snapshot immediately after Decision does not match its destination Node.",
                     pre_decision_checks=pre_checks,
                     post_decision_checks=post_checks,
                     final_state_matches=False,
@@ -142,7 +176,7 @@ class DecisionPathValidator:
             validated += 1
             replay_snapshot = actual_after
 
-        expected_final = self.tree.get_snapshot(node_id)
+        expected_final = self.graph.get_snapshot(node_id)
         final_matches = replay_snapshot == expected_final
         expected_status = actual_status = None
         termination_matches = None

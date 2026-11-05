@@ -68,22 +68,58 @@ def runOptimization(
         model = makeModel()
 
     result = run_logbridge_optimization(model, end_time=end_time)
-    print("Decision-tree nodes:", result.node_count)
-    print("Terminal paths:", result.leaf_count)
+    graph = result.graph
+    print("Decision-graph nodes:", result.node_count)
+    print("Terminal outcomes:", result.outcome_count)
     print("Optimal makespan:", result.best_cost)
-    print("Number of optimal paths:", len(result.optimal_node_ids))
-    for index, node_id in enumerate(result.optimal_node_ids, start=1):
-        print(f"Optimal path {index}:")
-        if include_snapshot_details:
-            from socs.tree import SnapshotFormatter
+    print("Number of optimal paths:", len(result.optimal_outcomes))
 
-            formatter = SnapshotFormatter(
-                simulation_time_bound=end_time,
-                show_state_percentage=show_state_percentage,
-            )
-            result.tree.print_path(node_id, node_formatter=formatter)
+    formatter = None
+    if include_snapshot_details:
+        from socs.tree.formatters import SnapshotFormatter
+
+        formatter = SnapshotFormatter(
+            simulation_time_bound=end_time,
+            show_state_percentage=show_state_percentage,
+        )
+
+    edges_by_id = {
+        graph.get_edge_id(edge): edge
+        for edge in graph.edges()
+    }
+
+    for index, outcome in enumerate(result.optimal_outcomes, start=1):
+        print(f"Optimal path {index}:")
+        current_node_id = result.root_node_id
+
+        for edge_id in outcome.edge_ids:
+            edge = edges_by_id[edge_id]
+            if edge.src != current_node_id:
+                raise ValueError(
+                    f"Outcome edge {edge_id} does not continue from "
+                    f"node {current_node_id}."
+                )
+
+            snapshot = graph.get_snapshot(current_node_id)
+            if formatter is None:
+                print(f"Node {current_node_id}")
+            else:
+                print(formatter(current_node_id, snapshot))
+
+            decision = graph.get_decision(edge)
+            print(f"  -- Edge {edge_id}: {decision} -->")
+            current_node_id = edge.dst
+
+        snapshot = graph.get_snapshot(current_node_id)
+        if formatter is None:
+            print(f"Node {current_node_id}")
         else:
-            result.tree.print_path(node_id)
+            print(formatter(current_node_id, snapshot))
+
+        terminal_branch = result.get_terminal_branch(outcome.terminal_branch_id)
+        if terminal_branch.decision is not None:
+            print(f"  -- Terminal decision: {terminal_branch.decision} -->")
+
     return result
 
 

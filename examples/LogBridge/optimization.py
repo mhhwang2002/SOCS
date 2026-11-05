@@ -9,7 +9,7 @@ from socs.optimization.optimizer import Optimizer, OptimizationResult
 from socs.optimization.simulation_executor import SimulationDecisionExecutor
 from socs.devs.SimEngine import ExecutionResult, SimEngineBase
 from socs.devs.Snapshot import SystemSnapshot
-from socs.tree.decision_tree import DecisionTree
+from socs.graph.decision_graph import DecisionGraph
 
 from .decision_generator import generate_decisions, has_decisions
 from .LoadPassive import LoadPassive
@@ -144,7 +144,7 @@ def run_logbridge_optimization(
     """Generate all finite Decision paths and minimize total completion time.
 
     An existing engine may be supplied so its model instances can also be
-    reused later to replay and validate the resulting DecisionTree snapshots.
+    reused later to replay and validate the resulting DecisionGraph snapshots.
     """
     if engine is None:
         from socs.devs.SimEngine import SimEngineThread
@@ -161,8 +161,8 @@ def run_logbridge_optimization(
         end_time=end_time,
     )
 
-    tree = DecisionTree()
-    root_id = tree.add_root(root_snapshot)
+    graph = DecisionGraph()
+    root_id = graph.add_root(root_snapshot)
 
     executor = LogBridgePathExecutor(
         engine=engine,
@@ -170,7 +170,7 @@ def run_logbridge_optimization(
         completion_condition=evaluator.is_complete,
     )
     optimizer = Optimizer(
-        tree=tree,
+        graph=graph,
         generator=generate_decisions,
         executor=executor,
         objective=evaluator,

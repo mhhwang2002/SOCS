@@ -1,27 +1,52 @@
-from examples.LogBridge.LoadPassive_LogBridge import makeModel
-from socs.decision.decision import ControlDecision
-from examples.LogBridge.optimization import run_logbridge_optimization
 import math
+
+from examples.LogBridge.LoadPassive_LogBridge import makeModel
+from examples.LogBridge.optimization import run_logbridge_optimization
+from socs.decision.decision import ControlDecision
+
+
+def _outcome_path(result, outcome):
+    edges_by_id = {
+        result.graph.get_edge_id(edge): edge
+        for edge in result.graph.edges()
+    }
+    decisions = [
+        result.graph.get_decision(edges_by_id[edge_id])
+        for edge_id in outcome.edge_ids
+    ]
+    terminal_branch = result.get_terminal_branch(outcome.terminal_branch_id)
+    if terminal_branch.decision is not None:
+        decisions.append(terminal_branch.decision)
+    return decisions
+
 
 def test_logbridge_optimization_finds_minimum_makespan():
     result = run_logbridge_optimization(makeModel())
 
-    assert result.optimal_node_ids
+    assert result.optimal_outcomes
     assert result.best_cost is not None
     assert result.best_cost == 84.44444444444444
     assert result.optimal_paths()[0] == [
         ControlDecision("Load_LogBridge.L11", "?go"),
         ControlDecision("Load_LogBridge.L21", "?go"),
     ]
-    assert len(result.optimal_node_ids) == 2
-    assert result.node_count == 18
-    assert result.leaf_count == 10
+    assert len(result.optimal_outcomes) == 2
+    assert result.node_count == 14
+    assert result.outcome_count == 10
     assert result.best_cost == min(
-        cost for cost in result.costs.values() if cost != math.inf
+        outcome.cost
+        for outcome in result.terminal_outcomes
+        if math.isfinite(outcome.cost)
     )
+
     optimal_paths = {
         tuple(
-            ("NoControl" if decision.target_model is None else "ControlDecision", decision.target_model.rsplit(".", 1)[-1] if decision.target_model else None)
+            (
+                "NoControl" if decision.target_model is None else "ControlDecision",
+                decision.target_model.rsplit(".", 1)[-1]
+                if decision.target_model
+                else None,
+            )
             for decision in path
         )
         for path in result.optimal_paths()
@@ -38,10 +63,9 @@ def test_logbridge_optimization_finds_minimum_makespan():
 
 def test_logbridge_optimization_enumerates_wait_alternatives():
     result = run_logbridge_optimization(makeModel())
-
     paths = [
-        result.tree.get_path(node_id)
-        for node_id in result.leaf_node_ids
+        _outcome_path(result, outcome)
+        for outcome in result.terminal_outcomes
     ]
 
     assert any(ControlDecision(None) in path for path in paths)
@@ -51,9 +75,13 @@ def test_logbridge_optimization_enumerates_wait_alternatives():
 def test_incomplete_paths_are_not_considered_feasible():
     result = run_logbridge_optimization(makeModel())
 
-    assert sum(cost == math.inf for cost in result.costs.values()) == 4
-    assert sum(math.isfinite(cost) for cost in result.costs.values()) == 6
-    assert result.optimal_node_ids
+    assert sum(
+        outcome.cost == math.inf for outcome in result.terminal_outcomes
+    ) == 4
+    assert sum(
+        math.isfinite(outcome.cost) for outcome in result.terminal_outcomes
+    ) == 6
+    assert result.optimal_outcomes
 
 
 def test_optimization_report_can_include_snapshot_details(capsys):
@@ -87,9 +115,17 @@ def test_completion_condition_is_separate_from_objective_value():
     evaluator = LogBridgeMakespanEvaluator()
     result = run_logbridge_optimization(makeModel())
 
-    completed = result.tree.get_snapshot(result.optimal_node_ids[0])
-    incomplete = result.tree.get_snapshot(
-        next(node_id for node_id, cost in result.costs.items() if cost == math.inf)
+    completed_outcome = result.optimal_outcomes[0]
+    completed = result.graph.get_snapshot(
+        result.terminal_node_id(completed_outcome)
+    )
+    incomplete_outcome = next(
+        outcome
+        for outcome in result.terminal_outcomes
+        if outcome.cost == math.inf
+    )
+    incomplete = result.graph.get_snapshot(
+        result.terminal_node_id(incomplete_outcome)
     )
 
     assert evaluator.is_complete(completed)
