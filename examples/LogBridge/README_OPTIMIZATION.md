@@ -1,7 +1,7 @@
-# LogBridge Exhaustive Decision Search
+# LogBridge Simulation-Based Optimization
 
-This example enumerates every finite path yielded by `generate_decisions()`
-and minimizes the total completion time (makespan).
+This example uses simulation to evaluate alternative Decision paths and
+minimizes the total completion time (makespan).
 
 ## Decision semantics
 
@@ -12,9 +12,11 @@ and minimizes the total completion time (makespan).
 - A branch stops at the next state with available decisions, at full completion,
   at deadlock, or at the configured simulation time bound.
 
-The search is exhaustive over the decisions emitted by `generate_decisions()`:
-one bridge-entry alternative for each waiting source Load, plus a no-control alternative. It does not
-enumerate control actions that the generator does not provide.
+The current `Optimizer` implementation uses breadth-first traversal and
+expands every Decision emitted by `generate_decisions()`. This is the initial
+search implementation, not a requirement of the Optimization interface. The
+generator provides one bridge-entry alternative for each waiting source Load,
+plus a no-control alternative.
 
 ## Objective
 
@@ -36,9 +38,9 @@ optimization.
 From the repository root:
 
 ```python
-from examples.LogBridge.LoadPassive_LogBridge import runExhaustiveOptimization
+from examples.LogBridge.LoadPassive_LogBridge import runOptimization
 
-result = runExhaustiveOptimization()
+result = runOptimization()
 ```
 
 The optimization report includes each optimal path and its Snapshot details by
@@ -46,13 +48,13 @@ default. Pass `include_snapshot_details=False` to print only the generic Node/Ed
 path. For other DecisionTree uses, `SnapshotFormatter` can be passed as the
 `node_formatter` to `format_path()` or `print_path()`.
 
-Or call the search function directly:
+Or call the optimization function directly:
 
 ```python
 from examples.LogBridge.LoadPassive_LogBridge import makeModel
-from examples.LogBridge.exhaustive_search import run_logbridge_exhaustive_search
+from examples.LogBridge.optimization import run_logbridge_optimization
 
-result = run_logbridge_exhaustive_search(makeModel())
+result = run_logbridge_optimization(makeModel())
 
 print(result.node_count)
 print(result.leaf_count)
@@ -88,7 +90,7 @@ python -m examples.LogBridge.validate_paths
 
 The search and validator must share the same `SimEngine` model instance because
 Snapshots are bound to the identities of the model objects that created them.
-The example therefore passes the engine into `run_logbridge_exhaustive_search`
+The example therefore passes the engine into `run_logbridge_optimization`
 and reuses it for `DecisionPathValidator`.
 
 The validator now reports four layers of checks for every terminal path:

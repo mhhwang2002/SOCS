@@ -1,4 +1,4 @@
-"""Run exhaustive LogBridge search and fully validate every terminal path."""
+"""Run LogBridge optimization and validate every terminal path."""
 
 import math
 
@@ -8,10 +8,10 @@ from socs.devs.SimEngine import SimEngineThread
 from socs.tree import DecisionTreeValidator
 
 from .LoadPassive_LogBridge import makeModel
-from .exhaustive_search import (
+from .optimization import (
     LogBridgeMakespanEvaluator,
     LogBridgePathExecutor,
-    run_logbridge_exhaustive_search,
+    run_logbridge_optimization,
 )
 
 
@@ -21,7 +21,7 @@ def main() -> int:
     engine = SimEngineThread(model)
     engine.bVerbose = False
 
-    result = run_logbridge_exhaustive_search(model, engine=engine)
+    result = run_logbridge_optimization(model, engine=engine)
     evaluator = LogBridgeMakespanEvaluator()
     executor = LogBridgePathExecutor(
         engine=engine,

@@ -1,11 +1,11 @@
-"""Exhaustive decision-tree optimization for the LogBridge example."""
+"""Simulation-based optimization for the LogBridge example."""
 
 from collections.abc import Callable
 import math
 
 from socs.decision.control import apply_control
 from socs.decision.decision import ControlDecision
-from socs.optimization.optimizer import ExhaustiveOptimizer, OptimizationResult
+from socs.optimization.optimizer import Optimizer, OptimizationResult
 from socs.optimization.simulation_executor import SimulationDecisionExecutor
 from socs.devs.SimEngine import ExecutionResult, SimEngineBase
 from socs.devs.Snapshot import SystemSnapshot
@@ -136,7 +136,7 @@ class LogBridgeMakespanEvaluator:
         return None
 
 
-def run_logbridge_exhaustive_search(
+def run_logbridge_optimization(
     model,
     end_time: float = 200.0,
     engine: SimEngineBase | None = None,
@@ -169,7 +169,7 @@ def run_logbridge_exhaustive_search(
         end_time=end_time,
         completion_condition=evaluator.is_complete,
     )
-    optimizer = ExhaustiveOptimizer(
+    optimizer = Optimizer(
         tree=tree,
         generator=generate_decisions,
         executor=executor,

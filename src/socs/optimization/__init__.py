@@ -1,6 +1,6 @@
 """Simulation-based optimization and result validation."""
 
-from .optimizer import ExhaustiveOptimizer, OptimizationResult
+from .optimizer import Optimizer, OptimizationResult
 from .simulation_executor import SimulationDecisionExecutor
 from .path_validator import DecisionPathValidator, PathValidationResult
 from .search_validator import (
@@ -10,7 +10,7 @@ from .search_validator import (
 )
 
 __all__ = [
-    "ExhaustiveOptimizer",
+    "Optimizer",
     "OptimizationResult",
     "SimulationDecisionExecutor",
     "DecisionPathValidator",

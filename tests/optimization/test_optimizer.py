@@ -3,7 +3,7 @@ from copy import deepcopy
 import pytest
 
 from socs.decision.decision import Decision
-from socs.optimization.optimizer import ExhaustiveOptimizer, OptimizationResult
+from socs.optimization.optimizer import Optimizer, OptimizationResult
 from socs.devs.Snapshot import ModelSnapshot, SystemSnapshot
 from socs.tree import DecisionTree
 
@@ -52,14 +52,14 @@ def make_snapshot(value=0):
     )
 
 
-def test_exhaustive_optimizer_expands_every_decision_and_selects_best():
+def test_optimizer_expands_every_decision_and_selects_best():
     tree = DecisionTree()
     root_id = tree.add_root(make_snapshot())
     decisions = [AddDecision(10), AddDecision(20)]
     generator = make_generator(decisions)
     executor = CounterExecutor()
 
-    optimizer = ExhaustiveOptimizer(
+    optimizer = Optimizer(
         tree=tree,
         generator=generator,
         executor=executor,
@@ -75,11 +75,11 @@ def test_exhaustive_optimizer_expands_every_decision_and_selects_best():
     assert result.optimal_paths() == [[decisions[0]]]
 
 
-def test_exhaustive_optimizer_treats_empty_decision_set_as_leaf():
+def test_optimizer_treats_empty_decision_set_as_leaf():
     tree = DecisionTree()
     root_id = tree.add_root(make_snapshot())
 
-    result = ExhaustiveOptimizer(
+    result = Optimizer(
         tree=tree,
         generator=make_generator([]),
         executor=CounterExecutor(),
@@ -91,11 +91,11 @@ def test_exhaustive_optimizer_treats_empty_decision_set_as_leaf():
     assert result.best_node_id == root_id
 
 
-def test_exhaustive_optimizer_stops_an_unchanged_branch():
+def test_optimizer_stops_an_unchanged_branch():
     tree = DecisionTree()
     root_id = tree.add_root(make_snapshot())
 
-    result = ExhaustiveOptimizer(
+    result = Optimizer(
         tree=tree,
         generator=make_generator([NoOpDecision()]),
         executor=NoOpExecutor(),
@@ -107,12 +107,12 @@ def test_exhaustive_optimizer_stops_an_unchanged_branch():
     assert result.leaf_node_ids == (2,)
 
 
-def test_exhaustive_optimizer_requires_tree_root():
+def test_optimizer_requires_tree_root():
     tree = DecisionTree()
     root_id = tree.add_root(make_snapshot())
     child_id = tree.add_child(root_id, NoOpDecision(), make_snapshot())
 
-    optimizer = ExhaustiveOptimizer(
+    optimizer = Optimizer(
         tree=tree,
         generator=make_generator([]),
         executor=NoOpExecutor(),

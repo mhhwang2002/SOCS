@@ -1,4 +1,4 @@
-"""Exhaustive simulation-based optimization."""
+"""Simulation-based optimization."""
 
 from collections import deque
 from collections.abc import Callable, Iterable
@@ -39,8 +39,8 @@ class OptimizationResult:
         return [self.tree.get_path(node_id) for node_id in self.optimal_node_ids]
 
 
-class ExhaustiveOptimizer:
-    """Explore every generated Decision branch using breadth-first traversal."""
+class Optimizer:
+    """Explore generated Decision branches and evaluate terminal states."""
 
     def __init__(
         self,

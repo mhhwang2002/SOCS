@@ -55,19 +55,19 @@ def runSimulation(model):
     engine.runInteractiveMenu()
 
 
-def runExhaustiveOptimization(
+def runOptimization(
     model=None,
     end_time=200.0,
     include_snapshot_details=True,
     show_state_percentage=False,
 ):
-    """Enumerate all LogBridge decision paths and minimize makespan."""
-    from .exhaustive_search import run_logbridge_exhaustive_search
+    """Optimize the LogBridge schedule and minimize makespan."""
+    from .optimization import run_logbridge_optimization
 
     if model is None:
         model = makeModel()
 
-    result = run_logbridge_exhaustive_search(model, end_time=end_time)
+    result = run_logbridge_optimization(model, end_time=end_time)
     print("Decision-tree nodes:", result.node_count)
     print("Terminal paths:", result.leaf_count)
     print("Optimal makespan:", result.best_cost)
@@ -98,7 +98,7 @@ if __name__ == "__main__":
         if command in ("s", "sim"):
             runSimulation(model)
         elif command in ("o", "optimize"):
-            runExhaustiveOptimization(makeModel())
+            runOptimization(makeModel())
         elif command in ("x", "exit"):
             running = False
         else:

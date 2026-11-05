@@ -1,4 +1,4 @@
-"""Validation for exhaustive DecisionTree search results."""
+"""Validation for DecisionTree optimization results."""
 
 from dataclasses import dataclass
 import math
@@ -11,7 +11,7 @@ from .optimizer import OptimizationResult
 
 @dataclass(frozen=True)
 class SearchResultIssue:
-    """Describe one inconsistency found in an exhaustive search result."""
+    """Describe one inconsistency found in an optimization search result."""
 
     code: str
     message: str
@@ -20,7 +20,7 @@ class SearchResultIssue:
 
 @dataclass(frozen=True)
 class SearchResultValidationResult:
-    """Summary of consistency checks for an exhaustive search result."""
+    """Summary of consistency checks for an optimization search result."""
 
     valid: bool
     checks: tuple[tuple[str, bool], ...]
@@ -67,7 +67,7 @@ class SearchResultValidationResult:
 
 
 class SearchResultValidator:
-    """Validate the consistency of an exhaustive minimization result.
+    """Validate the consistency of an optimization result.
 
     The validator is read-only. It checks that the result's terminal-node
     inventory, cost mapping, and optimum metadata agree with the DecisionTree.

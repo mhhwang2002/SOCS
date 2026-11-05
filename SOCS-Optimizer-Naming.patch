@@ -1,0 +1,431 @@
+diff --git a/examples/LogBridge/LoadPassive_LogBridge.py b/examples/LogBridge/LoadPassive_LogBridge.py
+index a680a38..759d54a 100644
+--- a/examples/LogBridge/LoadPassive_LogBridge.py
++++ b/examples/LogBridge/LoadPassive_LogBridge.py
+@@ -55,19 +55,19 @@ def runSimulation(model):
+     engine.runInteractiveMenu()
+ 
+ 
+-def runExhaustiveOptimization(
++def runOptimization(
+     model=None,
+     end_time=200.0,
+     include_snapshot_details=True,
+     show_state_percentage=False,
+ ):
+-    """Enumerate all LogBridge decision paths and minimize makespan."""
+-    from .exhaustive_search import run_logbridge_exhaustive_search
++    """Optimize the LogBridge schedule and minimize makespan."""
++    from .optimization import run_logbridge_optimization
+ 
+     if model is None:
+         model = makeModel()
+ 
+-    result = run_logbridge_exhaustive_search(model, end_time=end_time)
++    result = run_logbridge_optimization(model, end_time=end_time)
+     print("Decision-tree nodes:", result.node_count)
+     print("Terminal paths:", result.leaf_count)
+     print("Optimal makespan:", result.best_cost)
+@@ -98,7 +98,7 @@ if __name__ == "__main__":
+         if command in ("s", "sim"):
+             runSimulation(model)
+         elif command in ("o", "optimize"):
+-            runExhaustiveOptimization(makeModel())
++            runOptimization(makeModel())
+         elif command in ("x", "exit"):
+             running = False
+         else:
+diff --git a/examples/LogBridge/README_EXHAUSTIVE_SEARCH.md b/examples/LogBridge/README_OPTIMIZATION.md
+similarity index 79%
+rename from examples/LogBridge/README_EXHAUSTIVE_SEARCH.md
+rename to examples/LogBridge/README_OPTIMIZATION.md
+index 53463d0..ef62b0b 100644
+--- a/examples/LogBridge/README_EXHAUSTIVE_SEARCH.md
++++ b/examples/LogBridge/README_OPTIMIZATION.md
+@@ -1,7 +1,7 @@
+-# LogBridge Exhaustive Decision Search
++# LogBridge Simulation-Based Optimization
+ 
+-This example enumerates every finite path yielded by `generate_decisions()`
+-and minimizes the total completion time (makespan).
++This example uses simulation to evaluate alternative Decision paths and
++minimizes the total completion time (makespan).
+ 
+ ## Decision semantics
+ 
+@@ -12,9 +12,11 @@ and minimizes the total completion time (makespan).
+ - A branch stops at the next state with available decisions, at full completion,
+   at deadlock, or at the configured simulation time bound.
+ 
+-The search is exhaustive over the decisions emitted by `generate_decisions()`:
+-one bridge-entry alternative for each waiting source Load, plus a no-control alternative. It does not
+-enumerate control actions that the generator does not provide.
++The current `Optimizer` implementation uses breadth-first traversal and
++expands every Decision emitted by `generate_decisions()`. This is the initial
++search implementation, not a requirement of the Optimization interface. The
++generator provides one bridge-entry alternative for each waiting source Load,
++plus a no-control alternative.
+ 
+ ## Objective
+ 
+@@ -36,9 +38,9 @@ optimization.
+ From the repository root:
+ 
+ ```python
+-from examples.LogBridge.LoadPassive_LogBridge import runExhaustiveOptimization
++from examples.LogBridge.LoadPassive_LogBridge import runOptimization
+ 
+-result = runExhaustiveOptimization()
++result = runOptimization()
+ ```
+ 
+ The optimization report includes each optimal path and its Snapshot details by
+@@ -46,13 +48,13 @@ default. Pass `include_snapshot_details=False` to print only the generic Node/Ed
+ path. For other DecisionTree uses, `SnapshotFormatter` can be passed as the
+ `node_formatter` to `format_path()` or `print_path()`.
+ 
+-Or call the search function directly:
++Or call the optimization function directly:
+ 
+ ```python
+ from examples.LogBridge.LoadPassive_LogBridge import makeModel
+-from examples.LogBridge.exhaustive_search import run_logbridge_exhaustive_search
++from examples.LogBridge.optimization import run_logbridge_optimization
+ 
+-result = run_logbridge_exhaustive_search(makeModel())
++result = run_logbridge_optimization(makeModel())
+ 
+ print(result.node_count)
+ print(result.leaf_count)
+@@ -88,7 +90,7 @@ python -m examples.LogBridge.validate_paths
+ 
+ The search and validator must share the same `SimEngine` model instance because
+ Snapshots are bound to the identities of the model objects that created them.
+-The example therefore passes the engine into `run_logbridge_exhaustive_search`
++The example therefore passes the engine into `run_logbridge_optimization`
+ and reuses it for `DecisionPathValidator`.
+ 
+ The validator now reports four layers of checks for every terminal path:
+diff --git a/examples/LogBridge/exhaustive_search.py b/examples/LogBridge/optimization.py
+similarity index 96%
+rename from examples/LogBridge/exhaustive_search.py
+rename to examples/LogBridge/optimization.py
+index 2b97fd4..e373b21 100644
+--- a/examples/LogBridge/exhaustive_search.py
++++ b/examples/LogBridge/optimization.py
+@@ -1,11 +1,11 @@
+-"""Exhaustive decision-tree optimization for the LogBridge example."""
++"""Simulation-based optimization for the LogBridge example."""
+ 
+ from collections.abc import Callable
+ import math
+ 
+ from socs.decision.control import apply_control
+ from socs.decision.decision import ControlDecision
+-from socs.optimization.optimizer import ExhaustiveOptimizer, OptimizationResult
++from socs.optimization.optimizer import Optimizer, OptimizationResult
+ from socs.optimization.simulation_executor import SimulationDecisionExecutor
+ from socs.devs.SimEngine import ExecutionResult, SimEngineBase
+ from socs.devs.Snapshot import SystemSnapshot
+@@ -136,7 +136,7 @@ class LogBridgeMakespanEvaluator:
+         return None
+ 
+ 
+-def run_logbridge_exhaustive_search(
++def run_logbridge_optimization(
+     model,
+     end_time: float = 200.0,
+     engine: SimEngineBase | None = None,
+@@ -169,7 +169,7 @@ def run_logbridge_exhaustive_search(
+         end_time=end_time,
+         completion_condition=evaluator.is_complete,
+     )
+-    optimizer = ExhaustiveOptimizer(
++    optimizer = Optimizer(
+         tree=tree,
+         generator=generate_decisions,
+         executor=executor,
+diff --git a/examples/LogBridge/validate_paths.py b/examples/LogBridge/validate_paths.py
+index 182cd79..5b71d65 100644
+--- a/examples/LogBridge/validate_paths.py
++++ b/examples/LogBridge/validate_paths.py
+@@ -1,4 +1,4 @@
+-"""Run exhaustive LogBridge search and fully validate every terminal path."""
++"""Run LogBridge optimization and validate every terminal path."""
+ 
+ import math
+ 
+@@ -8,10 +8,10 @@ from socs.devs.SimEngine import SimEngineThread
+ from socs.tree import DecisionTreeValidator
+ 
+ from .LoadPassive_LogBridge import makeModel
+-from .exhaustive_search import (
++from .optimization import (
+     LogBridgeMakespanEvaluator,
+     LogBridgePathExecutor,
+-    run_logbridge_exhaustive_search,
++    run_logbridge_optimization,
+ )
+ 
+ 
+@@ -21,7 +21,7 @@ def main() -> int:
+     engine = SimEngineThread(model)
+     engine.bVerbose = False
+ 
+-    result = run_logbridge_exhaustive_search(model, engine=engine)
++    result = run_logbridge_optimization(model, engine=engine)
+     evaluator = LogBridgeMakespanEvaluator()
+     executor = LogBridgePathExecutor(
+         engine=engine,
+diff --git a/src/socs/optimization/__init__.py b/src/socs/optimization/__init__.py
+index 0fd5cb2..2e2da73 100644
+--- a/src/socs/optimization/__init__.py
++++ b/src/socs/optimization/__init__.py
+@@ -1,6 +1,6 @@
+ """Simulation-based optimization and result validation."""
+ 
+-from .optimizer import ExhaustiveOptimizer, OptimizationResult
++from .optimizer import Optimizer, OptimizationResult
+ from .simulation_executor import SimulationDecisionExecutor
+ from .path_validator import DecisionPathValidator, PathValidationResult
+ from .search_validator import (
+@@ -10,7 +10,7 @@ from .search_validator import (
+ )
+ 
+ __all__ = [
+-    "ExhaustiveOptimizer",
++    "Optimizer",
+     "OptimizationResult",
+     "SimulationDecisionExecutor",
+     "DecisionPathValidator",
+diff --git a/src/socs/optimization/optimizer.py b/src/socs/optimization/optimizer.py
+index aab60a8..94eace5 100644
+--- a/src/socs/optimization/optimizer.py
++++ b/src/socs/optimization/optimizer.py
+@@ -1,4 +1,4 @@
+-"""Exhaustive simulation-based optimization."""
++"""Simulation-based optimization."""
+ 
+ from collections import deque
+ from collections.abc import Callable, Iterable
+@@ -39,8 +39,8 @@ class OptimizationResult:
+         return [self.tree.get_path(node_id) for node_id in self.optimal_node_ids]
+ 
+ 
+-class ExhaustiveOptimizer:
+-    """Explore every generated Decision branch using breadth-first traversal."""
++class Optimizer:
++    """Explore generated Decision branches and evaluate terminal states."""
+ 
+     def __init__(
+         self,
+diff --git a/src/socs/optimization/search_validator.py b/src/socs/optimization/search_validator.py
+index c1107f4..7a3926d 100644
+--- a/src/socs/optimization/search_validator.py
++++ b/src/socs/optimization/search_validator.py
+@@ -1,4 +1,4 @@
+-"""Validation for exhaustive DecisionTree search results."""
++"""Validation for DecisionTree optimization results."""
+ 
+ from dataclasses import dataclass
+ import math
+@@ -11,7 +11,7 @@ from .optimizer import OptimizationResult
+ 
+ @dataclass(frozen=True)
+ class SearchResultIssue:
+-    """Describe one inconsistency found in an exhaustive search result."""
++    """Describe one inconsistency found in an optimization search result."""
+ 
+     code: str
+     message: str
+@@ -20,7 +20,7 @@ class SearchResultIssue:
+ 
+ @dataclass(frozen=True)
+ class SearchResultValidationResult:
+-    """Summary of consistency checks for an exhaustive search result."""
++    """Summary of consistency checks for an optimization search result."""
+ 
+     valid: bool
+     checks: tuple[tuple[str, bool], ...]
+@@ -67,7 +67,7 @@ class SearchResultValidationResult:
+ 
+ 
+ class SearchResultValidator:
+-    """Validate the consistency of an exhaustive minimization result.
++    """Validate the consistency of an optimization result.
+ 
+     The validator is read-only. It checks that the result's terminal-node
+     inventory, cost mapping, and optimum metadata agree with the DecisionTree.
+diff --git a/tests/examples/LogBridge/test_exhaustive_search.py b/tests/examples/LogBridge/test_optimization.py
+similarity index 75%
+rename from tests/examples/LogBridge/test_exhaustive_search.py
+rename to tests/examples/LogBridge/test_optimization.py
+index a4c8c6a..931c836 100644
+--- a/tests/examples/LogBridge/test_exhaustive_search.py
++++ b/tests/examples/LogBridge/test_optimization.py
+@@ -1,10 +1,10 @@
+ from examples.LogBridge.LoadPassive_LogBridge import makeModel
+ from socs.decision.decision import ControlDecision
+-from examples.LogBridge.exhaustive_search import run_logbridge_exhaustive_search
++from examples.LogBridge.optimization import run_logbridge_optimization
+ 
+ 
+-def test_logbridge_exhaustive_search_finds_minimum_makespan():
+-    result = run_logbridge_exhaustive_search(makeModel())
++def test_logbridge_optimization_finds_minimum_makespan():
++    result = run_logbridge_optimization(makeModel())
+ 
+     assert result.best_node_id is not None
+     assert result.best_cost is not None
+@@ -36,8 +36,8 @@ def test_logbridge_exhaustive_search_finds_minimum_makespan():
+     }
+ 
+ 
+-def test_logbridge_exhaustive_search_enumerates_wait_alternatives():
+-    result = run_logbridge_exhaustive_search(makeModel())
++def test_logbridge_optimization_enumerates_wait_alternatives():
++    result = run_logbridge_optimization(makeModel())
+ 
+     paths = [
+         result.tree.get_path(node_id)
+@@ -49,7 +49,7 @@ def test_logbridge_exhaustive_search_enumerates_wait_alternatives():
+ 
+ 
+ def test_incomplete_paths_are_not_considered_feasible():
+-    result = run_logbridge_exhaustive_search(makeModel())
++    result = run_logbridge_optimization(makeModel())
+ 
+     assert sum(cost is None for cost in result.costs.values()) == 4
+     assert sum(cost is not None for cost in result.costs.values()) == 6
+@@ -57,9 +57,9 @@ def test_incomplete_paths_are_not_considered_feasible():
+ 
+ 
+ def test_optimization_report_can_include_snapshot_details(capsys):
+-    from examples.LogBridge.LoadPassive_LogBridge import runExhaustiveOptimization
++    from examples.LogBridge.LoadPassive_LogBridge import runOptimization
+ 
+-    runExhaustiveOptimization(end_time=200.0, include_snapshot_details=True)
++    runOptimization(end_time=200.0, include_snapshot_details=True)
+ 
+     output = capsys.readouterr().out
+     assert "Optimal path 1:" in output
+@@ -71,9 +71,9 @@ def test_optimization_report_can_include_snapshot_details(capsys):
+ 
+ 
+ def test_optimization_report_can_hide_snapshot_details(capsys):
+-    from examples.LogBridge.LoadPassive_LogBridge import runExhaustiveOptimization
++    from examples.LogBridge.LoadPassive_LogBridge import runOptimization
+ 
+-    runExhaustiveOptimization(end_time=200.0, include_snapshot_details=False)
++    runOptimization(end_time=200.0, include_snapshot_details=False)
+ 
+     output = capsys.readouterr().out
+     assert "Optimal path 1:" in output
+@@ -82,10 +82,10 @@ def test_optimization_report_can_hide_snapshot_details(capsys):
+ 
+ 
+ def test_completion_condition_is_separate_from_objective_value():
+-    from examples.LogBridge.exhaustive_search import LogBridgeMakespanEvaluator
++    from examples.LogBridge.optimization import LogBridgeMakespanEvaluator
+ 
+     evaluator = LogBridgeMakespanEvaluator()
+-    result = run_logbridge_exhaustive_search(makeModel())
++    result = run_logbridge_optimization(makeModel())
+ 
+     completed = result.tree.get_snapshot(result.best_node_id)
+     incomplete = result.tree.get_snapshot(
+diff --git a/tests/optimization/test_optimizer.py b/tests/optimization/test_optimizer.py
+index 1090c05..0dac2d6 100644
+--- a/tests/optimization/test_optimizer.py
++++ b/tests/optimization/test_optimizer.py
+@@ -3,7 +3,7 @@ from copy import deepcopy
+ import pytest
+ 
+ from socs.decision.decision import Decision
+-from socs.optimization.optimizer import ExhaustiveOptimizer, OptimizationResult
++from socs.optimization.optimizer import Optimizer, OptimizationResult
+ from socs.devs.Snapshot import ModelSnapshot, SystemSnapshot
+ from socs.tree import DecisionTree
+ 
+@@ -52,14 +52,14 @@ def make_snapshot(value=0):
+     )
+ 
+ 
+-def test_exhaustive_optimizer_expands_every_decision_and_selects_best():
++def test_optimizer_expands_every_decision_and_selects_best():
+     tree = DecisionTree()
+     root_id = tree.add_root(make_snapshot())
+     decisions = [AddDecision(10), AddDecision(20)]
+     generator = make_generator(decisions)
+     executor = CounterExecutor()
+ 
+-    optimizer = ExhaustiveOptimizer(
++    optimizer = Optimizer(
+         tree=tree,
+         generator=generator,
+         executor=executor,
+@@ -75,11 +75,11 @@ def test_exhaustive_optimizer_expands_every_decision_and_selects_best():
+     assert result.optimal_paths() == [[decisions[0]]]
+ 
+ 
+-def test_exhaustive_optimizer_treats_empty_decision_set_as_leaf():
++def test_optimizer_treats_empty_decision_set_as_leaf():
+     tree = DecisionTree()
+     root_id = tree.add_root(make_snapshot())
+ 
+-    result = ExhaustiveOptimizer(
++    result = Optimizer(
+         tree=tree,
+         generator=make_generator([]),
+         executor=CounterExecutor(),
+@@ -91,11 +91,11 @@ def test_exhaustive_optimizer_treats_empty_decision_set_as_leaf():
+     assert result.best_node_id == root_id
+ 
+ 
+-def test_exhaustive_optimizer_stops_an_unchanged_branch():
++def test_optimizer_stops_an_unchanged_branch():
+     tree = DecisionTree()
+     root_id = tree.add_root(make_snapshot())
+ 
+-    result = ExhaustiveOptimizer(
++    result = Optimizer(
+         tree=tree,
+         generator=make_generator([NoOpDecision()]),
+         executor=NoOpExecutor(),
+@@ -107,12 +107,12 @@ def test_exhaustive_optimizer_stops_an_unchanged_branch():
+     assert result.leaf_node_ids == (2,)
+ 
+ 
+-def test_exhaustive_optimizer_requires_tree_root():
++def test_optimizer_requires_tree_root():
+     tree = DecisionTree()
+     root_id = tree.add_root(make_snapshot())
+     child_id = tree.add_child(root_id, NoOpDecision(), make_snapshot())
+ 
+-    optimizer = ExhaustiveOptimizer(
++    optimizer = Optimizer(
+         tree=tree,
+         generator=make_generator([]),
+         executor=NoOpExecutor(),
+diff --git a/tests/optimization/test_search_validator.py b/tests/optimization/test_search_validator.py
+index 032fe83..45d59cd 100644
+--- a/tests/optimization/test_search_validator.py
++++ b/tests/optimization/test_search_validator.py
+@@ -1,14 +1,14 @@
+-"""Tests for exhaustive search-result validation."""
++"""Tests for optimization-result validation."""
+ 
+ from dataclasses import replace
+ 
+ from examples.LogBridge.LoadPassive_LogBridge import makeModel
+-from examples.LogBridge.exhaustive_search import run_logbridge_exhaustive_search
++from examples.LogBridge.optimization import run_logbridge_optimization
+ from socs.optimization.search_validator import SearchResultValidator
+ 
+ 
+ def make_result():
+-    return run_logbridge_exhaustive_search(makeModel())
++    return run_logbridge_optimization(makeModel())
+ 
+ 
+ def test_search_result_validator_accepts_valid_logbridge_result():
