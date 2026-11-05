@@ -64,19 +64,31 @@ class Optimizer:
         self.objective = objective
 
     def run(self, root_node_id: int) -> OptimizationResult:
-        """Expand all generated alternatives and evaluate terminal snapshots."""
+        """Build the solution tree and evaluate its terminal states."""
+
         if root_node_id not in self.tree.V:
             raise KeyError(f"Root node {root_node_id!r} is not in the DecisionTree.")
         if root_node_id != self.tree.root_id:
             raise ValueError("root_node_id must be the DecisionTree root.")
 
+        leaf_node_ids = self.build_solution_tree(root_node_id)
+
+        return self.get_optimization_result(root_node_id, leaf_node_ids)
+
+    def build_solution_tree(self, root_node_id: int) -> list[int]:
+        """Expand all generated Decision branches using breadth-first search."""
+
         queue = deque([root_node_id])
-        leaves: list[int] = []
+        leaf_node_ids: list[int] = []
 
         while queue:
             node_id = queue.popleft()
             parent_snapshot = self.tree.get_snapshot(node_id)
             decisions = list(self.generator(parent_snapshot))
+
+            if not decisions:
+                leaf_node_ids.append(node_id)
+                continue
 
             for decision in decisions:
                 if not isinstance(decision, Decision):
@@ -90,17 +102,24 @@ class Optimizer:
                 )
 
                 if child_snapshot == parent_snapshot:
-                    leaves.append(child_node_id)
+                    leaf_node_ids.append(child_node_id)
                 else:
                     queue.append(child_node_id)
 
-            if not decisions:
-                leaves.append(node_id)
+        return leaf_node_ids
+
+    def get_optimization_result(
+        self,
+        root_node_id: int,
+        leaf_node_ids: list[int],
+    ) -> OptimizationResult:
+        """Evaluate terminal snapshots and select the optimal paths."""
 
         costs = {
             node_id: self.objective(self.tree.get_snapshot(node_id))
-            for node_id in leaves
+            for node_id in leaf_node_ids
         }
+
         feasible = [
             (cost, node_id)
             for node_id, cost in costs.items()
@@ -109,11 +128,18 @@ class Optimizer:
 
         if feasible:
             best_cost = min(cost for cost, _ in feasible)
+
             optimal_node_ids = tuple(
                 node_id
                 for cost, node_id in feasible
-                if math.isclose(cost, best_cost, rel_tol=1e-9, abs_tol=1e-9)
+                if math.isclose(
+                    cost,
+                    best_cost,
+                    rel_tol=1e-9,
+                    abs_tol=1e-9,
+                )
             )
+
             best_node_id = optimal_node_ids[0]
         else:
             best_cost = None
@@ -123,7 +149,7 @@ class Optimizer:
         return OptimizationResult(
             tree=self.tree,
             root_node_id=root_node_id,
-            leaf_node_ids=tuple(leaves),
+            leaf_node_ids=tuple(leaf_node_ids),
             costs=costs,
             best_node_id=best_node_id,
             best_cost=best_cost,
