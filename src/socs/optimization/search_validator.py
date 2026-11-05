@@ -3,6 +3,9 @@
 from dataclasses import dataclass
 import math
 from typing import Hashable
+from unittest import result
+
+from pytest import fail
 
 from socs.tree.validators import DecisionTreeValidator
 
@@ -150,13 +153,16 @@ class SearchResultValidator:
 
         costs_valid = True
         for node_id, cost in result.costs.items():
-            if cost is None:
-                continue
-            if isinstance(cost, bool) or not isinstance(cost, (int, float)) or not math.isfinite(cost):
+            if (
+                isinstance(cost, bool)
+                or not isinstance(cost, (int, float))
+                or math.isnan(cost)
+                or cost == -math.inf
+            ):
                 costs_valid = False
                 fail(
                     "INVALID_COST",
-                    f"Cost must be a finite number or None; received {cost!r}.",
+                    f"Cost must be a finite number or positive infinity; received {cost!r}.",
                     node_id,
                 )
         checks["Cost values"] = costs_valid

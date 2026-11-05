@@ -121,3 +121,48 @@ def test_optimizer_requires_tree_root():
 
     with pytest.raises(ValueError, match="DecisionTree root"):
         optimizer.run(child_id)
+
+def test_optimizer_excludes_infeasible_leaves():
+    tree = DecisionTree()
+    root_id = tree.add_root(make_snapshot())
+    decisions = [AddDecision(10), AddDecision(20)]
+
+    def objective(snapshot):
+        value = snapshot.root_model.model_state
+        return float("inf") if value == 10 else value
+
+    result = Optimizer(
+        tree=tree,
+        generator=make_generator(decisions),
+        executor=CounterExecutor(),
+        objective=objective,
+    ).run(root_id)
+
+    assert result.leaf_count == 2
+    assert result.costs == {
+        2: float("inf"),
+        3: 20,
+    }
+    assert result.best_cost == 20
+    assert result.best_node_id == 3
+    assert result.optimal_node_ids == (3,)
+
+
+def test_optimizer_returns_no_solution_when_all_leaves_are_infeasible():
+    tree = DecisionTree()
+    root_id = tree.add_root(make_snapshot())
+
+    result = Optimizer(
+        tree=tree,
+        generator=make_generator([AddDecision(10), AddDecision(20)]),
+        executor=CounterExecutor(),
+        objective=lambda snapshot: float("inf"),
+    ).run(root_id)
+
+    assert result.leaf_count == 2
+    assert all(cost == float("inf") for cost in result.costs.values())
+    assert result.best_cost is None
+    assert result.best_node_id is None
+    assert result.optimal_node_ids == ()
+    assert result.best_path() == []
+    assert result.optimal_paths() == []

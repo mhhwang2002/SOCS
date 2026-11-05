@@ -129,11 +129,11 @@ class LogBridgeMakespanEvaluator:
             return True
         return False
 
-    def __call__(self, snapshot: SystemSnapshot) -> float | None:
-        """Return makespan for completed schedules, or None if infeasible."""
+    def __call__(self, snapshot: SystemSnapshot) -> float:
+        """Return makespan for completed schedules, or infinity if infeasible."""
         if self.is_complete(snapshot):
             return snapshot.t_now
-        return None
+        return math.inf
 
 
 def run_logbridge_optimization(

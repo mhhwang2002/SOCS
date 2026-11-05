@@ -228,3 +228,11 @@ class DecisionTree(AGraph):
         for edge in self.in_edges(vertex):
             AGraph.remove_edge(self, edge)
         AGraph.remove_vertex(self, vertex)
+
+    def get_leaves(self) -> list[int]:
+        """Return vertex IDs of all leaf vertices in insertion order."""
+        return [
+            node_id
+            for node_id in self.V
+            if not self.out_edges(node_id)
+        ]

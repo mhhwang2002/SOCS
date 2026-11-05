@@ -17,7 +17,7 @@ class OptimizationResult:
     tree: DecisionTree
     root_node_id: int
     leaf_node_ids: tuple[int, ...]
-    costs: dict[int, float | None]
+    costs: dict[int, float]
     best_node_id: int | None
     best_cost: float | None
     optimal_node_ids: tuple[int, ...]
@@ -47,7 +47,7 @@ class Optimizer:
         tree: DecisionTree,
         generator: Callable[[SystemSnapshot], Iterable[Decision]],
         executor,
-        objective: Callable[[SystemSnapshot], float | None],
+        objective: Callable[[SystemSnapshot], float],
     ) -> None:
         if not isinstance(tree, DecisionTree):
             raise TypeError("tree must be a DecisionTree instance.")
@@ -71,24 +71,19 @@ class Optimizer:
         if root_node_id != self.tree.root_id:
             raise ValueError("root_node_id must be the DecisionTree root.")
 
-        leaf_node_ids = self.build_solution_tree(root_node_id)
+        self.build_solution_tree(root_node_id)
 
-        return self.get_optimization_result(root_node_id, leaf_node_ids)
+        return self.get_optimization_result(root_node_id)
 
-    def build_solution_tree(self, root_node_id: int) -> list[int]:
+    def build_solution_tree(self, root_node_id: int) -> None:
         """Expand all generated Decision branches using breadth-first search."""
 
         queue = deque([root_node_id])
-        leaf_node_ids: list[int] = []
 
         while queue:
             node_id = queue.popleft()
             parent_snapshot = self.tree.get_snapshot(node_id)
-            decisions = list(self.generator(parent_snapshot))
-
-            if not decisions:
-                leaf_node_ids.append(node_id)
-                continue
+            decisions = self.generator(parent_snapshot)
 
             for decision in decisions:
                 if not isinstance(decision, Decision):
@@ -101,29 +96,33 @@ class Optimizer:
                     child_snapshot,
                 )
 
-                if child_snapshot == parent_snapshot:
-                    leaf_node_ids.append(child_node_id)
-                else:
+                if child_snapshot != parent_snapshot:
                     queue.append(child_node_id)
-
-        return leaf_node_ids
 
     def get_optimization_result(
         self,
         root_node_id: int,
-        leaf_node_ids: list[int],
     ) -> OptimizationResult:
         """Evaluate terminal snapshots and select the optimal paths."""
 
-        costs = {
-            node_id: self.objective(self.tree.get_snapshot(node_id))
-            for node_id in leaf_node_ids
-        }
+        leaf_node_ids = self.tree.get_leaves()
+
+        costs = {}
+        for node_id in leaf_node_ids:
+            cost = self.objective(self.tree.get_snapshot(node_id))
+
+            if not isinstance(cost, (int, float)):
+                raise TypeError("objective must return a numeric value.")
+
+            if math.isnan(cost) or cost == -math.inf:
+                raise ValueError("objective must return a valid cost or positive infinity.")
+
+            costs[node_id] = cost
 
         feasible = [
             (cost, node_id)
             for node_id, cost in costs.items()
-            if cost is not None
+            if cost != math.inf
         ]
 
         if feasible:
