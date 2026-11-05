@@ -3,30 +3,33 @@
 from collections.abc import Callable
 import math
 
-from socs.decision.optimizer import ExhaustiveOptimizer, OptimizationResult
+from socs.decision.control import apply_control
+from socs.decision.decision import ControlDecision
+from socs.optimization.optimizer import ExhaustiveOptimizer, OptimizationResult
+from socs.optimization.simulation_executor import SimulationDecisionExecutor
 from socs.devs.SimEngine import ExecutionResult, SimEngineBase
 from socs.devs.Snapshot import SystemSnapshot
 from socs.tree.decision_tree import DecisionTree
 
-from .decision_generator import LogBridgeDecisionGenerator
-from .decision_executor import LogBridgeDecisionExecutor
+from .decision_generator import generate_decisions, has_decisions
 from .LoadPassive import LoadPassive
 from .LogBridge import LogBridge
 
 
-class LogBridgePathExecutor(LogBridgeDecisionExecutor):
+class LogBridgePathExecutor(SimulationDecisionExecutor[ControlDecision]):
     """Advance each branch to its next decision point or terminal condition."""
 
     def __init__(
         self,
         engine: SimEngineBase,
         end_time: float,
-        generator: LogBridgeDecisionGenerator,
         completion_condition: Callable[[SystemSnapshot], bool],
     ) -> None:
         super().__init__(engine=engine, end_time=end_time)
-        self.generator = generator
         self.completion_condition = completion_condition
+
+    def apply_decision(self, model, decision: ControlDecision) -> None:
+        apply_control(self.engine, decision)
 
     def run_branch(self) -> None:
         """Stop at a new decision point, completion, deadlock, or time bound."""
@@ -51,13 +54,12 @@ class LogBridgePathExecutor(LogBridgeDecisionExecutor):
                 snapshot = self.engine.capture_snapshot()
                 if self.completion_condition(snapshot):
                     return
-                if self.generator.has_decisions(snapshot):
+                if has_decisions(snapshot):
                     return
 
 
 def advance_to_first_decision_point(
     engine: SimEngineBase,
-    generator: LogBridgeDecisionGenerator,
     end_time: float,
 ) -> SystemSnapshot:
     """Run the initial model until the first state with Decision candidates."""
@@ -80,7 +82,7 @@ def advance_to_first_decision_point(
             ExecutionResult.ExternalEventOccurred,
         ):
             snapshot = engine.capture_snapshot()
-            if generator.has_decisions(snapshot):
+            if has_decisions(snapshot):
                 return snapshot
 
 
@@ -152,12 +154,10 @@ def run_logbridge_exhaustive_search(
         raise ValueError("The supplied engine must own the supplied model instance.")
     engine.bVerbose = False
 
-    generator = LogBridgeDecisionGenerator()
     evaluator = LogBridgeMakespanEvaluator()
 
     root_snapshot = advance_to_first_decision_point(
         engine=engine,
-        generator=generator,
         end_time=end_time,
     )
 
@@ -167,12 +167,11 @@ def run_logbridge_exhaustive_search(
     executor = LogBridgePathExecutor(
         engine=engine,
         end_time=end_time,
-        generator=generator,
         completion_condition=evaluator.is_complete,
     )
     optimizer = ExhaustiveOptimizer(
         tree=tree,
-        generator=generator,
+        generator=generate_decisions,
         executor=executor,
         objective=evaluator,
     )

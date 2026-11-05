@@ -1,87 +1,12 @@
+"""Decision definitions and DEVS control helpers."""
 
-from .decision import Decision, ControlDecision, NoControl
-from .generator import DecisionGenerator
-from .selector import DecisionSelector, FIFOSelector, FixedPrioritySelector
-from .executor import DecisionExecutor
-from .control_executor import (
-    ControlRuntimeExecutor,
-    ControlSimulationDecisionExecutor,
-)
-from .lifecycle import (
-    DecisionLifeCycleManager,
-    DecisionRecord,
-    DecisionStatus,
-)
-from .path_validator import DecisionPathValidator, PathValidationResult
-
-
-# Backward-compatible class aliases.
-DecisionManager = DecisionLifeCycleManager
-DecisionEvaluator = DecisionExecutor
-
+from .decision import Decision, ControlDecision
+from .control import apply_control, make_port_value, resolve_model
 
 __all__ = [
     "Decision",
     "ControlDecision",
-    "NoControl",
-    "DecisionGenerator",
-    "DecisionSelector",
-    "FIFOSelector",
-    "FixedPrioritySelector",
-    "DecisionExecutor",
-    "ControlRuntimeExecutor",
-    "ControlSimulationDecisionExecutor",
-    "DecisionLifeCycleManager",
-    "DecisionRecord",
-    "DecisionStatus",
-    "DecisionManager",
-    "DecisionEvaluator",
-    "DecisionPathValidator",
-    "PathValidationResult",
-    "DecisionRuntimeController",
-    "DecisionRuntimeStep",
-    "ExhaustiveOptimizer",
-    "OptimizationResult",
-    "SearchResultValidator",
-    "SearchResultValidationResult",
-    "SearchResultIssue",
+    "apply_control",
+    "make_port_value",
+    "resolve_model",
 ]
-
-
-def __getattr__(name):
-    if name in {"ExhaustiveOptimizer", "OptimizationResult"}:
-        from .optimizer import ExhaustiveOptimizer, OptimizationResult
-
-        return {
-            "ExhaustiveOptimizer": ExhaustiveOptimizer,
-            "OptimizationResult": OptimizationResult,
-        }[name]
-
-    if name in {
-        "SearchResultValidator",
-        "SearchResultValidationResult",
-        "SearchResultIssue",
-    }:
-        from .search_validator import (
-            SearchResultValidator,
-            SearchResultValidationResult,
-            SearchResultIssue,
-        )
-
-        return {
-            "SearchResultValidator": SearchResultValidator,
-            "SearchResultValidationResult": SearchResultValidationResult,
-            "SearchResultIssue": SearchResultIssue,
-        }[name]
-
-    if name in {"DecisionRuntimeController", "DecisionRuntimeStep"}:
-        from .runtime import DecisionRuntimeController, DecisionRuntimeStep
-
-        return {
-            "DecisionRuntimeController": DecisionRuntimeController,
-            "DecisionRuntimeStep": DecisionRuntimeStep,
-        }[name]
-
-    raise AttributeError(
-        f"module {__name__!r} has no attribute {name!r}"
-    )

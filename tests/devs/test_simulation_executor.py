@@ -5,7 +5,7 @@ import pytest
 from socs.devs.Simulatable import Simulatable
 from socs.devs.SimEngine import ExecutionResult, SimEngineBase, SimEngineThread
 from socs.decision.decision import Decision
-from socs.decision.simulation_executor import SimulationDecisionExecutor
+from socs.optimization.simulation_executor import SimulationDecisionExecutor
 
 
 class CounterModel(Simulatable):

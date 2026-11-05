@@ -2,8 +2,8 @@ import pytest
 
 from socs.devs.Snapshot import ModelSnapshot, SystemSnapshot
 
-from socs.decision.decision import ControlDecision, NoControl
-from examples.LogBridge.decision_generator import LogBridgeDecisionGenerator
+from socs.decision.decision import ControlDecision
+from examples.LogBridge.decision_generator import generate_decisions, has_decisions
 
 
 def make_model_snapshot(name, state):
@@ -49,49 +49,42 @@ def make_system_snapshot(
 
 
 def test_generates_decisions_for_both_waiting_source_loads():
-    generator = LogBridgeDecisionGenerator()
-
-    decisions = list(generator.generate(make_system_snapshot()))
+    decisions = list(generate_decisions(make_system_snapshot()))
 
     assert decisions == [
         ControlDecision("Load_LogBridge.L11", "?go"),
         ControlDecision("Load_LogBridge.L21", "?go"),
-        NoControl(),
+        ControlDecision(None),
     ]
 
 
 def test_generates_decision_only_for_waiting_source_load():
-    generator = LogBridgeDecisionGenerator()
     state = make_system_snapshot(l21_state=("B", 4.5))
 
-    decisions = list(generator.generate(state))
+    decisions = list(generate_decisions(state))
 
-    assert decisions == [ControlDecision("Load_LogBridge.L11", "?go"), NoControl()]
+    assert decisions == [ControlDecision("Load_LogBridge.L11", "?go"), ControlDecision(None)]
 
 
 def test_does_not_generate_when_bridge_is_busy():
-    generator = LogBridgeDecisionGenerator()
     state = make_system_snapshot(bridge_state=("S1", 5))
 
-    assert list(generator.generate(state)) == []
+    assert list(generate_decisions(state)) == []
 
 
 def test_does_not_generate_when_a_load_is_already_authorized():
-    generator = LogBridgeDecisionGenerator()
     state = make_system_snapshot(l11_state=("S", 5))
 
-    assert list(generator.generate(state)) == []
+    assert list(generate_decisions(state)) == []
 
 
 def test_does_not_generate_when_external_input_is_queued():
-    generator = LogBridgeDecisionGenerator()
     state = make_system_snapshot(x_buffer=[(123, object())])
 
-    assert list(generator.generate(state)) == []
+    assert list(generate_decisions(state)) == []
 
 
 def test_destination_loads_are_not_decision_candidates():
-    generator = LogBridgeDecisionGenerator()
     state = make_system_snapshot(
         l11_state=("I", 5),
         l21_state=("I", 4.5),
@@ -99,39 +92,31 @@ def test_destination_loads_are_not_decision_candidates():
         l22_state=("W", 4.5),
     )
 
-    assert list(generator.generate(state)) == []
+    assert list(generate_decisions(state)) == []
 
 
 def test_candidate_load_names_can_be_configured():
-    generator = LogBridgeDecisionGenerator(candidate_load_names=("L21",))
-    decisions = list(generator.generate(make_system_snapshot()))
+    decisions = list(generate_decisions(make_system_snapshot(), candidate_load_names=("L21",)))
 
-    assert decisions == [ControlDecision("Load_LogBridge.L21", "?go"), NoControl()]
+    assert decisions == [ControlDecision("Load_LogBridge.L21", "?go"), ControlDecision(None)]
 
 
 def test_rejects_missing_candidate_load():
-    generator = LogBridgeDecisionGenerator(candidate_load_names=("L99",))
-
     with pytest.raises(ValueError, match="missing"):
-        list(generator.generate(make_system_snapshot()))
+        list(generate_decisions(make_system_snapshot(), candidate_load_names=("L99",)))
 
 
 def test_has_decisions_matches_generated_alternatives():
-    generator = LogBridgeDecisionGenerator()
-
-    assert generator.has_decisions(make_system_snapshot())
-    assert not generator.has_decisions(
-        make_system_snapshot(bridge_state=("S1", 5))
-    )
+    assert has_decisions(make_system_snapshot())
+    assert not has_decisions(make_system_snapshot(bridge_state=("S1", 5)))
 
 
 def test_has_decisions_does_not_consume_generated_decisions():
-    generator = LogBridgeDecisionGenerator()
     state = make_system_snapshot()
 
-    assert generator.has_decisions(state)
-    assert list(generator.generate(state)) == [
+    assert has_decisions(state)
+    assert list(generate_decisions(state)) == [
         ControlDecision("Load_LogBridge.L11", "?go"),
         ControlDecision("Load_LogBridge.L21", "?go"),
-        NoControl(),
+        ControlDecision(None),
     ]

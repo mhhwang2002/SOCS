@@ -4,7 +4,7 @@ from dataclasses import replace
 
 from examples.LogBridge.LoadPassive_LogBridge import makeModel
 from examples.LogBridge.exhaustive_search import run_logbridge_exhaustive_search
-from socs.decision.search_validator import SearchResultValidator
+from socs.optimization.search_validator import SearchResultValidator
 
 
 def make_result():

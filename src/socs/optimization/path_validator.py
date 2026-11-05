@@ -8,7 +8,6 @@ from typing import Any, Callable
 from socs.devs.Snapshot import SystemSnapshot
 from socs.tree import DecisionTree
 
-from .executor import DecisionExecutor
 
 
 @dataclass(frozen=True)
@@ -54,14 +53,14 @@ class DecisionPathValidator:
     def __init__(
         self,
         tree: DecisionTree,
-        executor: DecisionExecutor,
+        executor,
         terminal_classifier: Callable[[SystemSnapshot], Any] | None = None,
         cost_evaluator: Callable[[SystemSnapshot], float | None] | None = None,
     ):
         if not isinstance(tree, DecisionTree):
             raise TypeError("tree must be a DecisionTree instance.")
-        if not isinstance(executor, DecisionExecutor):
-            raise TypeError("executor must be a DecisionExecutor instance.")
+        if not callable(getattr(executor, "execute", None)):
+            raise TypeError("executor must provide an execute(state, decision) method.")
         if terminal_classifier is not None and not callable(terminal_classifier):
             raise TypeError("terminal_classifier must be callable or None.")
         if cost_evaluator is not None and not callable(cost_evaluator):

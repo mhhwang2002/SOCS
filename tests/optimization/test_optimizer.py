@@ -3,9 +3,7 @@ from copy import deepcopy
 import pytest
 
 from socs.decision.decision import Decision
-from socs.decision.executor import DecisionExecutor
-from socs.decision.generator import DecisionGenerator
-from socs.decision.optimizer import ExhaustiveOptimizer, OptimizationResult
+from socs.optimization.optimizer import ExhaustiveOptimizer, OptimizationResult
 from socs.devs.Snapshot import ModelSnapshot, SystemSnapshot
 from socs.tree import DecisionTree
 
@@ -15,23 +13,21 @@ class AddDecision(Decision):
         self.amount = amount
 
 
-class AddDecisionGenerator(DecisionGenerator):
-    def __init__(self, decisions):
-        self.decisions = decisions
-
-    def generate(self, state):
+def make_generator(decisions):
+    def generate(state):
         if state.root_model.model_state == 0:
-            yield from self.decisions
+            yield from decisions
+    return generate
 
 
-class CounterExecutor(DecisionExecutor):
+class CounterExecutor:
     def execute(self, state, decision):
         result = deepcopy(state)
         result.root_model.model_state += decision.amount
         return result
 
 
-class NoOpExecutor(DecisionExecutor):
+class NoOpExecutor:
     def execute(self, state, decision):
         return state
 
@@ -60,7 +56,7 @@ def test_exhaustive_optimizer_expands_every_decision_and_selects_best():
     tree = DecisionTree()
     root_id = tree.add_root(make_snapshot())
     decisions = [AddDecision(10), AddDecision(20)]
-    generator = AddDecisionGenerator(decisions)
+    generator = make_generator(decisions)
     executor = CounterExecutor()
 
     optimizer = ExhaustiveOptimizer(
@@ -85,7 +81,7 @@ def test_exhaustive_optimizer_treats_empty_decision_set_as_leaf():
 
     result = ExhaustiveOptimizer(
         tree=tree,
-        generator=AddDecisionGenerator([]),
+        generator=make_generator([]),
         executor=CounterExecutor(),
         objective=lambda snapshot: snapshot.root_model.model_state,
     ).run(root_id)
@@ -101,7 +97,7 @@ def test_exhaustive_optimizer_stops_an_unchanged_branch():
 
     result = ExhaustiveOptimizer(
         tree=tree,
-        generator=AddDecisionGenerator([NoOpDecision()]),
+        generator=make_generator([NoOpDecision()]),
         executor=NoOpExecutor(),
         objective=lambda snapshot: snapshot.t_now,
     ).run(root_id)
@@ -118,7 +114,7 @@ def test_exhaustive_optimizer_requires_tree_root():
 
     optimizer = ExhaustiveOptimizer(
         tree=tree,
-        generator=AddDecisionGenerator([]),
+        generator=make_generator([]),
         executor=NoOpExecutor(),
         objective=lambda snapshot: 0,
     )

@@ -1,15 +1,13 @@
 """Exhaustive simulation-based optimization."""
 
 from collections import deque
+from collections.abc import Callable, Iterable
 from dataclasses import dataclass
 import math
-from typing import Callable
 
-from .decision import Decision
-from .generator import DecisionGenerator
-from .executor import DecisionExecutor
-from ..devs.Snapshot import SystemSnapshot
-from ..tree.decision_tree import DecisionTree
+from socs.decision.decision import Decision
+from socs.devs.Snapshot import SystemSnapshot
+from socs.tree.decision_tree import DecisionTree
 
 
 @dataclass(frozen=True)
@@ -47,16 +45,16 @@ class ExhaustiveOptimizer:
     def __init__(
         self,
         tree: DecisionTree,
-        generator: DecisionGenerator[SystemSnapshot],
-        executor: DecisionExecutor[SystemSnapshot, Decision],
+        generator: Callable[[SystemSnapshot], Iterable[Decision]],
+        executor,
         objective: Callable[[SystemSnapshot], float | None],
     ) -> None:
         if not isinstance(tree, DecisionTree):
             raise TypeError("tree must be a DecisionTree instance.")
-        if not isinstance(generator, DecisionGenerator):
-            raise TypeError("generator must be a DecisionGenerator instance.")
-        if not isinstance(executor, DecisionExecutor):
-            raise TypeError("executor must be a DecisionExecutor instance.")
+        if not callable(generator):
+            raise TypeError("generator must be callable.")
+        if not callable(getattr(executor, "execute", None)):
+            raise TypeError("executor must provide an execute(state, decision) method.")
         if not callable(objective):
             raise TypeError("objective must be callable.")
 
@@ -78,11 +76,11 @@ class ExhaustiveOptimizer:
         while queue:
             node_id = queue.popleft()
             parent_snapshot = self.tree.get_snapshot(node_id)
-            decisions = list(self.generator.generate(parent_snapshot))
+            decisions = list(self.generator(parent_snapshot))
 
             for decision in decisions:
                 if not isinstance(decision, Decision):
-                    raise TypeError("DecisionGenerator must yield Decision instances.")
+                    raise TypeError("generator must yield Decision instances.")
 
                 child_snapshot = self.executor.execute(parent_snapshot, decision)
                 child_node_id = self.tree.add_child(

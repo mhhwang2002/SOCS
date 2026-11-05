@@ -1,5 +1,5 @@
 from examples.LogBridge.LoadPassive_LogBridge import makeModel
-from socs.decision.decision import ControlDecision, NoControl
+from socs.decision.decision import ControlDecision
 from examples.LogBridge.exhaustive_search import run_logbridge_exhaustive_search
 
 
@@ -21,7 +21,7 @@ def test_logbridge_exhaustive_search_finds_minimum_makespan():
     )
     optimal_paths = {
         tuple(
-            ("NoControl" if isinstance(decision, NoControl) else "ControlDecision", decision.target_model.rsplit(".", 1)[-1] if decision.target_model else None)
+            ("NoControl" if decision.target_model is None else "ControlDecision", decision.target_model.rsplit(".", 1)[-1] if decision.target_model else None)
             for decision in path
         )
         for path in result.optimal_paths()
@@ -44,7 +44,7 @@ def test_logbridge_exhaustive_search_enumerates_wait_alternatives():
         for node_id in result.leaf_node_ids
     ]
 
-    assert any(NoControl() in path for path in paths)
+    assert any(ControlDecision(None) in path for path in paths)
     assert len(paths) == 10
 
 

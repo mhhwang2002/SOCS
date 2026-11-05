@@ -2,13 +2,12 @@
 
 import math
 
-from socs.decision.path_validator import DecisionPathValidator
-from socs.decision.search_validator import SearchResultValidator
+from socs.optimization.path_validator import DecisionPathValidator
+from socs.optimization.search_validator import SearchResultValidator
 from socs.devs.SimEngine import SimEngineThread
 from socs.tree import DecisionTreeValidator
 
 from .LoadPassive_LogBridge import makeModel
-from .decision_generator import LogBridgeDecisionGenerator
 from .exhaustive_search import (
     LogBridgeMakespanEvaluator,
     LogBridgePathExecutor,
@@ -27,7 +26,6 @@ def main() -> int:
     executor = LogBridgePathExecutor(
         engine=engine,
         end_time=200.0,
-        generator=LogBridgeDecisionGenerator(),
         completion_condition=evaluator.is_complete,
     )
 

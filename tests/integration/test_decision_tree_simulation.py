@@ -3,7 +3,7 @@ import math
 import pytest
 
 from socs.decision.decision import Decision
-from socs.decision.simulation_executor import SimulationDecisionExecutor
+from socs.optimization.simulation_executor import SimulationDecisionExecutor
 from socs.devs.CoupledDEVS import CoupledDEVS
 from socs.devs.DEVSInterfaces import PortValue
 from socs.devs.FDDEVS import FDDEVS

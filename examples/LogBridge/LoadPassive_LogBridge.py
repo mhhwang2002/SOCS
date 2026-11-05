@@ -6,27 +6,21 @@ from socs.devs.DEVSInterfaces import PortValue
 from socs.devs.SimEngine import SimEngineThread
 from .LoadPassive import LoadPassive
 from .LogBridge import LogBridge
-from .FixedPriorityController import FixedPriorityController
-from .FIFOController import FIFOController
-from socs.decision import DecisionRuntimeController, FixedPrioritySelector
-from .decision_generator import LogBridgeDecisionGenerator
-from .runtime_executor import LogBridgeRuntimeExecutor
-from socs.decision.decision import ControlDecision, NoControl
- 
+
 
 def makeModel():
     """Build the coupled load log_bridge model."""
     load11 = LoadPassive("L11", 100, 5)
     load12 = LoadPassive("L12", 100)
-    log_bridge = LogBridge("LB", 100) 
+    log_bridge = LogBridge("LB", 100)
     load21 = LoadPassive("L21", 100, 4.5)
     load22 = LoadPassive("L22", 100)
     model = CoupledDEVS("Load_LogBridge")
     model.addComponents(load11, load12, log_bridge, load21, load22)
     model.addCouples((load11.OP["!out"], log_bridge.IP["?in1"]))
-    model.addCouples((log_bridge.OP["!out1"], load12.IP["?in"])) 
+    model.addCouples((log_bridge.OP["!out1"], load12.IP["?in"]))
     model.addCouples((load21.OP["!out"], log_bridge.IP["?in2"]))
-    model.addCouples((log_bridge.OP["!out2"], load22.IP["?in"])) 
+    model.addCouples((log_bridge.OP["!out2"], load22.IP["?in"]))
     return model
 
 
@@ -59,86 +53,6 @@ def runSimulation(model):
     engine.StepByStep = True
     engine.sfactor = float("inf")
     engine.runInteractiveMenu()
- 
- 
-def runAutomaticSimulation(model, end_time=300.0):
-    """Run the model with automatic fixed-priority GO decisions."""
-    engine = SimEngineThread(model)
-    engine.bVerbose = False
-    engine.set_simulation_time_bound(end_time)
-    controller = FixedPriorityController()
-
-    while True:
-        result = engine.executeOneStep()
-        if result.name == "TimeBoundReached":
-            break
-        controller.dispatch(engine, model)
-
-    print("Automatic dispatches:", controller.dispatch_history)
-    print(model.qstate_to_s())
-    return engine, controller
-
-
-
-def runAutomaticFIFOSimulation(model, end_time=300.0):
-    """Run the model with automatic FIFO GO decisions."""
-    engine = SimEngineThread(model)
-    engine.bVerbose = False
-    engine.set_simulation_time_bound(end_time)
-    controller = FIFOController()
-
-    while True:
-        result = engine.executeOneStep()
-        if result.name == "TimeBoundReached":
-            break
-        controller.dispatch(engine, model)
-
-    print("FIFO dispatches:", controller.dispatch_history)
-    print(model.qstate_to_s())
-    return engine, controller
-
-
-
-def runDecisionRuntimeSimulation(model, end_time=100.0):
-    """Run LogBridge through the SOCS runtime decision cycle."""
-    engine = SimEngineThread(model)
-    engine.bVerbose = False
-    engine.set_simulation_time_bound(end_time)
-
-    def get_priority(decision):
-        if isinstance(decision, ControlDecision) and decision.target_model is not None:
-            return {"Load_LogBridge.L11": 20, "Load_LogBridge.L21": 10}.get(decision.target_model, 0)
-        if isinstance(decision, NoControl):
-            return 0
-        return -1
-
-    controller = DecisionRuntimeController(
-        engine=engine,
-        generator=LogBridgeDecisionGenerator(),
-        selector=FixedPrioritySelector(priority=get_priority),
-        executor=LogBridgeRuntimeExecutor(),
-    )
-
-    dispatch_history = []
-    while True:
-        step = controller.execute_one_step()
-
-        if step.decision_error is not None:
-            raise step.decision_error
-
-        if (
-            step.selected_record is not None
-            and isinstance(step.selected_record.decision, ControlDecision)
-            and step.selected_record.decision.target_model is not None
-        ):
-            dispatch_history.append(
-                (engine.tNow, step.selected_record.decision.target_model.rsplit(".", 1)[-1])
-            )
-
-        if step.execution_result.name == "TimeBoundReached":
-            break
-
-    return engine, controller, dispatch_history
 
 
 def runExhaustiveOptimization(
@@ -173,11 +87,6 @@ def runExhaustiveOptimization(
     return result
 
 
-def runVerification(model):
-    """Placeholder for the legacy verification workflow."""
-    inputs = []
-    # The legacy VeriEngine integration is intentionally left disabled.
-
 
 if __name__ == "__main__":
     model = makeModel()
@@ -185,21 +94,11 @@ if __name__ == "__main__":
 
     running = True
     while running:
-        command = input("(s)im, (a)uto, (f)ifo, (d)ecision, (o)ptimize, (v)eri, e(x)it> ").strip().lower()
+        command = input("(s)im, (o)ptimize, e(x)it> ").strip().lower()
         if command in ("s", "sim"):
             runSimulation(model)
-        elif command in ("a", "auto"):
-            runAutomaticSimulation(model)
-        elif command in ("f", "fifo"):
-            runAutomaticFIFOSimulation(model)
-        elif command in ("d", "decision"):
-            engine, controller, history = runDecisionRuntimeSimulation(model)
-            print("Decision dispatches:", history)
-            print("DEVS executions:", controller.devs_execution_count)
         elif command in ("o", "optimize"):
             runExhaustiveOptimization(makeModel())
-        elif command in ("v", "veri"):
-            runVerification(model)
         elif command in ("x", "exit"):
             running = False
         else:

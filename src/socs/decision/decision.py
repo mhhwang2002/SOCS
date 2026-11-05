@@ -1,9 +1,10 @@
-from abc import ABC
+"""Decision types used by simulation-based optimization."""
+
 from dataclasses import dataclass
 from typing import Any
 
 
-class Decision(ABC):
+class Decision:
     """Base class for optimization decisions."""
 
     pass
@@ -15,6 +16,7 @@ class ControlDecision(Decision):
 
     ``target_model`` is the model's hierarchical path. ``xevent`` may be an
     existing PortValue, an input-port name, or a ``(port_name, value)`` pair.
+    A ``None`` target represents an explicit no-control alternative.
     """
 
     target_model: str | None
@@ -34,18 +36,3 @@ class ControlDecision(Decision):
         if self.target_model is None:
             return "NoControl"
         return f"Control({self.target_model}, {self.xevent})"
-
-
-@dataclass(frozen=True)
-class NoControl(ControlDecision):
-    """Represent an explicit decision to send no external input."""
-
-    target_model: None = None
-    xevent: None = None
-
-    def __init__(self) -> None:
-        object.__setattr__(self, "target_model", None)
-        object.__setattr__(self, "xevent", None)
-
-    def __str__(self) -> str:
-        return "NoControl"

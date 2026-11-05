@@ -3,8 +3,7 @@ from dataclasses import dataclass
 import pytest
 
 from socs.decision.decision import Decision
-from socs.decision.executor import DecisionExecutor
-from socs.decision.path_validator import DecisionPathValidator
+from socs.optimization.path_validator import DecisionPathValidator
 from socs.devs.Snapshot import ModelSnapshot, SystemSnapshot
 from socs.tree import DecisionTree
 
@@ -14,7 +13,7 @@ class Add(Decision):
     amount: int
 
 
-class AddExecutor(DecisionExecutor):
+class AddExecutor:
     def execute(self, state, decision):
         return SystemSnapshot(
             state.t_now + decision.amount,

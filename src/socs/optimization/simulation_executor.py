@@ -1,21 +1,18 @@
 """DEVS simulation-backed decision execution."""
 
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 import math
-from typing import TypeVar
+from typing import Generic, TypeVar
 
-from .decision import Decision
-from .executor import DecisionExecutor
-from ..devs.SimEngine import ExecutionResult, SimEngineBase
-from ..devs.Snapshot import SystemSnapshot
+from socs.decision.decision import Decision
+from socs.devs.SimEngine import ExecutionResult, SimEngineBase
+from socs.devs.Snapshot import SystemSnapshot
 
 
 DecisionT = TypeVar("DecisionT", bound=Decision)
 
 
-class SimulationDecisionExecutor(
-    DecisionExecutor[SystemSnapshot, DecisionT],
-):
+class SimulationDecisionExecutor(ABC, Generic[DecisionT]):
     """Execute a decision by restoring and advancing a DEVS simulation."""
 
     def __init__(self, engine: SimEngineBase, end_time: float) -> None:
