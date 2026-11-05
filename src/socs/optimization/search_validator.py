@@ -3,9 +3,6 @@
 from dataclasses import dataclass
 import math
 from typing import Hashable
-from unittest import result
-
-from pytest import fail
 
 from socs.tree.validators import DecisionTreeValidator
 
@@ -32,7 +29,6 @@ class SearchResultValidationResult:
     tree_leaf_count: int
     reported_leaf_count: int
     feasible_leaf_count: int
-    best_node_id: Hashable | None
     best_cost: float | None
 
     @property
@@ -49,7 +45,6 @@ class SearchResultValidationResult:
             f"Tree leaves: {self.tree_leaf_count}",
             f"Reported leaves: {self.reported_leaf_count}",
             f"Feasible leaves: {self.feasible_leaf_count}",
-            f"Best node: {self.best_node_id}",
             f"Best cost: {self.best_cost}",
             "",
             "Checks:",
@@ -126,30 +121,54 @@ class SearchResultValidator:
         unknown_leaves = reported_leaf_set - node_ids
         checks["Terminal-node references"] = not unknown_leaves
         for node_id in sorted(unknown_leaves, key=repr):
-            fail("UNKNOWN_LEAF", "A reported terminal node does not exist in the tree.", node_id)
+            fail(
+                "UNKNOWN_LEAF",
+                "A reported terminal node does not exist in the tree.",
+                node_id,
+            )
 
         nonterminal_reports = reported_leaf_set & {
             node_id for node_id in node_ids if tree.get_children(node_id)
         }
         checks["Terminal-node status"] = not nonterminal_reports
         for node_id in sorted(nonterminal_reports, key=repr):
-            fail("NONTERMINAL_REPORTED_AS_LEAF", "A reported terminal node has children.", node_id)
+            fail(
+                "NONTERMINAL_REPORTED_AS_LEAF",
+                "A reported terminal node has children.",
+                node_id,
+            )
 
         missing_leaves = actual_leaves - reported_leaf_set
         extra_leaves = reported_leaf_set - actual_leaves
         checks["Complete leaf coverage"] = not missing_leaves and not extra_leaves
         for node_id in sorted(missing_leaves, key=repr):
-            fail("MISSING_TERMINAL", "A structural tree leaf is missing from the search result.", node_id)
+            fail(
+                "MISSING_TERMINAL",
+                "A structural tree leaf is missing from the search result.",
+                node_id,
+            )
         for node_id in sorted(extra_leaves, key=repr):
             if node_id in node_ids:
-                fail("EXTRA_TERMINAL", "A reported terminal node is not a structural leaf.", node_id)
+                fail(
+                    "EXTRA_TERMINAL",
+                    "A reported terminal node is not a structural leaf.",
+                    node_id,
+                )
 
         cost_keys = set(result.costs)
         checks["Cost coverage"] = cost_keys == reported_leaf_set
         for node_id in sorted(reported_leaf_set - cost_keys, key=repr):
-            fail("MISSING_COST", "No objective cost was recorded for this terminal node.", node_id)
+            fail(
+                "MISSING_COST",
+                "No objective cost was recorded for this terminal node.",
+                node_id,
+            )
         for node_id in sorted(cost_keys - reported_leaf_set, key=repr):
-            fail("EXTRA_COST", "A cost is recorded for a node not listed as terminal.", node_id)
+            fail(
+                "EXTRA_COST",
+                "A cost is recorded for a node not listed as terminal.",
+                node_id,
+            )
 
         costs_valid = True
         for node_id, cost in result.costs.items():
@@ -171,26 +190,26 @@ class SearchResultValidator:
             (float(result.costs[node_id]), node_id)
             for node_id in result.leaf_node_ids
             if node_id in result.costs
-            and result.costs[node_id] is not None
             and not isinstance(result.costs[node_id], bool)
             and isinstance(result.costs[node_id], (int, float))
             and math.isfinite(result.costs[node_id])
         ]
-        expected_optimal_ids: tuple[Hashable, ...]
-        expected_best_cost: float | None
-        expected_best_node: Hashable | None
+
         if feasible:
             expected_best_cost = min(cost for cost, _ in feasible)
             expected_optimal_ids = tuple(
                 node_id
                 for cost, node_id in feasible
-                if math.isclose(cost, expected_best_cost, rel_tol=1e-9, abs_tol=1e-9)
+                if math.isclose(
+                    cost,
+                    expected_best_cost,
+                    rel_tol=1e-9,
+                    abs_tol=1e-9,
+                )
             )
-            expected_best_node = expected_optimal_ids[0]
         else:
             expected_best_cost = None
             expected_optimal_ids = ()
-            expected_best_node = None
 
         best_cost_matches = (
             result.best_cost is None and expected_best_cost is None
@@ -212,13 +231,6 @@ class SearchResultValidator:
             fail(
                 "BEST_COST_MISMATCH",
                 f"Reported best cost {result.best_cost!r}; expected {expected_best_cost!r}.",
-            )
-
-        checks["Best node"] = result.best_node_id == expected_best_node
-        if not checks["Best node"]:
-            fail(
-                "BEST_NODE_MISMATCH",
-                f"Reported best node {result.best_node_id!r}; expected {expected_best_node!r}.",
             )
 
         checks["Optimal-node set and order"] = (
@@ -245,6 +257,5 @@ class SearchResultValidator:
             tree_leaf_count=len(actual_leaves),
             reported_leaf_count=len(reported_leaves),
             feasible_leaf_count=len(feasible),
-            best_node_id=result.best_node_id,
             best_cost=result.best_cost,
         )

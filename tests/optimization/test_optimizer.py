@@ -1,4 +1,5 @@
 from copy import deepcopy
+from unittest import result
 
 import pytest
 
@@ -71,7 +72,7 @@ def test_optimizer_expands_every_decision_and_selects_best():
     assert result.node_count == 3
     assert result.leaf_count == 2
     assert result.best_cost == 10
-    assert result.tree.get_path(result.best_node_id) == [decisions[0]]
+    assert result.optimal_node_ids == (2,)
     assert result.optimal_paths() == [[decisions[0]]]
 
 
@@ -88,8 +89,8 @@ def test_optimizer_treats_empty_decision_set_as_leaf():
 
     assert result.leaf_node_ids == (root_id,)
     assert result.costs == {root_id: 0}
-    assert result.best_node_id == root_id
-
+    assert result.optimal_node_ids == (root_id,)
+    assert result.optimal_paths() == [[]]
 
 def test_optimizer_stops_an_unchanged_branch():
     tree = DecisionTree()
@@ -143,9 +144,9 @@ def test_optimizer_excludes_infeasible_leaves():
         2: float("inf"),
         3: 20,
     }
-    assert result.best_cost == 20
-    assert result.best_node_id == 3
+    assert result.best_cost == 20 
     assert result.optimal_node_ids == (3,)
+    assert result.optimal_paths() == [[decisions[1]]]
 
 
 def test_optimizer_returns_no_solution_when_all_leaves_are_infeasible():
@@ -162,7 +163,5 @@ def test_optimizer_returns_no_solution_when_all_leaves_are_infeasible():
     assert result.leaf_count == 2
     assert all(cost == float("inf") for cost in result.costs.values())
     assert result.best_cost is None
-    assert result.best_node_id is None
     assert result.optimal_node_ids == ()
-    assert result.best_path() == []
     assert result.optimal_paths() == []

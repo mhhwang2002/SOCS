@@ -1,3 +1,4 @@
+
 """Simulation-based optimization."""
 
 from collections import deque
@@ -18,7 +19,6 @@ class OptimizationResult:
     root_node_id: int
     leaf_node_ids: tuple[int, ...]
     costs: dict[int, float]
-    best_node_id: int | None
     best_cost: float | None
     optimal_node_ids: tuple[int, ...]
 
@@ -30,13 +30,11 @@ class OptimizationResult:
     def leaf_count(self) -> int:
         return len(self.leaf_node_ids)
 
-    def best_path(self) -> list[Decision]:
-        if self.best_node_id is None:
-            return []
-        return self.tree.get_path(self.best_node_id)
-
     def optimal_paths(self) -> list[list[Decision]]:
-        return [self.tree.get_path(node_id) for node_id in self.optimal_node_ids]
+        return [
+            self.tree.get_path(node_id)
+            for node_id in self.optimal_node_ids
+        ]
 
 
 class Optimizer:
@@ -138,11 +136,8 @@ class Optimizer:
                     abs_tol=1e-9,
                 )
             )
-
-            best_node_id = optimal_node_ids[0]
         else:
             best_cost = None
-            best_node_id = None
             optimal_node_ids = ()
 
         return OptimizationResult(
@@ -150,7 +145,6 @@ class Optimizer:
             root_node_id=root_node_id,
             leaf_node_ids=tuple(leaf_node_ids),
             costs=costs,
-            best_node_id=best_node_id,
             best_cost=best_cost,
             optimal_node_ids=optimal_node_ids,
         )

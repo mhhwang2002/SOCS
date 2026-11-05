@@ -6,10 +6,10 @@ import math
 def test_logbridge_optimization_finds_minimum_makespan():
     result = run_logbridge_optimization(makeModel())
 
-    assert result.best_node_id is not None
+    assert result.optimal_node_ids
     assert result.best_cost is not None
     assert result.best_cost == 84.44444444444444
-    assert result.tree.get_path(result.best_node_id) == [
+    assert result.optimal_paths()[0] == [
         ControlDecision("Load_LogBridge.L11", "?go"),
         ControlDecision("Load_LogBridge.L21", "?go"),
     ]
@@ -53,7 +53,7 @@ def test_incomplete_paths_are_not_considered_feasible():
 
     assert sum(cost == math.inf for cost in result.costs.values()) == 4
     assert sum(math.isfinite(cost) for cost in result.costs.values()) == 6
-    assert result.best_node_id is not None
+    assert result.optimal_node_ids
 
 
 def test_optimization_report_can_include_snapshot_details(capsys):
@@ -87,7 +87,7 @@ def test_completion_condition_is_separate_from_objective_value():
     evaluator = LogBridgeMakespanEvaluator()
     result = run_logbridge_optimization(makeModel())
 
-    completed = result.tree.get_snapshot(result.best_node_id)
+    completed = result.tree.get_snapshot(result.optimal_node_ids[0])
     incomplete = result.tree.get_snapshot(
         next(node_id for node_id, cost in result.costs.items() if cost == math.inf)
     )
