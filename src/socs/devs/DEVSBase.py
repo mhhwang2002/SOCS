@@ -116,9 +116,7 @@ class HierNamedObj(NamedObj):
 
 
 class TES(HierNamedObj):
-    """Timed event system with a class-level current time."""
-
-    tNow = 0.0
+    """Base class for timed event systems."""
 
     def __init__(self, name, parent=None):
         super().__init__(name, parent)
@@ -138,7 +136,7 @@ class TES(HierNamedObj):
             f"{classname(self)}::{function_name()} must be overridden."
         )
 
-    def Delta_null(self, t):
+    def Delta_cont(self, t):
         raise NotImplementedError(
             f"{classname(self)}::{function_name()} must be overridden."
         )
@@ -156,7 +154,3 @@ if __name__ == "__main__":
     print(hiername(su, sun))
     print(hiername(su, su.parent))
     print(hiername(su, moon))
-
-    # TES defines tNow as a class variable; Clock is not defined in this module.
-    TES.tNow = 10
-    print(f"tnow={TES.tNow:.3f}")

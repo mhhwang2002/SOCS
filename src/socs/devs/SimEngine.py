@@ -210,7 +210,7 @@ class SimEngineBase:
 
     def executeAnimation(self, tNow, prevStepExeTime):
         if(tNow>prevStepExeTime):
-            unscheduleEventHappend = self.model.Delta_null(tNow) if self.model is not None else False
+            unscheduleEventHappend = self.model.Delta_cont(tNow) if self.model is not None else False
         else:
             unscheduleEventHappend = False
         self.doAnimation() 
@@ -219,14 +219,14 @@ class SimEngineBase:
         #self._NbAnimationExecutions += 1
 
     def executeContinuous(self, tNow): 
-        unscheduleEventHappend = self.model.Delta_null(tNow) if self.model is not None else False   
+        unscheduleEventHappend = self.model.Delta_cont(tNow) if self.model is not None else False
         self._tNextContinuous = tNow + self.TimeIntervalContinuous  # update next one
         return ExecutionResult.UnscheduledEventOccurred if(unscheduleEventHappend) else ExecutionResult.NoEventOccurred
         #self._NbContinuousExecutions += 1
 
     def executeDEVS_star(self,tNow):
         if(self.model is not None):
-            src_str = self.model.qstate_to_s() if self.bVerbose else ""
+            src_str = self.model.qstate_to_s(tNow) if self.bVerbose else ""
             z = self.model.Delta_y(tNow)  # execute DEVS* transition  
             self.print_src_and_event_segment(src_str, z, tNow) if self.bVerbose else None
             #self._NbDEVSSExecutions += 1
@@ -234,7 +234,7 @@ class SimEngineBase:
 
     def executeDEVS_x(self, tNow, target_md, ipv):  
         self.print_src_and_event_segment(
-                    self.model.qstate_to_s(), ipv, tNow) if self.bVerbose else None
+                    self.model.qstate_to_s(tNow), ipv, tNow) if self.bVerbose else None
         target_md.Delta_x(ipv, self.tNow) if target_md is not None else None
         if target_md is not self.model and target_md.parent is not None:
             target_md.parent.update_tN(update_parent=True) 
@@ -412,7 +412,7 @@ class SimEngineThread(threading.Thread, SimEngineBase):
         """Pause the simulation loop and update statistics."""
         if not self.SkipLoop:
             self.t_segment_end = self.tNow
-            self.model.Delta_null(self.tNow)
+            self.model.Delta_cont(self.tNow)
             self.SkipLoop = True
 
     def inject(self, target_model=None, input_value=None):
@@ -527,7 +527,7 @@ class SimEngineThread(threading.Thread, SimEngineBase):
         """Display the current total state and simulation time."""
         if self.bVerbose:
             print("-- the current state-- ")
-            print(f"{self.model.qstate_to_s()}\t at time {self.tNow:.3f}.")
+            print(f"{self.model.qstate_to_s(self.tNow)}\t at time {self.tNow:.3f}.")
         else:
             self.displayProgress()
 

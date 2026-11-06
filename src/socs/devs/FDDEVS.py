@@ -48,11 +48,29 @@ class FDDEVS(Simulatable):
                 f"tL={self.timeLast()}, t={t}, tN={self.timeNext()}"
             )
 
-        self.Delta_null(t)
+        self.Delta_cont(t)
         reschedule = self.delta_x(x)
         if reschedule:
             self.set_timeLast(t)
             self.set_timeNext(t + self.ta())
+
+    def delta_cont(self, t):
+        """Update continuous state at t; return True for an unexpected event."""
+        return False
+
+    def Delta_cont(self, t):
+        """Apply continuous state change."""
+        if t < self.timeLast() or t > self.timeNext():
+            raise ValueError(
+                f"Delta_cont scheduling error: "
+                f"tL={self.timeLast()}, t={t}, tN={self.timeNext()}"
+            )
+        super().Delta_cont(t)  # Update state-time statistics before the flow.
+        bUnexpectedEvent = self.delta_cont(t)
+        if(bUnexpectedEvent):
+            self.set_timeLast(t)
+            self.set_timeNext(t)
+        return bUnexpectedEvent
 
     def set_state(self, state):
         """Set the model's current state; implement in a concrete model."""

@@ -6,7 +6,6 @@
 
 class Clock:
    '''A class for clocks that has the last event time(tL) and the next event time(tN)'''
-   tNow = 0 # static variable for the current time.
    DisplayMode = 'tL and tN' # other one can be 'sigma_e'
 
    def __init__(self, tl=0.0, tn=float('inf')):
@@ -24,19 +23,27 @@ class Clock:
       '''time elapsed from the last update time tL to the given tNow'''
       return tNow - self.tL
 
-   def __str__(self):
-      '''convert itself to a string'''
-      s=""
-      if Clock.DisplayMode == 'tL and tN':
-         if self.tL == float('-inf') or self.tL == float('inf'): s= "tL=%s"  % self.tL
-         else: s= "tL=%.3f"% self.tL
-         if self.tN == float('inf'): s += ",tN=%s"  % self.tN
-         else:                       s += ",tN=%.3f"% self.tN
-         return s
+   def format(self, t_now=None):
+      '''Format the clock, using t_now when the remaining-time mode is active.'''
+      if Clock.DisplayMode == 'tR' and t_now is not None:
+         time_remaining = self.tr(t_now)
+         if time_remaining == float('inf'):
+            return "tR=%s" % time_remaining
+         return "tR=%.3f" % time_remaining
+
+      if self.tL == float('-inf') or self.tL == float('inf'):
+         result = "tL=%s" % self.tL
       else:
-         if self.tr() == float('inf'): s += "tR=%s"  % self.tr()
-         else:                         s += "tR=%.3f"% self.tr()
-         return s
+         result = "tL=%.3f" % self.tL
+      if self.tN == float('inf'):
+         result += ",tN=%s" % self.tN
+      else:
+         result += ",tN=%.3f" % self.tN
+      return result
+
+   def __str__(self):
+      '''Return a representation that does not depend on a current time.'''
+      return self.format()
    @staticmethod
    def toggleDisplayMode():
       if Clock.DisplayMode == 'tL and tN':
@@ -77,6 +84,10 @@ class Manager:
    def timeAdvance(self):
       '''time advance to tN from the last event time tL: tN - tL'''
       return self.clock.ta()
+
+   def format_clock(self, t_now=None):
+      '''Format this model's clock, optionally relative to simulation time.'''
+      return self.clock.format(t_now)
 
    def __str__(self):
       return str(self.clock)

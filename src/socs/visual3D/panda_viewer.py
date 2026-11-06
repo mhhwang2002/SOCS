@@ -48,10 +48,21 @@ class Panda3DViewer:
         self.attach_entity(entity_id, node_path)
         return node_path
 
-    def set_camera(self, position, target=(0.0, 0.0, 0.0)):
+    def set_camera(self, position, target=(0.0, 0.0, 0.0), field_of_view=55.0):
         """Position the camera and point it at a target in world coordinates."""
+        from panda3d.core import Mat4
+
+        self._base.disableMouse()
+        self._base.camLens.setFov(field_of_view)
         self._base.camera.setPos(*position)
         self._base.camera.lookAt(*target)
+
+        # Trackball stores the inverse camera transform; keep it in sync so
+        # the default mouse-control task does not restore an older view.
+        camera_transform = Mat4(self._base.camera.getMat())
+        camera_transform.invertInPlace()
+        self._base.mouseInterfaceNode.setMat(camera_transform)
+        self._base.enableMouse()
 
     def add_polyline(self, points, color=(0.7, 0.7, 0.7, 1.0), thickness=2.0):
         """Draw a fixed world-space line through a sequence of 3D points."""

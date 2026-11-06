@@ -1,6 +1,8 @@
 """Connect SimEngineThread animation callbacks to a visual state buffer."""
 
 from collections.abc import Callable, Iterable
+import math
+import time
 
 from socs.devs.Simulatable import Simulatable
 from socs.devs.SimEngine import SimEngineThread
@@ -24,11 +26,25 @@ class VisualSimEngineThread(SimEngineThread):
         TimeIntervalContinuous=float("inf"),
         TimeIntervalAnimation=1.0,
         TimeSimulationEnd=float("inf"),
+        real_time_factor=None,
     ):
         if not callable(state_provider):
             raise TypeError("state_provider must be callable.")
+        if real_time_factor is not None:
+            if isinstance(real_time_factor, bool) or not isinstance(
+                real_time_factor, (int, float)
+            ):
+                raise TypeError(
+                    "real_time_factor must be a positive finite number or None."
+                )
+            if not math.isfinite(real_time_factor) or real_time_factor <= 0:
+                raise ValueError(
+                    "real_time_factor must be a positive finite number or None."
+                )
         self.state_provider = state_provider
         self.state_buffer = state_buffer or VisualStateBuffer()
+        self.real_time_factor = real_time_factor
+        self._last_animation_time = None
         super().__init__(
             sim,
             inject_CBF=inject_CBF,
@@ -38,8 +54,16 @@ class VisualSimEngineThread(SimEngineThread):
         )
 
     def doAnimation(self):
-        """Publish current entity state without touching renderer objects."""
+        """Publish state and optionally pace animation ticks to wall time."""
         self._publish_visual_state()
+        if self.real_time_factor is None:
+            return
+
+        if self._last_animation_time is not None:
+            elapsed_simulation_time = self.tNow - self._last_animation_time
+            if elapsed_simulation_time > 0:
+                time.sleep(elapsed_simulation_time / self.real_time_factor)
+        self._last_animation_time = self.tNow
 
     def executeOneStep(self):
         """Publish state after every event, including state-changing events."""

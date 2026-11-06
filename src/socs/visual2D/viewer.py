@@ -13,13 +13,24 @@ from PySide6.QtWidgets import (
 
 
 class AGVView(QGraphicsView):
-    """Show a route and AGV, with mouse navigation and space-to-step."""
+    """Show a route and AGV, with interactive and automatic run controls."""
 
-    def __init__(self, state_buffer, route, entity_id, on_advance, parent=None):
+    def __init__(
+        self,
+        state_buffer,
+        route,
+        entity_id,
+        on_advance,
+        parent=None,
+        on_auto=None,
+        on_interactive=None,
+    ):
         super().__init__(parent)
         self.state_buffer = state_buffer
         self.entity_id = entity_id
         self.on_advance = on_advance
+        self.on_auto = on_auto
+        self.on_interactive = on_interactive
         self._revision = -1
         self._pan_origin = None
 
@@ -127,6 +138,12 @@ class AGVView(QGraphicsView):
     def keyPressEvent(self, event):
         if event.key() == Qt.Key.Key_Space:
             self.on_advance()
+            event.accept()
+        elif event.key() == Qt.Key.Key_A and self.on_auto is not None:
+            self.on_auto()
+            event.accept()
+        elif event.key() == Qt.Key.Key_I and self.on_interactive is not None:
+            self.on_interactive()
             event.accept()
         elif event.key() == Qt.Key.Key_F:
             self.fitInView(self.scene.sceneRect(), Qt.AspectRatioMode.KeepAspectRatio)

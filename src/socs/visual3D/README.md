@@ -3,7 +3,7 @@
 This package connects a `SimEngineThread` to Panda3D without calling Panda3D
 from the simulation thread. The SOCS thread publishes complete visual states;
 the Panda3D task applies them on the rendering thread. A runnable AGV example
-is available at `examples/visual3D/simple_demo.py`.
+is available at `examples/visual3D/simple_AGV_demo.py`.
 
 Install the optional renderer dependency with:
 

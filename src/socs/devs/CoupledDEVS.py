@@ -233,10 +233,15 @@ class CoupledDEVS(Simulatable):
             self.update_tN()
         return outputs
 
-    def Delta_null(self, t):
-        """Update time-dependent state/statistics in all children."""
+    def Delta_cont(self, t):
+        """apply continuous state change to all children."""
+        bUnexpectedEventOccurred = False
         for component in self.M:
-            component.Delta_null(t)
+            if component.Delta_cont(t):
+                bUnexpectedEventOccurred = True
+        if bUnexpectedEventOccurred:
+            self.update_tN()
+        return bUnexpectedEventOccurred
 
     def get_statistics_str(self):
         """Return statistics for all descendants."""
@@ -272,6 +277,14 @@ class CoupledDEVS(Simulatable):
     def state_to_s(self):
         """Format child states as a tuple-like string."""
         return "(" + ", ".join(component.qstate_to_s() for component in self.M) + ")"
+
+    def qstate_to_s(self, t_now=None):
+        """Format this model and descendants at the supplied simulation time."""
+        state = "(" + ", ".join(
+            component.qstate_to_s(t_now) for component in self.M
+        ) + ")"
+        clock = self.format_clock(t_now)
+        return f"({self.name}:{state},{clock})"
 
     def isNetworkOf(self, cclass):
         """Return whether all atomic descendants are instances of cclass."""

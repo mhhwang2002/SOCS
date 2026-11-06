@@ -1,7 +1,6 @@
 import math
 
 from socs.devs import CoupledDEVS, FDDEVS
-from socs.devs.DEVSTime import Clock
 from socs.devs.DEVSInterfaces import PortValue
 from socs.devs.SimEngine import SimEngineThread, ExecutionResult
 
@@ -102,7 +101,6 @@ def test_engine_constructor_initializes_atomic_models():
 
     engine = make_engine(root)
 
-    #assert Clock.tNow == 0.0
     assert first.state == 0
     assert second.state == 0
     assert first.timeNext() == 2.0
@@ -135,7 +133,6 @@ def test_execute_one_step_routes_output_to_connected_model():
         executionResult = engine.executeOneStep()
  
         assert executionResult == ExecutionResult.ScheduledEventOccurred
-        #assert Clock.tNow == 1.0
         assert sink.received == [42]
     finally:
         engine.terminate()
@@ -189,11 +186,9 @@ def test_simultaneous_internal_events_are_processed_on_successive_steps():
 
     try:
         engine.executeOneStep()
-        #assert Clock.tNow == 2.0
         assert first.state + second.state == 1
 
         engine.executeOneStep()
-        #assert Clock.tNow == 2.0
         assert first.state == 1
         assert second.state == 1
         assert math.isinf(first.timeNext())

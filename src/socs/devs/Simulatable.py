@@ -9,7 +9,7 @@ Originally written in 2011 and modernized for Python 3.
 """
 from copy import deepcopy
 from .DEVSInterfaces import XY
-from .DEVSTime import Manager, Clock
+from .DEVSTime import Manager
 from .DEVSBase import TES
 from .Snapshot import ModelSnapshot
 
@@ -63,7 +63,7 @@ class Simulatable(TES, XY, Manager):
                 f"tL={self.timeLast()}, t={t}, tN={self.timeNext()}"
             )
 
-        self.Delta_null(t)
+        self.Delta_cont(t)
         self.delta_x(x)
         self.set_timeLast(t)
         self.set_timeNext(t + self.ta())
@@ -75,13 +75,13 @@ class Simulatable(TES, XY, Manager):
                 f"Delta_y scheduling error: t={t}, tN={self.timeNext()}"
             )
 
-        self.Delta_null(t)
+        self.Delta_cont(t)
         y = self.delta_y()
         self.set_timeLast(t)
         self.set_timeNext(t + self.ta())
         return y
 
-    def Delta_null(self, t):
+    def Delta_cont(self, t):
         """update continuous state transition and return True denoting unscheduled event; otherwise, return False"""
         self.updateStatistics(t)
         return False
@@ -123,12 +123,13 @@ class Simulatable(TES, XY, Manager):
         """Return a string representation of the model state."""
         return ""
 
-    def qstate_to_s(self):
+    def qstate_to_s(self, t_now=None):
         """Return a string representation of the total state."""
         state = self.state_to_s()
+        clock = self.format_clock(t_now)
         if state:
-            return f"({self.name}:{state},{self.clock})"
-        return f"({self.name}:{self.clock})"
+            return f"({self.name}:{state},{clock})"
+        return f"({self.name}:{clock})"
 
 # --------------------------------------------------
     # Snapshot
