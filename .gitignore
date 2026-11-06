@@ -24,3 +24,7 @@ Thumbs.db
 .env
 .env.*
 !.env.example
+
+# Local Codex artifacts and generated deliverables
+/.codex/
+/artifacts/
