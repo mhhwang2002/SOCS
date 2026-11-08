@@ -28,3 +28,7 @@ Thumbs.db
 # Local Codex artifacts and generated deliverables
 /.codex/
 /artifacts/
+
+/.build_aco_ppt/
+/.build_asrs/
+/.build_asrs_diagrams/
