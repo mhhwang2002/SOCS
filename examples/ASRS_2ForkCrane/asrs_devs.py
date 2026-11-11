@@ -68,7 +68,7 @@ class ASRSCell(DEVS):
         return 0.0 if self.box_pending or self.status_pending else float("inf")
 
     def delta_x(self, event):
-        if not isinstance(event, PortValue) or event.port is not self.IP["?crane"]:
+        if not isinstance(event, PortValue) or event.port != "?crane":
             return False
         request = event.value
         if not isinstance(request, dict) or request.get("cell") != self.name:
@@ -175,7 +175,7 @@ class ASRSController(DEVS):
     def delta_x(self, event):
         if not isinstance(event, PortValue):
             return False
-        if event.port is self.IP["?cell_status"]:
+        if event.port == "?cell_status":
             status = event.value
             if not isinstance(status, dict) or status.get("cell") not in self.cell_names:
                 return False
@@ -188,7 +188,7 @@ class ASRSController(DEVS):
                 return True
             return False
 
-        if event.port is self.IP["?box_out"]:
+        if event.port == "?box_out":
             box_out = event.value
             order_id = box_out.get("order_id") if isinstance(box_out, dict) else None
             if order_id not in self.remaining_order_items:
@@ -201,7 +201,7 @@ class ASRSController(DEVS):
                 self.completed_order_times[order_id] = box_out["completed_at"]
             return True
 
-        if event.port is self.IP["?crane_idle"]:
+        if event.port == "?crane_idle":
             self.crane_idle = True
             if self.phase in {"ready", "awaiting_crane"}:
                 self.phase = "dispatch" if self.pending_tasks else "completed"
@@ -333,12 +333,12 @@ class TwoForkCrane(DEVS):
     def delta_x(self, event):
         if not isinstance(event, PortValue):
             return False
-        if event.port is self.IP["?command"]:
+        if event.port == "?command":
             if self.phase != "idle" or not isinstance(event.value, dict):
                 return False
             self._start_retrieval(event.value, self._external_event_time)
             return True
-        if event.port is self.IP["?box"]:
+        if event.port == "?box":
             transfer = event.value
             if self.phase != "waiting_for_boxes" or not isinstance(transfer, dict):
                 return False
@@ -748,12 +748,12 @@ def make_asrs_model(
     model.add_child(crane)
     model.add_child(controller)
     for cell in cells:
-        model.addCouple(crane.OP["!retrieve_request"], cell.IP["?crane"])
-        model.addCouple(cell.OP["!box"], crane.IP["?box"])
-        model.addCouple(cell.OP["!status"], controller.IP["?cell_status"])
-    model.addCouple(controller.OP["!command"], crane.IP["?command"])
-    model.addCouple(crane.OP["!idle"], controller.IP["?crane_idle"])
-    model.addCouple(crane.OP["!box_out"], controller.IP["?box_out"])
+        model.addCouple((crane, "!retrieve_request"), (cell, "?crane"))
+        model.addCouple((cell, "!box"), (crane, "?box"))
+        model.addCouple((cell, "!status"), (controller, "?cell_status"))
+    model.addCouple((controller, "!command"), (crane, "?command"))
+    model.addCouple((crane, "!idle"), (controller, "?crane_idle"))
+    model.addCouple((crane, "!box_out"), (controller, "?box_out"))
     return model
 
 

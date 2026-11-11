@@ -43,6 +43,11 @@ class Counter(DEVS):
         """Restore the complete model state."""
         self.phase, self.count, self.sum, self.count_no = state
 
+    def display_state(self):
+        """Return the phase label, completed count and sum for the example UI."""
+        phase = "Count" if self.phase == "C" else "Done"
+        return phase, self.count - 1, self.sum
+
 
 def runSimulation(model):
     """Run the model with the interactive simulation engine."""
@@ -55,8 +60,9 @@ def runSimulation(model):
 
 
 if __name__ == "__main__":
-    counter = Counter(name="ts1", count_no=10)
-    print("Counter model created:", counter)
-    print("Initial state before simulation:", counter.get_state())
-    print("Use runSimulation(counter) to start the interactive simulation.")
-    runSimulation(counter)
+    if __package__:
+        from .DEVSphCounter import main
+    else:
+        from DEVSphCounter import main
+
+    main(Counter, __doc__)

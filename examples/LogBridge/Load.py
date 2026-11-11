@@ -27,7 +27,7 @@ class Load(DEVS):
 
     def delta_x(self, x):
         """Handle a push event and reschedule if a walker exists"""
-        if x.port == self.IP["?in"]:
+        if x.port == "?in":
             self.walker_speeds.append(x.value)
         if(len(self.walker_speeds)==1): # become a new walker entered
             return True

@@ -27,8 +27,8 @@ def resolve_model(root_model: Simulatable, model_path: str) -> Simulatable:
 def make_port_value(target_model: Simulatable, xevent):
     """Resolve a symbolic input event to a PortValue for the target model."""
     if isinstance(xevent, PortValue):
-        if xevent.port.parent is not target_model:
-            raise ValueError("The input event port does not belong to target_model.")
+        if xevent.port not in target_model.IP:
+            raise ValueError("The input event port must be registered on target_model.")
         return xevent
 
     if isinstance(xevent, str):
@@ -44,13 +44,11 @@ def make_port_value(target_model: Simulatable, xevent):
             "xevent must be a PortValue, input-port name, or (port_name, value) pair."
         )
 
-    try:
-        port = target_model.IP[port_name]
-    except KeyError:
+    if port_name not in target_model.IP:
         raise ValueError(
             f"Input port {port_name!r} does not exist on {target_model.path!r}."
-        ) from None
-    return PortValue(port, value)
+        )
+    return PortValue(port_name, value)
 
 
 def apply_control(engine, decision: ControlDecision) -> None:

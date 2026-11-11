@@ -1,5 +1,7 @@
 """Toaster example using the DEVS atomic model base."""
 
+from math import inf, isfinite
+
 from socs.devs.DEVS import DEVS
 from socs.devs.DEVSInterfaces import PortValue
 from socs.devs.SimEngine import SimEngineThread
@@ -8,35 +10,37 @@ from socs.devs.SimEngine import SimEngineThread
 class Toaster(DEVS):
     """Atomic toaster model with idle and toasting phases."""
 
-    def __init__(self, name, tt, parent=None):
+    def __init__(self, name, tt=10, parent=None):
+        if not isfinite(tt) or tt <= 0:
+            raise ValueError("Toasting time must be finite and positive.")
         super().__init__(name, parent)
         self.tt = tt
-        self.phase = "I"
+        self.phase = "Idle"
         self.addInputPorts("?push")
         self.addOutputPorts("!pop")
 
     def delta_0(self):
         """Reset the toaster to its initial idle phase."""
-        self.phase = "I"
+        self.phase = "Idle"
 
     def tau(self):
         """Return the time until the next internal event."""
-        if self.phase == "T":
+        if self.phase == "Toasting":
             return self.tt
-        return float("inf")
+        return inf
 
     def delta_x(self, x):
         """Handle a push event and reschedule if toasting starts."""
-        if x.port == self.IP["?push"] and self.phase == "I":
-            self.phase = "T"
+        if isinstance(x, PortValue) and x.port == "?push" and self.phase == "Idle":
+            self.phase = "Toasting"
             return True
         return False
 
     def delta_y(self):
         """Emit the pop event and return to the idle phase."""
-        if self.phase == "T":
-            self.phase = "I"
-            return PortValue(self.OP["!pop"])
+        if self.phase == "Toasting":
+            self.phase = "Idle"
+            return PortValue("!pop")
         return None
 
     def get_state(self):
@@ -45,7 +49,7 @@ class Toaster(DEVS):
 
     def set_state(self, state):
         """Set the current toaster phase."""
-        self.phase = state
+        self.phase = {"I": "Idle", "T": "Toasting"}.get(state, state)
 
 
 def make_input_event(model):
@@ -62,14 +66,9 @@ def runSimulation(model):
 
 
 if __name__ == "__main__":
-    toaster = Toaster("T1", 22.5)
-    choice = True
-    while choice:
-        command = input("[s]im, [x]it> ").strip().lower()
-        if command in ("s", "sim"):
-            runSimulation(toaster)
-        elif command in ("x", "exit"):
-            choice = False
-        else:
-            print(f"{command!r} is an invalid input.")
-    print("good bye~!")
+    if __package__:
+        from .DEVSphToaster import main
+    else:
+        from DEVSphToaster import main
+
+    main(Toaster, __doc__)

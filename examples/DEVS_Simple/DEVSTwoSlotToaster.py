@@ -11,7 +11,10 @@ from socs.devs.CoupledDEVS import CoupledDEVS
 from socs.devs.DEVSInterfaces import PortValue
 from socs.devs.SimEngine import SimEngineThread
 
-from DEVSToaster import Toaster
+if __package__:
+    from .DEVSToaster import Toaster
+else:
+    from DEVSToaster import Toaster
 
 
 def make_input_event(model):
@@ -43,22 +46,22 @@ def makeModel(name="system", tt1=20, tt2=40):
 
     # External Input Coupling (EIC).
     model.addCouple(
-        model.IP["?push1"],
-        toaster1.IP["?push"],
+        (model, "?push1"),
+        (toaster1, "?push"),
     )
     model.addCouple(
-        model.IP["?push2"],
-        toaster2.IP["?push"],
+        (model, "?push2"),
+        (toaster2, "?push"),
     )
 
     # External Output Coupling (EOC).
     model.addCouple(
-        toaster1.OP["!pop"],
-        model.OP["!pop1"],
+        (toaster1, "!pop"),
+        (model, "!pop1"),
     )
     model.addCouple(
-        toaster2.OP["!pop"],
-        model.OP["!pop2"],
+        (toaster2, "!pop"),
+        (model, "!pop2"),
     )
 
     return model

@@ -1,0 +1,153 @@
+"""Run a user-operated DEVS toaster in the console or in a live 2D window."""
+
+from argparse import ArgumentParser
+from math import inf, isfinite
+
+from socs.devs import DEVSph
+from socs.devs.DEVSInterfaces import PortValue
+from socs.devs.SimEngine import ExecutionResult, SimEngineBase
+
+
+class DEVSphToaster(DEVSph):
+    def __init__(self, name, toasting_time=10, parent=None):
+        if not isfinite(toasting_time) or toasting_time <= 0:
+            raise ValueError("Toasting time must be finite and positive.")
+        super().__init__(name, parent)
+        self.addInputPorts("?push")
+        self.addOutputPorts("!pop")
+        self.add_phase("Idle", tau=inf, initial=True)
+        self.add_phase("Toasting", tau=toasting_time)
+        self.add_external_transition("Idle", "Toasting", input_port="?push", reschedule=True)
+        self.add_internal_transition("Toasting", "Idle", output="!pop")
+
+
+class ToasterEngine(SimEngineBase):
+    """Expose the most recent output to the example's controls."""
+
+    def __init__(self, toaster, animation_interval=inf):
+        self.last_output = None
+        super().__init__(toaster, TimeIntervalAnimation=animation_interval)
+        self.bVerbose = False
+
+    def executeDEVS_star(self, tNow):
+        self.last_output = self.model.Delta_y(tNow)
+        return ExecutionResult.ScheduledEventOccurred
+
+    def push(self):
+        self.last_output = None
+        self.XBuffer.append((self.model, PortValue("?push")))
+        self.executeOneStep()
+
+
+def run_console(toaster):
+    engine = ToasterEngine(toaster)
+    print("Enter: push, q: quit")
+    while True:
+        try:
+            command = input(f"t={engine.tNow:g} {toaster.phase}> ").strip().lower()
+        except (EOFError, KeyboardInterrupt):
+            return
+        if command == "q":
+            return
+        if command:
+            continue
+        engine.push()
+        print(f"t={engine.tNow:g} {toaster.phase}")
+        engine.executeOneStep()
+        print(f"t={engine.tNow:g} {toaster.phase} {engine.last_output}")
+
+
+def run_live(toaster):
+    import tkinter as tk
+    from tkinter import ttk
+
+    engine = ToasterEngine(toaster, animation_interval=1)
+    root = tk.Tk()
+    root.title("DEVSph Toaster")
+    canvas = tk.Canvas(root, width=460, height=175, background="white", highlightthickness=0)
+    canvas.pack()
+    canvas.create_line(26, 87, 69, 87, arrow=tk.LAST, width=2)
+    canvas.create_line(189, 68, 269, 68, arrow=tk.LAST, width=2, dash=(5, 4))
+    canvas.create_line(269, 104, 189, 104, arrow=tk.LAST, width=2)
+    canvas.create_text(229, 53, text="?push")
+    canvas.create_text(229, 119, text="!pop")
+    phases = {}
+    for phase, x in (("Idle", 130), ("Toasting", 330)):
+        oval = canvas.create_oval(
+            x - 60, 49, x + 60, 125, width=2, dash=(5, 4) if phase == "Idle" else (),
+        )
+        label = canvas.create_text(x, 87, justify="center")
+        phases[phase] = oval, label
+    status = ttk.Label(root, padding=8)
+    status.pack()
+    controls = ttk.Frame(root, padding=8)
+    controls.pack()
+    timer = None
+    animation = True
+
+    def refresh():
+        remaining = toaster.timeNext() - engine.tNow
+        remaining_text = f"{remaining:g}" if isfinite(remaining) else "∞"
+        for phase, (oval, label) in phases.items():
+            active = phase == toaster.phase
+            canvas.itemconfigure(oval, fill="#bfdbfe" if active else "white")
+            canvas.itemconfigure(label, text=f"{phase}\nRemaining = {remaining_text}" if active else phase)
+        output = f"    Output: {engine.last_output}" if engine.last_output else ""
+        status.configure(text=f"t = {engine.tNow:g}{output}")
+        step.configure(state="normal" if not animation and isfinite(remaining) else "disabled")
+        mode.configure(text="Mode: Animation" if animation else "Mode: DEVS Only")
+
+    def schedule():
+        nonlocal timer
+        if timer is None and animation and isfinite(toaster.timeNext()):
+            next_time, _ = engine.PickNextExecutionTime_Type()
+            timer = root.after(max(1, round(1000 * (next_time - engine.tNow))), advance)
+
+    def advance():
+        nonlocal timer
+        timer = None
+        engine.executeOneStep()
+        refresh()
+        schedule()
+
+    def push():
+        engine.push()
+        refresh()
+        schedule()
+
+    def toggle_mode():
+        nonlocal animation, timer
+        if timer is not None:
+            root.after_cancel(timer)
+            timer = None
+        animation = not animation
+        engine.TimeIntervalAnimation = 1 if animation else inf
+        engine.executeAnimation(engine.tNow, engine.tNow)
+        refresh()
+        schedule()
+
+    ttk.Button(controls, text="Push", command=push).pack(side="left", padx=4)
+    step = ttk.Button(controls, text="Step", command=advance)
+    step.pack(side="left", padx=4)
+    mode = ttk.Button(controls, command=toggle_mode)
+    mode.pack(side="left", padx=4)
+    refresh()
+    root.mainloop()
+
+
+def main(model_type=DEVSphToaster, description=__doc__):
+    parser = ArgumentParser(description=description)
+    parser.add_argument("--live", action="store_true", help="Run in a live 2D window.")
+    parser.add_argument("--toasting-time", type=float, default=10, help="Toasting time in seconds.")
+    args = parser.parse_args()
+    if not isfinite(args.toasting_time) or args.toasting_time <= 0:
+        parser.error("--toasting-time must be finite and positive")
+    toaster = model_type("Toaster", args.toasting_time)
+    if args.live:
+        run_live(toaster)
+    else:
+        run_console(toaster)
+
+
+if __name__ == "__main__":
+    main()

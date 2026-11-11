@@ -44,7 +44,6 @@ class DEVS(Simulatable):
                 f"tL={self.timeLast()}, t={t}, tN={self.timeNext()}"
             )
 
-        self.Delta_null(t)
         reschedule = self.delta_x(x)
         if reschedule:
             self.set_timeLast(t)

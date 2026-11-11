@@ -1,7 +1,7 @@
 import pytest
 
 from socs.devs import CoupledDEVS, DEVS
-from socs.devs.DEVSInterfaces import InputPort, OutputPort, PortValue
+from socs.devs.DEVSInterfaces import PortValue
 
 
 class AtomicModelStub(DEVS):
@@ -39,10 +39,8 @@ def test_add_named_input_and_output_ports():
 
     assert "control" in model.IP
     assert "vehicles" in model.OP
-    assert isinstance(model.IP["control"], InputPort)
-    assert isinstance(model.OP["vehicles"], OutputPort)
-    assert model.IP["control"].parent is model
-    assert model.OP["vehicles"].parent is model
+    assert model.IP["control"] == "control"
+    assert model.OP["vehicles"] == "vehicles"
 
 
 def test_duplicate_port_name_does_not_replace_existing_port():
@@ -64,14 +62,14 @@ def test_add_coupling_between_child_models():
     system.add_child(generator)
     system.add_child(intersection)
 
-    source_port = generator.OP["vehicles"]
-    target_port = intersection.IP["vehicles"]
+    source_port = (generator, "vehicles")
+    target_port = (intersection, "vehicles")
     system.addCouple(source_port, target_port)
 
     assert target_port in system.Z[source_port]
 
 
-def test_add_couple_requires_port_objects():
+def test_add_couple_requires_endpoints():
     system = CoupledDEVS("TrafficSystem")
 
     with pytest.raises(TypeError):
@@ -86,8 +84,8 @@ def test_external_input_coupling_routes_to_child():
     system.add_child(generator)
 
     system.addCouple(
-        system.IP["vehicle_request"],
-        generator.IP["request"],
+        (system, "vehicle_request"),
+        (generator, "request"),
     )
     system.Delta_0(0.0)
 
@@ -97,7 +95,7 @@ def test_external_input_coupling_routes_to_child():
     assert len(generator.received) == 1
     received = generator.received[0]
     assert isinstance(received, PortValue)
-    assert received.port is generator.IP["request"]
+    assert received.port == "request"
     assert received.value is payload
 
 
@@ -109,18 +107,18 @@ def test_internal_output_coupling_routes_to_child_input():
     intersection.addInputPorts("vehicles")
     system.add_child(generator)
     system.add_child(intersection)
-    system.addCouple(generator.OP["vehicles"], intersection.IP["vehicles"])
+    system.addCouple((generator, "vehicles"), (intersection, "vehicles"))
     system.Delta_0(0.0)
 
     payload = {"vehicle_id": 101}
     translated = system.translateOutputEvent(
-        PortValue(generator.OP["vehicles"], payload), 0.0
+        generator, PortValue(generator.OP["vehicles"], payload), 0.0
     )
 
     assert translated == []
     assert len(intersection.received) == 1
     received = intersection.received[0]
-    assert received.port is intersection.IP["vehicles"]
+    assert received.port == "vehicles"
     assert received.value is payload
 
 
@@ -131,17 +129,17 @@ def test_external_output_coupling_reaches_coupled_output_port():
     system.addOutputPorts("departures")
     system.add_child(intersection)
     system.addCouple(
-        intersection.OP["departures"],
-        system.OP["departures"],
+        (intersection, "departures"),
+        (system, "departures"),
     )
 
     payload = {"vehicle_id": 101}
     translated = system.translateOutputEvent(
-        PortValue(intersection.OP["departures"], payload), 0.0
+        intersection, PortValue(intersection.OP["departures"], payload), 0.0
     )
 
     assert len(translated) == 1
-    assert translated[0].port is system.OP["departures"]
+    assert translated[0].port == "departures"
     assert translated[0].value is payload
 
 
@@ -155,13 +153,13 @@ def test_route_output_supports_multiple_destinations():
     second.addInputPorts("vehicles")
     for model in (generator, first, second):
         system.add_child(model)
-    system.addCouple(generator.OP["vehicles"], first.IP["vehicles"])
-    system.addCouple(generator.OP["vehicles"], second.IP["vehicles"])
+    system.addCouple((generator, "vehicles"), (first, "vehicles"))
+    system.addCouple((generator, "vehicles"), (second, "vehicles"))
     system.Delta_0(0.0)
 
     payload = {"vehicle_id": 101}
     system.translateOutputEvent(
-        PortValue(generator.OP["vehicles"], payload), 0.0
+        generator, PortValue(generator.OP["vehicles"], payload), 0.0
     )
 
     assert len(first.received) == 1
@@ -170,12 +168,13 @@ def test_route_output_supports_multiple_destinations():
     assert second.received[0].value is payload
 
 
-def test_unconnected_output_is_returned_as_terminal_event():
+def test_unconnected_output_does_not_reach_coupled_boundary():
     system = CoupledDEVS("TrafficSystem")
     generator = AtomicModelStub("Generator")
     generator.addOutputPorts("vehicles")
-    event = PortValue(generator.OP["vehicles"], {"vehicle_id": 101})
+    system.add_child(generator)
+    event = PortValue("vehicles", {"vehicle_id": 101})
 
-    translated = system.translateOutputEvent(event, 0.0)
+    translated = system.translateOutputEvent(generator, event, 0.0)
 
-    assert translated == [event]
+    assert translated == []

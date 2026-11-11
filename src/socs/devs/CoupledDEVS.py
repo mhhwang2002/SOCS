@@ -7,7 +7,7 @@
 """Coupled DEVS model for composing atomic and coupled components."""
 
 from .Simulatable import Simulatable
-from .DEVSInterfaces import Port, InputPort, OutputPort, PortValue
+from .DEVSInterfaces import PortValue
 from .DEVS import DEVS
 from .ModelRegistry import ModelRegistry
 
@@ -76,6 +76,7 @@ class CoupledDEVS(Simulatable):
         self.model_registry.unregister(child, recursive=True)
 
         super().remove_child(child)
+        self._remove_child_couplings(child)
 
         self.update_tN(update_parent=True)
 
@@ -125,6 +126,7 @@ class CoupledDEVS(Simulatable):
             if existing is child
         )
         del old_parent.children[child_index]
+        old_parent._remove_child_couplings(child)
 
         new_parent.children.append(child)
         child.parent = new_parent
@@ -133,11 +135,33 @@ class CoupledDEVS(Simulatable):
         old_parent.update_tN(update_parent=True)
         new_parent.update_tN(update_parent=True)
 
-    def addCouple(self, src_port, dest_port):
-        """Connect a source port to a destination port."""
-        if not isinstance(src_port, Port) or not isinstance(dest_port, Port):
-            raise TypeError(f"{src_port!r} and {dest_port!r} must be Port objects.")
-        self.Z.setdefault(src_port, set()).add(dest_port)
+    def _remove_child_couplings(self, child):
+        for source, destinations in list(self.Z.items()):
+            remaining = {endpoint for endpoint in destinations if endpoint[0] is not child}
+            if source[0] is child or not remaining:
+                del self.Z[source]
+            else:
+                self.Z[source] = remaining
+
+    def addCouple(self, source, destination):
+        """Connect two (model, port_name) endpoints in this coupled model."""
+        for endpoint, is_source in ((source, True), (destination, False)):
+            if (
+                not isinstance(endpoint, tuple) or len(endpoint) != 2
+                or not isinstance(endpoint[0], Simulatable)
+                or not isinstance(endpoint[1], str)
+            ):
+                raise TypeError("Coupling endpoints must be (model, port_name) tuples.")
+            model, port = endpoint
+            if model is not self and model not in self.children:
+                raise ValueError("Coupling endpoints must belong to this model or a direct child.")
+            ports = model.IP if is_source == (model is self) else model.OP
+            if port not in ports:
+                direction = "input" if ports is model.IP else "output"
+                raise ValueError(f"{port!r} is not a registered {direction} port on {model.path!r}.")
+        if source[0] is self and destination[0] is self:
+            raise ValueError("A boundary input must couple to a child input.")
+        self.Z.setdefault(source, set()).add(destination)
 
     def addCouples(self, *couples):
         """Add multiple (source_port, destination_port) couplings."""
@@ -173,49 +197,35 @@ class CoupledDEVS(Simulatable):
 
     def Delta_x(self, x, t):
         """Route an input event to destination ports."""
-        self.set_timeLast(t)
         if not isinstance(x, PortValue):
             raise TypeError(f"{x!r} is not a PortValue.")
-        for dest_port in self.Z.get(x.port, ()):
-            if dest_port.parent is not None:
-                dest_port.parent.Delta_x(PortValue(dest_port, x.value), t)
+        self.set_timeLast(t)
+        for model, port in self.Z.get((self, x.port), ()):
+            model.Delta_x(PortValue(port, x.value), t)
         self.update_tN()
 
-    def translateOutputEvent(self, y, t):
-        """Translate a child output through this model's coupling graph."""
+    def translateOutputEvent(self, source_model, y, t):
+        """Route a child output and return events on this model's output ports."""
         outputs = []
-        if not y or not isinstance(y, PortValue):
+        if not isinstance(y, PortValue):
             return outputs
-        if y.port not in self.Z:
-            return [y]
-
-        for dest_port in self.Z[y.port]:
-            if isinstance(dest_port, InputPort):
-                if dest_port.parent is not None:
-                    dest_port.parent.Delta_x(PortValue(dest_port, y.value), t)
-            elif isinstance(dest_port, OutputPort):
-                if isinstance(dest_port.parent, CoupledDEVS):
-                    outputs.extend(
-                        dest_port.parent.translateOutputEvent(
-                            PortValue(dest_port, y.value), t
-                        )
-                    )
+        for model, port in self.Z.get((source_model, y.port), ()):
+            event = PortValue(port, y.value)
+            if model is self:
+                outputs.append(event)
+            else:
+                model.Delta_x(event, t)
         return outputs
 
-    def getAllInfluencee(self, z, XP):
-        """Collect terminal atomic input ports influenced by a port or event."""
-        if isinstance(z, PortValue):
-            source_port = z.port
-        elif isinstance(z, Port):
-            source_port = z
-        else:
-            return
-
-        for dest_port in self.Z.get(source_port, ()):
-            if isinstance(dest_port.parent, CoupledDEVS):
-                dest_port.parent.getAllInfluencee(dest_port, XP)
-            elif isinstance(dest_port.parent, Simulatable):
-                XP.add(dest_port)
+    def getAllInfluencee(self, source, XP):
+        """Collect terminal atomic input endpoints influenced by a source endpoint."""
+        for model, port in self.Z.get(source, ()):
+            if model is self:
+                continue
+            if isinstance(model, CoupledDEVS):
+                model.getAllInfluencee((model, port), XP)
+            else:
+                XP.add((model, port))
 
     def Delta_y(self, t):
         """Generate output from an imminent child and update the schedule."""
@@ -227,16 +237,18 @@ class CoupledDEVS(Simulatable):
             if result is not None:
                 events = result if isinstance(result, (list, tuple, set)) else [result]
                 for event in events:
-                    for translated in self.translateOutputEvent(event, t):
-                        if translated and translated.port.parent == self:
-                            outputs.append(translated)
+                    outputs.extend(self.translateOutputEvent(component, event, t))
             self.update_tN()
         return outputs
 
     def Delta_null(self, t):
         """Update time-dependent state/statistics in all children."""
+        unscheduled = False
         for component in self.M:
-            component.Delta_null(t)
+            if component.Delta_null(t):
+                unscheduled = True
+        self.update_tN()
+        return unscheduled
 
     def get_statistics_str(self):
         """Return statistics for all descendants."""
@@ -251,18 +263,9 @@ class CoupledDEVS(Simulatable):
     def to_Z_s(self):
         """Format the coupling map as a string."""
         parts = []
-        for src_port, dest_ports in self.Z.items():
-            src_name = (
-                src_port.parent_hier_name_to_s()
-                if hasattr(src_port, "parent_hier_name_to_s")
-                else str(src_port)
-            )
-            dest_names = [
-                dest.parent_hier_name_to_s()
-                if hasattr(dest, "parent_hier_name_to_s")
-                else str(dest)
-                for dest in dest_ports
-            ]
+        for (model, port), destinations in self.Z.items():
+            src_name = f"{model.path}.{port}"
+            dest_names = sorted(f"{target.path}.{name}" for target, name in destinations)
             parts.append(src_name + "=>[" + ", ".join(dest_names) + "]")
         return "Z={" + ", ".join(parts) + "}"
 

@@ -74,7 +74,7 @@ def test_add_components_adds_each_component():
     assert root.children == [first, second]
 
 
-def test_add_couple_requires_port_objects():
+def test_add_couple_requires_endpoints():
     root = CoupledDEVS("root")
 
     with pytest.raises(TypeError):
@@ -88,10 +88,11 @@ def test_add_couple_and_add_couples_store_destinations_without_duplicates():
     source.addOutputPorts("out")
     target.addInputPorts("in")
 
-    root.addCouple(source.OP["out"], target.IP["in"])
-    root.addCouples((source.OP["out"], target.IP["in"]))
+    root.addComponents(source, target)
+    root.addCouple((source, "out"), (target, "in"))
+    root.addCouples(((source, "out"), (target, "in")))
 
-    assert root.Z[source.OP["out"]] == {target.IP["in"]}
+    assert root.Z[(source, "out")] == {(target, "in")}
 
 
 def test_delta_zero_initializes_children_and_updates_next_event():
@@ -165,13 +166,13 @@ def test_delta_x_routes_input_to_child_input_port():
     root.add_child(child)
     root.addInputPorts("external")
     child.addInputPorts("in")
-    root.addCouple(root.IP["external"], child.IP["in"])
+    root.addCouple((root, "external"), (child, "in"))
     root.Delta_0(0.0)
 
     root.Delta_x(PortValue(root.IP["external"], {"value": 42}), 0.0)
 
     assert len(child.received) == 1
-    assert child.received[0].port is child.IP["in"]
+    assert child.received[0].port == "in"
     assert child.received[0].value == {"value": 42}
 
 
@@ -182,19 +183,19 @@ def test_translate_output_event_routes_to_child_input_port():
     root.addComponents(source, target)
     source.addOutputPorts("out")
     target.addInputPorts("in")
-    root.addCouple(source.OP["out"], target.IP["in"])
+    root.addCouple((source, "out"), (target, "in"))
     root.Delta_0(0.0)
 
     event = PortValue(source.OP["out"], "payload")
-    translated = root.translateOutputEvent(event, 0.0)
+    translated = root.translateOutputEvent(source, event, 0.0)
 
     assert translated == []
     assert len(target.received) == 1
-    assert target.received[0].port is target.IP["in"]
+    assert target.received[0].port == "in"
     assert target.received[0].value == "payload"
 
 
-def test_translate_output_event_passes_through_unconnected_port():
+def test_translate_output_event_ignores_unconnected_port():
     root = CoupledDEVS("root")
     source = TimedModel("source")
     root.add_child(source)
@@ -203,14 +204,14 @@ def test_translate_output_event_passes_through_unconnected_port():
 
     event = PortValue(source.OP["out"], 123)
 
-    assert root.translateOutputEvent(event, 0.0) == [event]
+    assert root.translateOutputEvent(source, event, 0.0) == []
 
 
 def test_translate_output_event_ignores_invalid_events():
     root = CoupledDEVS("root")
 
-    assert root.translateOutputEvent(None, 0.0) == []
-    assert root.translateOutputEvent("not an event", 0.0) == []
+    assert root.translateOutputEvent(None, None, 0.0) == []
+    assert root.translateOutputEvent(None, "not an event", 0.0) == []
 
 
 def test_get_all_influencee_finds_terminal_input_ports():
@@ -222,17 +223,14 @@ def test_get_all_influencee_finds_terminal_input_ports():
     nested.add_child(target)
     source.addOutputPorts("out")
     target.addInputPorts("in")
-    root.addCouple(source.OP["out"], nested.IP.setdefault(
-        "external", __import__(
-            "socs.devs.DEVSInterfaces", fromlist=["InputPort"]
-        ).InputPort("external", nested)
-    ))
-    nested.addCouple(nested.IP["external"], target.IP["in"])
+    nested.addInputPorts("external")
+    root.addCouple((source, "out"), (nested, "external"))
+    nested.addCouple((nested, "external"), (target, "in"))
 
     influencees = set()
-    root.getAllInfluencee(source.OP["out"], influencees)
+    root.getAllInfluencee((source, "out"), influencees)
 
-    assert influencees == {target.IP["in"]}
+    assert influencees == {(target, "in")}
 
 
 def test_format_tree_shows_nested_model_hierarchy():

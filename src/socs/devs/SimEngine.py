@@ -15,7 +15,7 @@ import time
 from copy import deepcopy
 
 from .Simulatable import Simulatable
-from .DEVSInterfaces import InputPort, PortValue
+from .DEVSInterfaces import PortValue
 from .Base import exception_handling
 from .DEVSTime import Clock
 from .Snapshot import SystemSnapshot
@@ -53,6 +53,7 @@ class SimEngineBase:
         self.ToBeKilled = False
         self.t_segment_start = self.t_segment_end = time.perf_counter()
         self.tNow = 0.0
+        self._last_null_time = None
         self.XBuffer = deque()
         self.sfactor = 1.0
         self.StepByStep = False
@@ -73,6 +74,7 @@ class SimEngineBase:
         """Reset the simulation model and engine state."""
         self.last_progress = 0.0
         self.tNow = 0.0
+        self._last_null_time = None
         if self.model is not None:
             self.model.Delta_0(self.tNow)
             self._tNextContinuous = self.tNow + self.TimeIntervalContinuous
@@ -137,6 +139,7 @@ class SimEngineBase:
             t_next_continuous=self._tNextContinuous,
             t_next_animation=self._tNextAnimation,
             x_buffer=x_buffer,
+            last_null_time=self._last_null_time,
         )
 
     def restore_snapshot(self, snapshot: SystemSnapshot) -> None:
@@ -172,6 +175,7 @@ class SimEngineBase:
 
         # Restore engine values last so recomputation cannot overwrite them.
         self.tNow = snapshot.t_now
+        self._last_null_time = snapshot.last_null_time
         self._tNextContinuous = snapshot.t_next_continuous
         self._tNextAnimation = snapshot.t_next_animation
         self.XBuffer = restored_x_buffer
@@ -209,20 +213,21 @@ class SimEngineBase:
         pass
 
     def executeAnimation(self, tNow, prevStepExeTime):
-        if(tNow>prevStepExeTime):
-            unscheduleEventHappend = self.model.Delta_null(tNow) if self.model is not None else False
-        else:
-            unscheduleEventHappend = False
-        self.doAnimation() 
-        self._tNextAnimation = tNow + self.TimeIntervalAnimation  # update next one 
-        return ExecutionResult.UnscheduledEventOccurred if(unscheduleEventHappend) else ExecutionResult.NoEventOccurred
-        #self._NbAnimationExecutions += 1
+        self.doAnimation()
+        self._tNextAnimation = tNow + self.TimeIntervalAnimation
+        return ExecutionResult.NoEventOccurred
 
-    def executeContinuous(self, tNow): 
-        unscheduleEventHappend = self.model.Delta_null(tNow) if self.model is not None else False   
-        self._tNextContinuous = tNow + self.TimeIntervalContinuous  # update next one
-        return ExecutionResult.UnscheduledEventOccurred if(unscheduleEventHappend) else ExecutionResult.NoEventOccurred
-        #self._NbContinuousExecutions += 1
+    def executeContinuous(self, tNow):
+        self._tNextContinuous = tNow + self.TimeIntervalContinuous
+        return ExecutionResult.NoEventOccurred
+
+    def _advance_model_time(self, t):
+        """Update the model once per simulation time, before handling events."""
+        if self.model is None or t == self._last_null_time:
+            return False
+        unscheduled = self.model.Delta_null(t)
+        self._last_null_time = t
+        return unscheduled
 
     def executeDEVS_star(self,tNow):
         if(self.model is not None):
@@ -263,6 +268,16 @@ class SimEngineBase:
         executionResult = ExecutionResult.NoEventOccurred
         (self.tNow, next_type) = self.PickNextExecutionTime_Type()
 
+        unscheduled = False
+        if next_type != ExecutionType.END:
+            unscheduled = self._advance_model_time(self.tNow)
+            next_time, next_type = self.PickNextExecutionTime_Type()
+            if next_time != self.tNow:
+                return (
+                    ExecutionResult.UnscheduledEventOccurred
+                    if unscheduled else ExecutionResult.NoEventOccurred
+                )
+
         if next_type == ExecutionType.X_BUFFER:
             target_md, ipv = self.XBuffer.popleft()  
             executionResult = self.executeDEVS_x(self.tNow, target_md, ipv) 
@@ -279,6 +294,8 @@ class SimEngineBase:
             ) 
             executionResult = ExecutionResult.TimeBoundReached
             
+        if unscheduled and executionResult == ExecutionResult.NoEventOccurred:
+            return ExecutionResult.UnscheduledEventOccurred
         return executionResult
 
     def executeSteps(self):
@@ -412,7 +429,8 @@ class SimEngineThread(threading.Thread, SimEngineBase):
         """Pause the simulation loop and update statistics."""
         if not self.SkipLoop:
             self.t_segment_end = self.tNow
-            self.model.Delta_null(self.tNow)
+            if self.tNow != float("inf"):
+                self._advance_model_time(self.tNow)
             self.SkipLoop = True
 
     def inject(self, target_model=None, input_value=None):
@@ -430,10 +448,8 @@ class SimEngineThread(threading.Thread, SimEngineBase):
                 raise TypeError("target_model must be a Simulatable instance.")
             if not isinstance(input_value, PortValue):
                 raise TypeError("input_value must be a PortValue instance.")
-            if not isinstance(input_value.port, InputPort):
-                raise TypeError("input_value.port must be an InputPort.")
-            if input_value.port.parent is not target_model:
-                raise ValueError("The input port must belong to target_model.")
+            if input_value.port not in target_model.IP:
+                raise ValueError("The input port must be registered on target_model.")
             if id(target_model) not in self._collect_models_by_identity():
                 raise ValueError("target_model is outside the simulation hierarchy.")
 

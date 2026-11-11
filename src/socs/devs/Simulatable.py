@@ -63,7 +63,6 @@ class Simulatable(TES, XY, Manager):
                 f"tL={self.timeLast()}, t={t}, tN={self.timeNext()}"
             )
 
-        self.Delta_null(t)
         self.delta_x(x)
         self.set_timeLast(t)
         self.set_timeNext(t + self.ta())
@@ -75,7 +74,6 @@ class Simulatable(TES, XY, Manager):
                 f"Delta_y scheduling error: t={t}, tN={self.timeNext()}"
             )
 
-        self.Delta_null(t)
         y = self.delta_y()
         self.set_timeLast(t)
         self.set_timeNext(t + self.ta())

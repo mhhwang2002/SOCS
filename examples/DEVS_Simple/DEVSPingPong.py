@@ -29,7 +29,7 @@ class Player(DEVS):
 
     def delta_x(self, x):
         """Handle a received ball and request rescheduling when needed."""
-        if x.port == self.IP["?r"] and self.phase == "W":
+        if x.port == "?r" and self.phase == "W":
             self.phase = "S"
             return True
         return False
@@ -57,9 +57,13 @@ def makeModel():
 
     model = CoupledDEVS("PingPong")
     model.addComponents(player_a, player_b)
-    model.addCouples((player_a.OP["!s"], player_b.IP["?r"]))
-    # Add the reverse coupling to create a two-way ping-pong game.
-    model.addCouples((player_b.OP["!s"], player_a.IP["?r"]))
+    model.addOutputPorts("!ping", "!pong")
+    model.addCouples(
+        ((player_a, "!s"), (player_b, "?r")),
+        ((player_b, "!s"), (player_a, "?r")),
+        ((player_a, "!s"), (model, "!ping")),
+        ((player_b, "!s"), (model, "!pong")),
+    )
     return model
 
 

@@ -208,12 +208,12 @@ def _probe_cycle(
     model.add_child(cell)
     model.add_child(crane)
     model.add_child(controller)
-    model.addCouple(crane.OP["!retrieve_request"], cell.IP["?crane"])
-    model.addCouple(cell.OP["!box"], crane.IP["?box"])
-    model.addCouple(cell.OP["!status"], controller.IP["?cell_status"])
-    model.addCouple(controller.OP["!command"], crane.IP["?command"])
-    model.addCouple(crane.OP["!idle"], controller.IP["?crane_idle"])
-    model.addCouple(crane.OP["!box_out"], controller.IP["?box_out"])
+    model.addCouple((crane, "!retrieve_request"), (cell, "?crane"))
+    model.addCouple((cell, "!box"), (crane, "?box"))
+    model.addCouple((cell, "!status"), (controller, "?cell_status"))
+    model.addCouple((controller, "!command"), (crane, "?command"))
+    model.addCouple((crane, "!idle"), (controller, "?crane_idle"))
+    model.addCouple((crane, "!box_out"), (controller, "?box_out"))
 
     engine = SimEngineBase(
         model,

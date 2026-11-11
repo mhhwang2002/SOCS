@@ -30,7 +30,7 @@ class LogBridge(DEVS):
         if isnumeric(x.value):
             if self.Phase == "I":
                 self.walker_speed = x.value
-                if x.port == self.IP["?in1"]:
+                if x.port == "?in1":
                     self.Phase = "S1"
                 else:
                     self.Phase = "S2"

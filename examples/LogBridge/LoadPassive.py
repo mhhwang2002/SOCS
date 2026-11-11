@@ -33,11 +33,11 @@ class LoadPassive(DEVS):
 
     def delta_x(self, x):
         """Handle a push event and reschedule if a walker exists"""
-        if self.phase == "I" and x.port == self.IP["?in"]:
+        if self.phase == "I" and x.port == "?in":
             self.walker_speed = x.value
             self.phase = "B"
             return True
-        elif self.phase == "W" and x.port == self.IP["?go"]:
+        elif self.phase == "W" and x.port == "?go":
             self.phase = "S"
             return True 
         else:

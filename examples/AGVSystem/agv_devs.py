@@ -50,7 +50,7 @@ class ControlPoint(Atomic):
         phase, _ = self.state
         if phase != "idle":
             raise RuntimeError(f"{self.name}: unexpected input during {phase}")
-        next_phase = "arrived" if event.port == self.IP["?arrive"] else "depart"
+        next_phase = "arrived" if event.port == "?arrive" else "depart"
         self.state = (next_phase, event.value)
         return True
 
@@ -166,11 +166,11 @@ def make_model():
     model.addComponents(controller, *points.values(), *paths.values())
     for source, segment in SEGMENTS.items():
         point, path = points[source], paths[source]
-        model.addCouple(controller.OP[f"!{source}"], point.IP["?grant"])
-        model.addCouple(point.OP["!start"], path.IP["?start"])
-        model.addCouple(path.OP["!arrive"], points[segment.target].IP["?arrive"])
-        model.addCouple(point.OP["!traffic"], controller.IP["?traffic"])
-        model.addCouple(path.OP["!traffic"], controller.IP["?traffic"])
+        model.addCouple((controller, f"!{source}"), (point, "?grant"))
+        model.addCouple((point, "!start"), (path, "?start"))
+        model.addCouple((path, "!arrive"), (points[segment.target], "?arrive"))
+        model.addCouple((point, "!traffic"), (controller, "?traffic"))
+        model.addCouple((path, "!traffic"), (controller, "?traffic"))
     return model, controller
 
 

@@ -68,8 +68,8 @@ def simulation_system():
     nested.addInputPorts("external")
     atomic.addInputPorts("in")
 
-    root.addCouple(root.IP["decision"], nested.IP["external"])
-    nested.addCouple(nested.IP["external"], atomic.IP["in"])
+    root.addCouple((root, "decision"), (nested, "external"))
+    nested.addCouple((nested, "external"), (atomic, "in"))
 
     engine = SimEngineThread(
         root,

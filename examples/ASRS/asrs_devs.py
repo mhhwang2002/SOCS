@@ -222,7 +222,7 @@ class ASRSController(DEVS):
     def delta_x(self, event):
         if not isinstance(event, PortValue):
             return False
-        if event.port is self.IP["?cell_status"]:
+        if event.port == "?cell_status":
             status = event.value
             if not isinstance(status, dict) or status.get("cell") not in self.cell_names:
                 return False
@@ -236,7 +236,7 @@ class ASRSController(DEVS):
                 return True
             return False
 
-        if event.port is self.IP["?order_arrival"]:
+        if event.port == "?order_arrival":
             if self.online_dispatch_policy is None:
                 return False
             order = event.value
@@ -261,7 +261,7 @@ class ASRSController(DEVS):
                 return True
             return False
 
-        if event.port is self.IP["?box_out"]:
+        if event.port == "?box_out":
             box_out = event.value
             if not isinstance(box_out, dict) or box_out.get("order_id") not in self.remaining_order_items:
                 return False
@@ -276,7 +276,7 @@ class ASRSController(DEVS):
                 self.completed_order_times[order_id] = box_out["completed_at"]
             return True
 
-        if event.port is self.IP["?crane_idle"]:
+        if event.port == "?crane_idle":
             self.crane_idle = True
             idle = event.value if isinstance(event.value, dict) else {}
             if idle.get("station") in (0, 1):
@@ -612,7 +612,7 @@ class Crane(DEVS):
     def delta_x(self, event):
         if not isinstance(event, PortValue):
             return False
-        if event.port is self.IP["?command"]:
+        if event.port == "?command":
             command = event.value
             if self.phase != "idle" or not isinstance(command, dict):
                 return False
@@ -636,7 +636,7 @@ class Crane(DEVS):
             self.target_order_id = command.get("order_id")
             self._start_retrieval(self._external_event_time)
             return True
-        if event.port is not self.IP["?box"]:
+        if event.port != "?box":
             return False
         transfer = event.value
         if (
@@ -966,12 +966,12 @@ def make_asrs_model(
     model.add_child(crane)
     model.add_child(controller)
     for cell in cells:
-        model.addCouple(crane.OP["!retrieve_request"], cell.IP["?crane"])
-        model.addCouple(cell.OP["!box"], crane.IP["?box"])
-        model.addCouple(cell.OP["!status"], controller.IP["?cell_status"])
-    model.addCouple(controller.OP["!command"], crane.IP["?command"])
-    model.addCouple(crane.OP["!idle"], controller.IP["?crane_idle"])
-    model.addCouple(crane.OP["!box_out"], controller.IP["?box_out"])
+        model.addCouple((crane, "!retrieve_request"), (cell, "?crane"))
+        model.addCouple((cell, "!box"), (crane, "?box"))
+        model.addCouple((cell, "!status"), (controller, "?cell_status"))
+    model.addCouple((controller, "!command"), (crane, "?command"))
+    model.addCouple((crane, "!idle"), (controller, "?crane_idle"))
+    model.addCouple((crane, "!box_out"), (controller, "?box_out"))
     return model
 
 
@@ -1018,13 +1018,13 @@ def make_online_asrs_model(
     model.add_child(controller)
     model.add_child(source)
     for cell in cells:
-        model.addCouple(crane.OP["!retrieve_request"], cell.IP["?crane"])
-        model.addCouple(cell.OP["!box"], crane.IP["?box"])
-        model.addCouple(cell.OP["!status"], controller.IP["?cell_status"])
-    model.addCouple(controller.OP["!command"], crane.IP["?command"])
-    model.addCouple(crane.OP["!idle"], controller.IP["?crane_idle"])
-    model.addCouple(crane.OP["!box_out"], controller.IP["?box_out"])
-    model.addCouple(source.OP["!order_arrival"], controller.IP["?order_arrival"])
+        model.addCouple((crane, "!retrieve_request"), (cell, "?crane"))
+        model.addCouple((cell, "!box"), (crane, "?box"))
+        model.addCouple((cell, "!status"), (controller, "?cell_status"))
+    model.addCouple((controller, "!command"), (crane, "?command"))
+    model.addCouple((crane, "!idle"), (controller, "?crane_idle"))
+    model.addCouple((crane, "!box_out"), (controller, "?box_out"))
+    model.addCouple((source, "!order_arrival"), (controller, "?order_arrival"))
     return model
 
 
