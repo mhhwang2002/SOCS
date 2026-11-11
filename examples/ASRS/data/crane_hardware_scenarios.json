@@ -1,0 +1,91 @@
+{
+  "format": "socs-asrs-crane-hardware-scenarios",
+  "version": 1,
+  "axis_mapping": {
+    "hardware_travel_X": "DEVS_X",
+    "hardware_hoist_Y": "DEVS_Z and fork_lift",
+    "hardware_fork_reach_Z": "DEVS_Y"
+  },
+  "motion_assumptions": {
+    "distance_unit": "m",
+    "time_unit": "s",
+    "deceleration": "equal in magnitude to acceleration",
+    "profile": "symmetric trapezoidal; triangular for short moves",
+    "fork_lift": "uses the DEVS hoist (Z-axis) motion parameters"
+  },
+  "profiles": [
+    {
+      "id": "current_devs_baseline",
+      "manufacturer": null,
+      "model": "SOCS current illustrative parameters",
+      "source_status": "not hardware calibrated",
+      "parameters": {
+        "x_max_speed": 2.0,
+        "x_acceleration": 1.0,
+        "x_deceleration": 1.0,
+        "z_max_speed": 2.0,
+        "z_acceleration": 1.0,
+        "z_deceleration": 1.0,
+        "fork_max_speed": 2.0,
+        "fork_acceleration": 1.0,
+        "fork_deceleration": 1.0
+      },
+      "notes": "Existing DEVS configuration; included as the reference case."
+    },
+    {
+      "id": "dematic_rapidstore_ul1000_1200_reported",
+      "manufacturer": "Dematic",
+      "model": "RapidStore UL1000/1200",
+      "source_status": "preliminary survey value; original catalog/version not independently checked in this work",
+      "reported_values": {
+        "travel_max_speed_mps": 4.0,
+        "travel_acceleration_mps2": 0.78,
+        "hoist_max_speed_mps": 1.4,
+        "hoist_acceleration_mps2": 1.3,
+        "fork_max_speed_mps": 1.5,
+        "fork_acceleration_mps2": null
+      },
+      "parameters": {
+        "x_max_speed": 4.0,
+        "x_acceleration": 0.78,
+        "x_deceleration": 0.78,
+        "z_max_speed": 1.4,
+        "z_acceleration": 1.3,
+        "z_deceleration": 1.3,
+        "fork_max_speed": 1.5,
+        "fork_acceleration": 1.0,
+        "fork_deceleration": 1.0
+      },
+      "imputations": {
+        "fork_acceleration": "1.0 m/s^2 retained from the current DEVS default because the survey did not find a published value; this is not a Dematic specification"
+      },
+      "notes": "Single-model travel, hoist, and fork speed values are used. The fork acceleration is an explicit sensitivity assumption, not manufacturer data."
+    },
+    {
+      "id": "tianjin_master_high_speed_loaded_fork_reported",
+      "manufacturer": "Tianjin Master",
+      "model": "High Speed ASRS; loaded/heavy-load fork reach row",
+      "source_status": "preliminary survey value; original catalog/version and load definitions not independently checked in this work",
+      "reported_values": {
+        "travel_max_speed_mps": 3.667,
+        "travel_acceleration_mps2": 0.5,
+        "hoist_max_speed_mps": 1.0,
+        "hoist_acceleration_mps2": 0.5,
+        "loaded_fork_max_speed_mps": 0.5,
+        "loaded_fork_acceleration_mps2": 0.5
+      },
+      "parameters": {
+        "x_max_speed": 3.667,
+        "x_acceleration": 0.5,
+        "x_deceleration": 0.5,
+        "z_max_speed": 1.0,
+        "z_acceleration": 0.5,
+        "z_deceleration": 0.5,
+        "fork_max_speed": 0.5,
+        "fork_acceleration": 0.5,
+        "fork_deceleration": 0.5
+      },
+      "notes": "The reported fork values are the loaded/heavy-load reach row. The survey does not establish the corresponding X/Y payload condition; interpret this only as a sensitivity profile."
+    }
+  ]
+}

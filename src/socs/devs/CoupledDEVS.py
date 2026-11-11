@@ -8,7 +8,7 @@
 
 from .Simulatable import Simulatable
 from .DEVSInterfaces import Port, InputPort, OutputPort, PortValue
-from .FDDEVS import FDDEVS
+from .DEVS import DEVS
 from .ModelRegistry import ModelRegistry
 
 class CoupledDEVS(Simulatable):
@@ -39,7 +39,7 @@ class CoupledDEVS(Simulatable):
 
     def add_child(self, child):
         """Add a coupled or FD-DEVS child model."""
-        if not isinstance(child, (CoupledDEVS, FDDEVS)):
+        if not isinstance(child, (CoupledDEVS, DEVS)):
             raise TypeError(
                 "A CoupledDEVS child must be a CoupledDEVS or FD-DEVS instance."
             )
@@ -62,7 +62,7 @@ class CoupledDEVS(Simulatable):
 
     def remove_child(self, child):
         """Remove a child model and unregister its subtree."""
-        if not isinstance(child, (CoupledDEVS, FDDEVS)):
+        if not isinstance(child, (CoupledDEVS, DEVS)):
             raise TypeError(
                 "A CoupledDEVS child must be a CoupledDEVS or FD-DEVS instance."
             )
@@ -81,7 +81,7 @@ class CoupledDEVS(Simulatable):
 
     def move_child_to(self, child, new_parent):
         """Move a child model to another parent within the same system."""
-        if not isinstance(child, (CoupledDEVS, FDDEVS)):
+        if not isinstance(child, (CoupledDEVS, DEVS)):
             raise TypeError(
                 "Child must be a CoupledDEVS or FD-DEVS instance."
             )
@@ -307,7 +307,7 @@ class CoupledDEVS(Simulatable):
             for child in node.children:
                 if isinstance(child, CoupledDEVS):
                     collect(child)
-                elif isinstance(child, FDDEVS):
+                elif isinstance(child, DEVS):
                     atomic_models.append(child)
 
         collect(self)

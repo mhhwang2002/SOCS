@@ -1,0 +1,156 @@
+{
+  "format": "socs-asrs-online-workload",
+  "version": 1,
+  "generation": {
+    "seed": 303002,
+    "arrival_process": "Poisson; exponential inter-arrival times; first arrival at time 0",
+    "mean_interarrival_time": 15.0,
+    "due_date_rule": "arrival_time + due_slack_factor * urgency_fraction * requested_units * median_DEVS_cycle_ready_time; urgency fractions are assigned by a seeded shuffled rank",
+    "due_date_status": "synthetic workload parameter, not fitted to observed customer data",
+    "due_slack_factor": 4.0,
+    "urgency_spread": 0.4,
+    "urgency_fraction_range": [
+      0.8,
+      1.2
+    ],
+    "reference_unit_cycle_time": 18.767972995,
+    "cycle_time_table": "examples\\ASRS\\data\\crane_cycle_times.json",
+    "cycle_time_table_sha256": "edd3ab6053725c5295ca7c65cf3ded5fc681616af90937234dc2b35583659d4d"
+  },
+  "source_instance": {
+    "path": "examples\\ASRS\\results\\allocation_study\\instances\\sku3_balanced_spread_spread.json",
+    "sha256": "3ed5de56412656618af7a55fbb1d23468ee18d17df7dc1dd19fd0740e00e8e58"
+  },
+  "orders": [
+    {
+      "order_id": 1,
+      "arrival_time": 0.0,
+      "due_time": 316.970210591,
+      "urgency_rank": 2,
+      "due_slack_fraction": 0.844444444,
+      "requested_quantity": 5,
+      "demand_by_sku": {
+        "red": 2,
+        "blue": 2,
+        "green": 1
+      }
+    },
+    {
+      "order_id": 2,
+      "arrival_time": 22.204252476,
+      "due_time": 422.587676379,
+      "urgency_rank": 3,
+      "due_slack_fraction": 0.888888889,
+      "requested_quantity": 6,
+      "demand_by_sku": {
+        "red": 2,
+        "blue": 2,
+        "green": 2
+      }
+    },
+    {
+      "order_id": 3,
+      "arrival_time": 22.410887028,
+      "due_time": 442.813482127,
+      "urgency_rank": 4,
+      "due_slack_fraction": 0.933333333,
+      "requested_quantity": 6,
+      "demand_by_sku": {
+        "red": 2,
+        "blue": 2,
+        "green": 2
+      }
+    },
+    {
+      "order_id": 4,
+      "arrival_time": 43.858751294,
+      "due_time": 444.242175198,
+      "urgency_rank": 7,
+      "due_slack_fraction": 1.066666667,
+      "requested_quantity": 5,
+      "demand_by_sku": {
+        "red": 2,
+        "blue": 2,
+        "green": 1
+      }
+    },
+    {
+      "order_id": 5,
+      "arrival_time": 45.607137259,
+      "due_time": 429.3079185,
+      "urgency_rank": 6,
+      "due_slack_fraction": 1.022222222,
+      "requested_quantity": 5,
+      "demand_by_sku": {
+        "red": 2,
+        "blue": 2,
+        "green": 1
+      }
+    },
+    {
+      "order_id": 6,
+      "arrival_time": 86.98615343,
+      "due_time": 520.734862659,
+      "urgency_rank": 9,
+      "due_slack_fraction": 1.155555556,
+      "requested_quantity": 5,
+      "demand_by_sku": {
+        "red": 2,
+        "blue": 2,
+        "green": 1
+      }
+    },
+    {
+      "order_id": 7,
+      "arrival_time": 92.676643644,
+      "due_time": 509.742710211,
+      "urgency_rank": 8,
+      "due_slack_fraction": 1.111111111,
+      "requested_quantity": 5,
+      "demand_by_sku": {
+        "red": 2,
+        "blue": 2,
+        "green": 1
+      }
+    },
+    {
+      "order_id": 8,
+      "arrival_time": 92.948789574,
+      "due_time": 633.466411844,
+      "urgency_rank": 10,
+      "due_slack_fraction": 1.2,
+      "requested_quantity": 6,
+      "demand_by_sku": {
+        "red": 2,
+        "blue": 2,
+        "green": 2
+      }
+    },
+    {
+      "order_id": 9,
+      "arrival_time": 117.627037752,
+      "due_time": 477.972119266,
+      "urgency_rank": 1,
+      "due_slack_fraction": 0.8,
+      "requested_quantity": 6,
+      "demand_by_sku": {
+        "red": 2,
+        "blue": 1,
+        "green": 3
+      }
+    },
+    {
+      "order_id": 10,
+      "arrival_time": 141.368398288,
+      "due_time": 581.790164583,
+      "urgency_rank": 5,
+      "due_slack_fraction": 0.977777778,
+      "requested_quantity": 6,
+      "demand_by_sku": {
+        "red": 1,
+        "blue": 2,
+        "green": 3
+      }
+    }
+  ]
+}

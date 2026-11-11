@@ -1,10 +1,10 @@
-"""Load example ported from FDDEVS to the unified FDDEVS class."""
+"""Load example using the DEVS atomic model base."""
 
-from socs.devs.FDDEVS import FDDEVS
+from socs.devs.DEVS import DEVS
 from socs.devs.DEVSInterfaces import PortValue
 from socs.devs.Base import isnumeric
 
-class LogBridge(FDDEVS):
+class LogBridge(DEVS):
     """Atomic LogBridge can handel only one walker at a time."""
 
     def __init__(self, name, length, parent=None):

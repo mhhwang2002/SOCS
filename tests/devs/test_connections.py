@@ -1,10 +1,10 @@
 import pytest
 
-from socs.devs import CoupledDEVS, FDDEVS
+from socs.devs import CoupledDEVS, DEVS
 from socs.devs.DEVSInterfaces import InputPort, OutputPort, PortValue
 
 
-class AtomicModelStub(FDDEVS):
+class AtomicModelStub(DEVS):
     def __init__(self, name, interval=float("inf")):
         super().__init__(name)
         self.interval = interval

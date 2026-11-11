@@ -5,11 +5,11 @@ from copy import deepcopy
 import pytest
 
 from socs.devs.CoupledDEVS import CoupledDEVS
-from socs.devs.FDDEVS import FDDEVS
-from examples.FDDEVS_Simple.FDDEVSCounter import Counter
+from socs.devs.DEVS import DEVS
+from examples.DEVS_Simple.DEVSCounter import Counter
 
 
-class MutableStateModel(FDDEVS):
+class MutableStateModel(DEVS):
     """Minimal model whose state contains mutable data."""
 
     def __init__(self, name, parent=None):

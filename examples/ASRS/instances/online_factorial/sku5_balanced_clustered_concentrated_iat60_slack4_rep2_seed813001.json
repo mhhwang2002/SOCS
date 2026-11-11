@@ -1,0 +1,139 @@
+{
+  "format": "socs-asrs-online-workload",
+  "version": 1,
+  "generation": {
+    "seed": 813001,
+    "arrival_process": "Poisson; exponential inter-arrival times; first arrival at time 0",
+    "mean_interarrival_time": 60.0,
+    "due_date_rule": "arrival_time + due_slack_factor * urgency_fraction * requested_units * median_DEVS_cycle_ready_time; urgency fractions are assigned by a seeded shuffled rank",
+    "due_date_status": "synthetic workload parameter, not fitted to observed customer data",
+    "due_slack_factor": 4.0,
+    "urgency_spread": 0.4,
+    "urgency_fraction_range": [
+      0.8,
+      1.2
+    ],
+    "reference_unit_cycle_time": 18.767972995,
+    "cycle_time_table": "examples\\ASRS\\data\\crane_cycle_times.json",
+    "cycle_time_table_sha256": "edd3ab6053725c5295ca7c65cf3ded5fc681616af90937234dc2b35583659d4d"
+  },
+  "source_instance": {
+    "path": "examples\\ASRS\\results\\allocation_study\\instances\\sku5_balanced_clustered_concentrated.json",
+    "sha256": "e0430ebe2d00a039d742cfb6c6c4098a1a1fb9abd22cf20bddb21b5f96479cc1"
+  },
+  "orders": [
+    {
+      "order_id": 1,
+      "arrival_time": 0.0,
+      "due_time": 316.970210591,
+      "urgency_rank": 2,
+      "due_slack_fraction": 0.844444444,
+      "requested_quantity": 5,
+      "demand_by_sku": {
+        "white": 5
+      }
+    },
+    {
+      "order_id": 2,
+      "arrival_time": 4.118373471,
+      "due_time": 364.463454985,
+      "urgency_rank": 1,
+      "due_slack_fraction": 0.8,
+      "requested_quantity": 6,
+      "demand_by_sku": {
+        "yellow": 6
+      }
+    },
+    {
+      "order_id": 3,
+      "arrival_time": 70.103951045,
+      "due_time": 470.487374949,
+      "urgency_rank": 7,
+      "due_slack_fraction": 1.066666667,
+      "requested_quantity": 5,
+      "demand_by_sku": {
+        "red": 5
+      }
+    },
+    {
+      "order_id": 4,
+      "arrival_time": 81.415562319,
+      "due_time": 465.11634356,
+      "urgency_rank": 6,
+      "due_slack_fraction": 1.022222222,
+      "requested_quantity": 5,
+      "demand_by_sku": {
+        "blue": 5
+      }
+    },
+    {
+      "order_id": 5,
+      "arrival_time": 86.282231811,
+      "due_time": 486.665655715,
+      "urgency_rank": 3,
+      "due_slack_fraction": 0.888888889,
+      "requested_quantity": 6,
+      "demand_by_sku": {
+        "green": 5,
+        "white": 1
+      }
+    },
+    {
+      "order_id": 6,
+      "arrival_time": 273.698404255,
+      "due_time": 794.19685533,
+      "urgency_rank": 9,
+      "due_slack_fraction": 1.155555556,
+      "requested_quantity": 6,
+      "demand_by_sku": {
+        "blue": 6
+      }
+    },
+    {
+      "order_id": 7,
+      "arrival_time": 387.820212034,
+      "due_time": 754.838350613,
+      "urgency_rank": 5,
+      "due_slack_fraction": 0.977777778,
+      "requested_quantity": 5,
+      "demand_by_sku": {
+        "red": 5
+      }
+    },
+    {
+      "order_id": 8,
+      "arrival_time": 471.640431908,
+      "due_time": 922.0717838,
+      "urgency_rank": 10,
+      "due_slack_fraction": 1.2,
+      "requested_quantity": 5,
+      "demand_by_sku": {
+        "green": 5
+      }
+    },
+    {
+      "order_id": 9,
+      "arrival_time": 570.291717634,
+      "due_time": 1070.770997514,
+      "urgency_rank": 8,
+      "due_slack_fraction": 1.111111111,
+      "requested_quantity": 6,
+      "demand_by_sku": {
+        "blue": 4,
+        "white": 2
+      }
+    },
+    {
+      "order_id": 10,
+      "arrival_time": 594.145249494,
+      "due_time": 1014.547844593,
+      "urgency_rank": 4,
+      "due_slack_fraction": 0.933333333,
+      "requested_quantity": 6,
+      "demand_by_sku": {
+        "yellow": 4,
+        "white": 2
+      }
+    }
+  ]
+}

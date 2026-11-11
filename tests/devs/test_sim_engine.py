@@ -1,12 +1,12 @@
 import math
 
-from socs.devs import CoupledDEVS, FDDEVS
+from socs.devs import CoupledDEVS, DEVS
 from socs.devs.DEVSTime import Clock
 from socs.devs.DEVSInterfaces import PortValue
 from socs.devs.SimEngine import SimEngineThread, ExecutionResult
 
 
-class PeriodicModel(FDDEVS):
+class PeriodicModel(DEVS):
     def __init__(self, name, interval):
         super().__init__(name)
         self.interval = interval
@@ -32,7 +32,7 @@ class PeriodicModel(FDDEVS):
         return self.state
 
 
-class SourceModel(FDDEVS):
+class SourceModel(DEVS):
     def __init__(self, name):
         super().__init__(name)
         self.addOutputPorts("out")
@@ -58,7 +58,7 @@ class SourceModel(FDDEVS):
         return self.state
 
 
-class SinkModel(FDDEVS):
+class SinkModel(DEVS):
     def __init__(self, name, reschedule=False, interval=math.inf):
         super().__init__(name)
         self.addInputPorts("in")

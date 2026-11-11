@@ -2,10 +2,10 @@ from copy import deepcopy
 
 import pytest
 
-from socs.devs.FDDEVS import FDDEVS
+from socs.devs.DEVS import DEVS
 
 
-class CounterModel(FDDEVS):
+class CounterModel(DEVS):
     """A simple counter model for snapshot branching tests."""
 
     def __init__(self, name):

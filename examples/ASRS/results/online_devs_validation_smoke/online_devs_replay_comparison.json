@@ -1,0 +1,17 @@
+{
+  "instances": "examples\\ASRS\\results\\allocation_study\\instances",
+  "arrival_traces": [
+    "examples\\ASRS\\instances\\online_devstest\\sku3_balanced_clustered_concentrated_iat60_slack2_rep1_seed12000.json"
+  ],
+  "cycle_time_table": "examples\\ASRS\\data\\crane_cycle_times.json",
+  "cycle_time_table_sha256": "edd3ab6053725c5295ca7c65cf3ded5fc681616af90937234dc2b35583659d4d",
+  "validated_policies": [
+    "FCFS"
+  ],
+  "trace_policy_pairs": 1,
+  "identity_match_for_all_pairs": true,
+  "maximum_dispatch_time_error": 1.5916157281026244e-12,
+  "maximum_box_out_time_error": 1.5916157281026244e-12,
+  "maximum_makespan_error": 1.5916157281026244e-12,
+  "note": "Dynamic order arrivals and dispatch run through the SOCS DEVS source, controller, cells, and crane. Replay and DEVS share the same table-based greedy dispatch decisions; this verifies event integration and Crane timing, not independent policy optimality."
+}

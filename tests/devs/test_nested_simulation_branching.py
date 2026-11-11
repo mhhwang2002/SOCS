@@ -3,14 +3,14 @@ import math
 import pytest
 
 from socs.devs.CoupledDEVS import CoupledDEVS
-from socs.devs.FDDEVS import FDDEVS
+from socs.devs.DEVS import DEVS
 from socs.devs.DEVSInterfaces import PortValue
 from socs.devs.SimEngine import SimEngineThread
 from socs.decision.decision import Decision
 from socs.decision.simulation_executor import SimulationDecisionExecutor
 
 
-class NestedCounter(FDDEVS):
+class NestedCounter(DEVS):
     def __init__(self, name="atomic", interval=3.0):
         super().__init__(name)
         self.interval = interval

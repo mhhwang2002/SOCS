@@ -1,0 +1,37 @@
+{
+  "instances": "examples\\ASRS\\results\\allocation_study\\instances",
+  "arrival_traces": [
+    "examples\\ASRS\\instances\\online_convergence\\sku3_balanced_clustered_concentrated_iat60_slack2_rep1_seed12000.json",
+    "examples\\ASRS\\instances\\online_convergence\\sku3_balanced_clustered_spread_iat60_slack2_rep1_seed112000.json",
+    "examples\\ASRS\\instances\\online_convergence\\sku3_balanced_spread_concentrated_iat60_slack2_rep1_seed212000.json",
+    "examples\\ASRS\\instances\\online_convergence\\sku3_balanced_spread_spread_iat60_slack2_rep1_seed312000.json",
+    "examples\\ASRS\\instances\\online_convergence\\sku3_variable_clustered_concentrated_iat60_slack2_rep1_seed412000.json",
+    "examples\\ASRS\\instances\\online_convergence\\sku3_variable_clustered_spread_iat60_slack2_rep1_seed512000.json",
+    "examples\\ASRS\\instances\\online_convergence\\sku3_variable_spread_concentrated_iat60_slack2_rep1_seed612000.json",
+    "examples\\ASRS\\instances\\online_convergence\\sku3_variable_spread_spread_iat60_slack2_rep1_seed712000.json",
+    "examples\\ASRS\\instances\\online_convergence\\sku5_balanced_clustered_concentrated_iat60_slack2_rep1_seed812000.json",
+    "examples\\ASRS\\instances\\online_convergence\\sku5_balanced_clustered_spread_iat60_slack2_rep1_seed912000.json",
+    "examples\\ASRS\\instances\\online_convergence\\sku5_balanced_spread_concentrated_iat60_slack2_rep1_seed1012000.json",
+    "examples\\ASRS\\instances\\online_convergence\\sku5_balanced_spread_spread_iat60_slack2_rep1_seed1112000.json",
+    "examples\\ASRS\\instances\\online_convergence\\sku5_variable_clustered_concentrated_iat60_slack2_rep1_seed1212000.json",
+    "examples\\ASRS\\instances\\online_convergence\\sku5_variable_clustered_spread_iat60_slack2_rep1_seed1312000.json",
+    "examples\\ASRS\\instances\\online_convergence\\sku5_variable_spread_concentrated_iat60_slack2_rep1_seed1412000.json",
+    "examples\\ASRS\\instances\\online_convergence\\sku5_variable_spread_spread_iat60_slack2_rep1_seed1512000.json"
+  ],
+  "cycle_time_table": "examples\\ASRS\\results\\hardware_sensitivity_iat60_slack2\\cycle_tables\\tianjin_master_high_speed_loaded_fork_reported.json",
+  "cycle_time_table_sha256": "bcebed99c5873e57767ede861f1b099aaf6cc19c3ec655eedf11dca9053586e7",
+  "allow_deadline_reference_table_mismatch": true,
+  "validated_policies": [
+    "FCFS",
+    "Random",
+    "EDD",
+    "minimum_slack",
+    "nearest_pick"
+  ],
+  "trace_policy_pairs": 80,
+  "identity_match_for_all_pairs": true,
+  "maximum_dispatch_time_error": 1.8189894035458565e-12,
+  "maximum_box_out_time_error": 1.8189894035458565e-12,
+  "maximum_makespan_error": 1.8189894035458565e-12,
+  "note": "Dynamic order arrivals and dispatch run through the SOCS DEVS source, controller, cells, and crane. Replay and DEVS share the same table-based greedy dispatch decisions; this verifies event integration and Crane timing, not independent policy optimality."
+}

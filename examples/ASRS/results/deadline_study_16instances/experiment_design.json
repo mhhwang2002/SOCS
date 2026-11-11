@@ -1,0 +1,43 @@
+{
+  "instances": [
+    "examples\\ASRS\\results\\allocation_study\\instances\\sku3_balanced_clustered_concentrated.json",
+    "examples\\ASRS\\results\\allocation_study\\instances\\sku3_balanced_clustered_spread.json",
+    "examples\\ASRS\\results\\allocation_study\\instances\\sku3_balanced_spread_concentrated.json",
+    "examples\\ASRS\\results\\allocation_study\\instances\\sku3_balanced_spread_spread.json",
+    "examples\\ASRS\\results\\allocation_study\\instances\\sku3_variable_clustered_concentrated.json",
+    "examples\\ASRS\\results\\allocation_study\\instances\\sku3_variable_clustered_spread.json",
+    "examples\\ASRS\\results\\allocation_study\\instances\\sku3_variable_spread_concentrated.json",
+    "examples\\ASRS\\results\\allocation_study\\instances\\sku3_variable_spread_spread.json",
+    "examples\\ASRS\\results\\allocation_study\\instances\\sku5_balanced_clustered_concentrated.json",
+    "examples\\ASRS\\results\\allocation_study\\instances\\sku5_balanced_clustered_spread.json",
+    "examples\\ASRS\\results\\allocation_study\\instances\\sku5_balanced_spread_concentrated.json",
+    "examples\\ASRS\\results\\allocation_study\\instances\\sku5_balanced_spread_spread.json",
+    "examples\\ASRS\\results\\allocation_study\\instances\\sku5_variable_clustered_concentrated.json",
+    "examples\\ASRS\\results\\allocation_study\\instances\\sku5_variable_clustered_spread.json",
+    "examples\\ASRS\\results\\allocation_study\\instances\\sku5_variable_spread_concentrated.json",
+    "examples\\ASRS\\results\\allocation_study\\instances\\sku5_variable_spread_spread.json"
+  ],
+  "seed": 42,
+  "deadline_factors": [
+    0.75,
+    1.0,
+    1.25
+  ],
+  "reference_policy": "ascending order ID (fixed input-order proxy; all orders released at time zero)",
+  "deadline_definition": "due_i = FCFS_makespan * factor * rank_fraction_i; rank_fraction spans 0.8 to 1.2; urgency rank is shuffled once per instance seed",
+  "rescue_definition": "requested SKU units not delivered by the local crane at that order's due time",
+  "deadline_ordering": "all orders are available at simulation time zero; deadlines are evaluation cutoffs and do not stop the crane",
+  "timing_model": "ASRSController and acceleration-profile Crane DEVS model; parameters are not yet calibrated against physical equipment",
+  "optimizer_cycle_table": "examples\\ASRS\\data\\crane_cycle_times.json",
+  "optimizer_timing_semantics": "DEVS-measured command-to-box-out and command-to-idle cycles; startup delay charged once",
+  "methods": [
+    "FCFS",
+    "EDD",
+    "minimum_slack",
+    "nearest_pick",
+    "ACO_makespan"
+  ],
+  "aco_searches_per_instance": 5,
+  "aco_seeds": "seed + instance_index * 100 + run_index",
+  "replication_unit_for_confidence_intervals": "instance; ACO seeds are averaged within each instance first"
+}

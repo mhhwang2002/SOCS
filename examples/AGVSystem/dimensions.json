@@ -1,0 +1,21 @@
+{
+  "route": {
+    "width_m": 32,
+    "depth_m": 18,
+    "corner_radius_m": 4,
+    "lane_width_m": 2.4,
+    "floor_margin_m": 2.8,
+    "long_side_stop_fractions": [0.3333333333333333, 0.6666666666666666]
+  },
+  "charger": {
+    "pad_size_m": [2.4, 0.75, 0.08],
+    "cabinet_size_m": [0.65, 0.42, 1.0],
+    "edge_gap_m": 0.175
+  },
+  "charging_dwell_s": {"CH01": 7, "CH02": 7},
+  "vehicles": {
+    "Tugger": {"start": "P02", "length_m": 4.4, "width_m": 0.95, "height_m": 0.83, "speed_mps": 1.1},
+    "Unit load": {"start": "P05", "length_m": 1.6, "width_m": 1.0, "height_m": 0.95, "speed_mps": 1.3},
+    "Forklift": {"start": "P06", "length_m": 2.65, "width_m": 1.15, "height_m": 1.885, "speed_mps": 1.0}
+  }
+}

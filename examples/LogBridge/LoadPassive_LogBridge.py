@@ -1,6 +1,6 @@
-"""Ping-pong example using the deterministic FDDEVS model base."""
+"""Ping-pong example using the deterministic DEVS model base."""
 
-from socs.devs.FDDEVS import FDDEVS
+from socs.devs.DEVS import DEVS
 from socs.devs.CoupledDEVS import CoupledDEVS
 from socs.devs.DEVSInterfaces import PortValue
 from socs.devs.SimEngine import SimEngineThread

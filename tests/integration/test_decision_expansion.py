@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 import pytest
 
-from examples.FDDEVS_Simple.FDDEVSCounter import Counter
+from examples.DEVS_Simple.DEVSCounter import Counter
 
 from socs.devs.SimEngine import SimEngineBase
 from socs.decision.decision import Decision

@@ -1,10 +1,10 @@
-"""Load example ported from FDDEVS to the unified FDDEVS class."""
+"""Load example using the DEVS atomic model base."""
 
-from socs.devs.FDDEVS import FDDEVS
+from socs.devs.DEVS import DEVS
 from socs.devs.DEVSInterfaces import PortValue
 from socs.devs.SimEngine import SimEngineThread  
 
-class Load(FDDEVS):
+class Load(DEVS):
     """Atomic load model with walker speeds."""
 
     def __init__(self, name, length, int_walker_speed=0, parent=None):

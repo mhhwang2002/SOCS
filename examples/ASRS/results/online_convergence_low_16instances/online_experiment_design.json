@@ -1,0 +1,220 @@
+{
+  "source_instances": [
+    {
+      "path": "examples\\ASRS\\results\\allocation_study\\instances\\sku3_balanced_clustered_concentrated.json",
+      "sha256": "0c42769430b7a937a48175c7c93496d87aca5397ecf7a2795188f4c322c9182b"
+    },
+    {
+      "path": "examples\\ASRS\\results\\allocation_study\\instances\\sku3_balanced_clustered_spread.json",
+      "sha256": "ac231c1dc10c9407698743ca8dd1e9c19acbd4487b35f0839d5e071ddb6ae7b9"
+    },
+    {
+      "path": "examples\\ASRS\\results\\allocation_study\\instances\\sku3_balanced_spread_concentrated.json",
+      "sha256": "ccf0077021d7e97f4f236c43659f67fc904ebab103834090f89e09ceb5fab65b"
+    },
+    {
+      "path": "examples\\ASRS\\results\\allocation_study\\instances\\sku3_balanced_spread_spread.json",
+      "sha256": "3ed5de56412656618af7a55fbb1d23468ee18d17df7dc1dd19fd0740e00e8e58"
+    },
+    {
+      "path": "examples\\ASRS\\results\\allocation_study\\instances\\sku3_variable_clustered_concentrated.json",
+      "sha256": "c4b6aa3c32703d8e4f1ba4ae108195506322f55c19588283bb0746be9e5cc455"
+    },
+    {
+      "path": "examples\\ASRS\\results\\allocation_study\\instances\\sku3_variable_clustered_spread.json",
+      "sha256": "62ae78d9bec0da35e0c668cec873b3b218066db1c80029070c656877eeb82728"
+    },
+    {
+      "path": "examples\\ASRS\\results\\allocation_study\\instances\\sku3_variable_spread_concentrated.json",
+      "sha256": "28a2540871aaf15af42ffd6a7fe847a29bee5a6c65faf0cc58235611fbc56823"
+    },
+    {
+      "path": "examples\\ASRS\\results\\allocation_study\\instances\\sku3_variable_spread_spread.json",
+      "sha256": "2f880b5ff0e1d8f3d604939fb8c0bbc7d507f56323a71cae5c93d10d07fec2fa"
+    },
+    {
+      "path": "examples\\ASRS\\results\\allocation_study\\instances\\sku5_balanced_clustered_concentrated.json",
+      "sha256": "e0430ebe2d00a039d742cfb6c6c4098a1a1fb9abd22cf20bddb21b5f96479cc1"
+    },
+    {
+      "path": "examples\\ASRS\\results\\allocation_study\\instances\\sku5_balanced_clustered_spread.json",
+      "sha256": "f6c3d606026fde8fe5a14be037b8135f3d61dccd01b1ddb690ec2f13a7ebae47"
+    },
+    {
+      "path": "examples\\ASRS\\results\\allocation_study\\instances\\sku5_balanced_spread_concentrated.json",
+      "sha256": "e7a428140da3a94624d90333b03451aab6f970961c6cf5f83d205b509c3e39a4"
+    },
+    {
+      "path": "examples\\ASRS\\results\\allocation_study\\instances\\sku5_balanced_spread_spread.json",
+      "sha256": "9f437e09b31102ba14889418d492de8807f8a7268f45e93b17f8187b8906131b"
+    },
+    {
+      "path": "examples\\ASRS\\results\\allocation_study\\instances\\sku5_variable_clustered_concentrated.json",
+      "sha256": "1c32d945b305517dd3dfd0fec2d31040f8206533db34eca279c0283a02cf2cf3"
+    },
+    {
+      "path": "examples\\ASRS\\results\\allocation_study\\instances\\sku5_variable_clustered_spread.json",
+      "sha256": "58d261ce3ed2fe85d20b532b0302c4291a8d961af9178ea6e31933867f27a0ff"
+    },
+    {
+      "path": "examples\\ASRS\\results\\allocation_study\\instances\\sku5_variable_spread_concentrated.json",
+      "sha256": "5212af820edfe32a650b1bf69392127f29caa522bddf5a6847a7da5c9462c40e"
+    },
+    {
+      "path": "examples\\ASRS\\results\\allocation_study\\instances\\sku5_variable_spread_spread.json",
+      "sha256": "c5c159ad2470fbab20012d543e76c9b08dbc701a84db07062edc04523113edcc"
+    }
+  ],
+  "arrival_trace_files": [
+    "examples\\ASRS\\instances\\online_convergence\\sku3_balanced_clustered_concentrated_iat60_slack2_rep1_seed12000.json",
+    "examples\\ASRS\\instances\\online_convergence\\sku3_balanced_clustered_spread_iat60_slack2_rep1_seed112000.json",
+    "examples\\ASRS\\instances\\online_convergence\\sku3_balanced_spread_concentrated_iat60_slack2_rep1_seed212000.json",
+    "examples\\ASRS\\instances\\online_convergence\\sku3_balanced_spread_spread_iat60_slack2_rep1_seed312000.json",
+    "examples\\ASRS\\instances\\online_convergence\\sku3_variable_clustered_concentrated_iat60_slack2_rep1_seed412000.json",
+    "examples\\ASRS\\instances\\online_convergence\\sku3_variable_clustered_spread_iat60_slack2_rep1_seed512000.json",
+    "examples\\ASRS\\instances\\online_convergence\\sku3_variable_spread_concentrated_iat60_slack2_rep1_seed612000.json",
+    "examples\\ASRS\\instances\\online_convergence\\sku3_variable_spread_spread_iat60_slack2_rep1_seed712000.json",
+    "examples\\ASRS\\instances\\online_convergence\\sku5_balanced_clustered_concentrated_iat60_slack2_rep1_seed812000.json",
+    "examples\\ASRS\\instances\\online_convergence\\sku5_balanced_clustered_spread_iat60_slack2_rep1_seed912000.json",
+    "examples\\ASRS\\instances\\online_convergence\\sku5_balanced_spread_concentrated_iat60_slack2_rep1_seed1012000.json",
+    "examples\\ASRS\\instances\\online_convergence\\sku5_balanced_spread_spread_iat60_slack2_rep1_seed1112000.json",
+    "examples\\ASRS\\instances\\online_convergence\\sku5_variable_clustered_concentrated_iat60_slack2_rep1_seed1212000.json",
+    "examples\\ASRS\\instances\\online_convergence\\sku5_variable_clustered_spread_iat60_slack2_rep1_seed1312000.json",
+    "examples\\ASRS\\instances\\online_convergence\\sku5_variable_spread_concentrated_iat60_slack2_rep1_seed1412000.json",
+    "examples\\ASRS\\instances\\online_convergence\\sku5_variable_spread_spread_iat60_slack2_rep1_seed1512000.json"
+  ],
+  "arrival_trace_generation_parameters": [
+    {
+      "file": "sku3_balanced_clustered_concentrated_iat60_slack2_rep1_seed12000.json",
+      "seed": 12000,
+      "mean_interarrival_time": 60.0,
+      "due_slack_factor": 2.0,
+      "urgency_spread": 0.4
+    },
+    {
+      "file": "sku3_balanced_clustered_spread_iat60_slack2_rep1_seed112000.json",
+      "seed": 112000,
+      "mean_interarrival_time": 60.0,
+      "due_slack_factor": 2.0,
+      "urgency_spread": 0.4
+    },
+    {
+      "file": "sku3_balanced_spread_concentrated_iat60_slack2_rep1_seed212000.json",
+      "seed": 212000,
+      "mean_interarrival_time": 60.0,
+      "due_slack_factor": 2.0,
+      "urgency_spread": 0.4
+    },
+    {
+      "file": "sku3_balanced_spread_spread_iat60_slack2_rep1_seed312000.json",
+      "seed": 312000,
+      "mean_interarrival_time": 60.0,
+      "due_slack_factor": 2.0,
+      "urgency_spread": 0.4
+    },
+    {
+      "file": "sku3_variable_clustered_concentrated_iat60_slack2_rep1_seed412000.json",
+      "seed": 412000,
+      "mean_interarrival_time": 60.0,
+      "due_slack_factor": 2.0,
+      "urgency_spread": 0.4
+    },
+    {
+      "file": "sku3_variable_clustered_spread_iat60_slack2_rep1_seed512000.json",
+      "seed": 512000,
+      "mean_interarrival_time": 60.0,
+      "due_slack_factor": 2.0,
+      "urgency_spread": 0.4
+    },
+    {
+      "file": "sku3_variable_spread_concentrated_iat60_slack2_rep1_seed612000.json",
+      "seed": 612000,
+      "mean_interarrival_time": 60.0,
+      "due_slack_factor": 2.0,
+      "urgency_spread": 0.4
+    },
+    {
+      "file": "sku3_variable_spread_spread_iat60_slack2_rep1_seed712000.json",
+      "seed": 712000,
+      "mean_interarrival_time": 60.0,
+      "due_slack_factor": 2.0,
+      "urgency_spread": 0.4
+    },
+    {
+      "file": "sku5_balanced_clustered_concentrated_iat60_slack2_rep1_seed812000.json",
+      "seed": 812000,
+      "mean_interarrival_time": 60.0,
+      "due_slack_factor": 2.0,
+      "urgency_spread": 0.4
+    },
+    {
+      "file": "sku5_balanced_clustered_spread_iat60_slack2_rep1_seed912000.json",
+      "seed": 912000,
+      "mean_interarrival_time": 60.0,
+      "due_slack_factor": 2.0,
+      "urgency_spread": 0.4
+    },
+    {
+      "file": "sku5_balanced_spread_concentrated_iat60_slack2_rep1_seed1012000.json",
+      "seed": 1012000,
+      "mean_interarrival_time": 60.0,
+      "due_slack_factor": 2.0,
+      "urgency_spread": 0.4
+    },
+    {
+      "file": "sku5_balanced_spread_spread_iat60_slack2_rep1_seed1112000.json",
+      "seed": 1112000,
+      "mean_interarrival_time": 60.0,
+      "due_slack_factor": 2.0,
+      "urgency_spread": 0.4
+    },
+    {
+      "file": "sku5_variable_clustered_concentrated_iat60_slack2_rep1_seed1212000.json",
+      "seed": 1212000,
+      "mean_interarrival_time": 60.0,
+      "due_slack_factor": 2.0,
+      "urgency_spread": 0.4
+    },
+    {
+      "file": "sku5_variable_clustered_spread_iat60_slack2_rep1_seed1312000.json",
+      "seed": 1312000,
+      "mean_interarrival_time": 60.0,
+      "due_slack_factor": 2.0,
+      "urgency_spread": 0.4
+    },
+    {
+      "file": "sku5_variable_spread_concentrated_iat60_slack2_rep1_seed1412000.json",
+      "seed": 1412000,
+      "mean_interarrival_time": 60.0,
+      "due_slack_factor": 2.0,
+      "urgency_spread": 0.4
+    },
+    {
+      "file": "sku5_variable_spread_spread_iat60_slack2_rep1_seed1512000.json",
+      "seed": 1512000,
+      "mean_interarrival_time": 60.0,
+      "due_slack_factor": 2.0,
+      "urgency_spread": 0.4
+    }
+  ],
+  "cycle_time_table": "examples\\ASRS\\data\\crane_cycle_times.json",
+  "policies": [
+    "FCFS",
+    "Random",
+    "EDD",
+    "minimum_slack",
+    "nearest_pick",
+    "rolling_ACO"
+  ],
+  "crane_service": "non-preemptive; an order is served to its available SKU limit before the next dispatch decision",
+  "inventory_rule": "SKU stock is reserved and removed when the selected order's retrieval cycle executes; no replenishment",
+  "online_information": "dispatch rules see only released, unresolved orders and current remaining inventory",
+  "ACO": {
+    "ants": 6,
+    "iterations": 8,
+    "repeats": 5,
+    "objective": "complete-order priority, then shortage, then makespan"
+  },
+  "statistics": "ACO and Random repeats and multiple arrival traces are averaged within each source instance; confidence intervals use source instances as the replication unit",
+  "caveat": "synthetic Poisson arrivals and due dates; DEVS-derived cycle table, not hardware-calibrated; no backup-center queue/capacity"
+}

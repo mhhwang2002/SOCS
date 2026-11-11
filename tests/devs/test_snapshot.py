@@ -5,12 +5,12 @@ import math
 
 import pytest
 
-from socs.devs import CoupledDEVS, FDDEVS
+from socs.devs import CoupledDEVS, DEVS
 from socs.devs.SimEngine import SimEngineThread
 from socs.devs.Snapshot import SystemSnapshot
 
 
-class BranchModel(FDDEVS):
+class BranchModel(DEVS):
     """Small deterministic model used to test independent decision branches."""
 
     def __init__(self, name, parent=None):

@@ -2,7 +2,7 @@
 
 from .DEVSBase import HierNamedObj, NamedObj, TES
 from .Simulatable import Simulatable
-from .FDDEVS import FDDEVS
+from .DEVS import DEVS
 from .CoupledDEVS import CoupledDEVS
 
 __all__ = [
@@ -10,6 +10,6 @@ __all__ = [
     "HierNamedObj",
     "TES",
     "Simulatable",
-    "FDDEVS",
+    "DEVS",
     "CoupledDEVS",
 ]

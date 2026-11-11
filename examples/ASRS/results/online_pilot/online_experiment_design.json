@@ -1,0 +1,156 @@
+{
+  "source_instance": "examples\\ASRS\\instances\\demo_seed_42.json",
+  "instance_sha256": "2f076d295a0814e7f4e13ff2cb9b47a48b8e9bcfce65fd17ef9182856de7bb97",
+  "arrival_trace_files": [
+    "examples\\ASRS\\instances\\online\\demo42_arrival_42.json",
+    "examples\\ASRS\\instances\\online\\demo42_arrival_43.json",
+    "examples\\ASRS\\instances\\online\\demo42_arrival_44.json",
+    "examples\\ASRS\\instances\\online\\demo42_arrival_45.json",
+    "examples\\ASRS\\instances\\online\\demo42_arrival_46.json",
+    "examples\\ASRS\\instances\\online\\demo42_arrival_47.json",
+    "examples\\ASRS\\instances\\online\\demo42_arrival_48.json",
+    "examples\\ASRS\\instances\\online\\demo42_arrival_49.json",
+    "examples\\ASRS\\instances\\online\\demo42_arrival_50.json",
+    "examples\\ASRS\\instances\\online\\demo42_arrival_51.json",
+    "examples\\ASRS\\instances\\online\\demo42_arrival_52.json",
+    "examples\\ASRS\\instances\\online\\demo42_arrival_53.json",
+    "examples\\ASRS\\instances\\online\\demo42_arrival_54.json",
+    "examples\\ASRS\\instances\\online\\demo42_arrival_55.json",
+    "examples\\ASRS\\instances\\online\\demo42_arrival_56.json",
+    "examples\\ASRS\\instances\\online\\demo42_arrival_57.json"
+  ],
+  "arrival_trace_generation_parameters": [
+    {
+      "file": "demo42_arrival_42.json",
+      "seed": 42,
+      "mean_interarrival_time": 30.0,
+      "due_slack_factor": 2.0,
+      "urgency_spread": 0.4
+    },
+    {
+      "file": "demo42_arrival_43.json",
+      "seed": 43,
+      "mean_interarrival_time": 30.0,
+      "due_slack_factor": 2.0,
+      "urgency_spread": 0.4
+    },
+    {
+      "file": "demo42_arrival_44.json",
+      "seed": 44,
+      "mean_interarrival_time": 30.0,
+      "due_slack_factor": 2.0,
+      "urgency_spread": 0.4
+    },
+    {
+      "file": "demo42_arrival_45.json",
+      "seed": 45,
+      "mean_interarrival_time": 30.0,
+      "due_slack_factor": 2.0,
+      "urgency_spread": 0.4
+    },
+    {
+      "file": "demo42_arrival_46.json",
+      "seed": 46,
+      "mean_interarrival_time": 30.0,
+      "due_slack_factor": 2.0,
+      "urgency_spread": 0.4
+    },
+    {
+      "file": "demo42_arrival_47.json",
+      "seed": 47,
+      "mean_interarrival_time": 30.0,
+      "due_slack_factor": 2.0,
+      "urgency_spread": 0.4
+    },
+    {
+      "file": "demo42_arrival_48.json",
+      "seed": 48,
+      "mean_interarrival_time": 30.0,
+      "due_slack_factor": 2.0,
+      "urgency_spread": 0.4
+    },
+    {
+      "file": "demo42_arrival_49.json",
+      "seed": 49,
+      "mean_interarrival_time": 30.0,
+      "due_slack_factor": 2.0,
+      "urgency_spread": 0.4
+    },
+    {
+      "file": "demo42_arrival_50.json",
+      "seed": 50,
+      "mean_interarrival_time": 30.0,
+      "due_slack_factor": 2.0,
+      "urgency_spread": 0.4
+    },
+    {
+      "file": "demo42_arrival_51.json",
+      "seed": 51,
+      "mean_interarrival_time": 30.0,
+      "due_slack_factor": 2.0,
+      "urgency_spread": 0.4
+    },
+    {
+      "file": "demo42_arrival_52.json",
+      "seed": 52,
+      "mean_interarrival_time": 30.0,
+      "due_slack_factor": 2.0,
+      "urgency_spread": 0.4
+    },
+    {
+      "file": "demo42_arrival_53.json",
+      "seed": 53,
+      "mean_interarrival_time": 30.0,
+      "due_slack_factor": 2.0,
+      "urgency_spread": 0.4
+    },
+    {
+      "file": "demo42_arrival_54.json",
+      "seed": 54,
+      "mean_interarrival_time": 30.0,
+      "due_slack_factor": 2.0,
+      "urgency_spread": 0.4
+    },
+    {
+      "file": "demo42_arrival_55.json",
+      "seed": 55,
+      "mean_interarrival_time": 30.0,
+      "due_slack_factor": 2.0,
+      "urgency_spread": 0.4
+    },
+    {
+      "file": "demo42_arrival_56.json",
+      "seed": 56,
+      "mean_interarrival_time": 30.0,
+      "due_slack_factor": 2.0,
+      "urgency_spread": 0.4
+    },
+    {
+      "file": "demo42_arrival_57.json",
+      "seed": 57,
+      "mean_interarrival_time": 30.0,
+      "due_slack_factor": 2.0,
+      "urgency_spread": 0.4
+    }
+  ],
+  "cycle_time_table": "examples\\ASRS\\data\\crane_cycle_times.json",
+  "policies": [
+    "Random",
+    "FCFS",
+    "EDD",
+    "minimum_slack",
+    "nearest_pick",
+    "rolling_ACO"
+  ],
+  "crane_service": "non-preemptive; an order is served to its available SKU limit before the next dispatch decision",
+  "inventory_rule": "SKU stock is reserved and removed when the selected order's retrieval cycle executes; no replenishment",
+  "online_information": "dispatch rules see only released, unresolved orders and current remaining inventory",
+  "ACO": {
+    "ants": 8,
+    "iterations": 12,
+    "repeats": 3,
+    "objective": "complete-order priority, then shortage, then makespan"
+  },
+  "statistics": "ACO and Random repeats are averaged within each fixed trace; confidence intervals use independent traces as the replication unit",
+  "caveat": "synthetic Poisson arrivals and due dates; DEVS-derived cycle table, not hardware-calibrated; no backup-center queue/capacity"
+}

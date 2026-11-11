@@ -1,0 +1,22 @@
+{
+  "instance": "examples\\ASRS\\instances\\demo_seed_42.json",
+  "seed": 42,
+  "deadline_factors": [
+    0.75,
+    1.0,
+    1.25
+  ],
+  "reference_policy": "FCFS",
+  "reference_horizon": 865.7061255958398,
+  "deadline_definition": "due_i = FCFS_makespan * factor * rank_fraction_i; rank_fraction spans 0.8 to 1.2; urgency rank is shuffled once per instance seed",
+  "rescue_definition": "requested SKU units not delivered by the local crane at that order's due time",
+  "deadline_ordering": "all orders are available at simulation time zero; deadlines are evaluation cutoffs and do not stop the crane",
+  "timing_model": "ASRSController and acceleration-profile Crane DEVS model; parameters are not yet calibrated against physical equipment",
+  "methods": [
+    "FCFS",
+    "EDD",
+    "minimum_slack",
+    "nearest_pick",
+    "ACO_makespan"
+  ]
+}

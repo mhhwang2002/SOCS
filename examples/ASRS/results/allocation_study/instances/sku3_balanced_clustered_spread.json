@@ -1,0 +1,552 @@
+{
+  "format": "socs-asrs-instance",
+  "version": 2,
+  "generation_seed": 2060,
+  "rack": {
+    "columns": 15,
+    "levels": 6
+  },
+  "products": [
+    {
+      "product_id": "P00",
+      "color": "red",
+      "bay": 5,
+      "level": 1,
+      "order_id": 1
+    },
+    {
+      "product_id": "P01",
+      "color": "green",
+      "bay": 13,
+      "level": 3,
+      "order_id": 1
+    },
+    {
+      "product_id": "P02",
+      "color": "green",
+      "bay": 3,
+      "level": 6,
+      "order_id": 1
+    },
+    {
+      "product_id": "P03",
+      "color": "red",
+      "bay": 4,
+      "level": 5,
+      "order_id": 1
+    },
+    {
+      "product_id": "P04",
+      "color": "red",
+      "bay": 11,
+      "level": 3,
+      "order_id": 1
+    },
+    {
+      "product_id": "P05",
+      "color": "green",
+      "bay": 10,
+      "level": 1,
+      "order_id": 1
+    },
+    {
+      "product_id": "P06",
+      "color": "red",
+      "bay": 14,
+      "level": 6,
+      "order_id": 2
+    },
+    {
+      "product_id": "P07",
+      "color": "green",
+      "bay": 2,
+      "level": 5,
+      "order_id": 2
+    },
+    {
+      "product_id": "P08",
+      "color": "green",
+      "bay": 12,
+      "level": 3,
+      "order_id": 2
+    },
+    {
+      "product_id": "P09",
+      "color": "blue",
+      "bay": 8,
+      "level": 1,
+      "order_id": 2
+    },
+    {
+      "product_id": "P10",
+      "color": "green",
+      "bay": 7,
+      "level": 6,
+      "order_id": 2
+    },
+    {
+      "product_id": "P11",
+      "color": "blue",
+      "bay": 6,
+      "level": 5,
+      "order_id": 2
+    },
+    {
+      "product_id": "P12",
+      "color": "green",
+      "bay": 4,
+      "level": 6,
+      "order_id": 3
+    },
+    {
+      "product_id": "P13",
+      "color": "blue",
+      "bay": 12,
+      "level": 2,
+      "order_id": 3
+    },
+    {
+      "product_id": "P14",
+      "color": "red",
+      "bay": 8,
+      "level": 4,
+      "order_id": 3
+    },
+    {
+      "product_id": "P15",
+      "color": "red",
+      "bay": 7,
+      "level": 2,
+      "order_id": 3
+    },
+    {
+      "product_id": "P16",
+      "color": "green",
+      "bay": 13,
+      "level": 1,
+      "order_id": 3
+    },
+    {
+      "product_id": "P17",
+      "color": "red",
+      "bay": 6,
+      "level": 3,
+      "order_id": 4
+    },
+    {
+      "product_id": "P18",
+      "color": "blue",
+      "bay": 3,
+      "level": 1,
+      "order_id": 4
+    },
+    {
+      "product_id": "P19",
+      "color": "green",
+      "bay": 9,
+      "level": 6,
+      "order_id": 4
+    },
+    {
+      "product_id": "P20",
+      "color": "blue",
+      "bay": 7,
+      "level": 3,
+      "order_id": 4
+    },
+    {
+      "product_id": "P21",
+      "color": "red",
+      "bay": 14,
+      "level": 2,
+      "order_id": 4
+    },
+    {
+      "product_id": "P22",
+      "color": "red",
+      "bay": 1,
+      "level": 6,
+      "order_id": 5
+    },
+    {
+      "product_id": "P23",
+      "color": "green",
+      "bay": 10,
+      "level": 4,
+      "order_id": 5
+    },
+    {
+      "product_id": "P24",
+      "color": "red",
+      "bay": 8,
+      "level": 6,
+      "order_id": 5
+    },
+    {
+      "product_id": "P25",
+      "color": "green",
+      "bay": 4,
+      "level": 3,
+      "order_id": 5
+    },
+    {
+      "product_id": "P26",
+      "color": "red",
+      "bay": 14,
+      "level": 4,
+      "order_id": 5
+    },
+    {
+      "product_id": "P27",
+      "color": "green",
+      "bay": 12,
+      "level": 5,
+      "order_id": 6
+    },
+    {
+      "product_id": "P28",
+      "color": "green",
+      "bay": 4,
+      "level": 4,
+      "order_id": 6
+    },
+    {
+      "product_id": "P29",
+      "color": "red",
+      "bay": 3,
+      "level": 3,
+      "order_id": 6
+    },
+    {
+      "product_id": "P30",
+      "color": "blue",
+      "bay": 11,
+      "level": 2,
+      "order_id": 6
+    },
+    {
+      "product_id": "P31",
+      "color": "green",
+      "bay": 11,
+      "level": 6,
+      "order_id": 6
+    },
+    {
+      "product_id": "P32",
+      "color": "blue",
+      "bay": 1,
+      "level": 1,
+      "order_id": 6
+    },
+    {
+      "product_id": "P33",
+      "color": "red",
+      "bay": 1,
+      "level": 2,
+      "order_id": 7
+    },
+    {
+      "product_id": "P34",
+      "color": "green",
+      "bay": 6,
+      "level": 6,
+      "order_id": 7
+    },
+    {
+      "product_id": "P35",
+      "color": "blue",
+      "bay": 7,
+      "level": 1,
+      "order_id": 7
+    },
+    {
+      "product_id": "P36",
+      "color": "red",
+      "bay": 2,
+      "level": 2,
+      "order_id": 7
+    },
+    {
+      "product_id": "P37",
+      "color": "blue",
+      "bay": 7,
+      "level": 5,
+      "order_id": 7
+    },
+    {
+      "product_id": "P38",
+      "color": "blue",
+      "bay": 10,
+      "level": 6,
+      "order_id": 7
+    },
+    {
+      "product_id": "P39",
+      "color": "red",
+      "bay": 10,
+      "level": 5,
+      "order_id": 8
+    },
+    {
+      "product_id": "P40",
+      "color": "blue",
+      "bay": 13,
+      "level": 6,
+      "order_id": 8
+    },
+    {
+      "product_id": "P41",
+      "color": "red",
+      "bay": 6,
+      "level": 4,
+      "order_id": 8
+    },
+    {
+      "product_id": "P42",
+      "color": "blue",
+      "bay": 13,
+      "level": 4,
+      "order_id": 8
+    },
+    {
+      "product_id": "P43",
+      "color": "blue",
+      "bay": 9,
+      "level": 4,
+      "order_id": 8
+    },
+    {
+      "product_id": "P44",
+      "color": "blue",
+      "bay": 3,
+      "level": 2,
+      "order_id": 9
+    },
+    {
+      "product_id": "P45",
+      "color": "blue",
+      "bay": 8,
+      "level": 5,
+      "order_id": 9
+    },
+    {
+      "product_id": "P46",
+      "color": "blue",
+      "bay": 12,
+      "level": 4,
+      "order_id": 9
+    },
+    {
+      "product_id": "P47",
+      "color": "green",
+      "bay": 2,
+      "level": 4,
+      "order_id": 9
+    },
+    {
+      "product_id": "P48",
+      "color": "blue",
+      "bay": 9,
+      "level": 2,
+      "order_id": 9
+    },
+    {
+      "product_id": "P49",
+      "color": "red",
+      "bay": 1,
+      "level": 5,
+      "order_id": 9
+    }
+  ],
+  "orders": [
+    {
+      "order_id": 1,
+      "product_ids": [
+        "P00",
+        "P01",
+        "P02",
+        "P03",
+        "P04",
+        "P05"
+      ],
+      "requested_quantity": 6,
+      "shortage_quantity": 0,
+      "demand_by_color": {
+        "red": 6,
+        "blue": 0,
+        "green": 0,
+        "yellow": 0,
+        "white": 0
+      }
+    },
+    {
+      "order_id": 2,
+      "product_ids": [
+        "P06",
+        "P07",
+        "P08",
+        "P09",
+        "P10",
+        "P11"
+      ],
+      "requested_quantity": 6,
+      "shortage_quantity": 0,
+      "demand_by_color": {
+        "red": 0,
+        "blue": 5,
+        "green": 1,
+        "yellow": 0,
+        "white": 0
+      }
+    },
+    {
+      "order_id": 3,
+      "product_ids": [
+        "P12",
+        "P13",
+        "P14",
+        "P15",
+        "P16"
+      ],
+      "requested_quantity": 5,
+      "shortage_quantity": 0,
+      "demand_by_color": {
+        "red": 0,
+        "blue": 5,
+        "green": 0,
+        "yellow": 0,
+        "white": 0
+      }
+    },
+    {
+      "order_id": 4,
+      "product_ids": [
+        "P17",
+        "P18",
+        "P19",
+        "P20",
+        "P21"
+      ],
+      "requested_quantity": 5,
+      "shortage_quantity": 0,
+      "demand_by_color": {
+        "red": 0,
+        "blue": 5,
+        "green": 0,
+        "yellow": 0,
+        "white": 0
+      }
+    },
+    {
+      "order_id": 5,
+      "product_ids": [
+        "P22",
+        "P23",
+        "P24",
+        "P25",
+        "P26"
+      ],
+      "requested_quantity": 5,
+      "shortage_quantity": 0,
+      "demand_by_color": {
+        "red": 0,
+        "blue": 0,
+        "green": 5,
+        "yellow": 0,
+        "white": 0
+      }
+    },
+    {
+      "order_id": 6,
+      "product_ids": [
+        "P27",
+        "P28",
+        "P29",
+        "P30",
+        "P31",
+        "P32"
+      ],
+      "requested_quantity": 6,
+      "shortage_quantity": 0,
+      "demand_by_color": {
+        "red": 6,
+        "blue": 0,
+        "green": 0,
+        "yellow": 0,
+        "white": 0
+      }
+    },
+    {
+      "order_id": 7,
+      "product_ids": [
+        "P33",
+        "P34",
+        "P35",
+        "P36",
+        "P37",
+        "P38"
+      ],
+      "requested_quantity": 6,
+      "shortage_quantity": 0,
+      "demand_by_color": {
+        "red": 6,
+        "blue": 0,
+        "green": 0,
+        "yellow": 0,
+        "white": 0
+      }
+    },
+    {
+      "order_id": 8,
+      "product_ids": [
+        "P39",
+        "P40",
+        "P41",
+        "P42",
+        "P43"
+      ],
+      "requested_quantity": 5,
+      "shortage_quantity": 0,
+      "demand_by_color": {
+        "red": 0,
+        "blue": 0,
+        "green": 5,
+        "yellow": 0,
+        "white": 0
+      }
+    },
+    {
+      "order_id": 9,
+      "product_ids": [
+        "P44",
+        "P45",
+        "P46",
+        "P47",
+        "P48",
+        "P49"
+      ],
+      "requested_quantity": 6,
+      "shortage_quantity": 0,
+      "demand_by_color": {
+        "red": 0,
+        "blue": 0,
+        "green": 6,
+        "yellow": 0,
+        "white": 0
+      }
+    },
+    {
+      "order_id": 10,
+      "product_ids": [],
+      "requested_quantity": 5,
+      "shortage_quantity": 5,
+      "demand_by_color": {
+        "red": 1,
+        "blue": 4,
+        "green": 0,
+        "yellow": 0,
+        "white": 0
+      }
+    }
+  ]
+}

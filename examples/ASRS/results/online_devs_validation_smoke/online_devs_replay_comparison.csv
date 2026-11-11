@@ -1,0 +1,2 @@
+trace,policy,picks,identity_match,max_dispatch_time_error,max_box_out_time_error,replay_makespan,devs_makespan,makespan_error,devs_end_time_after_fork_down
+sku3_balanced_clustered_concentrated_iat60_slack2_rep1_seed12000,FCFS,50,True,1.5916157281026244e-12,1.5916157281026244e-12,818.3466737407053,818.3466737407069,1.5916157281026244e-12,819.0394940637345

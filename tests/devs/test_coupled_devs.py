@@ -2,12 +2,12 @@
 
 import pytest
 
-from socs.devs import CoupledDEVS, FDDEVS
+from socs.devs import CoupledDEVS, DEVS
 from socs.devs.DEVSInterfaces import PortValue
 from socs.devs.CoupledDEVS import CoupledDEVS
 from socs.devs.ModelRegistry import ModelRegistry
 
-class TimedModel(FDDEVS):
+class TimedModel(DEVS):
     """Small deterministic model for CoupledDEVS tests."""
 
     def __init__(self, name, interval=1.0):
@@ -263,7 +263,7 @@ def test_child_coupled_devs_uses_root_registry():
 
 def test_add_child_registers_child_model():
     root = CoupledDEVS("Root")
-    child = FDDEVS("Child")
+    child = DEVS("Child")
 
     root.add_child(child)
 
@@ -274,7 +274,7 @@ def test_add_child_registers_child_model():
 def test_add_child_registers_entire_subtree():
     root = CoupledDEVS("Root")
     child = CoupledDEVS("Child")
-    grandchild = FDDEVS("Grandchild")
+    grandchild = DEVS("Grandchild")
 
     child.add_child(grandchild)
     root.add_child(child)
@@ -286,8 +286,8 @@ def test_add_child_registers_entire_subtree():
 
 def test_add_child_rejects_duplicate_model_uuid():
     root = CoupledDEVS("Root")
-    child_a = FDDEVS("A")
-    child_b = FDDEVS("B")
+    child_a = DEVS("A")
+    child_b = DEVS("B")
 
     root.add_child(child_a)
     child_b._model_id = child_a.model_id
@@ -301,7 +301,7 @@ def test_add_child_rejects_duplicate_model_uuid():
     
 def test_remove_child_unregisters_model():
     root = CoupledDEVS("Root")
-    child = FDDEVS("Child")
+    child = DEVS("Child")
 
     root.add_child(child)
     child_id = child.model_id
@@ -317,7 +317,7 @@ def test_remove_child_unregisters_model():
 def test_remove_child_unregisters_entire_subtree():
     root = CoupledDEVS("Root")
     child = CoupledDEVS("Child")
-    grandchild = FDDEVS("Grandchild")
+    grandchild = DEVS("Grandchild")
 
     child.add_child(grandchild)
     root.add_child(child)
@@ -339,8 +339,8 @@ def test_remove_child_unregisters_entire_subtree():
 
 def test_remove_child_preserves_other_registered_models():
     root = CoupledDEVS("Root")
-    child_a = FDDEVS("A")
-    child_b = FDDEVS("B")
+    child_a = DEVS("A")
+    child_b = DEVS("B")
 
     root.add_child(child_a)
     root.add_child(child_b)
@@ -355,7 +355,7 @@ def test_remove_child_preserves_other_registered_models():
 def test_removed_subtree_can_be_registered_again():
     root = CoupledDEVS("Root")
     child = CoupledDEVS("Child")
-    grandchild = FDDEVS("Grandchild")
+    grandchild = DEVS("Grandchild")
 
     child.add_child(grandchild)
     root.add_child(child)
@@ -378,7 +378,7 @@ def test_move_child_to_preserves_model_identity_and_registry():
     root = CoupledDEVS("Root")
     parent_a = CoupledDEVS("A")
     parent_b = CoupledDEVS("B")
-    child = FDDEVS("Child")
+    child = DEVS("Child")
 
     root.add_child(parent_a)
     root.add_child(parent_b)
@@ -402,7 +402,7 @@ def test_move_child_to_updates_path():
     root = CoupledDEVS("Root")
     parent_a = CoupledDEVS("A")
     parent_b = CoupledDEVS("B")
-    child = FDDEVS("Child")
+    child = DEVS("Child")
 
     root.add_child(parent_a)
     root.add_child(parent_b)
@@ -418,7 +418,7 @@ def test_move_child_to_preserves_subtree():
     parent_a = CoupledDEVS("A")
     parent_b = CoupledDEVS("B")
     child = CoupledDEVS("Child")
-    grandchild = FDDEVS("Grandchild")
+    grandchild = DEVS("Grandchild")
 
     root.add_child(parent_a)
     root.add_child(parent_b)
@@ -454,8 +454,8 @@ def test_move_child_to_rejects_duplicate_name():
     parent_a = CoupledDEVS("A")
     parent_b = CoupledDEVS("B")
 
-    child_a = FDDEVS("Child")
-    child_b = FDDEVS("Child")
+    child_a = DEVS("Child")
+    child_b = DEVS("Child")
 
     root.add_child(parent_a)
     root.add_child(parent_b)
@@ -475,7 +475,7 @@ def test_move_child_to_rejects_different_system():
 
     parent_a = CoupledDEVS("A")
     parent_b = CoupledDEVS("B")
-    child = FDDEVS("Child")
+    child = DEVS("Child")
 
     root_a.add_child(parent_a)
     root_b.add_child(parent_b)
@@ -491,7 +491,7 @@ def test_move_child_to_rejects_non_child():
     root = CoupledDEVS("Root")
     parent_a = CoupledDEVS("A")
     parent_b = CoupledDEVS("B")
-    child = FDDEVS("Child")
+    child = DEVS("Child")
 
     root.add_child(parent_a)
     root.add_child(parent_b)

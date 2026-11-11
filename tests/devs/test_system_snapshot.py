@@ -1,10 +1,10 @@
 from socs.devs.CoupledDEVS import CoupledDEVS
-from socs.devs.FDDEVS import FDDEVS
+from socs.devs.DEVS import DEVS
 from socs.devs.SimEngine import SimEngineThread
 from socs.devs.Snapshot import SystemSnapshot
 
 
-class SnapshotTestAtomic(FDDEVS):
+class SnapshotTestAtomic(DEVS):
     """Minimal atomic model used to test system snapshots."""
 
     def __init__(self, name, parent=None, delay=5):

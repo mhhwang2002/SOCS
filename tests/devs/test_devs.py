@@ -3,10 +3,10 @@ import math
 import pytest
 
 from socs.devs.DEVSBase import HierNamedObj
-from socs.devs.FDDEVS import FDDEVS
+from socs.devs.DEVS import DEVS
 
 
-class Counter(FDDEVS):
+class Counter(DEVS):
     """A small deterministic atomic model used by the tests."""
 
     def __init__(self, name, parent=None, delay=1.0):
@@ -36,7 +36,7 @@ class Counter(FDDEVS):
         return self.state
 
 
-# FDDEVS behavior
+# DEVS behavior
 
 def test_model_has_name():
     model = Counter("Counter01")
