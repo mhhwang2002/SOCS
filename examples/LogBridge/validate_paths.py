@@ -4,7 +4,7 @@ import math
 
 from socs.decision.path_validator import DecisionPathValidator
 from socs.decision.search_validator import SearchResultValidator
-from socs.devs.SimEngine import SimEngineThread
+from socs.devs.TESEngin import TESEnginThread
 from socs.tree import DecisionTreeValidator
 
 from .LoadPassive_LogBridge import makeModel
@@ -19,7 +19,7 @@ from .exhaustive_search import (
 def main() -> int:
     """Build the DecisionTree and validate every terminal path."""
     model = makeModel()
-    engine = SimEngineThread(model)
+    engine = TESEnginThread(model)
     engine.bVerbose = False
 
     result = run_logbridge_exhaustive_search(model, engine=engine)

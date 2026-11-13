@@ -4,7 +4,7 @@ from argparse import ArgumentParser
 from math import inf, isfinite
 
 from socs.devs import CoupledDEVS, DEVSph
-from socs.devs.SimEngine import SimEngineBase
+from socs.devs.TESEngin import TESEnginBase
 
 
 class DEVSphPlayer(DEVSph):
@@ -37,26 +37,19 @@ def run_live(model, speed):
     import tkinter as tk
     from tkinter import ttk
 
+    from socs.devs.phase_diagram import PhaseDiagram
+    from socs.devs.event_input import EventInput
+
     interval = min(player.graph.vertex_attrs("Sending").tau for player in model.M) / 10
-    engine = SimEngineBase(model, TimeIntervalAnimation=interval)
+    engine = TESEnginBase(model, TimeIntervalAnimation=interval)
     engine.bVerbose = False
     root = tk.Tk()
     root.title("DEVSph PingPong")
-    canvas = tk.Canvas(root, width=480, height=300, background="white", highlightthickness=0)
-    canvas.pack()
-    nodes = {}
-    for player, y in zip(model.M, (88, 216)):
-        canvas.create_text(32, y, text=player.name, font=("TkDefaultFont", 15, "bold"))
-        initial_x = 342 if player.phase == "Sending" else 135
-        canvas.create_line(initial_x, y - 65, initial_x, y - 38, arrow=tk.LAST, width=2)
-        canvas.create_line(202, y - 12, 274, y - 12, arrow=tk.LAST, width=2, dash=(5, 4))
-        canvas.create_line(274, y + 12, 202, y + 12, arrow=tk.LAST, width=2)
-        canvas.create_text(238, y - 24, text="?r")
-        canvas.create_text(238, y + 25, text="!s")
-        for phase, x, dash in (("Waiting", 135, (5, 4)), ("Sending", 342, ())):
-            oval = canvas.create_oval(x - 69, y - 37, x + 69, y + 37, width=2, dash=dash)
-            label = canvas.create_text(x, y, justify="center")
-            nodes[player, phase] = oval, label
+    diagrams = []
+    for player in model.M:
+        diagram = PhaseDiagram(root, player, width=None, height=145)
+        diagram.pack()
+        diagrams.append(diagram)
     status = ttk.Label(root, padding=8)
     status.pack()
     controls = ttk.Frame(root, padding=8)
@@ -72,12 +65,8 @@ def run_live(model, speed):
     running = True
 
     def refresh():
-        for (player, phase), (oval, label) in nodes.items():
-            active = player.phase == phase
-            canvas.itemconfigure(oval, fill="#bfdbfe" if active else "white")
-            remaining = player.timeNext() - engine.tNow
-            value = f"{max(0, remaining):.3f}" if isfinite(remaining) else "∞"
-            canvas.itemconfigure(label, text=f"{phase}\nRemaining = {value}" if active else phase)
+        for diagram in diagrams:
+            diagram.refresh(engine.tNow)
         status.configure(text=f"Simulation time = {engine.tNow:.3f}")
         play.configure(text="Pause" if running else "Play", state="normal" if animation else "disabled")
         step.configure(state="disabled" if animation else "normal")
@@ -127,6 +116,14 @@ def run_live(model, speed):
         engine.reset()
         refresh()
 
+    def input_applied():
+        nonlocal timer
+        if timer is not None:
+            root.after_cancel(timer)
+            timer = None
+        refresh()
+        schedule()
+
     def toggle_coupling():
         if coupling.winfo_manager():
             coupling.pack_forget()
@@ -144,6 +141,8 @@ def run_live(model, speed):
     ttk.Button(controls, text="Reset", command=reset).pack(side="left", padx=4)
     coupling_button = ttk.Button(controls, text="Show Coupling", command=toggle_coupling)
     coupling_button.pack(side="left", padx=4)
+    EventInput(root, engine, input_applied).pack(pady=(0, 8))
+    root.bind("<Destroy>", lambda event: pause() if event.widget is root else None)
     refresh()
     schedule()
     root.mainloop()
@@ -151,7 +150,10 @@ def run_live(model, speed):
 
 def main():
     parser = ArgumentParser(description=__doc__)
-    parser.add_argument("--live", action="store_true", help="Run in a live 2D window.")
+    display = parser.add_mutually_exclusive_group()
+    display.add_argument("--live", action="store_true", help="Run in a live 2D window (default).")
+    display.add_argument("--console", dest="live", action="store_false", help="Print sends in the console.")
+    parser.set_defaults(live=True)
     parser.add_argument("--speed", type=float, default=0.1, help="Simulation units per real second.")
     parser.add_argument("--steps", type=int, default=10, help="Number of sends to print in console mode.")
     args = parser.parse_args()
@@ -163,7 +165,7 @@ def main():
     else:
         if args.steps < 1:
             parser.error("--steps must be positive")
-        engine = SimEngineBase(model)
+        engine = TESEnginBase(model)
         engine.bVerbose = False
         for _ in range(args.steps):
             engine.executeOneStep()

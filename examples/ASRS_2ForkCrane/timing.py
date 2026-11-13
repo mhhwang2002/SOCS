@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 
 from socs.devs.DEVS import DEVS
-from socs.devs.SimEngine import ExecutionResult, SimEngineBase
+from socs.devs.TESEngin import ExecutionResult, TESEnginBase
 
 from examples.ASRS.asrs_devs import (
     CELL_WIDTH,
@@ -105,9 +105,9 @@ class _TimingCalibrationProbe(DEVS):
     def __init__(self, samples):
         super().__init__("TwoForkTimingCalibrationProbe")
         self.samples = tuple(samples)
-        self.delta_0()
+        self.set_initial_state()
 
-    def delta_0(self):
+    def set_initial_state(self):
         self.index = 0
         self.started_at = 0.0
         self.measurements = {}
@@ -120,7 +120,7 @@ class _TimingCalibrationProbe(DEVS):
 
     def delta_y(self):
         key, _ = self.samples[self.index]
-        now = self.timeNext()
+        now = self.tNext
         self.measurements[key] = now - self.started_at
         self.started_at = now
         self.index += 1
@@ -135,7 +135,7 @@ class _TimingCalibrationProbe(DEVS):
 
 def _simulate_samples(samples):
     probe = _TimingCalibrationProbe(samples)
-    engine = SimEngineBase(
+    engine = TESEnginBase(
         probe,
         TimeIntervalContinuous=float("inf"),
         TimeIntervalAnimation=float("inf"),

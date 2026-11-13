@@ -6,12 +6,11 @@
 
 """Coupled DEVS model for composing atomic and coupled components."""
 
-from .Simulatable import Simulatable
-from .DEVSInterfaces import PortValue
+from .TESBase import PortValue, TES
 from .DEVS import DEVS
 from .ModelRegistry import ModelRegistry
 
-class CoupledDEVS(Simulatable):
+class CoupledDEVS(TES):
     """Coupled DEVS model containing child components and port couplings."""
 
     def __init__(self, name, parent=None, tl=0, tn=float("inf")):
@@ -148,7 +147,7 @@ class CoupledDEVS(Simulatable):
         for endpoint, is_source in ((source, True), (destination, False)):
             if (
                 not isinstance(endpoint, tuple) or len(endpoint) != 2
-                or not isinstance(endpoint[0], Simulatable)
+                or not isinstance(endpoint[0], TES)
                 or not isinstance(endpoint[1], str)
             ):
                 raise TypeError("Coupling endpoints must be (model, port_name) tuples.")
@@ -177,29 +176,31 @@ class CoupledDEVS(Simulatable):
         next_time = float("inf")
         imminent = set()
         for component in self.M:
-            component_time = component.timeNext()
+            component_time = component.tNext
             if component_time < next_time:
                 next_time = component_time
                 imminent = {component}
             elif component_time == next_time:
                 imminent.add(component)
         self.IMM = imminent
-        self.set_timeNext(next_time)
+        self.tNext = next_time
         if update_parent and self.parent is not None:
             self.parent.update_tN(update_parent=True)
 
-    def Delta_0(self, t):
+    def set_init_total_state(self, t):
         """Initialize this coupled model and all child components."""
-        self.set_timeLast(t)
+        self.tNow = t
+        self.tLast = t
         for component in self.M:
-            component.Delta_0(t)
+            component.set_init_total_state(t)
         self.update_tN()
 
     def Delta_x(self, x, t):
         """Route an input event to destination ports."""
         if not isinstance(x, PortValue):
             raise TypeError(f"{x!r} is not a PortValue.")
-        self.set_timeLast(t)
+        self.tNow = t
+        self.tLast = t
         for model, port in self.Z.get((self, x.port), ()):
             model.Delta_x(PortValue(port, x.value), t)
         self.update_tN()
@@ -229,7 +230,8 @@ class CoupledDEVS(Simulatable):
 
     def Delta_y(self, t):
         """Generate output from an imminent child and update the schedule."""
-        self.set_timeLast(t)
+        self.tNow = t
+        self.tLast = t
         outputs = []
         if self.IMM:
             component = self.IMM.pop()
@@ -242,13 +244,19 @@ class CoupledDEVS(Simulatable):
         return outputs
 
     def Delta_null(self, t):
-        """Update time-dependent state/statistics in all children."""
+        """Update time-dependent state in all children."""
+        self.tNow = t
         unscheduled = False
         for component in self.M:
             if component.Delta_null(t):
                 unscheduled = True
         self.update_tN()
         return unscheduled
+
+    def updateStatistics(self, t):
+        """Close the open statistics interval of each atomic descendant."""
+        for component in self.M:
+            component.updateStatistics(t)
 
     def get_statistics_str(self):
         """Return statistics for all descendants."""
@@ -318,7 +326,7 @@ class CoupledDEVS(Simulatable):
         if not atomic_models:
             return None
 
-        event_time = min(model.timeNext() for model in atomic_models)
+        event_time = min(model.tNext for model in atomic_models)
 
         if event_time == float("inf"):
             return None
@@ -326,7 +334,7 @@ class CoupledDEVS(Simulatable):
         models = [
             model
             for model in atomic_models
-            if model.timeNext() == event_time
+            if model.tNext == event_time
         ]
 
         return event_time, models

@@ -222,7 +222,7 @@ def test_snapshot_formatter_includes_engine_and_recursive_model_state():
         common_state={
             "time_last": 2.0,
             "time_next": 5.0,
-            "t_last_update": 2.0,
+            "statistics_since": 2.0,
             "state_percentage": 0.4,
         },
         model_state=("ACTIVE", 3),
@@ -234,7 +234,7 @@ def test_snapshot_formatter_includes_engine_and_recursive_model_state():
                 common_state={
                     "time_last": 2.0,
                     "time_next": float("inf"),
-                    "t_last_update": 2.0,
+                    "statistics_since": 2.0,
                     "state_percentage": 0.0,
                 },
                 model_state={"phase": "WAITING"},
@@ -264,7 +264,7 @@ def test_snapshot_formatter_includes_engine_and_recursive_model_state():
     assert "Model: Root" in text
     assert "time_last: 2" in text
     assert "time_next: 5" in text
-    assert "t_last_update:" not in text
+    assert "statistics_since:" not in text
     assert "state_percentage:" not in text
     assert "model_state: ('ACTIVE', 3)" in text
     assert "Model: Root.Child" in text

@@ -2,8 +2,8 @@
 
 import pytest
 
-from socs.devs.SimEngine import SimEngineThread
-from socs.devs.DEVSInterfaces import PortValue
+from socs.devs.TESEngin import TESEnginThread
+from socs.devs.TESBase import PortValue
 from examples.LogBridge.LoadPassive_LogBridge import makeModel
 from examples.LogBridge.FixedPriorityController import FixedPriorityController
 from examples.LogBridge.LoadPassive import LoadPassive
@@ -17,7 +17,7 @@ def get_components(model):
 
 
 def make_engine(model):
-    engine = SimEngineThread(model)
+    engine = TESEnginThread(model)
     engine.bVerbose = False
     engine.set_simulation_time_bound(200)
     return engine

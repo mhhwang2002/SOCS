@@ -6,8 +6,9 @@ from dataclasses import dataclass
 from math import sqrt
 
 from socs.devs.CoupledDEVS import CoupledDEVS
-from socs.devs.DEVSInterfaces import PortValue
+from socs.devs.TESBase import PortValue
 from socs.devs.DEVS import DEVS
+from socs.devs.cDEVS import cDEVS
 
 from examples.ASRS.asrs_devs import (
     AISLE_Y,
@@ -54,9 +55,9 @@ class ASRSCell(DEVS):
         self.initial_box_color = box_color
         self.addInputPorts("?crane")
         self.addOutputPorts("!box", "!status")
-        self.delta_0()
+        self.set_initial_state()
 
-    def delta_0(self):
+    def set_initial_state(self):
         self.occupied = self.initially_occupied
         self.box_id = self.initial_box_id
         self.box_color = self.initial_box_color
@@ -142,9 +143,9 @@ class ASRSController(DEVS):
         self._initial_requested_order_items = dict(requested_order_items or {})
         self.addInputPorts("?cell_status", "?crane_idle", "?box_out")
         self.addOutputPorts("!command")
-        self.delta_0()
+        self.set_initial_state()
 
-    def delta_0(self):
+    def set_initial_state(self):
         self.cell_status = {}
         self.occupied_cells = []
         self.pending_tasks = [dict(task) for task in self._initial_retrieval_plan]
@@ -286,7 +287,7 @@ class ForkState:
         self.reach, self.lift, self.has_load, self.box_id, self.box_color = state
 
 
-class TwoForkCrane(DEVS):
+class TwoForkCrane(cDEVS):
     """One X/Z carriage with two independently extending fork mechanisms."""
 
     def __init__(self):
@@ -296,15 +297,15 @@ class TwoForkCrane(DEVS):
         self.fork1 = ForkState("Fork1", FORK_SPACING / 2.0)
         self.fork2 = ForkState("Fork2", -FORK_SPACING / 2.0)
         self._initial_moves = ()
-        self.delta_0()
+        self.set_initial_state()
 
-    def delta_0(self):
+    def set_initial_state(self):
         self.x = HOME_X
         self.z = HOME_Z
         self.fork1.reset()
         self.fork2.reset()
         self.phase = "notify_idle"
-        self._notify_time = self.timeLast()
+        self._notify_time = self.tLast
         self._moves = []
         self._move_index = 0
         self._profiles = {}
@@ -318,9 +319,9 @@ class TwoForkCrane(DEVS):
 
     def tau(self):
         if self.phase in {"notify_idle", "request_cells", "send_boxes"}:
-            return max(0.0, self._notify_time - self.timeLast())
+            return max(0.0, self._notify_time - self.tLast)
         if self._profiles:
-            elapsed = max(0.0, self.timeLast() - self._move_start_time)
+            elapsed = max(0.0, self.tLast - self._move_start_time)
             return max(
                 0.0,
                 min(
@@ -370,7 +371,7 @@ class TwoForkCrane(DEVS):
             del self._external_event_time
 
     def delta_y(self):
-        now = self.timeNext()
+        now = self.tNext
         if self.phase == "notify_idle":
             self.phase = "idle"
             self._notify_time = float("inf")
@@ -428,10 +429,10 @@ class TwoForkCrane(DEVS):
             self._begin_next_move(now)
         return None
 
-    def delta_cont(self, t):
+    def delta_cont(self, elapsed):
         if not self._profiles:
             return False
-        elapsed = max(0.0, t - self._move_start_time)
+        elapsed = max(0.0, self.tLast + elapsed - self._move_start_time)
         for axis, profile in self._profiles.items():
             move_time = min(elapsed, profile["total_time"])
             acceleration_time = profile["acceleration_time"]

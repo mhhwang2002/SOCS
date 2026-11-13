@@ -6,7 +6,7 @@ import math
 import pytest
 
 from socs.devs import CoupledDEVS, DEVS
-from socs.devs.SimEngine import SimEngineThread
+from socs.devs.TESEngin import TESEnginThread
 from socs.devs.Snapshot import SystemSnapshot
 
 
@@ -19,7 +19,7 @@ class BranchModel(DEVS):
         self.decisions = []
         self.received = []
 
-    def delta_0(self):
+    def set_initial_state(self):
         self.value = 0
         self.decisions = []
         self.received = []
@@ -56,7 +56,7 @@ def make_engine():
     model = BranchModel("Model")
     root.add_child(model)
 
-    engine = SimEngineThread(
+    engine = TESEnginThread(
         root,
         TimeIntervalContinuous=3.0,
         TimeIntervalAnimation=7.0,

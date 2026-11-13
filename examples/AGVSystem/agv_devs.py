@@ -3,8 +3,8 @@ from copy import deepcopy
 from math import inf
 
 from socs.devs import CoupledDEVS, DEVS
-from socs.devs.DEVSInterfaces import PortValue
-from socs.devs.SimEngine import ExecutionResult, SimEngineBase
+from socs.devs.TESBase import PortValue
+from socs.devs.TESEngin import ExecutionResult, TESEnginBase
 
 from .layout import DWELL, POINTS, SEGMENTS, VEHICLES, VEHICLE_BY_NAME
 
@@ -39,7 +39,7 @@ class ControlPoint(Atomic):
         self.addOutputPorts("!traffic", "!start")
         self.initial = next((v.name for v in VEHICLES if v.start == name), None)
 
-    def delta_0(self):
+    def set_initial_state(self):
         self.state = ("ready", self.initial) if self.initial else ("idle", None)
 
     def tau(self):
@@ -72,7 +72,7 @@ class PathSegment(Atomic):
         self.addInputPorts("?start")
         self.addOutputPorts("!traffic", "!arrive")
 
-    def delta_0(self):
+    def set_initial_state(self):
         self.state = ("idle", None)
 
     def delta_x(self, event):
@@ -110,7 +110,7 @@ class Controller(Atomic):
         self.addInputPorts("?traffic")
         self.addOutputPorts(*(f"!{point}" for point in POINTS))
 
-    def delta_0(self):
+    def set_initial_state(self):
         occupied = {
             resource: vehicle.name
             for vehicle in VEHICLES
@@ -176,7 +176,7 @@ def make_model():
 
 def simulate(seconds=90):
     model, controller = make_model()
-    engine = SimEngineBase(model, TimeSimulationEnd=seconds)
+    engine = TESEnginBase(model, TimeSimulationEnd=seconds)
     engine.bVerbose = False
     engine.sfactor = inf
     trace = []

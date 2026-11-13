@@ -8,8 +8,8 @@ output coupling exposes each toaster's completion event.
 """
 
 from socs.devs.CoupledDEVS import CoupledDEVS
-from socs.devs.DEVSInterfaces import PortValue
-from socs.devs.SimEngine import SimEngineThread
+from socs.devs.TESBase import PortValue
+from socs.devs.TESEngin import TESEnginThread
 
 if __package__:
     from .DEVSToaster import Toaster
@@ -69,7 +69,7 @@ def makeModel(name="system", tt1=20, tt2=40):
 
 def runSimulation(model):
     """Run the coupled model interactively."""
-    engine = SimEngine(model, make_input_event)
+    engine = TESEngin(model, make_input_event)
 
     # Enable step-by-step discrete-event simulation.
     engine.StepByStep = True

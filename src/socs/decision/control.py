@@ -1,12 +1,11 @@
 """Helpers for resolving and applying generic DEVS control decisions."""
 
-from socs.devs.DEVSInterfaces import PortValue
-from socs.devs.Simulatable import Simulatable
+from socs.devs.TESBase import PortValue, TES
 
 from .decision import ControlDecision
 
 
-def resolve_model(root_model: Simulatable, model_path: str) -> Simulatable:
+def resolve_model(root_model: TES, model_path: str) -> TES:
     """Resolve a model by its hierarchical path within a model tree."""
     matches = []
 
@@ -24,7 +23,7 @@ def resolve_model(root_model: Simulatable, model_path: str) -> Simulatable:
     return matches[0]
 
 
-def make_port_value(target_model: Simulatable, xevent):
+def make_port_value(target_model: TES, xevent):
     """Resolve a symbolic input event to a PortValue for the target model."""
     if isinstance(xevent, PortValue):
         if xevent.port not in target_model.IP:

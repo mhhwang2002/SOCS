@@ -1,6 +1,6 @@
 """FIFO controller for the passive LogBridge example."""
 
-from socs.devs.DEVSInterfaces import PortValue
+from socs.devs.TESBase import PortValue
 
 from .LoadPassive import LoadPassive
 from .LogBridge import LogBridge
@@ -43,7 +43,7 @@ class FIFOController:
             return None
 
         # min() is stable, so equal timestamps retain model child order.
-        selected = min(waiting_loads, key=lambda load: load.timeLast())
+        selected = min(waiting_loads, key=lambda load: load.tLast)
         engine.inject(selected, PortValue(selected.IP["?go"]))
         self.dispatch_history.append((engine.tNow, selected.name))
         return selected

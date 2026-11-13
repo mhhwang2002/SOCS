@@ -3,7 +3,7 @@
 import pytest
 
 from socs.devs import CoupledDEVS, DEVS
-from socs.devs.DEVSInterfaces import PortValue
+from socs.devs.TESBase import PortValue
 from socs.devs.CoupledDEVS import CoupledDEVS
 from socs.devs.ModelRegistry import ModelRegistry
 
@@ -17,7 +17,7 @@ class TimedModel(DEVS):
         self.received = []
         self.output_events = []
 
-    def delta_0(self):
+    def set_initial_state(self):
         self.state = 0
         self.received = []
         self.output_events = []
@@ -101,14 +101,14 @@ def test_delta_zero_initializes_children_and_updates_next_event():
     second = TimedModel("second", interval=5.0)
     root.addComponents(first, second)
 
-    root.Delta_0(0.0)
+    root.set_init_total_state(0.0)
 
-    assert root.timeLast() == 0.0
-    assert first.timeLast() == 0.0
-    assert second.timeLast() == 0.0
-    assert first.timeNext() == 2.0
-    assert second.timeNext() == 5.0
-    assert root.timeNext() == 2.0
+    assert root.tLast == 0.0
+    assert first.tLast == 0.0
+    assert second.tLast == 0.0
+    assert first.tNext == 2.0
+    assert second.tNext == 5.0
+    assert root.tNext == 2.0
     assert root.IMM == {first}
 
 
@@ -119,10 +119,10 @@ def test_update_tn_tracks_all_children_with_the_earliest_time():
     later = TimedModel("later", interval=8.0)
     root.addComponents(first, second, later)
 
-    root.Delta_0(0.0)
+    root.set_init_total_state(0.0)
     root.update_tN()
 
-    assert root.timeNext() == 3.0
+    assert root.tNext == 3.0
     assert root.IMM == {first, second}
 
 
@@ -136,7 +136,7 @@ def test_next_event_returns_earliest_atomic_model_and_ties():
     nested.addComponents(first, second)
     root.add_child(later)
 
-    root.Delta_0(0.0)
+    root.set_init_total_state(0.0)
 
     event = root.next_event()
     assert event is not None
@@ -147,14 +147,14 @@ def test_next_event_returns_earliest_atomic_model_and_ties():
 
 def test_next_event_returns_none_when_no_finite_atomic_event_exists():
     root = CoupledDEVS("root")
-    root.Delta_0(0.0)
+    root.set_init_total_state(0.0)
 
     assert root.next_event() is None
 
 
 def test_delta_x_rejects_non_port_value():
     root = CoupledDEVS("root")
-    root.Delta_0(0.0)
+    root.set_init_total_state(0.0)
 
     with pytest.raises(TypeError):
         root.Delta_x("not a PortValue", 0.0)
@@ -167,7 +167,7 @@ def test_delta_x_routes_input_to_child_input_port():
     root.addInputPorts("external")
     child.addInputPorts("in")
     root.addCouple((root, "external"), (child, "in"))
-    root.Delta_0(0.0)
+    root.set_init_total_state(0.0)
 
     root.Delta_x(PortValue(root.IP["external"], {"value": 42}), 0.0)
 
@@ -184,7 +184,7 @@ def test_translate_output_event_routes_to_child_input_port():
     source.addOutputPorts("out")
     target.addInputPorts("in")
     root.addCouple((source, "out"), (target, "in"))
-    root.Delta_0(0.0)
+    root.set_init_total_state(0.0)
 
     event = PortValue(source.OP["out"], "payload")
     translated = root.translateOutputEvent(source, event, 0.0)
@@ -200,7 +200,7 @@ def test_translate_output_event_ignores_unconnected_port():
     source = TimedModel("source")
     root.add_child(source)
     source.addOutputPorts("out")
-    root.Delta_0(0.0)
+    root.set_init_total_state(0.0)
 
     event = PortValue(source.OP["out"], 123)
 
@@ -261,7 +261,7 @@ def test_child_coupled_devs_uses_root_registry():
 
 def test_add_child_registers_child_model():
     root = CoupledDEVS("Root")
-    child = DEVS("Child")
+    child = TimedModel("Child")
 
     root.add_child(child)
 
@@ -272,7 +272,7 @@ def test_add_child_registers_child_model():
 def test_add_child_registers_entire_subtree():
     root = CoupledDEVS("Root")
     child = CoupledDEVS("Child")
-    grandchild = DEVS("Grandchild")
+    grandchild = TimedModel("Grandchild")
 
     child.add_child(grandchild)
     root.add_child(child)
@@ -284,8 +284,8 @@ def test_add_child_registers_entire_subtree():
 
 def test_add_child_rejects_duplicate_model_uuid():
     root = CoupledDEVS("Root")
-    child_a = DEVS("A")
-    child_b = DEVS("B")
+    child_a = TimedModel("A")
+    child_b = TimedModel("B")
 
     root.add_child(child_a)
     child_b._model_id = child_a.model_id
@@ -299,7 +299,7 @@ def test_add_child_rejects_duplicate_model_uuid():
     
 def test_remove_child_unregisters_model():
     root = CoupledDEVS("Root")
-    child = DEVS("Child")
+    child = TimedModel("Child")
 
     root.add_child(child)
     child_id = child.model_id
@@ -315,7 +315,7 @@ def test_remove_child_unregisters_model():
 def test_remove_child_unregisters_entire_subtree():
     root = CoupledDEVS("Root")
     child = CoupledDEVS("Child")
-    grandchild = DEVS("Grandchild")
+    grandchild = TimedModel("Grandchild")
 
     child.add_child(grandchild)
     root.add_child(child)
@@ -337,8 +337,8 @@ def test_remove_child_unregisters_entire_subtree():
 
 def test_remove_child_preserves_other_registered_models():
     root = CoupledDEVS("Root")
-    child_a = DEVS("A")
-    child_b = DEVS("B")
+    child_a = TimedModel("A")
+    child_b = TimedModel("B")
 
     root.add_child(child_a)
     root.add_child(child_b)
@@ -353,7 +353,7 @@ def test_remove_child_preserves_other_registered_models():
 def test_removed_subtree_can_be_registered_again():
     root = CoupledDEVS("Root")
     child = CoupledDEVS("Child")
-    grandchild = DEVS("Grandchild")
+    grandchild = TimedModel("Grandchild")
 
     child.add_child(grandchild)
     root.add_child(child)
@@ -376,7 +376,7 @@ def test_move_child_to_preserves_model_identity_and_registry():
     root = CoupledDEVS("Root")
     parent_a = CoupledDEVS("A")
     parent_b = CoupledDEVS("B")
-    child = DEVS("Child")
+    child = TimedModel("Child")
 
     root.add_child(parent_a)
     root.add_child(parent_b)
@@ -400,7 +400,7 @@ def test_move_child_to_updates_path():
     root = CoupledDEVS("Root")
     parent_a = CoupledDEVS("A")
     parent_b = CoupledDEVS("B")
-    child = DEVS("Child")
+    child = TimedModel("Child")
 
     root.add_child(parent_a)
     root.add_child(parent_b)
@@ -416,7 +416,7 @@ def test_move_child_to_preserves_subtree():
     parent_a = CoupledDEVS("A")
     parent_b = CoupledDEVS("B")
     child = CoupledDEVS("Child")
-    grandchild = DEVS("Grandchild")
+    grandchild = TimedModel("Grandchild")
 
     root.add_child(parent_a)
     root.add_child(parent_b)
@@ -452,8 +452,8 @@ def test_move_child_to_rejects_duplicate_name():
     parent_a = CoupledDEVS("A")
     parent_b = CoupledDEVS("B")
 
-    child_a = DEVS("Child")
-    child_b = DEVS("Child")
+    child_a = TimedModel("Child")
+    child_b = TimedModel("Child")
 
     root.add_child(parent_a)
     root.add_child(parent_b)
@@ -473,7 +473,7 @@ def test_move_child_to_rejects_different_system():
 
     parent_a = CoupledDEVS("A")
     parent_b = CoupledDEVS("B")
-    child = DEVS("Child")
+    child = TimedModel("Child")
 
     root_a.add_child(parent_a)
     root_b.add_child(parent_b)
@@ -489,7 +489,7 @@ def test_move_child_to_rejects_non_child():
     root = CoupledDEVS("Root")
     parent_a = CoupledDEVS("A")
     parent_b = CoupledDEVS("B")
-    child = DEVS("Child")
+    child = TimedModel("Child")
 
     root.add_child(parent_a)
     root.add_child(parent_b)

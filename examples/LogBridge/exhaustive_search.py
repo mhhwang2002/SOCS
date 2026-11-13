@@ -6,7 +6,7 @@ import math
 from socs.decision.expansion import DecisionExpansionController
 from socs.decision.lifecycle import DecisionLifeCycleManager
 from socs.decision.search import ExhaustiveDecisionTreeSearch, ExhaustiveSearchResult
-from socs.devs.SimEngine import ExecutionResult, SimEngineBase
+from socs.devs.TESEngin import ExecutionResult, TESEnginBase
 from socs.devs.Snapshot import SystemSnapshot
 from socs.tree.decision_tree import DecisionTree
 
@@ -21,7 +21,7 @@ class LogBridgePathExecutor(LogBridgeDecisionExecutor):
 
     def __init__(
         self,
-        engine: SimEngineBase,
+        engine: TESEnginBase,
         end_time: float,
         generator: LogBridgeDecisionGenerator,
         completion_evaluator: Callable[[SystemSnapshot], float | None],
@@ -38,7 +38,7 @@ class LogBridgePathExecutor(LogBridgeDecisionExecutor):
                 return
 
             if not self.engine.XBuffer and not math.isfinite(
-                self.engine.model.timeNext()
+                self.engine.model.tNext
             ):
                 return
 
@@ -58,7 +58,7 @@ class LogBridgePathExecutor(LogBridgeDecisionExecutor):
 
 
 def advance_to_first_decision_point(
-    engine: SimEngineBase,
+    engine: TESEnginBase,
     generator: LogBridgeDecisionGenerator,
     end_time: float,
 ) -> SystemSnapshot:
@@ -66,7 +66,7 @@ def advance_to_first_decision_point(
     engine.set_simulation_time_bound(end_time)
 
     while True:
-        if not engine.XBuffer and not math.isfinite(engine.model.timeNext()):
+        if not engine.XBuffer and not math.isfinite(engine.model.tNext):
             raise RuntimeError(
                 "The initial model deadlocked before reaching a decision point."
             )
@@ -133,7 +133,7 @@ class LogBridgeMakespanEvaluator:
 def run_logbridge_exhaustive_search(
     model,
     end_time: float = 200.0,
-    engine: SimEngineBase | None = None,
+    engine: TESEnginBase | None = None,
 ) -> ExhaustiveSearchResult:
     """Generate all finite Decision paths and minimize total completion time.
 
@@ -141,9 +141,9 @@ def run_logbridge_exhaustive_search(
     reused later to replay and validate the resulting DecisionTree snapshots.
     """
     if engine is None:
-        from socs.devs.SimEngine import SimEngineThread
+        from socs.devs.TESEngin import TESEnginThread
 
-        engine = SimEngineThread(model)
+        engine = TESEnginThread(model)
     elif engine.model is not model:
         raise ValueError("The supplied engine must own the supplied model instance.")
     engine.bVerbose = False

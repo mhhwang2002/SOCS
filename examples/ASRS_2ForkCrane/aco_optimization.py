@@ -10,7 +10,7 @@ from math import inf
 from pathlib import Path
 
 from socs.devs.DEVS import DEVS
-from socs.devs.SimEngine import ExecutionResult, SimEngineBase
+from socs.devs.TESEngin import ExecutionResult, TESEnginBase
 
 from examples.ASRS.aco_optimization import (
     COLORS,
@@ -58,7 +58,7 @@ class TwoForkScheduleSimulation(DEVS):
         if self.batch_durations:
             self.batch_durations = (self.batch_durations[0] + STARTUP_DELAY,) + self.batch_durations[1:]
         self.completion_marks = self._completion_marks()
-        self.delta_0()
+        self.set_initial_state()
 
     def _batch_order_ids(self):
         orders = []
@@ -135,7 +135,7 @@ class TwoForkScheduleSimulation(DEVS):
             for index, order_id in enumerate(self.batch_orders)
         )
 
-    def delta_0(self):
+    def set_initial_state(self):
         self.task_index = 0
         self.elapsed = 0.0
         self.order_completion_times = [None] * len(self.instance.order_products)
@@ -147,7 +147,7 @@ class TwoForkScheduleSimulation(DEVS):
         return False
 
     def delta_y(self):
-        self.elapsed = self.timeNext()
+        self.elapsed = self.tNext
         completed = self.completion_marks[self.task_index]
         if completed is not None:
             self.order_completion_times[completed] = self.elapsed
@@ -169,7 +169,7 @@ def evaluate_twofork_schedule(
 ) -> ScheduleResult:
     """Run one grouped schedule through a SOCS DEVS atomic evaluator."""
     model = TwoForkScheduleSimulation(instance, schedule, timing_profile)
-    engine = SimEngineBase(
+    engine = TESEnginBase(
         model,
         TimeIntervalContinuous=inf,
         TimeIntervalAnimation=inf,

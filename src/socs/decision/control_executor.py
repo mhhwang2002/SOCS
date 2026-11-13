@@ -4,19 +4,19 @@ from .control import apply_control
 from .decision import ControlDecision
 from .executor import DecisionExecutor
 from .simulation_executor import SimulationDecisionExecutor
-from ..devs.SimEngine import SimEngineBase
+from ..devs.TESEngin import TESEnginBase
 
 
-class ControlRuntimeExecutor(DecisionExecutor[SimEngineBase, ControlDecision]):
+class ControlRuntimeExecutor(DecisionExecutor[TESEnginBase, ControlDecision]):
     """Apply a control decision to a live simulation engine."""
 
     def execute(
         self,
-        state: SimEngineBase,
+        state: TESEnginBase,
         decision: ControlDecision,
-    ) -> SimEngineBase:
-        if not isinstance(state, SimEngineBase):
-            raise TypeError("state must be a SimEngineBase instance.")
+    ) -> TESEnginBase:
+        if not isinstance(state, TESEnginBase):
+            raise TypeError("state must be a TESEnginBase instance.")
         apply_control(state, decision)
         return state
 

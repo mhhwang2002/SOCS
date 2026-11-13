@@ -1,7 +1,7 @@
 """Load example using the DEVS atomic model base."""
 
 from socs.devs.DEVS import DEVS
-from socs.devs.DEVSInterfaces import PortValue
+from socs.devs.TESBase import PortValue
 from socs.devs.Base import isnumeric
 
 class LogBridge(DEVS):
@@ -14,7 +14,7 @@ class LogBridge(DEVS):
         self.addOutputPorts("!out1", "!out2")
         self.walker_speed = 0
 
-    def delta_0(self):
+    def set_initial_state(self):
         """Reset the Load to its initial idle phase."""
         self.Phase = "I"
         self.walker_speed = 0

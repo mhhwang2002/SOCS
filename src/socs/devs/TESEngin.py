@@ -5,7 +5,7 @@
 #########################################################
 
 """
-Simulation engine for Simulatable models.
+Simulation engine for TES models.
 Originally written in 2011 and modernized for Python 3.
 """
 
@@ -14,10 +14,9 @@ import threading
 import time
 from copy import deepcopy
 
-from .Simulatable import Simulatable
-from .DEVSInterfaces import PortValue
+from .TESBase import PortValue, TES
 from .Base import exception_handling
-from .DEVSTime import Clock
+from .AlarmClock import AlarmClock
 from .Snapshot import SystemSnapshot
 from enum import Enum, auto
 from collections import deque
@@ -37,14 +36,14 @@ class ExecutionResult(Enum):
     ScheduledEventOccurred = 4    # when DEVS event happens
     TimeBoundReached = 5          # when time reaches simulation end time 
 
-class SimEngineBase:
-    """Synchronous simulation engine for a Simulatable model."""
+class TESEnginBase:
+    """Synchronous simulation engine for a TES model."""
     def __init__(self, sim, inject_CBF=None, 
                     TimeIntervalContinuous=float("inf"), 
                     TimeIntervalAnimation=float("inf"), TimeSimulationEnd=float("inf")):
         super().__init__()
-        if not isinstance(sim, Simulatable):
-            raise TypeError(f"{sim!s} is not a Simulatable")
+        if not isinstance(sim, TES):
+            raise TypeError(f"{sim!s} is not a TES")
 
         self.model = sim
         self.inject_CBF = inject_CBF
@@ -53,7 +52,6 @@ class SimEngineBase:
         self.ToBeKilled = False
         self.t_segment_start = self.t_segment_end = time.perf_counter()
         self.tNow = 0.0
-        self._last_null_time = None
         self.XBuffer = deque()
         self.sfactor = 1.0
         self.StepByStep = False
@@ -74,9 +72,8 @@ class SimEngineBase:
         """Reset the simulation model and engine state."""
         self.last_progress = 0.0
         self.tNow = 0.0
-        self._last_null_time = None
         if self.model is not None:
-            self.model.Delta_0(self.tNow)
+            self.model.set_init_total_state(self.tNow)
             self._tNextContinuous = self.tNow + self.TimeIntervalContinuous
 
         self.executeAnimation(self.tNow, self.tNow)
@@ -93,7 +90,7 @@ class SimEngineBase:
                 "Snapshot capture and restore require a paused simulation engine."
             )
 
-    def _collect_models_by_identity(self) -> dict[int, Simulatable]:
+    def _collect_models_by_identity(self) -> dict[int, TES]:
         """Return all models in the current hierarchy keyed by Python identity."""
         models = {}
 
@@ -104,9 +101,9 @@ class SimEngineBase:
             models[model_identity] = model
 
             for child in model.children:
-                if not isinstance(child, Simulatable):
+                if not isinstance(child, TES):
                     raise TypeError(
-                        f"{model.path}: child {child.name!r} is not Simulatable."
+                        f"{model.path}: child {child.name!r} is not TES."
                     )
                 visit(child)
 
@@ -139,7 +136,6 @@ class SimEngineBase:
             t_next_continuous=self._tNextContinuous,
             t_next_animation=self._tNextAnimation,
             x_buffer=x_buffer,
-            last_null_time=self._last_null_time,
         )
 
     def restore_snapshot(self, snapshot: SystemSnapshot) -> None:
@@ -175,7 +171,6 @@ class SimEngineBase:
 
         # Restore engine values last so recomputation cannot overwrite them.
         self.tNow = snapshot.t_now
-        self._last_null_time = snapshot.last_null_time
         self._tNextContinuous = snapshot.t_next_continuous
         self._tNextAnimation = snapshot.t_next_animation
         self.XBuffer = restored_x_buffer
@@ -221,14 +216,6 @@ class SimEngineBase:
         self._tNextContinuous = tNow + self.TimeIntervalContinuous
         return ExecutionResult.NoEventOccurred
 
-    def _advance_model_time(self, t):
-        """Update the model once per simulation time, before handling events."""
-        if self.model is None or t == self._last_null_time:
-            return False
-        unscheduled = self.model.Delta_null(t)
-        self._last_null_time = t
-        return unscheduled
-
     def executeDEVS_star(self,tNow):
         if(self.model is not None):
             src_str = self.model.qstate_to_s() if self.bVerbose else ""
@@ -244,14 +231,14 @@ class SimEngineBase:
         if target_md is not self.model and target_md.parent is not None:
             target_md.parent.update_tN(update_parent=True) 
             self._tLastDEVS = self.tNow  # update last one
-            self._tNextDEVS = self.model.timeNext()  # update next one
+            self._tNextDEVS = self.model.tNext  # update next one
             #self._NbDEVSSExecutions += 1
         return ExecutionResult.ExternalEventOccurred
     
     def PickNextExecutionTime_Type(self):
         if(len(self.XBuffer) > 0):
             return self.tNow, ExecutionType.X_BUFFER
-        tNextDEVS = self.model.timeNext()    
+        tNextDEVS = self.model.tNext    
         next_time = min(self._tNextContinuous, self._tNextAnimation, tNextDEVS, self._tSimBound)
         if(next_time == self._tSimBound):
             return next_time, ExecutionType.END
@@ -266,11 +253,13 @@ class SimEngineBase:
         """Execute one simulation step."""
         prevStepExeTime = self.tNow
         executionResult = ExecutionResult.NoEventOccurred
-        (self.tNow, next_type) = self.PickNextExecutionTime_Type()
+        next_time, next_type = self.PickNextExecutionTime_Type()
 
         unscheduled = False
+        if math.isfinite(next_time) and next_time > self.tNow:
+            unscheduled = self.model.Delta_null(next_time)
+            self.tNow = next_time
         if next_type != ExecutionType.END:
-            unscheduled = self._advance_model_time(self.tNow)
             next_time, next_type = self.PickNextExecutionTime_Type()
             if next_time != self.tNow:
                 return (
@@ -287,10 +276,11 @@ class SimEngineBase:
             executionResult = self.executeContinuous(self.tNow)
         elif next_type == ExecutionType.ANIMATION:
             executionResult = self.executeAnimation(self.tNow, prevStepExeTime)
-        elif next_type == ExecutionType.END: 
+        elif next_type == ExecutionType.END:
+            self.model.updateStatistics(self.tNow)
             print(
                 "\nNext schedule reaches the simulation time bound " 
-                f"{self.tNow:.3f}."
+                f"{next_time:.3f}."
             ) 
             executionResult = ExecutionResult.TimeBoundReached
             
@@ -312,13 +302,13 @@ def findCmdIndex(command, text):
             return index
     return -1
 
-class SimEngineThread(threading.Thread, SimEngineBase):
-    """Run a SimEngineBase instance in a dedicated thread."""
+class TESEnginThread(threading.Thread, TESEnginBase):
+    """Run a TESEnginBase instance in a dedicated thread."""
     def __init__(self, sim, inject_CBF=None, 
                  TimeIntervalContinuous=float("inf"), 
                  TimeIntervalAnimation=float("inf"), TimeSimulationEnd=float("inf")):
         super().__init__()
-        SimEngineBase.__init__(self, sim, inject_CBF, TimeIntervalContinuous, TimeIntervalAnimation, TimeSimulationEnd)  
+        TESEnginBase.__init__(self, sim, inject_CBF, TimeIntervalContinuous, TimeIntervalAnimation, TimeSimulationEnd)  
 
     def exp_handling(self):
         """Report the active exception and pause the simulation."""
@@ -370,7 +360,7 @@ class SimEngineThread(threading.Thread, SimEngineBase):
         print(f"Current Simulation i = {self.iSimRun}")
         print(f"StepByStep mode = {self.StepByStep}, -step")
         print(f"scale factor for speed = {self.sfactor}, -speed sf")
-        print(f"display time mode = {Clock.DisplayMode}, -dtm")
+        print(f"display time mode = {AlarmClock.DisplayMode}, -dtm")
         print(f"Verbose mode = {self.bVerbose}, -vb")
         print(f"simulation time bound = {self._tSimBound:.3f}, -stb time")
         print(f"Autoreset mode by timebound = {self.bAutoresetByTimebound}, -ar")
@@ -426,11 +416,9 @@ class SimEngineThread(threading.Thread, SimEngineBase):
             print(f"New Verbose = {self.bVerbose}")
 
     def pause(self):
-        """Pause the simulation loop and update statistics."""
+        """Pause the simulation loop at the current simulation time."""
         if not self.SkipLoop:
             self.t_segment_end = self.tNow
-            if self.tNow != float("inf"):
-                self._advance_model_time(self.tNow)
             self.SkipLoop = True
 
     def inject(self, target_model=None, input_value=None):
@@ -444,8 +432,8 @@ class SimEngineThread(threading.Thread, SimEngineBase):
         if target_model is not None or input_value is not None:
             if target_model is None or input_value is None:
                 raise ValueError("target_model and input_value must be provided together.")
-            if not isinstance(target_model, Simulatable):
-                raise TypeError("target_model must be a Simulatable instance.")
+            if not isinstance(target_model, TES):
+                raise TypeError("target_model must be a TES instance.")
             if not isinstance(input_value, PortValue):
                 raise TypeError("input_value must be a PortValue instance.")
             if input_value.port not in target_model.IP:
@@ -504,7 +492,7 @@ class SimEngineThread(threading.Thread, SimEngineBase):
     def setTimeDisplayMode(self):
         """Toggle the simulation time display mode."""
         try:
-            Clock.toggleDisplayMode()
+            AlarmClock.toggleDisplayMode()
         except Exception:
             self.exp_handling()
 
@@ -590,4 +578,4 @@ class SimEngineThread(threading.Thread, SimEngineBase):
 
 
 if __name__ == "__main__":
-    print("SimEngine module syntax check passed.")
+    print("TESEngin module syntax check passed.")

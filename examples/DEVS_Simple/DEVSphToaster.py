@@ -4,8 +4,8 @@ from argparse import ArgumentParser
 from math import inf, isfinite
 
 from socs.devs import DEVSph
-from socs.devs.DEVSInterfaces import PortValue
-from socs.devs.SimEngine import ExecutionResult, SimEngineBase
+from socs.devs.TESBase import PortValue
+from socs.devs.TESEngin import ExecutionResult, TESEnginBase
 
 
 class DEVSphToaster(DEVSph):
@@ -21,7 +21,7 @@ class DEVSphToaster(DEVSph):
         self.add_internal_transition("Toasting", "Idle", output="!pop")
 
 
-class ToasterEngine(SimEngineBase):
+class ToasterEngine(TESEnginBase):
     """Expose the most recent output to the example's controls."""
 
     def __init__(self, toaster, animation_interval=inf):
@@ -61,23 +61,31 @@ def run_live(toaster):
     import tkinter as tk
     from tkinter import ttk
 
-    engine = ToasterEngine(toaster, animation_interval=1)
+    animation_interval = 0.1
+    engine = ToasterEngine(toaster, animation_interval=animation_interval)
     root = tk.Tk()
     root.title("DEVSph Toaster")
-    canvas = tk.Canvas(root, width=460, height=175, background="white", highlightthickness=0)
-    canvas.pack()
-    canvas.create_line(26, 87, 69, 87, arrow=tk.LAST, width=2)
-    canvas.create_line(189, 68, 269, 68, arrow=tk.LAST, width=2, dash=(5, 4))
-    canvas.create_line(269, 104, 189, 104, arrow=tk.LAST, width=2)
-    canvas.create_text(229, 53, text="?push")
-    canvas.create_text(229, 119, text="!pop")
-    phases = {}
-    for phase, x in (("Idle", 130), ("Toasting", 330)):
-        oval = canvas.create_oval(
-            x - 60, 49, x + 60, 125, width=2, dash=(5, 4) if phase == "Idle" else (),
-        )
-        label = canvas.create_text(x, 87, justify="center")
-        phases[phase] = oval, label
+    diagram = None
+    if isinstance(toaster, DEVSph):
+        from socs.devs.phase_diagram import PhaseDiagram
+
+        diagram = PhaseDiagram(root, toaster, width=None, height=175)
+        diagram.pack()
+    else:
+        canvas = tk.Canvas(root, width=460, height=175, background="white", highlightthickness=0)
+        canvas.pack()
+        canvas.create_line(26, 87, 69, 87, arrow=tk.LAST, width=2)
+        canvas.create_line(189, 68, 269, 68, arrow=tk.LAST, width=2)
+        canvas.create_line(269, 104, 189, 104, arrow=tk.LAST, width=2)
+        canvas.create_text(229, 53, text="?push")
+        canvas.create_text(229, 119, text="!pop")
+        phases = {}
+        for phase, x in (("Idle", 130), ("Toasting", 330)):
+            oval = canvas.create_oval(
+                x - 60, 49, x + 60, 125, width=2, dash=(5, 4) if phase == "Idle" else (),
+            )
+            label = canvas.create_text(x, 87, justify="center")
+            phases[phase] = oval, label
     status = ttk.Label(root, padding=8)
     status.pack()
     controls = ttk.Frame(root, padding=8)
@@ -86,12 +94,15 @@ def run_live(toaster):
     animation = True
 
     def refresh():
-        remaining = toaster.timeNext() - engine.tNow
-        remaining_text = f"{remaining:g}" if isfinite(remaining) else "∞"
-        for phase, (oval, label) in phases.items():
-            active = phase == toaster.phase
-            canvas.itemconfigure(oval, fill="#bfdbfe" if active else "white")
-            canvas.itemconfigure(label, text=f"{phase}\nRemaining = {remaining_text}" if active else phase)
+        remaining = toaster.tNext - engine.tNow
+        if diagram is not None:
+            diagram.refresh(engine.tNow)
+        else:
+            remaining_text = f"{remaining:g}" if isfinite(remaining) else "∞"
+            for phase, (oval, label) in phases.items():
+                active = phase == toaster.phase
+                canvas.itemconfigure(oval, fill="#bfdbfe" if active else "white")
+                canvas.itemconfigure(label, text=f"{phase}\nRemaining = {remaining_text}" if active else phase)
         output = f"    Output: {engine.last_output}" if engine.last_output else ""
         status.configure(text=f"t = {engine.tNow:g}{output}")
         step.configure(state="normal" if not animation and isfinite(remaining) else "disabled")
@@ -99,7 +110,7 @@ def run_live(toaster):
 
     def schedule():
         nonlocal timer
-        if timer is None and animation and isfinite(toaster.timeNext()):
+        if timer is None and animation and isfinite(toaster.tNext):
             next_time, _ = engine.PickNextExecutionTime_Type()
             timer = root.after(max(1, round(1000 * (next_time - engine.tNow))), advance)
 
@@ -115,29 +126,47 @@ def run_live(toaster):
         refresh()
         schedule()
 
-    def toggle_mode():
-        nonlocal animation, timer
+    def cancel_timer():
+        nonlocal timer
         if timer is not None:
             root.after_cancel(timer)
             timer = None
+
+    def toggle_mode():
+        nonlocal animation
+        cancel_timer()
         animation = not animation
-        engine.TimeIntervalAnimation = 1 if animation else inf
+        engine.TimeIntervalAnimation = animation_interval if animation else inf
         engine.executeAnimation(engine.tNow, engine.tNow)
         refresh()
         schedule()
 
-    ttk.Button(controls, text="Push", command=push).pack(side="left", padx=4)
+    if diagram is not None:
+        from socs.devs.event_input import EventInput
+
+        def input_applied():
+            engine.last_output = None
+            refresh()
+            schedule()
+
+        EventInput(root, engine, input_applied).pack(pady=(0, 8))
+    else:
+        ttk.Button(controls, text="Push", command=push).pack(side="left", padx=4)
     step = ttk.Button(controls, text="Step", command=advance)
     step.pack(side="left", padx=4)
     mode = ttk.Button(controls, command=toggle_mode)
     mode.pack(side="left", padx=4)
+    root.bind("<Destroy>", lambda event: cancel_timer() if event.widget is root else None)
     refresh()
     root.mainloop()
 
 
 def main(model_type=DEVSphToaster, description=__doc__):
     parser = ArgumentParser(description=description)
-    parser.add_argument("--live", action="store_true", help="Run in a live 2D window.")
+    display = parser.add_mutually_exclusive_group()
+    display.add_argument("--live", action="store_true", help="Run in a live 2D window.")
+    display.add_argument("--console", dest="live", action="store_false", help="Use the console input prompt.")
+    parser.set_defaults(live=issubclass(model_type, DEVSph))
     parser.add_argument("--toasting-time", type=float, default=10, help="Toasting time in seconds.")
     args = parser.parse_args()
     if not isfinite(args.toasting_time) or args.toasting_time <= 0:

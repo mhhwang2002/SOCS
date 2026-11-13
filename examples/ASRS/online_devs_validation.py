@@ -8,7 +8,7 @@ import hashlib
 import json
 from pathlib import Path
 
-from socs.devs.SimEngine import ExecutionResult, SimEngineBase
+from socs.devs.TESEngin import ExecutionResult, TESEnginBase
 
 from .aco_optimization import COLORS, load_instance
 from .asrs_devs import ASRSController, make_online_asrs_model
@@ -47,7 +47,7 @@ def _execute_devs(instance, trace, table, policy, seed):
         motion_parameters=_motion_parameters(table),
     )
     controller = next(child for child in model.children if isinstance(child, ASRSController))
-    engine = SimEngineBase(
+    engine = TESEnginBase(
         model,
         TimeIntervalContinuous=float("inf"),
         TimeIntervalAnimation=float("inf"),

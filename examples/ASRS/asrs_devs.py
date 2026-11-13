@@ -6,8 +6,9 @@ import random
 from math import sqrt
 
 from socs.devs.CoupledDEVS import CoupledDEVS
-from socs.devs.DEVSInterfaces import PortValue
+from socs.devs.TESBase import PortValue
 from socs.devs.DEVS import DEVS
+from socs.devs.cDEVS import cDEVS
 
 
 CELL_WIDTH = 1.0
@@ -52,7 +53,7 @@ class ASRSCell(DEVS):
         self.addInputPorts("?crane")
         self.addOutputPorts("!box", "!status")
 
-    def delta_0(self):
+    def set_initial_state(self):
         self.occupied = self.initially_occupied
         self.box_pending = False
         self.status_pending = True
@@ -106,13 +107,13 @@ class OrderArrivalSource(DEVS):
         self.orders = tuple(dict(order) for order in orders)
         self.addOutputPorts("!order_arrival")
 
-    def delta_0(self):
+    def set_initial_state(self):
         self.index = 0
 
     def tau(self):
         if self.index >= len(self.orders):
             return float("inf")
-        return max(0.0, float(self.orders[self.index]["arrival_time"]) - self.timeLast())
+        return max(0.0, float(self.orders[self.index]["arrival_time"]) - self.tLast)
 
     def delta_x(self, event):
         return False
@@ -162,9 +163,9 @@ class ASRSController(DEVS):
             raise ValueError("Online dispatch requires a DEVS-measured cycle-time table.")
         self.addInputPorts("?cell_status", "?crane_idle", "?box_out", "?order_arrival")
         self.addOutputPorts("!command")
-        self.delta_0()
+        self.set_initial_state()
 
-    def delta_0(self):
+    def set_initial_state(self):
         self.cell_status = {}
         self.cell_details = {}
         self.occupied_cells = []
@@ -438,7 +439,7 @@ class ASRSController(DEVS):
         raise ValueError(f"Unsupported DEVS online dispatch policy: {policy}")
 
     def _dispatch_online_order(self):
-        now = self.timeNext()
+        now = self.tNext
         while True:
             if self.active_order_id is None:
                 if not self.online_queue:
@@ -519,7 +520,7 @@ class ASRSController(DEVS):
         self._rng.setstate(rng_state)
 
 
-class Crane(DEVS):
+class Crane(cDEVS):
     """Single-mast crane with X/Z positioning and a Y-axis telescopic fork."""
 
     x_max_speed = 2.0
@@ -579,7 +580,7 @@ class Crane(DEVS):
         self._move_start_time = 0.0
         self._notify_time = float("inf")
 
-    def delta_0(self):
+    def set_initial_state(self):
         self.x = HOME_X
         self.y = FORK_RETRACT_Y
         self.z = HOME_Z
@@ -595,13 +596,13 @@ class Crane(DEVS):
         self._moves = []
         self._move_index = 0
         self.phase = "notify_idle"
-        self._notify_time = self.t_last_update
+        self._notify_time = self.tLast
 
     def tau(self):
         if self.phase in {"notify_idle", "request_box", "send_box_out"}:
-            return max(0.0, self._notify_time - self.timeLast())
+            return max(0.0, self._notify_time - self.tLast)
         if self._profiles:
-            elapsed = max(0.0, self.timeLast() - self._move_start_time)
+            elapsed = max(0.0, self.tLast - self._move_start_time)
             next_boundaries = [
                 profile["boundaries"][profile["segment_index"]]
                 for profile in self._profiles.values()
@@ -659,7 +660,7 @@ class Crane(DEVS):
             del self._external_event_time
 
     def delta_y(self):
-        now = self.timeNext()
+        now = self.tNext
         if self.phase == "notify_idle":
             self.phase = "idle"
             self._notify_time = float("inf")
@@ -719,10 +720,10 @@ class Crane(DEVS):
             self._begin_next_move(now)
         return None
 
-    def delta_cont(self, t):
+    def delta_cont(self, elapsed):
         if not self._profiles:
             return False
-        elapsed = max(0.0, t - self._move_start_time)
+        elapsed = max(0.0, self.tLast + elapsed - self._move_start_time)
         for axis, profile in self._profiles.items():
             move_time = min(elapsed, profile["total_time"])
             accel_time = profile["accel_time"]

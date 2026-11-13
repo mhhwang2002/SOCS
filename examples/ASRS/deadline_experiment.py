@@ -24,7 +24,7 @@ from .aco_optimization import (
 from .compare_allocation_methods import _assign_order
 from .asrs_devs import ASRSController, Crane, make_asrs_model
 from .crane_cycle_times import CraneCycleTimeTable
-from socs.devs.SimEngine import ExecutionResult, SimEngineBase
+from socs.devs.TESEngin import ExecutionResult, TESEnginBase
 
 
 DEFAULT_FACTORS = (0.75, 1.0, 1.25)
@@ -215,7 +215,7 @@ def _evaluate_at_deadlines(instance: ASRSInstance, schedule: Schedule, due_times
         requested_order_items=requested,
     )
     controller = next(child for child in model.children if isinstance(child, ASRSController))
-    engine = SimEngineBase(
+    engine = TESEnginBase(
         model,
         TimeIntervalContinuous=float("inf"),
         TimeIntervalAnimation=float("inf"),

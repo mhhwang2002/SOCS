@@ -5,9 +5,9 @@ import pytest
 from socs.decision.decision import Decision
 from socs.decision.simulation_executor import SimulationDecisionExecutor
 from socs.devs.CoupledDEVS import CoupledDEVS
-from socs.devs.DEVSInterfaces import PortValue
+from socs.devs.TESBase import PortValue
 from socs.devs.DEVS import DEVS
-from socs.devs.SimEngine import SimEngineThread
+from socs.devs.TESEngin import TESEnginThread
 from socs.tree import DecisionTree
 
 
@@ -23,7 +23,7 @@ class NestedCounter(DEVS):
         self.value = 0
         self.events = 0
 
-    def delta_0(self):
+    def set_initial_state(self):
         self.value = 0
         self.events = 0
 
@@ -71,7 +71,7 @@ def simulation_system():
     root.addCouple((root, "decision"), (nested, "external"))
     nested.addCouple((nested, "external"), (atomic, "in"))
 
-    engine = SimEngineThread(
+    engine = TESEnginThread(
         root,
         TimeIntervalContinuous=math.inf,
         TimeIntervalAnimation=math.inf,
@@ -134,9 +134,9 @@ def test_decision_tree_branches_simulation_executor_results(simulation_system):
     assert tree.get_snapshot(node_b) is snapshot_b
 
     assert atomic.value == 214
-    assert atomic.timeNext() == 16.0
-    assert nested.timeNext() == 16.0
-    assert root.timeNext() == 16.0
+    assert atomic.tNext == 16.0
+    assert nested.tNext == 16.0
+    assert root.tNext == 16.0
     assert atomic in nested.IMM
     assert nested in root.IMM
 

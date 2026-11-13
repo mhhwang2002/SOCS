@@ -1,12 +1,24 @@
 """Phase graphs for declarative and Python-defined atomic DEVS models."""
 
+from collections.abc import Callable
 from copy import deepcopy
 from json import dumps
 
 from socs.graph.agraph import AGraph
+from socs.graph.attributes import AttrDict
 
 from .DEVS import DEVS
-from .DEVSInterfaces import PortValue
+from .TESBase import PortValue
+
+
+def transition_line_style(attrs):
+    """Map the transition's scheduling decision to a diagram line style."""
+    decision = attrs.get("reschedule")
+    if decision is False:
+        return "dashed"
+    if callable(decision):
+        return "dotted"
+    return "solid"
 
 
 class DEVSph(DEVS):
@@ -22,8 +34,8 @@ class DEVSph(DEVS):
         super().__init__(name, parent)
         self.phase = None
         self._initial_phase = None
-        self._initial_variables = deepcopy({} if variables is None else variables)
-        self.variables = deepcopy(self._initial_variables)
+        self._initial_variables = deepcopy(AttrDict({} if variables is None else variables))
+        self._variable = deepcopy(self._initial_variables)
         self.graph = AGraph()
         self.observed_graph = AGraph()
         self._observed_initial = None
@@ -39,11 +51,15 @@ class DEVSph(DEVS):
             self._initial_phase = self.phase = name
 
     def add_external_transition(
-        self, src, dst, *, input_port, reschedule, match=None, guard=None, action=None,
+        self, src, dst, *, input_port,
+        reschedule: bool | Callable[["DEVSph", PortValue], bool],
+        match=None, guard=None, action=None,
     ):
         """Declare an input transition. Reschedule runs after action and phase update."""
         if input_port not in self.IP:
             raise KeyError(f"Unknown input port {input_port!r}.")
+        if not isinstance(reschedule, bool) and not callable(reschedule):
+            raise TypeError("reschedule must be a bool or a callable returning bool.")
         self.graph.add_edge(src, dst, dict(
             kind="external", port=input_port, reschedule=reschedule,
             match=match, guard=guard, action=action,
@@ -67,11 +83,11 @@ class DEVSph(DEVS):
             kind="internal", guard=guard, action=action, output=output,
         ))
 
-    def delta_0(self):
+    def set_initial_state(self):
         if self._initial_phase is None:
             raise ValueError("Declare an initial phase with add_phase().")
         self.phase = self._initial_phase
-        self.variables = deepcopy(self._initial_variables)
+        self._variable = deepcopy(self._initial_variables)
 
     def tau(self):
         value = self.graph.vertex_attrs(self.phase)["tau"]
@@ -96,7 +112,7 @@ class DEVSph(DEVS):
             edge.attrs.action(self, event)
         self.phase = edge.dst
 
-    def delta_x(self, x):
+    def delta_x(self, x) -> bool:
         if not isinstance(x, PortValue) or x.port not in self.IP:
             return False
         edge = self._enabled_edge("external", x, x.port)
@@ -104,7 +120,10 @@ class DEVSph(DEVS):
             return False
         self._apply_edge(edge, x)
         reschedule = edge.attrs.reschedule
-        return reschedule(self, x) if callable(reschedule) else reschedule
+        decision = reschedule(self, x) if callable(reschedule) else reschedule
+        if not isinstance(decision, bool):
+            raise TypeError("reschedule must return a bool.")
+        return decision
 
     def delta_y(self):
         edge = self._enabled_edge("internal", None)
@@ -126,10 +145,11 @@ class DEVSph(DEVS):
 
     def get_state(self):
         """Return the phase and variables for the existing snapshot protocol."""
-        return self.phase, self.variables
+        return self.phase, self._variable
 
     def set_state(self, state):
-        self.phase, self.variables = state
+        self.phase, variables = state
+        self._variable = AttrDict(variables)
 
     def get_statistics_state(self):
         return self.phase
@@ -140,27 +160,30 @@ class DEVSph(DEVS):
         if phase not in self.observed_graph.V:
             self.observed_graph.add_vertex(phase)
 
-    def _observe(self, src, kind, event):
+    def _observe(self, src, kind, event, *, reschedule=None):
         dst = self.phase
         self._ensure_observed_phase(src)
         self._ensure_observed_phase(dst)
         port = event.port if isinstance(event, PortValue) else None
         attrs = dict(kind=kind, port=port)
+        if kind == "external":
+            attrs["reschedule"] = bool(reschedule)
         edges = self.observed_graph.edges(src, dst, attrs)
         edge = edges[0] if edges else self.observed_graph.add_edge(src, dst, dict(attrs, count=0))
         edge.attrs.count += 1
 
-    def Delta_0(self, t):
-        super().Delta_0(t)
+    def set_init_total_state(self, t):
+        super().set_init_total_state(t)
         self.observed_graph = AGraph()
         self._ensure_observed_phase(self.phase)
         self._observed_initial = self.phase
 
     def Delta_x(self, x, t):
         src = self.phase
-        super().Delta_x(x, t)
+        reschedule = super().Delta_x(x, t)
         if not self.graph.V:
-            self._observe(src, "external", x)
+            self._observe(src, "external", x, reschedule=reschedule)
+        return reschedule
 
     def Delta_y(self, t):
         src = self.phase
@@ -168,6 +191,20 @@ class DEVSph(DEVS):
         if not self.graph.V:
             self._observe(src, "internal", output)
         return output
+
+    def diagram_edges(self):
+        """Yield visible transitions, omitting declared no-op self-loops."""
+        graph = self.graph if self.graph.V else self.observed_graph
+        for edge in graph.edges():
+            attrs = edge.attrs
+            if (
+                edge.src == edge.dst and attrs.kind == "external"
+                and attrs.get("reschedule") is False
+                and "action" in attrs and attrs.action is None
+                and attrs.get("guard") is None and attrs.get("match") is None
+            ):
+                continue
+            yield edge
 
     def to_dot(self):
         """Return the declared phase graph or the code-defined model's observed graph."""
@@ -194,7 +231,7 @@ class DEVSph(DEVS):
             if ports:
                 label = "\n".join((direction, *ports))
                 lines.append(f"  ports{index} [shape=box, label={dumps(label)}];")
-        for edge in graph.edges():
+        for edge in self.diagram_edges():
             attrs = edge.attrs
             label = attrs.kind
             port = attrs.get("port") or attrs.get("output")
@@ -206,10 +243,13 @@ class DEVSph(DEVS):
                 label += " (dynamic output)"
             if attrs.get("guard") is not None:
                 label += f" [{attrs.guard.__name__}]" if hasattr(attrs.guard, "__name__") else " [guard]"
+            if attrs.get("action") is not None:
+                name = getattr(attrs.action, "__name__", type(attrs.action).__name__)
+                label += f" / action: {name}"
             if "reschedule" in attrs:
                 label += f" / reschedule={attrs.reschedule}" if not callable(attrs.reschedule) else " / reschedule=dynamic"
             if "count" in attrs:
                 label += f" ×{attrs.count}"
-            style = ", style=dashed" if attrs.kind == "external" else ""
+            style = f", style={transition_line_style(attrs)}"
             lines.append(f"  {ids[edge.src]} -> {ids[edge.dst]} [label={dumps(label, ensure_ascii=False)}{style}];")
         return "\n".join((*lines, "}")) + "\n"

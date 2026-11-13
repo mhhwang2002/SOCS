@@ -1,7 +1,7 @@
 """Counter example using the DEVS atomic model base."""
 
 from socs.devs.DEVS import DEVS
-from socs.devs.DEVSInterfaces import PortValue
+from socs.devs.TESBase import PortValue
 
 
 class Counter(DEVS):
@@ -15,7 +15,7 @@ class Counter(DEVS):
         self.phase = "C"
         self.addOutputPorts("!c")
 
-    def delta_0(self):
+    def set_initial_state(self):
         """Initialize the counter state."""
         self.phase, self.count, self.sum = "C", 1, 0
 
@@ -25,7 +25,11 @@ class Counter(DEVS):
             return 5
         return float("inf")
 
-    def delta_y(self):
+    def delta_x(self, event: PortValue) -> bool:
+        """Ignore external events because this counter has no inputs."""
+        return False
+
+    def delta_y(self) -> PortValue:
         """Emit the current sum, then update the counter state."""
         output = PortValue(self.OP["!c"], self.sum)
         if self.phase == "C":
@@ -51,9 +55,9 @@ class Counter(DEVS):
 
 def runSimulation(model):
     """Run the model with the interactive simulation engine."""
-    from socs.devs.SimEngine import SimEngineThread
+    from socs.devs.TESEngin import TESEnginThread
 
-    engine = SimEngineThread(model)
+    engine = TESEnginThread(model)
     engine.StepByStep = True
     engine.sfactor = float("inf")
     engine.runInteractiveMenu()

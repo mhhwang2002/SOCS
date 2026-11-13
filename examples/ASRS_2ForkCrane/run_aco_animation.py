@@ -5,8 +5,8 @@ from __future__ import annotations
 import argparse
 from threading import Lock
 
-from socs.devs.SimEngine import ExecutionResult, SimEngineBase
-from socs.visual3D import VisualEntityState, VisualSimEngineThread
+from socs.devs.TESEngin import ExecutionResult, TESEnginBase
+from socs.visual3D import VisualEntityState, VisualTESEnginThread
 from socs.visual3D.panda_viewer import Panda3DViewer
 
 from examples.ASRS.run_asrs import add_rack_geometry, reset_camera
@@ -34,7 +34,7 @@ from .asrs_devs import (
 from .timing import DEFAULT_TIMING_PROFILE, TimingProfile
 
 
-class TwoForkAnimationEngineThread(VisualSimEngineThread):
+class TwoForkAnimationEngineThread(VisualTESEnginThread):
     """Publish every DEVS state and stop after the controller empties its plan."""
 
     def __init__(self, model, *args, objective, penalty_weight, picking_mode, **kwargs):
@@ -206,7 +206,7 @@ def _add_right_station(viewer):
 def run_headless(model):
     """Run a complete coupled retrieval plan without opening the 3D viewer."""
     controller = next(child for child in model.children if isinstance(child, ASRSController))
-    engine = SimEngineBase(
+    engine = TESEnginBase(
         model,
         TimeIntervalContinuous=float("inf"),
         TimeIntervalAnimation=float("inf"),

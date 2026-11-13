@@ -16,10 +16,10 @@ stage so that generation, selection, and action execution remain distinct.
 from examples.LogBridge.LoadPassive_LogBridge import makeModel
 from examples.LogBridge.decision_generator import LogBridgeDecisionGenerator
 from socs.decision import DecisionRuntimeController
-from socs.devs.SimEngine import ExecutionResult, SimEngineThread
+from socs.devs.TESEngin import ExecutionResult, TESEnginThread
 
 model = makeModel()
-engine = SimEngineThread(model)
+engine = TESEnginThread(model)
 engine.bVerbose = False
 engine.set_simulation_time_bound(30.0)
 
@@ -47,4 +47,4 @@ and L21 because both Loads are waiting and the Bridge is idle.
 This controller is a synchronous, one-step orchestration layer. Use it as the
 entry point instead of calling `engine.executeOneStep()` directly whenever
 post-DEVS decision generation is required. It does not yet run the background
-`SimEngineThread.run()` loop.
+`TESEnginThread.run()` loop.

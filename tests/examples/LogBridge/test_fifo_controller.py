@@ -1,7 +1,7 @@
 """Tests for the FIFO LogBridge controller."""
 
-from socs.devs.SimEngine import SimEngineThread
-from socs.devs.DEVSInterfaces import PortValue
+from socs.devs.TESEngin import TESEnginThread
+from socs.devs.TESBase import PortValue
 
 from examples.LogBridge.LoadPassive_LogBridge import makeModel
 from examples.LogBridge.FIFOController import FIFOController
@@ -22,7 +22,7 @@ def get_components(model):
 
 
 def make_engine(model):
-    engine = SimEngineThread(model)
+    engine = TESEnginThread(model)
     engine.bVerbose = False
     engine.set_simulation_time_bound(200)
     return engine
@@ -36,9 +36,9 @@ def test_fifo_selects_load_that_entered_waiting_first():
 
     # The child order is L11 then L21, but L21 entered W earlier.
     loads["L11"].phase = "W"
-    loads["L11"].set_timeLast(15.0)
+    loads["L11"].tLast = 15.0
     loads["L21"].phase = "W"
-    loads["L21"].set_timeLast(10.0)
+    loads["L21"].tLast = 10.0
 
     selected = controller.dispatch(engine, model)
 
@@ -54,7 +54,7 @@ def test_fifo_selects_only_waiting_load():
     controller = FIFOController()
 
     loads["L21"].phase = "W"
-    loads["L21"].set_timeLast(12.0)
+    loads["L21"].tLast = 12.0
 
     assert controller.dispatch(engine, model) is loads["L21"]
 
@@ -105,9 +105,9 @@ def test_fifo_ties_preserve_model_child_order():
     controller = FIFOController()
 
     loads["L11"].phase = "W"
-    loads["L11"].set_timeLast(10.0)
+    loads["L11"].tLast = 10.0
     loads["L21"].phase = "W"
-    loads["L21"].set_timeLast(10.0)
+    loads["L21"].tLast = 10.0
 
     assert controller.dispatch(engine, model) is loads["L11"]
 

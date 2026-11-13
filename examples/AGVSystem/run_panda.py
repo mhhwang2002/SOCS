@@ -11,7 +11,7 @@ from panda3d.core import (
     GeomVertexData, GeomVertexFormat, GeomVertexWriter, TextNode, Vec3,
     loadPrcFileData,
 )
-from socs.devs.SimEngine import SimEngineBase
+from socs.devs.TESEngin import TESEnginBase
 
 from .agv_devs import make_model
 from .traffic_map import TrafficMap
@@ -23,7 +23,7 @@ class LiveSimulation:
 
     def __init__(self):
         model, self.controller = make_model()
-        self.engine = SimEngineBase(model)
+        self.engine = TESEnginBase(model)
         self.engine.bVerbose = False
         self.time = 0.0
         self.read = 0
@@ -32,7 +32,7 @@ class LiveSimulation:
 
     def advance(self, elapsed):
         self.time += elapsed
-        while self.engine.model.timeNext() <= self.time:
+        while self.engine.model.tNext <= self.time:
             self.engine.executeOneStep()
             events = self.controller.state["events"]
             for kind, point, vehicle in events[self.read:]:

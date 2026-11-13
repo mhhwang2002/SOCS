@@ -6,7 +6,7 @@ from typing import TypeVar
 
 from .decision import Decision
 from .executor import DecisionExecutor
-from ..devs.SimEngine import ExecutionResult, SimEngineBase
+from ..devs.TESEngin import ExecutionResult, TESEnginBase
 from ..devs.Snapshot import SystemSnapshot
 
 
@@ -18,7 +18,7 @@ class SimulationDecisionExecutor(
 ):
     """Execute a decision by restoring and advancing a DEVS simulation."""
 
-    def __init__(self, engine: SimEngineBase, end_time: float) -> None:
+    def __init__(self, engine: TESEnginBase, end_time: float) -> None:
         self.engine = engine
         self.end_time = float(end_time)
 

@@ -10,7 +10,7 @@ from math import inf
 from pathlib import Path
 
 from socs.devs.DEVS import DEVS
-from socs.devs.SimEngine import ExecutionResult, SimEngineBase
+from socs.devs.TESEngin import ExecutionResult, TESEnginBase
 
 from .crane_cycle_times import CraneCycleTimeTable
 
@@ -271,7 +271,7 @@ class ScheduleSimulation(DEVS):
         )
         self.delta_times = self._build_task_durations()
         self.delta_order_completions = self._build_completion_marks()
-        self.delta_0()
+        self.set_initial_state()
 
     def _build_task_durations(self) -> tuple[float, ...]:
         position = self.instance.initial_position
@@ -297,7 +297,7 @@ class ScheduleSimulation(DEVS):
             for index, order_id in enumerate(self.assignments)
         )
 
-    def delta_0(self):
+    def set_initial_state(self):
         self.task_index = 0
         self.elapsed = 0.0
         self.order_completion_times = [None] * len(self.instance.order_products)
@@ -311,7 +311,7 @@ class ScheduleSimulation(DEVS):
         return False
 
     def delta_y(self):
-        self.elapsed = self.timeNext()
+        self.elapsed = self.tNext
         completed_order = self.delta_order_completions[self.task_index]
         if completed_order is not None:
             self.order_completion_times[completed_order] = self.elapsed
@@ -385,7 +385,7 @@ def evaluate_schedule(
         )
 
     model = ScheduleSimulation(instance, schedule)
-    engine = SimEngineBase(
+    engine = TESEnginBase(
         model,
         TimeIntervalContinuous=inf,
         TimeIntervalAnimation=inf,

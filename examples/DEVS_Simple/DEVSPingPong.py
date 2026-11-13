@@ -2,8 +2,8 @@
 
 from socs.devs.DEVS import DEVS
 from socs.devs.CoupledDEVS import CoupledDEVS
-from socs.devs.DEVSInterfaces import PortValue
-from socs.devs.SimEngine import SimEngineThread
+from socs.devs.TESBase import PortValue
+from socs.devs.TESEngin import TESEnginThread
 
 
 class Player(DEVS):
@@ -17,7 +17,7 @@ class Player(DEVS):
         self.addOutputPorts("!s")
         self.phase = initial_phase
 
-    def delta_0(self):
+    def set_initial_state(self):
         """Initialize the player's phase."""
         self.phase = self.initial_phase
 
@@ -69,7 +69,7 @@ def makeModel():
 
 def runSimulation(model):
     """Run the model in the interactive simulation engine."""
-    engine = SimEngineThread(model)
+    engine = TESEnginThread(model)
     engine.StepByStep = True
     engine.sfactor = float("inf")
     engine.runInteractiveMenu()

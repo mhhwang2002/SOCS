@@ -3,6 +3,7 @@ from copy import deepcopy
 import pytest
 
 from socs.devs.DEVS import DEVS
+from socs.devs.TESBase import PortValue
 
 
 class CounterModel(DEVS):
@@ -13,14 +14,15 @@ class CounterModel(DEVS):
         self.value = 0
         self.history = []
 
-    def delta_0(self):
+    def set_initial_state(self):
         self.value = 0
         self.history = []
 
     def tau(self):
         return 5.0
 
-    def delta_x(self, x):
+    def delta_x(self, event):
+        x = event.value
         self.value += x
         self.history.append(x)
         return True
@@ -42,7 +44,7 @@ class CounterModel(DEVS):
 @pytest.fixture
 def model():
     instance = CounterModel("Counter")
-    instance.Delta_0(0.0)
+    instance.set_init_total_state(0.0)
     return instance
 
 
@@ -53,7 +55,7 @@ def test_branches_are_independent(model):
 
     # Execute Branch A.
     model.restore_state(snapshot_0)
-    model.Delta_x(5, 0.0)
+    model.Delta_x(PortValue(value=5), 0.0)
     snapshot_a = model.capture_state()
 
     assert model.value == 5
@@ -61,7 +63,7 @@ def test_branches_are_independent(model):
 
     # Restore the initial state and execute Branch B.
     model.restore_state(snapshot_0)
-    model.Delta_x(10, 0.0)
+    model.Delta_x(PortValue(value=10), 0.0)
     snapshot_b = model.capture_state()
 
     assert model.value == 10
@@ -82,11 +84,11 @@ def test_same_snapshot_and_input_produce_same_result(model):
     snapshot_0 = model.capture_state()
 
     model.restore_state(snapshot_0)
-    model.Delta_x(7, 0.0)
+    model.Delta_x(PortValue(value=7), 0.0)
     result_a = model.capture_state()
 
     model.restore_state(snapshot_0)
-    model.Delta_x(7, 0.0)
+    model.Delta_x(PortValue(value=7), 0.0)
     result_b = model.capture_state()
 
     assert result_a.model_state == result_b.model_state
@@ -98,18 +100,18 @@ def test_restore_returns_to_initial_state(model):
 
     snapshot_0 = model.capture_state()
 
-    model.Delta_x(20, 0.0)
+    model.Delta_x(PortValue(value=20), 0.0)
 
     assert model.value == 20
-    assert model.timeLast() == 0.0
-    assert model.timeNext() == 5.0
+    assert model.tLast == 0.0
+    assert model.tNext == 5.0
 
     model.restore_state(snapshot_0)
 
     assert model.value == 0
     assert model.history == []
-    assert model.timeLast() == 0.0
-    assert model.timeNext() == 5.0
+    assert model.tLast == 0.0
+    assert model.tNext == 5.0
 
 
 def test_original_snapshot_is_immutable_during_branching(model):
@@ -119,11 +121,11 @@ def test_original_snapshot_is_immutable_during_branching(model):
     original_state = deepcopy(snapshot_0.model_state)
     original_common_state = deepcopy(snapshot_0.common_state)
 
-    model.Delta_x(5, 0.0)
+    model.Delta_x(PortValue(value=5), 0.0)
     model.capture_state()
 
     model.restore_state(snapshot_0)
-    model.Delta_x(10, 0.0)
+    model.Delta_x(PortValue(value=10), 0.0)
     model.capture_state()
 
     assert snapshot_0.model_state == original_state

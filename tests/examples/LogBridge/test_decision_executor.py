@@ -1,6 +1,6 @@
 import pytest
 
-from socs.devs.SimEngine import SimEngineThread
+from socs.devs.TESEngin import TESEnginThread
 from socs.tree.decision_tree import DecisionTree
 
 from examples.LogBridge.LoadPassive_LogBridge import makeModel
@@ -12,7 +12,7 @@ def make_root_snapshot():
     """Run the model until both source Loads are waiting."""
 
     model = makeModel()
-    engine = SimEngineThread(model)
+    engine = TESEnginThread(model)
     engine.bVerbose = False
 
     # Allow both source Loads to reach the waiting phase.

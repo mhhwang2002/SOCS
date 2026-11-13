@@ -2,8 +2,8 @@
 
 from socs.devs.DEVS import DEVS
 from socs.devs.CoupledDEVS import CoupledDEVS
-from socs.devs.DEVSInterfaces import PortValue
-from socs.devs.SimEngine import SimEngineThread
+from socs.devs.TESBase import PortValue
+from socs.devs.TESEngin import TESEnginThread
 from .Load import Load
 from .LogBridge import LogBridge
  
@@ -26,7 +26,7 @@ def makeModel():
 
 def runSimulation(model):
     """Run the model in the interactive simulation engine."""
-    engine = SimEngineThread(model)
+    engine = TESEnginThread(model)
     engine.StepByStep = True
     engine.sfactor = float("inf")
     engine.runInteractiveMenu()

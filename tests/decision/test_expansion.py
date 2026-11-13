@@ -12,29 +12,30 @@ from socs.decision import (
     DecisionSelector,
 )
 from socs.decision.simulation_executor import SimulationDecisionExecutor
-from socs.devs.Simulatable import Simulatable
-from socs.devs.SimEngine import SimEngineThread
+from socs.devs.DEVS import DEVS
+from socs.devs.TESEngin import TESEnginThread
 from socs.tree import DecisionTree
 
 
-class CounterModel(Simulatable):
+class CounterModel(DEVS):
     def __init__(self):
         super().__init__("counter")
         self.value = 0
         self.events = 0
 
-    def delta_0(self):
+    def set_initial_state(self):
         self.value = 0
         self.events = 0
 
     def delta_x(self, event):
-        self.value += event
+        self.value += event.value
+        return True
 
     def delta_y(self):
         self.events += 1
         self.value += 1
 
-    def timeAdvance(self):
+    def tau(self):
         return 2.0
 
     def get_state(self):
@@ -80,7 +81,7 @@ class LastDecisionSelector(DecisionSelector):
 @pytest.fixture
 def controller_context():
     model = CounterModel()
-    engine = SimEngineThread(
+    engine = TESEnginThread(
         model,
         TimeIntervalContinuous=math.inf,
         TimeIntervalAnimation=math.inf,

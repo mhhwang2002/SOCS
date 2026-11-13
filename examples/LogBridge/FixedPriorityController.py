@@ -1,6 +1,6 @@
 """Fixed-priority controller for the passive LogBridge example."""
 
-from socs.devs.DEVSInterfaces import PortValue
+from socs.devs.TESBase import PortValue
 
 from .LoadPassive import LoadPassive
 from .LogBridge import LogBridge

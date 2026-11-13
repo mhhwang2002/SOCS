@@ -3,8 +3,8 @@
 from math import inf, isfinite
 
 from socs.devs.DEVS import DEVS
-from socs.devs.DEVSInterfaces import PortValue
-from socs.devs.SimEngine import SimEngineThread
+from socs.devs.TESBase import PortValue
+from socs.devs.TESEngin import TESEnginThread
 
 
 class Toaster(DEVS):
@@ -19,7 +19,7 @@ class Toaster(DEVS):
         self.addInputPorts("?push")
         self.addOutputPorts("!pop")
 
-    def delta_0(self):
+    def set_initial_state(self):
         """Reset the toaster to its initial idle phase."""
         self.phase = "Idle"
 
@@ -59,7 +59,7 @@ def make_input_event(model):
 
 def runSimulation(model):
     """Run the toaster model with the interactive simulation engine."""
-    engine = SimEngineThread(model, make_input_event)
+    engine = TESEnginThread(model, make_input_event)
     engine.StepByStep = True
     engine.sfactor = float("inf")
     engine.runInteractiveMenu()

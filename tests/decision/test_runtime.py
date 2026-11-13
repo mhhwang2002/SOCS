@@ -6,8 +6,8 @@ from socs.decision import (
     DecisionStatus,
     FixedPrioritySelector,
 )
-from socs.devs.DEVSInterfaces import PortValue
-from socs.devs.SimEngine import ExecutionResult, SimEngineThread
+from socs.devs.TESBase import PortValue
+from socs.devs.TESEngin import ExecutionResult, TESEnginThread
 
 from examples.LogBridge.LoadPassive import LoadPassive
 from examples.LogBridge.LoadPassive_LogBridge import makeModel
@@ -27,7 +27,7 @@ class RecordingGenerator(DecisionGenerator):
 
 
 def make_engine(model, *, end_time=30.0, continuous_interval=math.inf):
-    engine = SimEngineThread(
+    engine = TESEnginThread(
         model,
         TimeIntervalContinuous=continuous_interval,
     )

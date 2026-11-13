@@ -1,6 +1,6 @@
 """Run the AS/RS DEVS example with a live Panda3D visualization."""
 
-from socs.visual3D import VisualEntityState, VisualSimEngineThread
+from socs.visual3D import VisualEntityState, VisualTESEnginThread
 from socs.visual3D.panda_viewer import Panda3DViewer
 
 from .asrs_devs import (
@@ -21,7 +21,7 @@ from .asrs_devs import (
 )
 
 
-class ASRSSimEngineThread(VisualSimEngineThread):
+class ASRSTESEnginThread(VisualTESEnginThread):
     """Pause the live demo after the controller retrieves every occupied cell."""
 
     def __init__(self, model, *args, **kwargs):
@@ -206,7 +206,7 @@ def add_rack_geometry(viewer):
 def main():
     """Build the coupled model and launch the live 3D viewer."""
     model = make_asrs_model()
-    engine = ASRSSimEngineThread(
+    engine = ASRSTESEnginThread(
         model,
         visual_state,
         TimeIntervalAnimation=0.05,

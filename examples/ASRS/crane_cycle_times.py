@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from socs.devs.CoupledDEVS import CoupledDEVS
-from socs.devs.SimEngine import ExecutionResult, SimEngineBase
+from socs.devs.TESEngin import ExecutionResult, TESEnginBase
 
 from .asrs_devs import (
     AISLE_Y,
@@ -215,7 +215,7 @@ def _probe_cycle(
     model.addCouple((crane, "!idle"), (controller, "?crane_idle"))
     model.addCouple((crane, "!box_out"), (controller, "?box_out"))
 
-    engine = SimEngineBase(
+    engine = TESEnginBase(
         model,
         TimeIntervalContinuous=float("inf"),
         TimeIntervalAnimation=float("inf"),

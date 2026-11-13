@@ -16,7 +16,7 @@ class MutableStateModel(DEVS):
         super().__init__(name, parent)
         self.state = {"items": [1, 2]}
 
-    def delta_0(self):
+    def set_initial_state(self):
         self.state = {"items": [1, 2]}
 
     def tau(self):
@@ -38,24 +38,24 @@ class MutableStateModel(DEVS):
 
 def test_capture_restore_counter_state_and_clock():
     model = Counter(name="counter", count_no=5)
-    model.Delta_0(0)
+    model.set_init_total_state(0)
 
     snapshot = model.capture_state()
     original_state = model.get_state()
-    original_tl = model.timeLast()
-    original_tn = model.timeNext()
+    original_tl = model.tLast
+    original_tn = model.tNext
 
     model.Delta_y(5)
     model.restore_state(snapshot)
 
     assert model.get_state() == original_state
-    assert model.timeLast() == original_tl
-    assert model.timeNext() == original_tn
+    assert model.tLast == original_tl
+    assert model.tNext == original_tn
 
 
 def test_snapshot_is_independent_from_later_model_changes():
     model = Counter(name="counter", count_no=5)
-    model.Delta_0(0)
+    model.set_init_total_state(0)
 
     snapshot = model.capture_state()
     saved_state = deepcopy(snapshot.model_state)
@@ -70,7 +70,7 @@ def test_snapshot_is_independent_from_later_model_changes():
 
 def test_snapshot_deep_copies_mutable_model_state():
     model = MutableStateModel("mutable")
-    model.Delta_0(0)
+    model.set_init_total_state(0)
     snapshot = model.capture_state()
 
     model.state["items"].append(99)
@@ -96,10 +96,10 @@ def test_coupled_snapshot_restores_children_and_recomputes_imm():
     second = Counter("second", count_no=3)
     root.add_child(first)
     root.add_child(second)
-    root.Delta_0(0)
+    root.set_init_total_state(0)
 
     snapshot = root.capture_state()
-    assert root.timeNext() == 5
+    assert root.tNext == 5
     assert root.IMM == {first, second}
 
     first.Delta_y(5)
@@ -110,8 +110,8 @@ def test_coupled_snapshot_restores_children_and_recomputes_imm():
 
     assert first.get_state() == ("C", 1, 0, 3)
     assert second.get_state() == ("C", 1, 0, 3)
-    assert root.timeLast() == 0
-    assert root.timeNext() == 5
+    assert root.tLast == 0
+    assert root.tNext == 5
     assert root.IMM == {first, second}
 
 
@@ -119,7 +119,7 @@ def test_restore_rejects_changed_model_hierarchy_before_mutating_state():
     root = CoupledDEVS("root")
     first = Counter("first", count_no=3)
     root.add_child(first)
-    root.Delta_0(0)
+    root.set_init_total_state(0)
     snapshot = root.capture_state()
 
     first.sum = 77
@@ -134,8 +134,8 @@ def test_snapshot_branch_independence():
     model = Counter("branch_test", count_no=5)
 
     # Establish a known state and schedule.
-    model.set_timeLast(2.0)
-    model.set_timeNext(5.0)
+    model.tLast = 2.0
+    model.tNext = 5.0
 
     initial_state = model.get_state()
     snapshot = model.capture_state()
@@ -143,8 +143,8 @@ def test_snapshot_branch_independence():
     # Branch A: Modify the model state and schedule.
     phase, count, total, count_no = initial_state
     model.set_state((phase, count + 10, total + 100, count_no))
-    model.set_timeLast(4.0)
-    model.set_timeNext(9.0)
+    model.tLast = 4.0
+    model.tNext = 9.0
 
     branch_a_state = model.get_state()
     assert branch_a_state != initial_state
@@ -153,8 +153,8 @@ def test_snapshot_branch_independence():
     model.restore_state(snapshot)
 
     assert model.get_state() == initial_state
-    assert model.timeLast() == 2.0
-    assert model.timeNext() == 5.0
+    assert model.tLast == 2.0
+    assert model.tNext == 5.0
 
     # Branch B: Explore a different state from the same snapshot.
     model.set_state((phase, count + 1, total + 10, count_no))
@@ -167,5 +167,5 @@ def test_snapshot_branch_independence():
     model.restore_state(snapshot)
 
     assert model.get_state() == initial_state
-    assert model.timeLast() == 2.0
-    assert model.timeNext() == 5.0
+    assert model.tLast == 2.0
+    assert model.tNext == 5.0

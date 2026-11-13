@@ -2,8 +2,8 @@
 
 from socs.devs.DEVS import DEVS
 from socs.devs.CoupledDEVS import CoupledDEVS
-from socs.devs.DEVSInterfaces import PortValue
-from socs.devs.SimEngine import SimEngineThread
+from socs.devs.TESBase import PortValue
+from socs.devs.TESEngin import TESEnginThread
 from .LoadPassive import LoadPassive
 from .LogBridge import LogBridge
 from .FixedPriorityController import FixedPriorityController
@@ -55,7 +55,7 @@ def select_go_event(model):
 
 def runSimulation(model):
     """Run the model with interactive external GO commands."""
-    engine = SimEngineThread(model, inject_CBF=select_go_event)
+    engine = TESEnginThread(model, inject_CBF=select_go_event)
     engine.StepByStep = True
     engine.sfactor = float("inf")
     engine.runInteractiveMenu()
@@ -63,7 +63,7 @@ def runSimulation(model):
  
 def runAutomaticSimulation(model, end_time=300.0):
     """Run the model with automatic fixed-priority GO decisions."""
-    engine = SimEngineThread(model)
+    engine = TESEnginThread(model)
     engine.bVerbose = False
     engine.set_simulation_time_bound(end_time)
     controller = FixedPriorityController()
@@ -82,7 +82,7 @@ def runAutomaticSimulation(model, end_time=300.0):
 
 def runAutomaticFIFOSimulation(model, end_time=300.0):
     """Run the model with automatic FIFO GO decisions."""
-    engine = SimEngineThread(model)
+    engine = TESEnginThread(model)
     engine.bVerbose = False
     engine.set_simulation_time_bound(end_time)
     controller = FIFOController()
@@ -101,7 +101,7 @@ def runAutomaticFIFOSimulation(model, end_time=300.0):
 
 def runDecisionRuntimeSimulation(model, end_time=100.0):
     """Run LogBridge through the SOCS runtime decision cycle."""
-    engine = SimEngineThread(model)
+    engine = TESEnginThread(model)
     engine.bVerbose = False
     engine.set_simulation_time_bound(end_time)
 

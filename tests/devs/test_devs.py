@@ -2,8 +2,9 @@ import math
 
 import pytest
 
-from socs.devs.DEVSBase import HierNamedObj
+from socs.devs.TESBase import HierNamedObj
 from socs.devs.DEVS import DEVS
+from socs.devs.TESBase import PortValue
 
 
 class Counter(DEVS):
@@ -14,26 +15,48 @@ class Counter(DEVS):
         self.delay = delay
         self.state = 0
 
-    def delta_0(self):
+    def set_initial_state(self):
         self.state = 0
 
     def tau(self):
         return self.delay
 
-    def delta_x(self, value):
+    def delta_x(self, event):
+        value = event.value
         self.state += value
         return value != 0
 
     def delta_y(self):
         output = self.state
         self.state += 1
-        return output
+        return PortValue(value=output)
 
     def set_state(self, state):
         self.state = state
 
     def get_state(self):
         return self.state
+
+
+def test_callback_time_is_independent_of_schedule_and_restored():
+    class Model(Counter):
+        def delta_x(self, event):
+            assert self.tNow == 1
+            assert self.timeElapsed() == 1
+            assert self.timeRemaining() == 1
+            return super().delta_x(event)
+
+    model = Model("counter", delay=2)
+    model.set_init_total_state(0)
+    assert model.Delta_x(PortValue(value=0), 1) is False
+    assert (model.tNow, model.tLast, model.tNext) == (1, 0, 2)
+    snapshot = model.capture_state()
+    model.Delta_y(2)
+    assert model.tNow == 2
+    model.restore_state(snapshot)
+    assert model.tNow == 1
+    assert model.timeElapsed() == 1
+    assert model.timeElapsed(0.5) == 0.5
 
 
 # DEVS behavior
@@ -50,17 +73,17 @@ def test_model_rejects_empty_name():
 
 def test_initial_time_fields():
     model = Counter("Counter")
-    assert model.timeLast() == 0.0
-    assert math.isinf(model.timeNext())
+    assert model.tLast == 0.0
+    assert math.isinf(model.tNext)
 
 
 def test_initialization_sets_state_and_schedule():
     model = Counter("Counter", delay=2.5)
-    model.Delta_0(3.0)
+    model.set_init_total_state(3.0)
 
     assert model.get_state() == 0
-    assert model.timeLast() == 3.0
-    assert model.timeNext() == 5.5
+    assert model.tLast == 3.0
+    assert model.tNext == 5.5
 
 
 def test_tau_must_be_non_negative():
@@ -83,59 +106,59 @@ def test_tau_must_return_a_real_number():
 
 def test_external_transition_reschedules_when_requested():
     model = Counter("Counter", delay=2.0)
-    model.Delta_0(0.0)
+    model.set_init_total_state(0.0)
 
-    model.Delta_x(3, 1.0)
+    model.Delta_x(PortValue(value=3), 1.0)
 
     assert model.get_state() == 3
-    assert model.timeLast() == 1.0
-    assert model.timeNext() == 3.0
+    assert model.tLast == 1.0
+    assert model.tNext == 3.0
 
 
 def test_external_transition_preserves_schedule_when_not_requested():
     model = Counter("Counter", delay=2.0)
-    model.Delta_0(0.0)
-    original_time_next = model.timeNext()
+    model.set_init_total_state(0.0)
+    original_time_next = model.tNext
 
-    model.Delta_x(0, 1.0)
+    model.Delta_x(PortValue(value=0), 1.0)
 
     assert model.get_state() == 0
-    assert model.timeLast() == 0.0
-    assert model.timeNext() == original_time_next
+    assert model.tLast == 0.0
+    assert model.tNext == original_time_next
 
 
 def test_external_transition_rejects_time_before_last_event():
     model = Counter("Counter", delay=2.0)
-    model.Delta_0(1.0)
+    model.set_init_total_state(1.0)
 
     with pytest.raises(ValueError):
-        model.Delta_x(1, 0.5)
+        model.Delta_x(PortValue(value=1), 0.5)
 
 
 def test_external_transition_rejects_time_after_next_event():
     model = Counter("Counter", delay=2.0)
-    model.Delta_0(1.0)
+    model.set_init_total_state(1.0)
 
     with pytest.raises(ValueError):
-        model.Delta_x(1, 4.0)
+        model.Delta_x(PortValue(value=1), 4.0)
 
 
 def test_internal_transition_outputs_and_reschedules():
     model = Counter("Counter", delay=2.0)
-    model.Delta_0(0.0)
+    model.set_init_total_state(0.0)
     model.set_state(4)
 
     output = model.Delta_y(2.0)
 
-    assert output == 4
+    assert output.value == 4
     assert model.get_state() == 5
-    assert model.timeLast() == 2.0
-    assert model.timeNext() == 4.0
+    assert model.tLast == 2.0
+    assert model.tNext == 4.0
 
 
 def test_internal_transition_rejects_wrong_event_time():
     model = Counter("Counter", delay=2.0)
-    model.Delta_0(0.0)
+    model.set_init_total_state(0.0)
 
     with pytest.raises(ValueError):
         model.Delta_y(1.0)

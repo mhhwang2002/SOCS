@@ -1,7 +1,7 @@
 import pytest
 
 from socs.devs import CoupledDEVS, DEVS
-from socs.devs.DEVSInterfaces import PortValue
+from socs.devs.TESBase import PortValue
 
 
 class AtomicModelStub(DEVS):
@@ -11,7 +11,7 @@ class AtomicModelStub(DEVS):
         self.state = None
         self.received = []
 
-    def delta_0(self):
+    def set_initial_state(self):
         self.state = None
         self.received = []
 
@@ -76,6 +76,57 @@ def test_add_couple_requires_endpoints():
         system.addCouple("vehicles", "vehicles")
 
 
+@pytest.mark.parametrize("invalid", ["source_direction", "destination_direction", "unknown", "outside"])
+def test_add_couple_rejects_invalid_endpoint_without_storing_connection(invalid):
+    system = CoupledDEVS("root")
+    source = AtomicModelStub("source")
+    target = AtomicModelStub("target")
+    outside = AtomicModelStub("outside")
+    source.addInputPorts("in")
+    source.addOutputPorts("out")
+    target.addInputPorts("in")
+    target.addOutputPorts("out")
+    outside.addInputPorts("in")
+    system.addComponents(source, target)
+    endpoints = {
+        "source_direction": ((source, "in"), (target, "in")),
+        "destination_direction": ((source, "out"), (target, "out")),
+        "unknown": ((source, "missing"), (target, "in")),
+        "outside": ((source, "out"), (outside, "in")),
+    }
+    with pytest.raises(ValueError):
+        system.addCouple(*endpoints[invalid])
+    assert system.Z == {}
+
+
+@pytest.mark.parametrize("move", [False, True])
+def test_removing_or_moving_child_removes_only_its_couplings(move):
+    root = CoupledDEVS("root")
+    system = CoupledDEVS("old")
+    destination = CoupledDEVS("new")
+    root.addComponents(system, destination)
+    source = AtomicModelStub("source")
+    child = AtomicModelStub("child")
+    sink = AtomicModelStub("sink")
+    source.addOutputPorts("out")
+    child.addInputPorts("in")
+    child.addOutputPorts("out")
+    sink.addInputPorts("in")
+    system.addComponents(source, child, sink)
+    system.addCouples(
+        ((source, "out"), (child, "in")),
+        ((source, "out"), (sink, "in")),
+        ((child, "out"), (sink, "in")),
+    )
+
+    if move:
+        system.move_child_to(child, destination)
+        assert child in destination.M
+    else:
+        system.remove_child(child)
+    assert system.Z == {(source, "out"): {(sink, "in")}}
+
+
 def test_external_input_coupling_routes_to_child():
     system = CoupledDEVS("TrafficSystem")
     system.addInputPorts("vehicle_request")
@@ -87,7 +138,7 @@ def test_external_input_coupling_routes_to_child():
         (system, "vehicle_request"),
         (generator, "request"),
     )
-    system.Delta_0(0.0)
+    system.set_init_total_state(0.0)
 
     payload = {"count": 3}
     system.Delta_x(PortValue(system.IP["vehicle_request"], payload), 0.0)
@@ -108,7 +159,7 @@ def test_internal_output_coupling_routes_to_child_input():
     system.add_child(generator)
     system.add_child(intersection)
     system.addCouple((generator, "vehicles"), (intersection, "vehicles"))
-    system.Delta_0(0.0)
+    system.set_init_total_state(0.0)
 
     payload = {"vehicle_id": 101}
     translated = system.translateOutputEvent(
@@ -155,7 +206,7 @@ def test_route_output_supports_multiple_destinations():
         system.add_child(model)
     system.addCouple((generator, "vehicles"), (first, "vehicles"))
     system.addCouple((generator, "vehicles"), (second, "vehicles"))
-    system.Delta_0(0.0)
+    system.set_init_total_state(0.0)
 
     payload = {"vehicle_id": 101}
     system.translateOutputEvent(

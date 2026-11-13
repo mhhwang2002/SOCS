@@ -2,13 +2,13 @@ import math
 
 import pytest
 
-from socs.devs.Simulatable import Simulatable
-from socs.devs.SimEngine import ExecutionResult, SimEngineBase, SimEngineThread
+from socs.devs.DEVS import DEVS
+from socs.devs.TESEngin import ExecutionResult, TESEnginBase, TESEnginThread
 from socs.decision.decision import Decision
 from socs.decision.simulation_executor import SimulationDecisionExecutor
 
 
-class CounterModel(Simulatable):
+class CounterModel(DEVS):
     """Deterministic model used to test simulation-time branch evaluation."""
 
     def __init__(self, name="Counter"):
@@ -16,18 +16,19 @@ class CounterModel(Simulatable):
         self.value = 0
         self.events = 0
 
-    def delta_0(self):
+    def set_initial_state(self):
         self.value = 0
         self.events = 0
 
     def delta_x(self, event):
-        self.value += event
+        self.value += event.value
+        return True
 
     def delta_y(self):
         self.events += 1
         self.value += 1
 
-    def timeAdvance(self):
+    def tau(self):
         return 2.0
 
     def get_state(self):
@@ -58,7 +59,7 @@ class CounterEvaluator(SimulationDecisionExecutor):
 @pytest.fixture
 def engine_and_model():
     model = CounterModel()
-    engine = SimEngineThread(
+    engine = TESEnginThread(
         model,
         TimeIntervalContinuous=math.inf,
         TimeIntervalAnimation=math.inf,

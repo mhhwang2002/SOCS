@@ -1,7 +1,7 @@
 
 import pytest
 
-from socs.devs.DEVSBase import HierNamedObj
+from socs.devs.TESBase import HierNamedObj
 
 
 def test_remove_child():

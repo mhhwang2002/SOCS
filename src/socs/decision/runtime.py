@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 from typing import Generic, TypeVar
 
-from ..devs.SimEngine import ExecutionResult, SimEngineBase
+from ..devs.TESEngin import ExecutionResult, TESEnginBase
 from ..devs.Snapshot import SystemSnapshot
 from .decision import Decision
 from .executor import DecisionExecutor
@@ -40,13 +40,13 @@ class DecisionRuntimeController(Generic[DecisionT]):
 
     def __init__(
         self,
-        engine: SimEngineBase,
+        engine: TESEnginBase,
         generator: DecisionGenerator[SystemSnapshot],
         selector: DecisionSelector | None = None,
-        executor: DecisionExecutor[SimEngineBase, DecisionT] | None = None,
+        executor: DecisionExecutor[TESEnginBase, DecisionT] | None = None,
     ) -> None:
-        if not isinstance(engine, SimEngineBase):
-            raise TypeError("engine must be a SimEngineBase instance.")
+        if not isinstance(engine, TESEnginBase):
+            raise TypeError("engine must be a TESEnginBase instance.")
         if not isinstance(generator, DecisionGenerator):
             raise TypeError("generator must be a DecisionGenerator instance.")
         if (selector is None) != (executor is None):

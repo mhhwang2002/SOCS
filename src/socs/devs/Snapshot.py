@@ -25,4 +25,3 @@ class SystemSnapshot:
     t_next_continuous: float
     t_next_animation: float
     x_buffer: list[tuple[int | None, Any]] = field(default_factory=list)
-    last_null_time: float | None = None

@@ -6,15 +6,16 @@
 """Finite and deterministic DEVS base class."""
 
 import math
+from abc import ABC, abstractmethod
 from numbers import Real
 
-from .Simulatable import Simulatable
+from .TESBase import PortValue, TES
 
 
-class DEVS(Simulatable):
+class DEVS(TES, ABC):
     """Finite-state deterministic DEVS atomic model.
 
-    Subclasses implement delta_0(), tau(), delta_x(), delta_y(),
+    Subclasses implement set_initial_state(), tau(), delta_x(), delta_y(),
     set_state(), and get_state().
 
     delta_x(x) must update the model state and return True when the next
@@ -24,6 +25,22 @@ class DEVS(Simulatable):
 
     def __init__(self, name, parent=None, tl=0, tn=float("inf")):
         super().__init__(name, parent, tl, tn)
+
+    @abstractmethod
+    def set_initial_state(self) -> None:
+        """Set the initial model state."""
+
+    @abstractmethod
+    def tau(self) -> float | int:
+        """Return the time until the next internal event."""
+
+    @abstractmethod
+    def delta_x(self, event: PortValue) -> bool:
+        """Process an external event and return whether to reschedule."""
+
+    @abstractmethod
+    def delta_y(self) -> PortValue | list[PortValue] | tuple[PortValue, ...] | set[PortValue] | None:
+        """Process an internal event and return its output events, if any."""
 
     def ta(self):
         """Return the deterministic time advance."""
@@ -36,18 +53,45 @@ class DEVS(Simulatable):
             raise ValueError("tau() must return a non-negative value.")
         return value
 
-    def Delta_x(self, x, t):
-        """Apply an external event, rescheduling only when requested."""
-        if t < self.timeLast() or t > self.timeNext():
-            raise ValueError(
-                f"Delta_x scheduling error: "
-                f"tL={self.timeLast()}, t={t}, tN={self.timeNext()}"
-            )
+    def set_init_total_state(self, t):
+        """Reset the model state and clock at time t."""
+        self._statistics_since = t
+        self.StatePercentage = {}
+        self.tNow = t
+        self.tLast = t
+        self.set_initial_state()
+        self.tNext = t + self.ta()
 
+    def Delta_x(self, x: PortValue, t) -> bool:
+        """Apply an external event, rescheduling only when requested."""
+        self.validate_event_time(t)
+
+        if not isinstance(x, PortValue):
+            raise TypeError("Delta_x expects a PortValue.")
+        self.tNow = t
+        self.updateStatistics(t)
         reschedule = self.delta_x(x)
+        if not isinstance(reschedule, bool):
+            raise TypeError("delta_x() must return a bool.")
         if reschedule:
-            self.set_timeLast(t)
-            self.set_timeNext(t + self.ta())
+            self.tLast = t
+            self.tNext = t + self.ta()
+        return reschedule
+
+    def Delta_y(self, t) -> PortValue | list[PortValue] | tuple[PortValue, ...] | set[PortValue] | None:
+        """Process a scheduled internal event and update the clock."""
+        self.validate_event_time(t, internal=True)
+        self.tNow = t
+        self.updateStatistics(t)
+        output = self.delta_y()
+        if output is not None and not isinstance(output, PortValue):
+            if not isinstance(output, (list, tuple, set)) or not all(
+                isinstance(event, PortValue) for event in output
+            ):
+                raise TypeError("delta_y() must return PortValue events or None.")
+        self.tLast = t
+        self.tNext = t + self.ta()
+        return output
 
     def set_state(self, state):
         """Set the model's current state; implement in a concrete model."""

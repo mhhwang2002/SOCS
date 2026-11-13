@@ -4,7 +4,7 @@ import pytest
 
 from examples.DEVS_Simple.DEVSCounter import Counter
 
-from socs.devs.SimEngine import SimEngineBase
+from socs.devs.TESEngin import TESEnginBase
 from socs.decision.decision import Decision
 from socs.decision.generator import DecisionGenerator
 from socs.decision.lifecycle import DecisionLifeCycleManager
@@ -35,7 +35,7 @@ class CounterDecisionExecutor(SimulationDecisionExecutor):
 @pytest.fixture
 def expansion_system():
     model = Counter(name="counter", count_no=2)
-    engine = SimEngineBase(model)
+    engine = TESEnginBase(model)
     engine.bVerbose = False
 
     evaluator = CounterDecisionExecutor(

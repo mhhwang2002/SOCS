@@ -1,6 +1,6 @@
 from socs.devs.CoupledDEVS import CoupledDEVS
 from socs.devs.DEVS import DEVS
-from socs.devs.SimEngine import SimEngineThread
+from socs.devs.TESEngin import TESEnginThread
 from socs.devs.Snapshot import SystemSnapshot
 
 
@@ -12,7 +12,7 @@ class SnapshotTestAtomic(DEVS):
         self.value = 0
         self.delay = delay
 
-    def delta_0(self):
+    def set_initial_state(self):
         self.value = 0
 
     def tau(self):
@@ -35,26 +35,26 @@ class SnapshotTestAtomic(DEVS):
 
 def test_engine_snapshot_restores_time_and_atomic_model_state():
     model = SnapshotTestAtomic("atomic", delay=5)
-    engine = SimEngineThread(model)
+    engine = TESEnginThread(model)
 
     snapshot = engine.capture_snapshot()
     assert isinstance(snapshot, SystemSnapshot)
     assert snapshot.t_now == 0.0
     assert model.get_state() == 0
-    assert model.timeLast() == 0.0
-    assert model.timeNext() == 5.0
+    assert model.tLast == 0.0
+    assert model.tNext == 5.0
 
     model.set_state(42)
-    model.set_timeLast(2.0)
-    model.set_timeNext(8.0)
+    model.tLast = 2.0
+    model.tNext = 8.0
     engine.tNow = 2.0
 
     engine.restore_snapshot(snapshot)
 
     assert engine.tNow == 0.0
     assert model.get_state() == 0
-    assert model.timeLast() == 0.0
-    assert model.timeNext() == 5.0
+    assert model.tLast == 0.0
+    assert model.tNext == 5.0
 
 
 def test_engine_snapshot_restores_nested_models_and_imminent_set():
@@ -63,17 +63,17 @@ def test_engine_snapshot_restores_nested_models_and_imminent_set():
     second = SnapshotTestAtomic("second", delay=5)
     root.add_child(first)
     root.add_child(second)
-    engine = SimEngineThread(root)
+    engine = TESEnginThread(root)
 
     snapshot = engine.capture_snapshot()
     assert root.IMM == {first, second}
 
     first.set_state(10)
-    first.set_timeLast(1.0)
-    first.set_timeNext(3.0)
+    first.tLast = 1.0
+    first.tNext = 3.0
     second.set_state(20)
-    second.set_timeLast(2.0)
-    second.set_timeNext(7.0)
+    second.tLast = 2.0
+    second.tNext = 7.0
     root.update_tN()
     engine.tNow = 2.0
 
@@ -82,15 +82,15 @@ def test_engine_snapshot_restores_nested_models_and_imminent_set():
     assert engine.tNow == 0.0
     assert first.get_state() == 0
     assert second.get_state() == 0
-    assert first.timeLast() == second.timeLast() == 0.0
-    assert first.timeNext() == second.timeNext() == 5.0
-    assert root.timeNext() == 5.0
+    assert first.tLast == second.tLast == 0.0
+    assert first.tNext == second.tNext == 5.0
+    assert root.tNext == 5.0
     assert root.IMM == {first, second}
 
 
 def test_snapshot_operations_require_paused_engine():
     model = SnapshotTestAtomic("atomic")
-    engine = SimEngineThread(model)
+    engine = TESEnginThread(model)
     engine.SkipLoop = False
 
     try:

@@ -1,7 +1,7 @@
 """Load example using the DEVS atomic model base."""
 
 from socs.devs.DEVS import DEVS
-from socs.devs.DEVSInterfaces import PortValue
+from socs.devs.TESBase import PortValue
 
 class LoadPassive(DEVS):
     """Atomic load model with walker speeds."""
@@ -14,7 +14,7 @@ class LoadPassive(DEVS):
         self.addInputPorts("?in", "?go")
         self.addOutputPorts("!out")
 
-    def delta_0(self):
+    def set_initial_state(self):
         """Reset the Load to its initial idle phase.""" 
         self.walker_speed = self.walker_init_speed
         if self.walker_speed:
@@ -70,7 +70,7 @@ def make_input_event(model):
 if __name__ == "__main__":
     
     Load = LoadPassive("L1", length=100, int_walker_speed=5)
-    engine = SimEngineThread(Load,make_input_event)
+    engine = TESEnginThread(Load,make_input_event)
     engine.StepByStep = True
     engine.sfactor = float("inf")
     engine.runInteractiveMenu()

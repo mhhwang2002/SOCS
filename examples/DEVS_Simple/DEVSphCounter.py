@@ -5,7 +5,7 @@ from pathlib import Path
 from math import isfinite
 
 from socs.devs import DEVSph
-from socs.devs.DEVSInterfaces import PortValue
+from socs.devs.TESBase import PortValue
 
 
 class DEVSphCounter(DEVSph):
@@ -30,7 +30,7 @@ class DEVSphCounter(DEVSph):
 
     @staticmethod
     def has_more_ticks(model, event):
-        return model.variables["count"] + 1 < model.count_no
+        return model._variable.count + 1 < model.count_no
 
     @staticmethod
     def is_last_tick(model, event):
@@ -38,63 +38,52 @@ class DEVSphCounter(DEVSph):
 
     @staticmethod
     def increment(model, event):
-        model.variables["count"] += 1
-        model.variables["sum"] += model.variables["count"]
+        model._variable.count += 1
+        model._variable.sum += model._variable.count
 
     @staticmethod
     def emit_sum(model):
-        return PortValue("!c", model.variables["sum"])
+        return PortValue("!c", model._variable.sum)
 
     def display_state(self):
-        return self.phase, self.variables["count"], self.variables["sum"]
+        return self.phase, self._variable.count, self._variable.sum
 
 
-def run_live(counter, speed, *, show_full_graph=False):
+def run_live(counter, speed):
     """Advance the simulation from the 2D window's event loop."""
     import tkinter as tk
     from tkinter import ttk
 
-    from socs.devs.SimEngine import ExecutionResult, SimEngineBase
+    from socs.devs.TESEngin import ExecutionResult, TESEnginBase
 
     animation_interval = 1
-    engine = SimEngineBase(counter, TimeIntervalAnimation=animation_interval)
+    engine = TESEnginBase(counter, TimeIntervalAnimation=animation_interval)
     engine.bVerbose = False
     root = tk.Tk()
     root.title(counter.__class__.__name__)
-    canvas = tk.Canvas(root, width=560, height=210, background="white", highlightthickness=0)
-    canvas.pack(fill="x")
-    edges = {}
-    if show_full_graph:
-        layout = {
-            phase: (105 + 160 * index, attrs.tau)
-            for index, (phase, attrs) in enumerate(counter.graph.V.items())
-        }
-        for edge in counter.graph.edges():
-            start, _ = layout[edge.src]
-            end, _ = layout[edge.dst]
-            edges[edge.src, edge.dst] = canvas.create_line(
-                start + 60, 110, end - 60, 110, arrow=tk.LAST, width=2,
-            )
-        canvas.create_line(12, 110, 45, 110, arrow=tk.LAST, width=2)
-        canvas.configure(scrollregion=(0, 0, max(560, 160 * len(layout) + 25), 210))
-        scrollbar = ttk.Scrollbar(root, orient="horizontal", command=canvas.xview)
-        scrollbar.pack(fill="x")
-        canvas.configure(xscrollcommand=scrollbar.set)
+    diagram = None
+    if isinstance(counter, DEVSph):
+        from socs.devs.phase_diagram import PhaseDiagram
+
+        diagram = PhaseDiagram(root, counter, width=None if isinstance(counter, DEVSphCounter) else 560)
+        diagram.pack(fill="x")
     else:
-        layout = {"Count": (165, 5), "Done": (405, float("inf"))}
+        canvas = tk.Canvas(root, width=560, height=210, background="white", highlightthickness=0)
+        canvas.pack(fill="x")
         canvas.create_line(35, 110, 104, 110, arrow=tk.LAST, width=2)
-        edges["Count", "Count"] = canvas.create_line(
-            125, 82, 82, 33, 163, 13, 246, 33, 207, 82,
-            smooth=True, arrow=tk.LAST, width=2,
-        )
-        edges["Count", "Done"] = canvas.create_line(224, 110, 345, 110, arrow=tk.LAST, width=2)
-    phases = {}
-    for phase, (x, tau) in layout.items():
-        oval = canvas.create_oval(
-            x - 60, 77, x + 60, 143, width=2, dash=(5, 4) if tau == float("inf") else (),
-        )
-        label = canvas.create_text(x, 110, justify="center")
-        phases[phase] = oval, label
+        edges = {
+            ("Count", "Count"): canvas.create_line(
+                125, 82, 82, 33, 163, 13, 246, 33, 207, 82,
+                smooth=True, arrow=tk.LAST, width=2,
+            ),
+            ("Count", "Done"): canvas.create_line(224, 110, 345, 110, arrow=tk.LAST, width=2),
+        }
+        phases = {}
+        for phase, x in (("Count", 165), ("Done", 405)):
+            oval = canvas.create_oval(
+                x - 60, 77, x + 60, 143, width=2, dash=(5, 4) if phase == "Done" else (),
+            )
+            phases[phase] = oval, canvas.create_text(x, 110, justify="center")
     status = ttk.Label(root, padding=12)
     status.pack()
     controls = ttk.Frame(root, padding=8)
@@ -105,24 +94,27 @@ def run_live(counter, speed, *, show_full_graph=False):
     edge = None
 
     def active_node():
-        return counter.phase if show_full_graph else counter.display_state()[0]
+        return counter.phase if diagram is not None else counter.display_state()[0]
 
     def refresh():
         _, count, total = counter.display_state()
         current_phase = active_node()
-        remaining = counter.timeNext() - engine.tNow
-        remaining_text = f"{remaining:g}" if isfinite(remaining) else "∞"
-        for phase, (oval, label) in phases.items():
-            active = phase == current_phase
-            canvas.itemconfigure(oval, fill="#bfdbfe" if active else "white")
-            text = f"{phase}\nRemaining = {remaining_text}" if active else phase
-            canvas.itemconfigure(label, text=text)
-        for item in edges.values():
-            canvas.itemconfigure(item, fill="#1d4ed8" if item == edge else "#526173")
+        if diagram is not None:
+            diagram.refresh(engine.tNow, edge)
+        else:
+            remaining = counter.tNext - engine.tNow
+            remaining_text = f"{remaining:g}" if isfinite(remaining) else "∞"
+            for phase, (oval, label) in phases.items():
+                active = phase == current_phase
+                canvas.itemconfigure(oval, fill="#bfdbfe" if active else "white")
+                text = f"{phase}\nRemaining = {remaining_text}" if active else phase
+                canvas.itemconfigure(label, text=text)
+            for endpoints, item in edges.items():
+                canvas.itemconfigure(item, fill="#1d4ed8" if endpoints == edge else "#526173")
         status.configure(
             text=f"t = {engine.tNow:g}    Count = {count}    Sum = {total}"
         )
-        done = not isfinite(counter.timeNext())
+        done = not isfinite(counter.tNext)
         play.configure(
             text="Pause" if running else "Play",
             state="normal" if animation and not done else "disabled",
@@ -142,14 +134,10 @@ def run_live(counter, speed, *, show_full_graph=False):
         source = active_node()
         result = engine.executeOneStep()
         if result == ExecutionResult.ScheduledEventOccurred:
-            edge = edges[source, active_node()]
-            if show_full_graph:
-                x, _ = layout[active_node()]
-                if x + 60 > canvas.canvasx(canvas.winfo_width()):
-                    canvas.xview_moveto((x - 105) / max(560, 160 * len(layout) + 25))
+            edge = source, active_node()
         else:
             edge = None
-        if running and isfinite(counter.timeNext()):
+        if running and isfinite(counter.tNext):
             schedule()
         else:
             running = False
@@ -177,7 +165,7 @@ def run_live(counter, speed, *, show_full_graph=False):
         animation = not animation
         engine.TimeIntervalAnimation = animation_interval if animation else float("inf")
         engine.executeAnimation(engine.tNow, engine.tNow)
-        if animation and isfinite(counter.timeNext()):
+        if animation and isfinite(counter.tNext):
             running = True
             schedule()
         refresh()
@@ -187,8 +175,6 @@ def run_live(counter, speed, *, show_full_graph=False):
         pause()
         engine.reset()
         edge = None
-        if show_full_graph:
-            canvas.xview_moveto(0)
         refresh()
 
     play = ttk.Button(controls, command=toggle)
@@ -198,18 +184,22 @@ def run_live(counter, speed, *, show_full_graph=False):
     mode = ttk.Button(controls, command=toggle_mode)
     mode.pack(side="left", padx=4)
     ttk.Button(controls, text="Reset", command=reset).pack(side="left", padx=4)
+    root.bind("<Destroy>", lambda event: pause() if event.widget is root else None)
     toggle()
     root.mainloop()
 
 
-def main(model_type=DEVSphCounter, description=__doc__, *, show_full_graph=False):
+def main(model_type=DEVSphCounter, description=__doc__):
     parser = ArgumentParser(description=description)
     parser.add_argument("--count", type=int, default=10)
     if issubclass(model_type, DEVSph):
         parser.add_argument("--dot", type=Path, help="Write the phase diagram to this file.")
     else:
         parser.set_defaults(dot=None)
-    parser.add_argument("--live", action="store_true", help="Run in a live 2D window.")
+    display = parser.add_mutually_exclusive_group()
+    display.add_argument("--live", action="store_true", help="Run in a live 2D window.")
+    display.add_argument("--console", dest="live", action="store_false", help="Print the trace in the console.")
+    parser.set_defaults(live=issubclass(model_type, DEVSph))
     parser.add_argument("--speed", type=float, default=5, help="Simulation units per real second.")
     args = parser.parse_args()
     if args.count < 1:
@@ -218,11 +208,11 @@ def main(model_type=DEVSphCounter, description=__doc__, *, show_full_graph=False
     if args.live:
         if not isfinite(args.speed) or args.speed <= 0:
             parser.error("--speed must be finite and positive")
-        run_live(counter, args.speed, show_full_graph=show_full_graph)
+        run_live(counter, args.speed)
     else:
-        counter.Delta_0(0)
-        while isfinite(counter.timeNext()):
-            time = counter.timeNext()
+        counter.set_init_total_state(0)
+        while isfinite(counter.tNext):
+            time = counter.tNext
             counter.Delta_null(time)
             output = counter.Delta_y(time)
             phase, count, total = counter.display_state()

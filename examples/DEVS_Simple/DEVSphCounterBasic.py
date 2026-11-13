@@ -3,7 +3,7 @@
 from math import inf
 
 from socs.devs import DEVSph
-from socs.devs.DEVSInterfaces import PortValue
+from socs.devs.TESBase import PortValue
 
 if __package__:
     from .DEVSphCounter import main
@@ -36,4 +36,4 @@ class DEVSphCounterBasic(DEVSph):
 
 
 if __name__ == "__main__":
-    main(DEVSphCounterBasic, __doc__, show_full_graph=True)
+    main(DEVSphCounterBasic, __doc__)

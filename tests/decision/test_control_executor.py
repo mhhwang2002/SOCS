@@ -5,14 +5,14 @@ from socs.decision import (
     ControlRuntimeExecutor,
     NoControl,
 )
-from socs.devs.DEVSInterfaces import PortValue
-from socs.devs.SimEngine import SimEngineThread
+from socs.devs.TESBase import PortValue
+from socs.devs.TESEngin import TESEnginThread
 
 from examples.LogBridge.LoadPassive_LogBridge import makeModel
 
 
 def make_engine():
-    engine = SimEngineThread(makeModel())
+    engine = TESEnginThread(makeModel())
     engine.bVerbose = False
     return engine
 

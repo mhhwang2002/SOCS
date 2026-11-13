@@ -4,8 +4,8 @@ import pytest
 
 from socs.devs.CoupledDEVS import CoupledDEVS
 from socs.devs.DEVS import DEVS
-from socs.devs.DEVSInterfaces import PortValue
-from socs.devs.SimEngine import SimEngineThread
+from socs.devs.TESBase import PortValue
+from socs.devs.TESEngin import TESEnginThread
 from socs.decision.decision import Decision
 from socs.decision.simulation_executor import SimulationDecisionExecutor
 
@@ -17,7 +17,7 @@ class NestedCounter(DEVS):
         self.value = 0
         self.events = 0
 
-    def delta_0(self):
+    def set_initial_state(self):
         self.value = 0
         self.events = 0
 
@@ -70,7 +70,7 @@ def nested_system():
     root.addCouple((root, "decision"), (nested, "external"))
     nested.addCouple((nested, "external"), (atomic, "in"))
 
-    engine = SimEngineThread(
+    engine = TESEnginThread(
         root,
         TimeIntervalContinuous=math.inf,
         TimeIntervalAnimation=math.inf,
@@ -86,16 +86,16 @@ def test_nested_snapshot_restores_atomic_state_and_schedules(nested_system):
 
     atomic.value = 99
     atomic.events = 8
-    atomic.set_timeNext(42.0)
+    atomic.tNext = 42.0
     nested.update_tN(update_parent=True)
 
     engine.restore_snapshot(snapshot)
 
     assert atomic.value == 0
     assert atomic.events == 0
-    assert atomic.timeNext() == 3.0
-    assert nested.timeNext() == 3.0
-    assert root.timeNext() == 3.0
+    assert atomic.tNext == 3.0
+    assert nested.tNext == 3.0
+    assert root.tNext == 3.0
     assert atomic in nested.IMM
     assert nested in root.IMM
 
@@ -129,9 +129,9 @@ def test_nested_branches_are_independent_and_keep_schedule_consistent(
     }
 
     assert atomic.value == 22
-    assert atomic.timeNext() == 9.0
-    assert nested.timeNext() == 9.0
-    assert root.timeNext() == 9.0
+    assert atomic.tNext == 9.0
+    assert nested.tNext == 9.0
+    assert root.tNext == 9.0
     assert atomic in nested.IMM
     assert nested in root.IMM
 

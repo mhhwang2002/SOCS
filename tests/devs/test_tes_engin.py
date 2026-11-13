@@ -3,9 +3,8 @@ import math
 import pytest
 
 from socs.devs import CoupledDEVS, DEVS
-from socs.devs.DEVSTime import Clock
-from socs.devs.DEVSInterfaces import PortValue
-from socs.devs.SimEngine import ExecutionResult, SimEngineBase, SimEngineThread
+from socs.devs.TESBase import PortValue
+from socs.devs.TESEngin import ExecutionResult, TESEnginBase, TESEnginThread
 
 
 @pytest.mark.parametrize(
@@ -27,7 +26,7 @@ def test_engine_updates_time_once_before_due_events(
             calls.append(("null", t))
             return super().Delta_null(t)
 
-    class Engine(SimEngineBase):
+    class Engine(TESEnginBase):
         def doAnimation(self):
             calls.append(("animation", self.tNow))
 
@@ -59,7 +58,7 @@ def test_same_time_inputs_and_zero_delay_event_share_update_after_restore():
             self.interval = math.inf
 
     model = Model("model", reschedule=True, interval=0)
-    engine = SimEngineBase(model)
+    engine = TESEnginBase(model)
     engine.bVerbose = False
     engine.XBuffer.append((model, PortValue("in", 1)))
     engine.XBuffer.append((model, PortValue("in", 2)))
@@ -70,14 +69,14 @@ def test_same_time_inputs_and_zero_delay_event_share_update_after_restore():
     assert engine.executeOneStep() == ExecutionResult.ExternalEventOccurred
     assert engine.executeOneStep() == ExecutionResult.ScheduledEventOccurred
     assert model.received == [1, 2]
-    assert calls == [0]
+    assert calls == []
 
 
 def test_coupled_null_reschedule_invalidates_previously_selected_event():
     class Model(PeriodicModel):
         def Delta_null(self, t):
             if t == 5:
-                self.set_timeNext(7)
+                self.tNext = 7
                 return True
             return False
 
@@ -86,15 +85,70 @@ def test_coupled_null_reschedule_invalidates_previously_selected_event():
     child = Model("child", 5)
     root.add_child(nested)
     nested.add_child(child)
-    engine = SimEngineBase(root)
+    engine = TESEnginBase(root)
     engine.bVerbose = False
 
     assert engine.executeOneStep() == ExecutionResult.UnscheduledEventOccurred
     assert child.state == 0
-    assert root.timeNext() == 7
+    assert root.tNext == 7
     assert engine.executeOneStep() == ExecutionResult.ScheduledEventOccurred
     assert engine.tNow == 7
     assert child.state == 1
+
+
+def test_finite_time_bound_updates_model_once_without_executing_due_transition():
+    calls = []
+
+    class Model(PeriodicModel):
+        def Delta_null(self, t):
+            calls.append(t)
+            return super().Delta_null(t)
+
+    model = Model("model", 5)
+    engine = TESEnginBase(model, TimeSimulationEnd=5)
+    assert engine.executeOneStep() == ExecutionResult.TimeBoundReached
+    assert engine.executeOneStep() == ExecutionResult.TimeBoundReached
+    assert calls == [5]
+    assert model.state == 0
+    assert sum(model.StatePercentage.values()) == 5
+
+
+def test_coupled_statistics_include_passive_child_and_same_time_events_once():
+    root = CoupledDEVS("root")
+    first = PeriodicModel("first", 5)
+    second = PeriodicModel("second", 5)
+    passive = PeriodicModel("passive", math.inf)
+    root.addComponents(first, second, passive)
+    engine = TESEnginBase(root, TimeIntervalAnimation=5, TimeSimulationEnd=7)
+    engine.bVerbose = False
+    assert engine.executeOneStep() == ExecutionResult.NoEventOccurred
+    assert all(child.StatePercentage == {} for child in root.M)
+    assert engine.executeOneStep() == ExecutionResult.ScheduledEventOccurred
+    assert engine.executeOneStep() == ExecutionResult.ScheduledEventOccurred
+    assert first.StatePercentage == second.StatePercentage == {"0": 5}
+    assert passive.StatePercentage == {}
+    assert engine.executeOneStep() == ExecutionResult.TimeBoundReached
+    assert first.StatePercentage == second.StatePercentage == {"0": 5, "1": 2}
+    assert passive.StatePercentage == {"0": 7}
+
+
+def test_external_event_without_rescheduling_closes_statistics_interval():
+    class Model(PeriodicModel):
+        def delta_x(self, event):
+            self.state = event.value
+            return False
+
+    model = Model("model", 10)
+    engine = TESEnginBase(model, TimeIntervalAnimation=3, TimeSimulationEnd=5)
+    engine.bVerbose = False
+    engine.executeOneStep()
+    assert model.StatePercentage == {}
+    engine.XBuffer.append((model, PortValue("change", 1)))
+    assert engine.executeOneStep() == ExecutionResult.ExternalEventOccurred
+    assert (model.tLast, model.tNext) == (0, 10)
+    assert model.StatePercentage == {"0": 3}
+    assert engine.executeOneStep() == ExecutionResult.TimeBoundReached
+    assert model.StatePercentage == {"0": 3, "1": 2}
 
 
 def test_nested_output_routes_by_model_even_when_port_names_match():
@@ -111,7 +165,7 @@ def test_nested_output_routes_by_model_even_when_port_names_match():
     nested.addCouple((source, "out"), (nested, "out"))
     root.addCouple((nested, "out"), (root, "out"))
     root.addCouple((nested, "out"), (sink, "in"))
-    root.Delta_0(0)
+    root.set_init_total_state(0)
 
     outputs = root.Delta_y(1) + root.Delta_y(1)
 
@@ -125,7 +179,7 @@ class PeriodicModel(DEVS):
         self.interval = interval
         self.state = 0
 
-    def delta_0(self):
+    def set_initial_state(self):
         self.state = 0
 
     def tau(self):
@@ -151,7 +205,7 @@ class SourceModel(DEVS):
         self.addOutputPorts("out")
         self.state = 0
 
-    def delta_0(self):
+    def set_initial_state(self):
         self.state = 0
 
     def tau(self):
@@ -179,7 +233,7 @@ class SinkModel(DEVS):
         self.interval = interval
         self.received = []
 
-    def delta_0(self):
+    def set_initial_state(self):
         self.received = []
 
     def tau(self):
@@ -200,7 +254,7 @@ class SinkModel(DEVS):
 
 
 def make_engine(root):
-    engine = SimEngineThread(root)
+    engine = TESEnginThread(root)
     engine.sfactor = math.inf
     engine.bVerbose = False
     return engine
@@ -215,11 +269,10 @@ def test_engine_constructor_initializes_atomic_models():
 
     engine = make_engine(root)
 
-    #assert Clock.tNow == 0.0
     assert first.state == 0
     assert second.state == 0
-    assert first.timeNext() == 2.0
-    assert second.timeNext() == 5.0
+    assert first.tNext == 2.0
+    assert second.tNext == 5.0
     engine.terminate()
 
 
@@ -230,7 +283,7 @@ def test_infinite_time_advance_is_not_a_finite_event():
 
     engine = make_engine(root)
 
-    assert math.isinf(passive.timeNext())
+    assert math.isinf(passive.tNext)
     assert root.next_event() is None
     engine.terminate()
 
@@ -248,7 +301,6 @@ def test_execute_one_step_routes_output_to_connected_model():
         executionResult = engine.executeOneStep()
  
         assert executionResult == ExecutionResult.ScheduledEventOccurred
-        #assert Clock.tNow == 1.0
         assert sink.received == [42]
     finally:
         engine.terminate()
@@ -264,11 +316,11 @@ def test_external_input_without_rescheduling_preserves_schedule():
     engine = make_engine(root)
 
     try:
-        original_time = sink.timeNext()
+        original_time = sink.tNext
         engine.executeOneStep()
 
         assert sink.received == [42]
-        assert sink.timeNext() == original_time
+        assert sink.tNext == original_time
     finally:
         engine.terminate()
 
@@ -286,8 +338,8 @@ def test_external_input_with_rescheduling_uses_current_time():
         engine.executeOneStep()
 
         assert sink.received == [42]
-        assert sink.timeNext() == 5.0
-        assert sink.timeLast() == 1.0
+        assert sink.tNext == 5.0
+        assert sink.tLast == 1.0
     finally:
         engine.terminate()
 
@@ -302,14 +354,12 @@ def test_simultaneous_internal_events_are_processed_on_successive_steps():
 
     try:
         engine.executeOneStep()
-        #assert Clock.tNow == 2.0
         assert first.state + second.state == 1
 
         engine.executeOneStep()
-        #assert Clock.tNow == 2.0
         assert first.state == 1
         assert second.state == 1
-        assert math.isinf(first.timeNext())
-        assert math.isinf(second.timeNext())
+        assert math.isinf(first.tNext)
+        assert math.isinf(second.tNext)
     finally:
         engine.terminate()

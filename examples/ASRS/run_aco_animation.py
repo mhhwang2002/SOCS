@@ -28,10 +28,10 @@ from .asrs_devs import (
     make_asrs_model,
 )
 from .crane_cycle_times import CraneCycleTimeTable
-from .run_asrs import ASRSSimEngineThread, add_rack_geometry
+from .run_asrs import ASRSTESEnginThread, add_rack_geometry
 
 
-class ACOAnimationEngineThread(ASRSSimEngineThread):
+class ACOAnimationEngineThread(ASRSTESEnginThread):
     """Report completed orders while running the controller's ACO plan."""
 
     def __init__(self, model, *args, objective, penalty_weight, **kwargs):
