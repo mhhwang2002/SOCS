@@ -10,8 +10,8 @@ from socs.devs.TESEngin import TESEnginBase
 class DEVSphPlayer(DEVSph):
     def __init__(self, name, send_time, *, starts=False):
         super().__init__(name)
-        self.addInputPorts("?r")
-        self.addOutputPorts("!s")
+        self.add_input_ports("?r")
+        self.add_output_ports("!s")
         self.add_phase("Sending", tau=send_time, initial=starts)
         self.add_phase("Waiting", tau=inf, initial=not starts)
         self.add_external_transition("Waiting", "Sending", input_port="?r", reschedule=True)
@@ -22,9 +22,9 @@ def make_model():
     model = CoupledDEVS("PingPong")
     player_a = DEVSphPlayer("A", 0.1, starts=True)
     player_b = DEVSphPlayer("B", 0.2)
-    model.addComponents(player_a, player_b)
-    model.addOutputPorts("!ping", "!pong")
-    model.addCouples(
+    model.add_components(player_a, player_b)
+    model.add_output_ports("!ping", "!pong")
+    model.add_couples(
         ((player_a, "!s"), (player_b, "?r")),
         ((player_b, "!s"), (player_a, "?r")),
         ((player_a, "!s"), (model, "!ping")),
@@ -75,13 +75,13 @@ def run_live(model, speed):
     def schedule():
         nonlocal timer
         if running:
-            next_time, _ = engine.PickNextExecutionTime_Type()
+            next_time, _ = engine.pick_next_execution_time_type()
             timer = root.after(max(1, round(1000 * (next_time - engine.tNow) / speed)), advance)
 
     def advance():
         nonlocal timer
         timer = None
-        engine.executeOneStep()
+        engine.execute_one_step()
         refresh()
         schedule()
 
@@ -106,7 +106,7 @@ def run_live(model, speed):
         pause()
         animation = not animation
         engine.TimeIntervalAnimation = interval if animation else inf
-        engine.executeAnimation(engine.tNow, engine.tNow)
+        engine.execute_animation(engine.tNow, engine.tNow)
         running = animation
         refresh()
         schedule()
@@ -168,7 +168,7 @@ def main():
         engine = TESEnginBase(model)
         engine.bVerbose = False
         for _ in range(args.steps):
-            engine.executeOneStep()
+            engine.execute_one_step()
             states = " ".join(f"{player.name}={player.phase}" for player in model.M)
             print(f"t={engine.tNow:g} {states}")
 

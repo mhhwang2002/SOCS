@@ -103,7 +103,7 @@ def test_coupled_snapshot_restores_children_and_recomputes_imm():
     assert root.IMM == {first, second}
 
     first.Delta_y(5)
-    root.update_tN()
+    root.update_tn()
     assert first.get_state() == ("C", 2, 1, 3)
 
     root.restore_state(snapshot)

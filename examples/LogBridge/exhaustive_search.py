@@ -42,7 +42,7 @@ class LogBridgePathExecutor(LogBridgeDecisionExecutor):
             ):
                 return
 
-            result = self.engine.executeOneStep()
+            result = self.engine.execute_one_step()
             if result is ExecutionResult.TimeBoundReached:
                 return
 
@@ -71,7 +71,7 @@ def advance_to_first_decision_point(
                 "The initial model deadlocked before reaching a decision point."
             )
 
-        result = engine.executeOneStep()
+        result = engine.execute_one_step()
         if result is ExecutionResult.TimeBoundReached:
             raise RuntimeError(
                 "The simulation time bound was reached before the first decision point."

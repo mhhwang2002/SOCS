@@ -177,7 +177,7 @@ def evaluate_twofork_schedule(
     )
     engine.bVerbose = False
     while model.task_index < len(model.batch_durations):
-        result = engine.executeOneStep()
+        result = engine.execute_one_step()
         if result is ExecutionResult.TimeBoundReached:
             raise RuntimeError("Two-fork schedule exceeded the evaluator time bound.")
 

@@ -8,11 +8,11 @@ class cDEVS(DEVS):
         """Evaluate continuous state elapsed seconds after timeLast()."""
         raise NotImplementedError("Implement delta_cont(elapsed) in the model.")
 
-    def Delta_null(self, t):
-        elapsed = self.timeElapsed(t)
+    def Delta_t(self, t):
+        elapsed = self.time_elapsed(t)
         if elapsed < 0:
             raise ValueError("Continuous state cannot advance backward in time.")
-        super().Delta_null(t)
+        super().Delta_t(t)
         if elapsed > 0:
             self.delta_cont(elapsed)
         return False

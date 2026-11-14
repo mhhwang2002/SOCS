@@ -60,6 +60,6 @@ class EventInput(ttk.LabelFrame):
             self.message.set('Enter JSON, such as 2 or "open", or leave the value blank.')
             return
         self.engine.XBuffer.append((model, PortValue(port, value)))
-        self.engine.executeOneStep()
+        self.engine.execute_one_step()
         self.message.set(f"Sent {port} to {model.path} at t={self.engine.tNow:g}")
         self.on_applied()

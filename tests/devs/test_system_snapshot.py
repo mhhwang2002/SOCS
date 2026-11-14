@@ -74,7 +74,7 @@ def test_engine_snapshot_restores_nested_models_and_imminent_set():
     second.set_state(20)
     second.tLast = 2.0
     second.tNext = 7.0
-    root.update_tN()
+    root.update_tn()
     engine.tNow = 2.0
 
     engine.restore_snapshot(snapshot)

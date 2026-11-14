@@ -69,7 +69,7 @@ class DEVS(TES, ABC):
         if not isinstance(x, PortValue):
             raise TypeError("Delta_x expects a PortValue.")
         self.tNow = t
-        self.updateStatistics(t)
+        self.update_statistics(t)
         reschedule = self.delta_x(x)
         if not isinstance(reschedule, bool):
             raise TypeError("delta_x() must return a bool.")
@@ -82,7 +82,7 @@ class DEVS(TES, ABC):
         """Process a scheduled internal event and update the clock."""
         self.validate_event_time(t, internal=True)
         self.tNow = t
-        self.updateStatistics(t)
+        self.update_statistics(t)
         output = self.delta_y()
         if output is not None and not isinstance(output, PortValue):
             if not isinstance(output, (list, tuple, set)) or not all(

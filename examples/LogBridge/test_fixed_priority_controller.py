@@ -4,7 +4,7 @@ import pytest
 
 from socs.devs.TESEngin import TESEnginThread
 from socs.devs.TESBase import PortValue
-from .LoadPassive_LogBridge import makeModel
+from .LoadPassive_LogBridge import make_model
 from .FixedPriorityController import FixedPriorityController
 from .LoadPassive import LoadPassive
 from .LogBridge import LogBridge
@@ -23,7 +23,7 @@ def make_engine(model):
     return engine
 
 def test_fixed_priority_selects_l11_first():
-    model = makeModel()
+    model = make_model()
     loads, bridge = get_components(model)
     engine = make_engine(model)
     controller = FixedPriorityController()
@@ -39,7 +39,7 @@ def test_fixed_priority_selects_l11_first():
 
 
 def test_selects_l21_when_l11_is_not_waiting():
-    model = makeModel()
+    model = make_model()
     loads, _ = get_components(model)
     engine = make_engine(model)
     controller = FixedPriorityController()
@@ -50,7 +50,7 @@ def test_selects_l21_when_l11_is_not_waiting():
 
 
 def test_does_not_dispatch_when_bridge_is_busy():
-    model = makeModel()
+    model = make_model()
     loads, bridge = get_components(model)
     engine = make_engine(model)
     controller = FixedPriorityController()
@@ -63,7 +63,7 @@ def test_does_not_dispatch_when_bridge_is_busy():
 
 
 def test_does_not_dispatch_when_a_load_is_already_in_service_phase():
-    model = makeModel()
+    model = make_model()
     loads, _ = get_components(model)
     engine = make_engine(model)
     controller = FixedPriorityController()
@@ -76,7 +76,7 @@ def test_does_not_dispatch_when_a_load_is_already_in_service_phase():
 
 
 def test_does_not_dispatch_when_external_input_is_pending():
-    model = makeModel()
+    model = make_model()
     loads, _ = get_components(model)
     engine = make_engine(model)
     controller = FixedPriorityController()
@@ -94,10 +94,10 @@ def test_rejects_duplicate_priority_names():
 
 
 def test_automatic_run_dispatches_in_priority_order_without_collision():
-    from .LoadPassive_LogBridge import runAutomaticSimulation
+    from .LoadPassive_LogBridge import run_automatic_simulation
 
-    model = makeModel()
-    engine, controller = runAutomaticSimulation(model, end_time=100.0)
+    model = make_model()
+    engine, controller = run_automatic_simulation(model, end_time=100.0)
     _, bridge = get_components(model)
 
     assert controller.dispatch_history == [(20.0, "L11"), (40.0, "L21")]

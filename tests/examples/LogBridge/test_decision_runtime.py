@@ -1,15 +1,15 @@
 from examples.LogBridge.LoadPassive_LogBridge import (
-    makeModel,
-    runDecisionRuntimeSimulation,
+    make_model,
+    run_decision_runtime_simulation,
 )
 from examples.LogBridge.LoadPassive import LoadPassive
 from examples.LogBridge.LogBridge import LogBridge
 
 
 def test_runtime_decision_cycle_dispatches_loads_without_collision():
-    model = makeModel()
+    model = make_model()
 
-    engine, controller, history = runDecisionRuntimeSimulation(
+    engine, controller, history = run_decision_runtime_simulation(
         model,
         end_time=100.0,
     )

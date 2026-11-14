@@ -35,8 +35,8 @@ class ControlPoint(Atomic):
 
     def __init__(self, name):
         super().__init__(name)
-        self.addInputPorts("?arrive", "?grant")
-        self.addOutputPorts("!traffic", "!start")
+        self.add_input_ports("?arrive", "?grant")
+        self.add_output_ports("!traffic", "!start")
         self.initial = next((v.name for v in VEHICLES if v.start == name), None)
 
     def set_initial_state(self):
@@ -69,8 +69,8 @@ class PathSegment(Atomic):
     def __init__(self, source):
         super().__init__(f"SEG_{source}")
         self.segment = SEGMENTS[source]
-        self.addInputPorts("?start")
-        self.addOutputPorts("!traffic", "!arrive")
+        self.add_input_ports("?start")
+        self.add_output_ports("!traffic", "!arrive")
 
     def set_initial_state(self):
         self.state = ("idle", None)
@@ -107,8 +107,8 @@ class Controller(Atomic):
     def __init__(self):
         super().__init__("Controller")
         self.network = make_network()
-        self.addInputPorts("?traffic")
-        self.addOutputPorts(*(f"!{point}" for point in POINTS))
+        self.add_input_ports("?traffic")
+        self.add_output_ports(*(f"!{point}" for point in POINTS))
 
     def set_initial_state(self):
         occupied = {
@@ -163,14 +163,14 @@ def make_model():
     controller = Controller()
     points = {name: ControlPoint(name) for name in POINTS}
     paths = {name: PathSegment(name) for name in POINTS}
-    model.addComponents(controller, *points.values(), *paths.values())
+    model.add_components(controller, *points.values(), *paths.values())
     for source, segment in SEGMENTS.items():
         point, path = points[source], paths[source]
-        model.addCouple((controller, f"!{source}"), (point, "?grant"))
-        model.addCouple((point, "!start"), (path, "?start"))
-        model.addCouple((path, "!arrive"), (points[segment.target], "?arrive"))
-        model.addCouple((point, "!traffic"), (controller, "?traffic"))
-        model.addCouple((path, "!traffic"), (controller, "?traffic"))
+        model.add_couple((controller, f"!{source}"), (point, "?grant"))
+        model.add_couple((point, "!start"), (path, "?start"))
+        model.add_couple((path, "!arrive"), (points[segment.target], "?arrive"))
+        model.add_couple((point, "!traffic"), (controller, "?traffic"))
+        model.add_couple((path, "!traffic"), (controller, "?traffic"))
     return model, controller
 
 
@@ -181,7 +181,7 @@ def simulate(seconds=90):
     engine.sfactor = inf
     trace = []
     read = 0
-    while engine.executeOneStep() != ExecutionResult.TimeBoundReached:
+    while engine.execute_one_step() != ExecutionResult.TimeBoundReached:
         events = controller.state["events"]
         trace.extend((engine.tNow, *event) for event in events[read:])
         read = len(events)

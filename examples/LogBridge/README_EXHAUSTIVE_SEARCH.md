@@ -36,9 +36,9 @@ optimization.
 From the repository root:
 
 ```python
-from examples.LogBridge.LoadPassive_LogBridge import runExhaustiveOptimization
+from examples.LogBridge.LoadPassive_LogBridge import run_exhaustive_optimization
 
-result = runExhaustiveOptimization()
+result = run_exhaustive_optimization()
 ```
 
 The optimization report includes each optimal path and its Snapshot details by
@@ -49,10 +49,10 @@ path. For other DecisionTree uses, `SnapshotFormatter` can be passed as the
 Or call the search function directly:
 
 ```python
-from examples.LogBridge.LoadPassive_LogBridge import makeModel
+from examples.LogBridge.LoadPassive_LogBridge import make_model
 from examples.LogBridge.exhaustive_search import run_logbridge_exhaustive_search
 
-result = run_logbridge_exhaustive_search(makeModel())
+result = run_logbridge_exhaustive_search(make_model())
 
 print(result.node_count)
 print(result.leaf_count)

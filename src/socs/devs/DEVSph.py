@@ -185,7 +185,7 @@ class DEVSph(DEVS):
             self._observe(src, "external", x, reschedule=reschedule)
         return reschedule
 
-    def Delta_y(self, t):
+    def Delta_y(self, t) -> PortValue | list[PortValue] | tuple[PortValue, ...] | set[PortValue] | None:
         src = self.phase
         output = super().Delta_y(t)
         if not self.graph.V:

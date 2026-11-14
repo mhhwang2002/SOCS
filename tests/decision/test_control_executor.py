@@ -8,11 +8,11 @@ from socs.decision import (
 from socs.devs.TESBase import PortValue
 from socs.devs.TESEngin import TESEnginThread
 
-from examples.LogBridge.LoadPassive_LogBridge import makeModel
+from examples.LogBridge.LoadPassive_LogBridge import make_model
 
 
 def make_engine():
-    engine = TESEnginThread(makeModel())
+    engine = TESEnginThread(make_model())
     engine.bVerbose = False
     return engine
 

@@ -50,8 +50,8 @@ class ASRSCell(DEVS):
         self.status_pending = False
         self.box_id = box_id or f"Box-{self.name}"
         self.box_color = box_color
-        self.addInputPorts("?crane")
-        self.addOutputPorts("!box", "!status")
+        self.add_input_ports("?crane")
+        self.add_output_ports("!box", "!status")
 
     def set_initial_state(self):
         self.occupied = self.initially_occupied
@@ -105,7 +105,7 @@ class OrderArrivalSource(DEVS):
     def __init__(self, orders):
         super().__init__("OrderArrivalSource")
         self.orders = tuple(dict(order) for order in orders)
-        self.addOutputPorts("!order_arrival")
+        self.add_output_ports("!order_arrival")
 
     def set_initial_state(self):
         self.index = 0
@@ -161,8 +161,8 @@ class ASRSController(DEVS):
         self._random_seed = random_seed
         if online_dispatch_policy is not None and cycle_time_table is None:
             raise ValueError("Online dispatch requires a DEVS-measured cycle-time table.")
-        self.addInputPorts("?cell_status", "?crane_idle", "?box_out", "?order_arrival")
-        self.addOutputPorts("!command")
+        self.add_input_ports("?cell_status", "?crane_idle", "?box_out", "?order_arrival")
+        self.add_output_ports("!command")
         self.set_initial_state()
 
     def set_initial_state(self):
@@ -565,8 +565,8 @@ class Crane(cDEVS):
         self.target_station = 0
         self.target_order_id = None
         self.box_color = None
-        self.addInputPorts("?box", "?command")
-        self.addOutputPorts("!retrieve_request", "!idle", "!box_out")
+        self.add_input_ports("?box", "?command")
+        self.add_output_ports("!retrieve_request", "!idle", "!box_out")
         self.x = HOME_X
         self.y = FORK_RETRACT_Y
         self.z = HOME_Z
@@ -967,12 +967,12 @@ def make_asrs_model(
     model.add_child(crane)
     model.add_child(controller)
     for cell in cells:
-        model.addCouple((crane, "!retrieve_request"), (cell, "?crane"))
-        model.addCouple((cell, "!box"), (crane, "?box"))
-        model.addCouple((cell, "!status"), (controller, "?cell_status"))
-    model.addCouple((controller, "!command"), (crane, "?command"))
-    model.addCouple((crane, "!idle"), (controller, "?crane_idle"))
-    model.addCouple((crane, "!box_out"), (controller, "?box_out"))
+        model.add_couple((crane, "!retrieve_request"), (cell, "?crane"))
+        model.add_couple((cell, "!box"), (crane, "?box"))
+        model.add_couple((cell, "!status"), (controller, "?cell_status"))
+    model.add_couple((controller, "!command"), (crane, "?command"))
+    model.add_couple((crane, "!idle"), (controller, "?crane_idle"))
+    model.add_couple((crane, "!box_out"), (controller, "?box_out"))
     return model
 
 
@@ -1019,13 +1019,13 @@ def make_online_asrs_model(
     model.add_child(controller)
     model.add_child(source)
     for cell in cells:
-        model.addCouple((crane, "!retrieve_request"), (cell, "?crane"))
-        model.addCouple((cell, "!box"), (crane, "?box"))
-        model.addCouple((cell, "!status"), (controller, "?cell_status"))
-    model.addCouple((controller, "!command"), (crane, "?command"))
-    model.addCouple((crane, "!idle"), (controller, "?crane_idle"))
-    model.addCouple((crane, "!box_out"), (controller, "?box_out"))
-    model.addCouple((source, "!order_arrival"), (controller, "?order_arrival"))
+        model.add_couple((crane, "!retrieve_request"), (cell, "?crane"))
+        model.add_couple((cell, "!box"), (crane, "?box"))
+        model.add_couple((cell, "!status"), (controller, "?cell_status"))
+    model.add_couple((controller, "!command"), (crane, "?command"))
+    model.add_couple((crane, "!idle"), (controller, "?crane_idle"))
+    model.add_couple((crane, "!box_out"), (controller, "?box_out"))
+    model.add_couple((source, "!order_arrival"), (controller, "?order_arrival"))
     return model
 
 

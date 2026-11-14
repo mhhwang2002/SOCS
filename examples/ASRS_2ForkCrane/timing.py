@@ -143,7 +143,7 @@ def _simulate_samples(samples):
     )
     engine.bVerbose = False
     while probe.index < len(probe.samples):
-        result = engine.executeOneStep()
+        result = engine.execute_one_step()
         if result is ExecutionResult.TimeBoundReached:
             raise RuntimeError("Timing calibration exceeded its simulation time bound.")
     return probe.measurements

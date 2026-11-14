@@ -393,7 +393,7 @@ def evaluate_schedule(
     )
     engine.bVerbose = False
     while model.task_index < len(model.delta_times):
-        result = engine.executeOneStep()
+        result = engine.execute_one_step()
         if result is ExecutionResult.TimeBoundReached:
             break
     times = tuple(

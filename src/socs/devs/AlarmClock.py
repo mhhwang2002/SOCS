@@ -14,12 +14,12 @@ class AlarmClock:
       self.tNext = tN
       self.tNow = tl
 
-   def timeRemaining(self, tNow=None):
+   def time_remaining(self, tNow=None):
       """Return time until the next event from now or a supplied time."""
       time = self.tNow if tNow is None else tNow
       return self.tNext - time
 
-   def timeElapsed(self, tNow=None):
+   def time_elapsed(self, tNow=None):
       """Return time since the scheduling reference at now or a supplied time."""
       time = self.tNow if tNow is None else tNow
       return time - self.tLast
@@ -37,14 +37,14 @@ class AlarmClock:
    def format_clock(self):
       """Format the clock for model and engine displays."""
       if AlarmClock.DisplayMode == "tR":
-         return f"tR={self.timeRemaining():.3f}"
+         return f"tR={self.time_remaining():.3f}"
       return f"tL={self.tLast:.3f},tN={self.tNext:.3f}"
 
    def __str__(self):
       return self.format_clock()
 
    @staticmethod
-   def toggleDisplayMode():
+   def toggle_display_mode():
       if AlarmClock.DisplayMode == "tL and tN":
          AlarmClock.DisplayMode = "tR"
       else:
@@ -56,5 +56,5 @@ if __name__ == "__main__":
    print(manager)
    print(
       "tNow=15, "
-      f"remaining={manager.timeRemaining(15)}, elapsed={manager.timeElapsed(15)}"
+      f"remaining={manager.time_remaining(15)}, elapsed={manager.time_elapsed(15)}"
    )

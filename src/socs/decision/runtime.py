@@ -65,7 +65,7 @@ class DecisionRuntimeController(Generic[DecisionT]):
 
     def execute_one_step(self) -> DecisionRuntimeStep[DecisionT]:
         """Execute one engine step and process decisions after DEVS events."""
-        result = self.engine.executeOneStep()
+        result = self.engine.execute_one_step()
 
         if result not in (
             ExecutionResult.ScheduledEventOccurred,

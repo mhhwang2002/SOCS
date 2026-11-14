@@ -208,12 +208,12 @@ def _probe_cycle(
     model.add_child(cell)
     model.add_child(crane)
     model.add_child(controller)
-    model.addCouple((crane, "!retrieve_request"), (cell, "?crane"))
-    model.addCouple((cell, "!box"), (crane, "?box"))
-    model.addCouple((cell, "!status"), (controller, "?cell_status"))
-    model.addCouple((controller, "!command"), (crane, "?command"))
-    model.addCouple((crane, "!idle"), (controller, "?crane_idle"))
-    model.addCouple((crane, "!box_out"), (controller, "?box_out"))
+    model.add_couple((crane, "!retrieve_request"), (cell, "?crane"))
+    model.add_couple((cell, "!box"), (crane, "?box"))
+    model.add_couple((cell, "!status"), (controller, "?cell_status"))
+    model.add_couple((controller, "!command"), (crane, "?command"))
+    model.add_couple((crane, "!idle"), (controller, "?crane_idle"))
+    model.add_couple((crane, "!box_out"), (controller, "?box_out"))
 
     engine = TESEnginBase(
         model,
@@ -233,7 +233,7 @@ def _probe_cycle(
     box_out_at = None
     steps = 0
     while controller.phase != "completed":
-        result = engine.executeOneStep()
+        result = engine.execute_one_step()
         steps += 1
         if result is ExecutionResult.TimeBoundReached:
             raise RuntimeError(f"Cycle probe did not complete for {cell_name}.")

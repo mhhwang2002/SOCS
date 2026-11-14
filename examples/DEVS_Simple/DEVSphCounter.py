@@ -16,7 +16,7 @@ class DEVSphCounter(DEVSph):
         if count_no < 1:
             raise ValueError("count_no must be positive.")
         self.count_no = count_no
-        self.addOutputPorts("!c")
+        self.add_output_ports("!c")
         self.add_phase("Count", tau=5, initial=True)
         self.add_phase("Done", tau=float("inf"))
         self.add_internal_transition(
@@ -124,7 +124,7 @@ def run_live(counter, speed):
 
     def schedule():
         nonlocal timer
-        next_time, _ = engine.PickNextExecutionTime_Type()
+        next_time, _ = engine.pick_next_execution_time_type()
         delay = round(1000 * (next_time - engine.tNow) / speed)
         timer = root.after(max(1, delay), advance)
 
@@ -132,7 +132,7 @@ def run_live(counter, speed):
         nonlocal timer, running, edge
         timer = None
         source = active_node()
-        result = engine.executeOneStep()
+        result = engine.execute_one_step()
         if result == ExecutionResult.ScheduledEventOccurred:
             edge = source, active_node()
         else:
@@ -164,7 +164,7 @@ def run_live(counter, speed):
         pause()
         animation = not animation
         engine.TimeIntervalAnimation = animation_interval if animation else float("inf")
-        engine.executeAnimation(engine.tNow, engine.tNow)
+        engine.execute_animation(engine.tNow, engine.tNow)
         if animation and isfinite(counter.tNext):
             running = True
             schedule()
@@ -213,7 +213,7 @@ def main(model_type=DEVSphCounter, description=__doc__):
         counter.set_init_total_state(0)
         while isfinite(counter.tNext):
             time = counter.tNext
-            counter.Delta_null(time)
+            counter.Delta_t(time)
             output = counter.Delta_y(time)
             phase, count, total = counter.display_state()
             print(f"t={time:g} phase={phase} count={count} sum={total} {output.port}={output.value}")

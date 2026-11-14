@@ -69,7 +69,7 @@ def test_add_components_adds_each_component():
     first = TimedModel("first")
     second = TimedModel("second")
 
-    root.addComponents(first, second)
+    root.add_components(first, second)
 
     assert root.children == [first, second]
 
@@ -78,19 +78,19 @@ def test_add_couple_requires_endpoints():
     root = CoupledDEVS("root")
 
     with pytest.raises(TypeError):
-        root.addCouple("source", "destination")
+        root.add_couple("source", "destination")
 
 
 def test_add_couple_and_add_couples_store_destinations_without_duplicates():
     root = CoupledDEVS("root")
     source = TimedModel("source")
     target = TimedModel("target")
-    source.addOutputPorts("out")
-    target.addInputPorts("in")
+    source.add_output_ports("out")
+    target.add_input_ports("in")
 
-    root.addComponents(source, target)
-    root.addCouple((source, "out"), (target, "in"))
-    root.addCouples(((source, "out"), (target, "in")))
+    root.add_components(source, target)
+    root.add_couple((source, "out"), (target, "in"))
+    root.add_couples(((source, "out"), (target, "in")))
 
     assert root.Z[(source, "out")] == {(target, "in")}
 
@@ -99,7 +99,7 @@ def test_delta_zero_initializes_children_and_updates_next_event():
     root = CoupledDEVS("root")
     first = TimedModel("first", interval=2.0)
     second = TimedModel("second", interval=5.0)
-    root.addComponents(first, second)
+    root.add_components(first, second)
 
     root.set_init_total_state(0.0)
 
@@ -117,10 +117,10 @@ def test_update_tn_tracks_all_children_with_the_earliest_time():
     first = TimedModel("first", interval=3.0)
     second = TimedModel("second", interval=3.0)
     later = TimedModel("later", interval=8.0)
-    root.addComponents(first, second, later)
+    root.add_components(first, second, later)
 
     root.set_init_total_state(0.0)
-    root.update_tN()
+    root.update_tn()
 
     assert root.tNext == 3.0
     assert root.IMM == {first, second}
@@ -133,7 +133,7 @@ def test_next_event_returns_earliest_atomic_model_and_ties():
     second = TimedModel("second", interval=4.0)
     later = TimedModel("later", interval=9.0)
     root.add_child(nested)
-    nested.addComponents(first, second)
+    nested.add_components(first, second)
     root.add_child(later)
 
     root.set_init_total_state(0.0)
@@ -164,9 +164,9 @@ def test_delta_x_routes_input_to_child_input_port():
     root = CoupledDEVS("root")
     child = TimedModel("child", interval=10.0)
     root.add_child(child)
-    root.addInputPorts("external")
-    child.addInputPorts("in")
-    root.addCouple((root, "external"), (child, "in"))
+    root.add_input_ports("external")
+    child.add_input_ports("in")
+    root.add_couple((root, "external"), (child, "in"))
     root.set_init_total_state(0.0)
 
     root.Delta_x(PortValue(root.IP["external"], {"value": 42}), 0.0)
@@ -180,14 +180,14 @@ def test_translate_output_event_routes_to_child_input_port():
     root = CoupledDEVS("root")
     source = TimedModel("source", interval=2.0)
     target = TimedModel("target", interval=10.0)
-    root.addComponents(source, target)
-    source.addOutputPorts("out")
-    target.addInputPorts("in")
-    root.addCouple((source, "out"), (target, "in"))
+    root.add_components(source, target)
+    source.add_output_ports("out")
+    target.add_input_ports("in")
+    root.add_couple((source, "out"), (target, "in"))
     root.set_init_total_state(0.0)
 
     event = PortValue(source.OP["out"], "payload")
-    translated = root.translateOutputEvent(source, event, 0.0)
+    translated = root.translate_output_event(source, event, 0.0)
 
     assert translated == []
     assert len(target.received) == 1
@@ -199,19 +199,19 @@ def test_translate_output_event_ignores_unconnected_port():
     root = CoupledDEVS("root")
     source = TimedModel("source")
     root.add_child(source)
-    source.addOutputPorts("out")
+    source.add_output_ports("out")
     root.set_init_total_state(0.0)
 
     event = PortValue(source.OP["out"], 123)
 
-    assert root.translateOutputEvent(source, event, 0.0) == []
+    assert root.translate_output_event(source, event, 0.0) == []
 
 
 def test_translate_output_event_ignores_invalid_events():
     root = CoupledDEVS("root")
 
-    assert root.translateOutputEvent(None, None, 0.0) == []
-    assert root.translateOutputEvent(None, "not an event", 0.0) == []
+    assert root.translate_output_event(None, None, 0.0) == []
+    assert root.translate_output_event(None, "not an event", 0.0) == []
 
 
 def test_get_all_influencee_finds_terminal_input_ports():
@@ -219,16 +219,16 @@ def test_get_all_influencee_finds_terminal_input_ports():
     nested = CoupledDEVS("nested")
     source = TimedModel("source")
     target = TimedModel("target")
-    root.addComponents(nested, source)
+    root.add_components(nested, source)
     nested.add_child(target)
-    source.addOutputPorts("out")
-    target.addInputPorts("in")
-    nested.addInputPorts("external")
-    root.addCouple((source, "out"), (nested, "external"))
-    nested.addCouple((nested, "external"), (target, "in"))
+    source.add_output_ports("out")
+    target.add_input_ports("in")
+    nested.add_input_ports("external")
+    root.add_couple((source, "out"), (nested, "external"))
+    nested.add_couple((nested, "external"), (target, "in"))
 
     influencees = set()
-    root.getAllInfluencee((source, "out"), influencees)
+    root.get_all_influencee((source, "out"), influencees)
 
     assert influencees == {(target, "in")}
 
@@ -237,7 +237,7 @@ def test_format_tree_shows_nested_model_hierarchy():
     root = CoupledDEVS("root")
     nested = CoupledDEVS("nested")
     child = TimedModel("child")
-    root.addComponents(nested)
+    root.add_components(nested)
     nested.add_child(child)
 
     tree = root.format_tree()

@@ -17,12 +17,12 @@ Run the example from the repository root:
 
 ```python
 from examples.LogBridge.LoadPassive_LogBridge import (
-    makeModel,
-    runDecisionRuntimeSimulation,
+    make_model,
+    run_decision_runtime_simulation,
 )
 
-engine, controller, history = runDecisionRuntimeSimulation(
-    makeModel(),
+engine, controller, history = run_decision_runtime_simulation(
+    make_model(),
     end_time=100.0,
 )
 

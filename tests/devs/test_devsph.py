@@ -9,8 +9,8 @@ from socs.devs.TESBase import PortValue
 @pytest.fixture
 def model():
     model = DEVSph("Timer", variables={"count": 0})
-    model.addInputPorts("start", "update")
-    model.addOutputPorts("done")
+    model.add_input_ports("start", "update")
+    model.add_output_ports("done")
     model.add_phase("Idle", tau=inf, initial=True)
     model.add_phase("Active", tau=lambda model: 4 + model._variable.count)
     model.add_external_transition(
@@ -43,7 +43,7 @@ def test_external_match_and_reschedule(model):
 @pytest.mark.parametrize("restart", [True, False])
 def test_reschedule_callback_sees_updated_variables_and_destination_phase(restart):
     model = DEVSph("Timer", variables={"count": 0})
-    model.addInputPorts("go")
+    model.add_input_ports("go")
     model.add_phase("Before", tau=10, initial=True)
     model.add_phase("After", tau=3)
     event = PortValue("go", 7)
@@ -135,7 +135,7 @@ def test_code_defined_model_records_observed_transitions():
             return False
 
     model = Observed("Observed")
-    model.addInputPorts("start")
+    model.add_input_ports("start")
     model.set_init_total_state(0)
     model.Delta_x(PortValue("start"), 1)
     model.Delta_x(PortValue("start"), 2)
@@ -164,7 +164,7 @@ def test_diagram_omits_only_declared_no_op_loop(model):
 
 def test_same_phase_monitor_update_retains_dashed_edge_and_callback_names():
     model = DEVSph("Controller", variables={"occupied": False})
-    model.addInputPorts("?traffic")
+    model.add_input_ports("?traffic")
     model.add_phase("Idle", tau=inf, initial=True)
 
     def resource_available(current, event):

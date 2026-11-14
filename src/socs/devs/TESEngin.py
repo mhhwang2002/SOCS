@@ -76,7 +76,7 @@ class TESEnginBase:
             self.model.set_init_total_state(self.tNow)
             self._tNextContinuous = self.tNow + self.TimeIntervalContinuous
 
-        self.executeAnimation(self.tNow, self.tNow)
+        self.execute_animation(self.tNow, self.tNow)
         self.XBuffer.clear()
 
         if len(command) > 1 and command[1] == "-a":
@@ -204,19 +204,19 @@ class TESEnginBase:
             zstr = "".join(f"({event})" for event in z)
         print(f"\t -- ({zstr},{tnow:.3f}) -->")
 
-    def doAnimation(self):  # Override this method to implement animation logic
+    def do_animation(self):  # Override this method to implement animation logic
         pass
 
-    def executeAnimation(self, tNow, prevStepExeTime):
-        self.doAnimation()
+    def execute_animation(self, tNow, prevStepExeTime):
+        self.do_animation()
         self._tNextAnimation = tNow + self.TimeIntervalAnimation
         return ExecutionResult.NoEventOccurred
 
-    def executeContinuous(self, tNow):
+    def execute_continuous(self, tNow):
         self._tNextContinuous = tNow + self.TimeIntervalContinuous
         return ExecutionResult.NoEventOccurred
 
-    def executeDEVS_star(self,tNow):
+    def execute_devs_star(self,tNow):
         if(self.model is not None):
             src_str = self.model.qstate_to_s() if self.bVerbose else ""
             z = self.model.Delta_y(tNow)  # execute DEVS* transition  
@@ -224,18 +224,18 @@ class TESEnginBase:
             #self._NbDEVSSExecutions += 1
         return ExecutionResult.ScheduledEventOccurred        
 
-    def executeDEVS_x(self, tNow, target_md, ipv):  
+    def execute_devs_x(self, tNow, target_md, ipv):
         self.print_src_and_event_segment(
                     self.model.qstate_to_s(), ipv, tNow) if self.bVerbose else None
         target_md.Delta_x(ipv, self.tNow) if target_md is not None else None
         if target_md is not self.model and target_md.parent is not None:
-            target_md.parent.update_tN(update_parent=True) 
+            target_md.parent.update_tn(update_parent=True)
             self._tLastDEVS = self.tNow  # update last one
             self._tNextDEVS = self.model.tNext  # update next one
             #self._NbDEVSSExecutions += 1
         return ExecutionResult.ExternalEventOccurred
     
-    def PickNextExecutionTime_Type(self):
+    def pick_next_execution_time_type(self):
         if(len(self.XBuffer) > 0):
             return self.tNow, ExecutionType.X_BUFFER
         tNextDEVS = self.model.tNext    
@@ -249,18 +249,18 @@ class TESEnginBase:
         if(next_time == tNextDEVS):
             return next_time, ExecutionType.DEVS 
 
-    def executeOneStep(self):
+    def execute_one_step(self):
         """Execute one simulation step."""
         prevStepExeTime = self.tNow
         executionResult = ExecutionResult.NoEventOccurred
-        next_time, next_type = self.PickNextExecutionTime_Type()
+        next_time, next_type = self.pick_next_execution_time_type()
 
         unscheduled = False
         if math.isfinite(next_time) and next_time > self.tNow:
-            unscheduled = self.model.Delta_null(next_time)
+            unscheduled = self.model.Delta_t(next_time)
             self.tNow = next_time
         if next_type != ExecutionType.END:
-            next_time, next_type = self.PickNextExecutionTime_Type()
+            next_time, next_type = self.pick_next_execution_time_type()
             if next_time != self.tNow:
                 return (
                     ExecutionResult.UnscheduledEventOccurred
@@ -269,15 +269,15 @@ class TESEnginBase:
 
         if next_type == ExecutionType.X_BUFFER:
             target_md, ipv = self.XBuffer.popleft()  
-            executionResult = self.executeDEVS_x(self.tNow, target_md, ipv) 
+            executionResult = self.execute_devs_x(self.tNow, target_md, ipv)
         elif next_type == ExecutionType.DEVS:
-            executionResult =self.executeDEVS_star(self.tNow)         
+            executionResult =self.execute_devs_star(self.tNow)
         elif next_type == ExecutionType.CONTINUOUS:
-            executionResult = self.executeContinuous(self.tNow)
+            executionResult = self.execute_continuous(self.tNow)
         elif next_type == ExecutionType.ANIMATION:
-            executionResult = self.executeAnimation(self.tNow, prevStepExeTime)
+            executionResult = self.execute_animation(self.tNow, prevStepExeTime)
         elif next_type == ExecutionType.END:
-            self.model.updateStatistics(self.tNow)
+            self.model.update_statistics(self.tNow)
             print(
                 "\nNext schedule reaches the simulation time bound " 
                 f"{next_time:.3f}."
@@ -288,14 +288,14 @@ class TESEnginBase:
             return ExecutionResult.UnscheduledEventOccurred
         return executionResult
 
-    def executeSteps(self):
+    def execute_steps(self):
         """Execute simulation steps until a pause is needed."""
         executionResult = ExecutionResult.NoEventOccurred
         while executionResult is not ExecutionResult.TimeBoundReached:
-            executionResult = self.executeOneStep() 
+            executionResult = self.execute_one_step()
             self.display_q()
 
-def findCmdIndex(command, text):
+def find_cmd_index(command, text):
     """Return the index of text in command, or -1 if it is absent."""
     for index, item in enumerate(command):
         if item == text:
@@ -324,7 +324,7 @@ class TESEnginThread(threading.Thread, TESEnginBase):
         while not self.ToBeKilled:
             if not self.SkipLoop:
                 try:
-                    executionResult = self.executeOneStep()
+                    executionResult = self.execute_one_step()
                     if executionResult is not ExecutionResult.NoEventOccurred and self.StepByStep:
                         self.pause()
                     self.display_q()
@@ -367,7 +367,7 @@ class TESEnginThread(threading.Thread, TESEnginBase):
         print(f"Total#ofSimRuns = {self.TotalSimRuns}, -tsr n")
         print()
 
-    def changeMode(self, command):
+    def change_mode(self, command):
         """Change simulation modes using command-line options."""
         if len(command) == 1:
             self.display_modes()
@@ -379,13 +379,13 @@ class TESEnginThread(threading.Thread, TESEnginBase):
                 "use -step, -speed sf, -dtm, -vb, -ar, -tsr no\n>"
             ).split()
 
-        i = findCmdIndex(command, "-stb")
+        i = find_cmd_index(command, "-stb")
         if i > -1 and len(command) > i + 1:
             stb = command[i + 1]
             self._tSimBound = float("inf") if stb == "inf" else float(stb)
             print(f"new stb={self._tSimBound:.3f}")
 
-        i = findCmdIndex(command, "-ar")
+        i = find_cmd_index(command, "-ar")
         if i > -1:
             self.bAutoresetByTimebound = not self.bAutoresetByTimebound
             print(
@@ -393,25 +393,25 @@ class TESEnginThread(threading.Thread, TESEnginBase):
                 f"{self.bAutoresetByTimebound}."
             )
 
-        i = findCmdIndex(command, "-tsr")
+        i = find_cmd_index(command, "-tsr")
         if i > -1 and len(command) > i + 1:
             number = int(command[i + 1])
             if number > 0:
                 self.TotalSimRuns = number
                 print(f"Total#ofSimRuns = {self.TotalSimRuns}.")
 
-        i = findCmdIndex(command, "-speed")
+        i = find_cmd_index(command, "-speed")
         if i > -1 and len(command) > i + 1:
             scale_factor = float(command[i + 1])
             if scale_factor > 0:
                 self.sfactor = scale_factor
                 print(f"The new scale factor = {self.sfactor:.3f}.")
 
-        if findCmdIndex(command, "-step") > -1:
-            self.toggleStepByStep()
-        if findCmdIndex(command, "-dtm") > -1:
-            self.setTimeDisplayMode()
-        if findCmdIndex(command, "-vb") > -1:
+        if find_cmd_index(command, "-step") > -1:
+            self.toggle_step_by_step()
+        if find_cmd_index(command, "-dtm") > -1:
+            self.set_time_display_mode()
+        if find_cmd_index(command, "-vb") > -1:
             self.bVerbose = not self.bVerbose
             print(f"New Verbose = {self.bVerbose}")
 
@@ -458,7 +458,7 @@ class TESEnginThread(threading.Thread, TESEnginBase):
         except Exception:
             self.exp_handling()
 
-    def toggleStepByStep(self):
+    def toggle_step_by_step(self):
         """Toggle step-by-step mode."""
         self.StepByStep = not self.StepByStep
         print(f"New StepByStep mode = {self.StepByStep}")
@@ -469,7 +469,7 @@ class TESEnginThread(threading.Thread, TESEnginBase):
         if self.is_alive() and threading.current_thread() is not self:
             self.join()
 
-    def setSpeedFactor(self):
+    def set_speed_factor(self):
         """Set the speed factor to a positive number or infinity."""
         try:
             print(
@@ -489,10 +489,10 @@ class TESEnginThread(threading.Thread, TESEnginBase):
         except Exception:
             self.exp_handling()
 
-    def setTimeDisplayMode(self):
+    def set_time_display_mode(self):
         """Toggle the simulation time display mode."""
         try:
-            AlarmClock.toggleDisplayMode()
+            AlarmClock.toggle_display_mode()
         except Exception:
             self.exp_handling()
 
@@ -516,7 +516,7 @@ class TESEnginThread(threading.Thread, TESEnginBase):
             print(self.model.get_statistics_str())
             print("=" * 86 + "\n")
 
-    def displayProgress(self):
+    def display_progress(self):
         """Display a simple progress indicator."""
         if self._tSimBound in (0, float("inf")):
             return
@@ -533,13 +533,13 @@ class TESEnginThread(threading.Thread, TESEnginBase):
             print("-- the current state-- ")
             print(f"{self.model.qstate_to_s()}\t at time {self.tNow:.3f}.")
         else:
-            self.displayProgress()
+            self.display_progress()
 
     def display_help(self):
         """Display the simulation engine version/help."""
         return None
 
-    def runInteractiveMenu(self):
+    def run_interactive_menu(self):
         """Run the interactive console menu."""
         self.display_help()
         self.display_modes()
@@ -565,7 +565,7 @@ class TESEnginThread(threading.Thread, TESEnginBase):
                 elif action in ("in", "inject"):
                     self.inject()
                 elif action in ("m", "mode"):
-                    self.changeMode(command)
+                    self.change_mode(command)
                 elif action in ("exit", "x"):
                     self.terminate()
                     break

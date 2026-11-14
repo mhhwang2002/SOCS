@@ -45,8 +45,8 @@ class ACOAnimationEngineThread(ASRSTESEnginThread):
         self._show_statistics = False
         self._hud_snapshot = self._capture_hud_snapshot()
 
-    def executeOneStep(self):
-        result = super().executeOneStep()
+    def execute_one_step(self):
+        result = super().execute_one_step()
         snapshot = self._capture_hud_snapshot()
         with self._hud_lock:
             self._hud_snapshot = snapshot

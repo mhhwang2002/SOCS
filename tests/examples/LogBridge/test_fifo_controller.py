@@ -3,7 +3,7 @@
 from socs.devs.TESEngin import TESEnginThread
 from socs.devs.TESBase import PortValue
 
-from examples.LogBridge.LoadPassive_LogBridge import makeModel
+from examples.LogBridge.LoadPassive_LogBridge import make_model
 from examples.LogBridge.FIFOController import FIFOController
 from examples.LogBridge.LoadPassive import LoadPassive
 from examples.LogBridge.LogBridge import LogBridge
@@ -29,7 +29,7 @@ def make_engine(model):
 
 
 def test_fifo_selects_load_that_entered_waiting_first():
-    model = makeModel()
+    model = make_model()
     loads, _ = get_components(model)
     engine = make_engine(model)
     controller = FIFOController()
@@ -48,7 +48,7 @@ def test_fifo_selects_load_that_entered_waiting_first():
 
 
 def test_fifo_selects_only_waiting_load():
-    model = makeModel()
+    model = make_model()
     loads, _ = get_components(model)
     engine = make_engine(model)
     controller = FIFOController()
@@ -60,7 +60,7 @@ def test_fifo_selects_only_waiting_load():
 
 
 def test_fifo_does_not_dispatch_when_bridge_is_busy():
-    model = makeModel()
+    model = make_model()
     loads, bridge = get_components(model)
     engine = make_engine(model)
     controller = FIFOController()
@@ -73,7 +73,7 @@ def test_fifo_does_not_dispatch_when_bridge_is_busy():
 
 
 def test_fifo_does_not_dispatch_when_load_is_in_service_phase():
-    model = makeModel()
+    model = make_model()
     loads, _ = get_components(model)
     engine = make_engine(model)
     controller = FIFOController()
@@ -86,7 +86,7 @@ def test_fifo_does_not_dispatch_when_load_is_in_service_phase():
 
 
 def test_fifo_does_not_dispatch_when_external_input_is_pending():
-    model = makeModel()
+    model = make_model()
     loads, _ = get_components(model)
     engine = make_engine(model)
     controller = FIFOController()
@@ -99,7 +99,7 @@ def test_fifo_does_not_dispatch_when_external_input_is_pending():
 
 
 def test_fifo_ties_preserve_model_child_order():
-    model = makeModel()
+    model = make_model()
     loads, _ = get_components(model)
     engine = make_engine(model)
     controller = FIFOController()
@@ -113,10 +113,10 @@ def test_fifo_ties_preserve_model_child_order():
 
 
 def test_automatic_fifo_run_completes_without_collision():
-    from examples.LogBridge.LoadPassive_LogBridge import runAutomaticFIFOSimulation
+    from examples.LogBridge.LoadPassive_LogBridge import run_automatic_fifo_simulation
 
-    model = makeModel()
-    engine, controller = runAutomaticFIFOSimulation(model, end_time=100.0)
+    model = make_model()
+    engine, controller = run_automatic_fifo_simulation(model, end_time=100.0)
     _, bridge = get_components(model)
 
     assert controller.dispatch_history == [

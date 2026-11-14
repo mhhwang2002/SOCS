@@ -33,33 +33,33 @@ def make_input_event(model):
         print(f"Invalid input port: {port_name}")
 
 
-def makeModel(name="system", tt1=20, tt2=40):
+def make_model(name="system", tt1=20, tt2=40):
     """Create the coupled two-slot toaster model."""
     toaster1 = Toaster("t1", tt1)
     toaster2 = Toaster("t2", tt2)
 
     model = CoupledDEVS(name, None)
-    model.addComponents(toaster1, toaster2)
+    model.add_components(toaster1, toaster2)
 
-    model.addInputPorts("?push1", "?push2")
-    model.addOutputPorts("!pop1", "!pop2")
+    model.add_input_ports("?push1", "?push2")
+    model.add_output_ports("!pop1", "!pop2")
 
     # External Input Coupling (EIC).
-    model.addCouple(
+    model.add_couple(
         (model, "?push1"),
         (toaster1, "?push"),
     )
-    model.addCouple(
+    model.add_couple(
         (model, "?push2"),
         (toaster2, "?push"),
     )
 
     # External Output Coupling (EOC).
-    model.addCouple(
+    model.add_couple(
         (toaster1, "!pop"),
         (model, "!pop1"),
     )
-    model.addCouple(
+    model.add_couple(
         (toaster2, "!pop"),
         (model, "!pop2"),
     )
@@ -67,7 +67,7 @@ def makeModel(name="system", tt1=20, tt2=40):
     return model
 
 
-def runSimulation(model):
+def run_simulation(model):
     """Run the coupled model interactively."""
     engine = TESEngin(model, make_input_event)
 
@@ -75,10 +75,10 @@ def runSimulation(model):
     engine.StepByStep = True
     engine.sfactor = float("inf")
 
-    engine.runInteractiveMenu()
+    engine.run_interactive_menu()
 
 
-def runVerification(model):
+def run_verification(model):
     """Report that verification is not implemented in this example."""
     print(
         "Verification is not available: "
@@ -94,15 +94,15 @@ def main():
     print("Use '?push1' or '?push2' to start the corresponding toaster.")
     print("Heating times: t1 = 20, t2 = 40.")
 
-    model = makeModel("system", 20, 40)
+    model = make_model("system", 20, 40)
 
     while True:
         command = input("[s]imulate, [v]erify, e[x]it: ").strip().lower()
 
         if command in ("s", "sim", "simulate"):
-            runSimulation(model)
+            run_simulation(model)
         elif command in ("v", "veri", "verify"):
-            runVerification(model)
+            run_verification(model)
         elif command in ("x", "exit"):
             break
         else:

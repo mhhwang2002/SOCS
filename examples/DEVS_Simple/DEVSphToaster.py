@@ -13,8 +13,8 @@ class DEVSphToaster(DEVSph):
         if not isfinite(toasting_time) or toasting_time <= 0:
             raise ValueError("Toasting time must be finite and positive.")
         super().__init__(name, parent)
-        self.addInputPorts("?push")
-        self.addOutputPorts("!pop")
+        self.add_input_ports("?push")
+        self.add_output_ports("!pop")
         self.add_phase("Idle", tau=inf, initial=True)
         self.add_phase("Toasting", tau=toasting_time)
         self.add_external_transition("Idle", "Toasting", input_port="?push", reschedule=True)
@@ -29,14 +29,14 @@ class ToasterEngine(TESEnginBase):
         super().__init__(toaster, TimeIntervalAnimation=animation_interval)
         self.bVerbose = False
 
-    def executeDEVS_star(self, tNow):
+    def execute_devs_star(self, tNow):
         self.last_output = self.model.Delta_y(tNow)
         return ExecutionResult.ScheduledEventOccurred
 
     def push(self):
         self.last_output = None
         self.XBuffer.append((self.model, PortValue("?push")))
-        self.executeOneStep()
+        self.execute_one_step()
 
 
 def run_console(toaster):
@@ -53,7 +53,7 @@ def run_console(toaster):
             continue
         engine.push()
         print(f"t={engine.tNow:g} {toaster.phase}")
-        engine.executeOneStep()
+        engine.execute_one_step()
         print(f"t={engine.tNow:g} {toaster.phase} {engine.last_output}")
 
 
@@ -111,13 +111,13 @@ def run_live(toaster):
     def schedule():
         nonlocal timer
         if timer is None and animation and isfinite(toaster.tNext):
-            next_time, _ = engine.PickNextExecutionTime_Type()
+            next_time, _ = engine.pick_next_execution_time_type()
             timer = root.after(max(1, round(1000 * (next_time - engine.tNow))), advance)
 
     def advance():
         nonlocal timer
         timer = None
-        engine.executeOneStep()
+        engine.execute_one_step()
         refresh()
         schedule()
 
@@ -137,7 +137,7 @@ def run_live(toaster):
         cancel_timer()
         animation = not animation
         engine.TimeIntervalAnimation = animation_interval if animation else inf
-        engine.executeAnimation(engine.tNow, engine.tNow)
+        engine.execute_animation(engine.tNow, engine.tNow)
         refresh()
         schedule()
 

@@ -42,8 +42,8 @@ def test_callback_time_is_independent_of_schedule_and_restored():
     class Model(Counter):
         def delta_x(self, event):
             assert self.tNow == 1
-            assert self.timeElapsed() == 1
-            assert self.timeRemaining() == 1
+            assert self.time_elapsed() == 1
+            assert self.time_remaining() == 1
             return super().delta_x(event)
 
     model = Model("counter", delay=2)
@@ -55,8 +55,8 @@ def test_callback_time_is_independent_of_schedule_and_restored():
     assert model.tNow == 2
     model.restore_state(snapshot)
     assert model.tNow == 1
-    assert model.timeElapsed() == 1
-    assert model.timeElapsed(0.5) == 0.5
+    assert model.time_elapsed() == 1
+    assert model.time_elapsed(0.5) == 0.5
 
 
 # DEVS behavior

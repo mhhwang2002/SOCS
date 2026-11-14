@@ -34,8 +34,8 @@ class AtomicModelStub(DEVS):
 
 def test_add_named_input_and_output_ports():
     model = AtomicModelStub("Generator")
-    model.addInputPorts("control")
-    model.addOutputPorts("vehicles")
+    model.add_input_ports("control")
+    model.add_output_ports("vehicles")
 
     assert "control" in model.IP
     assert "vehicles" in model.OP
@@ -45,10 +45,10 @@ def test_add_named_input_and_output_ports():
 
 def test_duplicate_port_name_does_not_replace_existing_port():
     model = AtomicModelStub("Generator")
-    model.addOutputPorts("vehicles")
+    model.add_output_ports("vehicles")
     original_port = model.OP["vehicles"]
 
-    model.addOutputPorts("vehicles")
+    model.add_output_ports("vehicles")
 
     assert model.OP["vehicles"] is original_port
 
@@ -57,14 +57,14 @@ def test_add_coupling_between_child_models():
     system = CoupledDEVS("TrafficSystem")
     generator = AtomicModelStub("Generator")
     intersection = AtomicModelStub("Intersection")
-    generator.addOutputPorts("vehicles")
-    intersection.addInputPorts("vehicles")
+    generator.add_output_ports("vehicles")
+    intersection.add_input_ports("vehicles")
     system.add_child(generator)
     system.add_child(intersection)
 
     source_port = (generator, "vehicles")
     target_port = (intersection, "vehicles")
-    system.addCouple(source_port, target_port)
+    system.add_couple(source_port, target_port)
 
     assert target_port in system.Z[source_port]
 
@@ -73,7 +73,7 @@ def test_add_couple_requires_endpoints():
     system = CoupledDEVS("TrafficSystem")
 
     with pytest.raises(TypeError):
-        system.addCouple("vehicles", "vehicles")
+        system.add_couple("vehicles", "vehicles")
 
 
 @pytest.mark.parametrize("invalid", ["source_direction", "destination_direction", "unknown", "outside"])
@@ -82,12 +82,12 @@ def test_add_couple_rejects_invalid_endpoint_without_storing_connection(invalid)
     source = AtomicModelStub("source")
     target = AtomicModelStub("target")
     outside = AtomicModelStub("outside")
-    source.addInputPorts("in")
-    source.addOutputPorts("out")
-    target.addInputPorts("in")
-    target.addOutputPorts("out")
-    outside.addInputPorts("in")
-    system.addComponents(source, target)
+    source.add_input_ports("in")
+    source.add_output_ports("out")
+    target.add_input_ports("in")
+    target.add_output_ports("out")
+    outside.add_input_ports("in")
+    system.add_components(source, target)
     endpoints = {
         "source_direction": ((source, "in"), (target, "in")),
         "destination_direction": ((source, "out"), (target, "out")),
@@ -95,7 +95,7 @@ def test_add_couple_rejects_invalid_endpoint_without_storing_connection(invalid)
         "outside": ((source, "out"), (outside, "in")),
     }
     with pytest.raises(ValueError):
-        system.addCouple(*endpoints[invalid])
+        system.add_couple(*endpoints[invalid])
     assert system.Z == {}
 
 
@@ -104,16 +104,16 @@ def test_removing_or_moving_child_removes_only_its_couplings(move):
     root = CoupledDEVS("root")
     system = CoupledDEVS("old")
     destination = CoupledDEVS("new")
-    root.addComponents(system, destination)
+    root.add_components(system, destination)
     source = AtomicModelStub("source")
     child = AtomicModelStub("child")
     sink = AtomicModelStub("sink")
-    source.addOutputPorts("out")
-    child.addInputPorts("in")
-    child.addOutputPorts("out")
-    sink.addInputPorts("in")
-    system.addComponents(source, child, sink)
-    system.addCouples(
+    source.add_output_ports("out")
+    child.add_input_ports("in")
+    child.add_output_ports("out")
+    sink.add_input_ports("in")
+    system.add_components(source, child, sink)
+    system.add_couples(
         ((source, "out"), (child, "in")),
         ((source, "out"), (sink, "in")),
         ((child, "out"), (sink, "in")),
@@ -129,12 +129,12 @@ def test_removing_or_moving_child_removes_only_its_couplings(move):
 
 def test_external_input_coupling_routes_to_child():
     system = CoupledDEVS("TrafficSystem")
-    system.addInputPorts("vehicle_request")
+    system.add_input_ports("vehicle_request")
     generator = AtomicModelStub("VehicleGenerator")
-    generator.addInputPorts("request")
+    generator.add_input_ports("request")
     system.add_child(generator)
 
-    system.addCouple(
+    system.add_couple(
         (system, "vehicle_request"),
         (generator, "request"),
     )
@@ -154,15 +154,15 @@ def test_internal_output_coupling_routes_to_child_input():
     system = CoupledDEVS("TrafficSystem")
     generator = AtomicModelStub("Generator")
     intersection = AtomicModelStub("Intersection")
-    generator.addOutputPorts("vehicles")
-    intersection.addInputPorts("vehicles")
+    generator.add_output_ports("vehicles")
+    intersection.add_input_ports("vehicles")
     system.add_child(generator)
     system.add_child(intersection)
-    system.addCouple((generator, "vehicles"), (intersection, "vehicles"))
+    system.add_couple((generator, "vehicles"), (intersection, "vehicles"))
     system.set_init_total_state(0.0)
 
     payload = {"vehicle_id": 101}
-    translated = system.translateOutputEvent(
+    translated = system.translate_output_event(
         generator, PortValue(generator.OP["vehicles"], payload), 0.0
     )
 
@@ -176,16 +176,16 @@ def test_internal_output_coupling_routes_to_child_input():
 def test_external_output_coupling_reaches_coupled_output_port():
     system = CoupledDEVS("TrafficSystem")
     intersection = AtomicModelStub("Intersection")
-    intersection.addOutputPorts("departures")
-    system.addOutputPorts("departures")
+    intersection.add_output_ports("departures")
+    system.add_output_ports("departures")
     system.add_child(intersection)
-    system.addCouple(
+    system.add_couple(
         (intersection, "departures"),
         (system, "departures"),
     )
 
     payload = {"vehicle_id": 101}
-    translated = system.translateOutputEvent(
+    translated = system.translate_output_event(
         intersection, PortValue(intersection.OP["departures"], payload), 0.0
     )
 
@@ -199,17 +199,17 @@ def test_route_output_supports_multiple_destinations():
     generator = AtomicModelStub("Generator")
     first = AtomicModelStub("Intersection_01")
     second = AtomicModelStub("Intersection_02")
-    generator.addOutputPorts("vehicles")
-    first.addInputPorts("vehicles")
-    second.addInputPorts("vehicles")
+    generator.add_output_ports("vehicles")
+    first.add_input_ports("vehicles")
+    second.add_input_ports("vehicles")
     for model in (generator, first, second):
         system.add_child(model)
-    system.addCouple((generator, "vehicles"), (first, "vehicles"))
-    system.addCouple((generator, "vehicles"), (second, "vehicles"))
+    system.add_couple((generator, "vehicles"), (first, "vehicles"))
+    system.add_couple((generator, "vehicles"), (second, "vehicles"))
     system.set_init_total_state(0.0)
 
     payload = {"vehicle_id": 101}
-    system.translateOutputEvent(
+    system.translate_output_event(
         generator, PortValue(generator.OP["vehicles"], payload), 0.0
     )
 
@@ -222,10 +222,10 @@ def test_route_output_supports_multiple_destinations():
 def test_unconnected_output_does_not_reach_coupled_boundary():
     system = CoupledDEVS("TrafficSystem")
     generator = AtomicModelStub("Generator")
-    generator.addOutputPorts("vehicles")
+    generator.add_output_ports("vehicles")
     system.add_child(generator)
     event = PortValue("vehicles", {"vehicle_id": 101})
 
-    translated = system.translateOutputEvent(generator, event, 0.0)
+    translated = system.translate_output_event(generator, event, 0.0)
 
     assert translated == []

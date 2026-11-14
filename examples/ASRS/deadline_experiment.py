@@ -227,7 +227,7 @@ def _evaluate_at_deadlines(instance: ASRSInstance, schedule: Schedule, due_times
     observed_counts = {order_id: 0 for order_id in controller.delivered_products_by_order}
     steps = 0
     while controller.phase != "completed":
-        result = engine.executeOneStep()
+        result = engine.execute_one_step()
         steps += 1
         if result is ExecutionResult.TimeBoundReached:
             raise RuntimeError("AS/RS DEVS schedule did not complete before the simulation time bound.")

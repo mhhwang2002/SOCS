@@ -17,8 +17,8 @@ class Elevator(cDEVSph):
 
     def __init__(self, name="Elevator"):
         super().__init__(name, variables=dict(position=0.0, velocity=0.0, floor=1, target=1))
-        self.addInputPorts("?floor")
-        self.addOutputPorts("!arrived")
+        self.add_input_ports("?floor")
+        self.add_output_ports("!arrived")
         self.add_phase("Idle", tau=inf, initial=True)
         self.add_phase("Accelerating", tau=self.RAMP_TIME)
         self.add_phase("Cruising", tau=self.FLOOR_HEIGHT / self.TOP_SPEED - self.RAMP_TIME)
@@ -74,14 +74,14 @@ class Elevator(cDEVSph):
 
 def request_floor(engine, floor):
     engine.XBuffer.append((engine.model, PortValue("?floor", floor)))
-    engine.executeOneStep()
+    engine.execute_one_step()
 
 
 def run_console(engine):
     for floor in (2, 1):
         request_floor(engine, floor)
         while isfinite(engine.model.tNext):
-            engine.executeOneStep()
+            engine.execute_one_step()
             state = engine.model._variable
             print(
                 f"t={engine.tNow:g} {engine.model.phase:12} "

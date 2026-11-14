@@ -1,10 +1,10 @@
-from examples.LogBridge.LoadPassive_LogBridge import makeModel
+from examples.LogBridge.LoadPassive_LogBridge import make_model
 from socs.decision.decision import ControlDecision, NoControl
 from examples.LogBridge.exhaustive_search import run_logbridge_exhaustive_search
 
 
 def test_logbridge_exhaustive_search_finds_minimum_makespan():
-    result = run_logbridge_exhaustive_search(makeModel())
+    result = run_logbridge_exhaustive_search(make_model())
 
     assert result.best_node_id is not None
     assert result.best_cost is not None
@@ -37,7 +37,7 @@ def test_logbridge_exhaustive_search_finds_minimum_makespan():
 
 
 def test_logbridge_exhaustive_search_enumerates_wait_alternatives():
-    result = run_logbridge_exhaustive_search(makeModel())
+    result = run_logbridge_exhaustive_search(make_model())
 
     paths = [
         result.tree.get_path(node_id)
@@ -49,7 +49,7 @@ def test_logbridge_exhaustive_search_enumerates_wait_alternatives():
 
 
 def test_incomplete_paths_are_not_considered_feasible():
-    result = run_logbridge_exhaustive_search(makeModel())
+    result = run_logbridge_exhaustive_search(make_model())
 
     assert sum(cost is None for cost in result.costs.values()) == 4
     assert sum(cost is not None for cost in result.costs.values()) == 6
@@ -57,9 +57,9 @@ def test_incomplete_paths_are_not_considered_feasible():
 
 
 def test_optimization_report_can_include_snapshot_details(capsys):
-    from examples.LogBridge.LoadPassive_LogBridge import runExhaustiveOptimization
+    from examples.LogBridge.LoadPassive_LogBridge import run_exhaustive_optimization
 
-    runExhaustiveOptimization(end_time=200.0, include_snapshot_details=True)
+    run_exhaustive_optimization(end_time=200.0, include_snapshot_details=True)
 
     output = capsys.readouterr().out
     assert "Optimal path 1:" in output
@@ -71,9 +71,9 @@ def test_optimization_report_can_include_snapshot_details(capsys):
 
 
 def test_optimization_report_can_hide_snapshot_details(capsys):
-    from examples.LogBridge.LoadPassive_LogBridge import runExhaustiveOptimization
+    from examples.LogBridge.LoadPassive_LogBridge import run_exhaustive_optimization
 
-    runExhaustiveOptimization(end_time=200.0, include_snapshot_details=False)
+    run_exhaustive_optimization(end_time=200.0, include_snapshot_details=False)
 
     output = capsys.readouterr().out
     assert "Optimal path 1:" in output

@@ -63,12 +63,12 @@ def nested_system():
     root.add_child(nested)
     nested.add_child(atomic)
 
-    root.addInputPorts("decision")
-    nested.addInputPorts("external")
-    atomic.addInputPorts("in")
+    root.add_input_ports("decision")
+    nested.add_input_ports("external")
+    atomic.add_input_ports("in")
 
-    root.addCouple((root, "decision"), (nested, "external"))
-    nested.addCouple((nested, "external"), (atomic, "in"))
+    root.add_couple((root, "decision"), (nested, "external"))
+    nested.add_couple((nested, "external"), (atomic, "in"))
 
     engine = TESEnginThread(
         root,
@@ -87,7 +87,7 @@ def test_nested_snapshot_restores_atomic_state_and_schedules(nested_system):
     atomic.value = 99
     atomic.events = 8
     atomic.tNext = 42.0
-    nested.update_tN(update_parent=True)
+    nested.update_tn(update_parent=True)
 
     engine.restore_snapshot(snapshot)
 

@@ -27,7 +27,7 @@ class Interval(RandomVariable):
     def __hash__(self):
         return hash((self.l, self.u))
 
-    def makeInvalid(self):
+    def make_invalid(self):
         """Make this interval invalid by setting l > u."""
         self.l, self.u = float("inf"), 0
         return self
@@ -40,7 +40,7 @@ class Interval(RandomVariable):
         """Return whether the interval is invalid."""
         return not self.valid()
 
-    def makeUniversal(self):
+    def make_universal(self):
         """Set this interval to (-infinity, infinity)."""
         self.l, self.u = float("-inf"), float("inf")
         return self
@@ -49,7 +49,7 @@ class Interval(RandomVariable):
         """Return whether this interval is (-infinity, infinity)."""
         return self.l == float("-inf") and self.u == float("inf")
 
-    def makeSingleton(self, v):
+    def make_singleton(self, v):
         """Set this interval to the singleton [v, v]."""
         if not isnumeric(v):
             raise TypeError("The singleton value must be an integer or float.")
@@ -73,11 +73,11 @@ class Interval(RandomVariable):
     def intersect(self, inv):
         """Return the intersection, or an invalid interval if disjoint."""
         if not isinstance(inv, Interval) or self.invalid() or inv.invalid():
-            return Interval().makeInvalid()
+            return Interval().make_invalid()
         lower = max(self.l, inv.l)
         upper = min(self.u, inv.u)
         if lower > upper:
-            return Interval().makeInvalid()
+            return Interval().make_invalid()
         return Interval(lower, upper)
 
     def compare(self, other):
@@ -136,7 +136,7 @@ class Interval(RandomVariable):
             return NotImplemented
         return Interval(self.l + other.l, self.u + other.u)
 
-    def mergeOver(self, other):
+    def merge_over(self, other):
         """Expand this interval to cover another interval of the same type."""
         if type(other) is not type(self):
             raise TypeError(f"{type(other).__name__} is not {type(self).__name__}.")
@@ -149,7 +149,7 @@ class Interval(RandomVariable):
             self.u = max(self.u, other.u)
         return self
 
-    def extendBy(self, t):
+    def extend_by(self, t):
         """Expand this interval to include the numeric value t."""
         if not isnumeric(t):
             raise TypeError("The value to include must be an integer or float.")
@@ -195,7 +195,7 @@ class TInterval(Interval):
     def valid(self):
         return super().valid() and 0 <= self.l
 
-    def makeUniversal(self):
+    def make_universal(self):
         """Set this time interval to [0, infinity)."""
         self.l, self.u = 0, float("inf")
         return self
@@ -206,7 +206,7 @@ class TInterval(Interval):
     def intersect(self, inv):
         result = super().intersect(inv)
         if not result.valid():
-            return TInterval().makeInvalid()
+            return TInterval().make_invalid()
         return TInterval(result.l, result.u)
 
     def __neg__(self):

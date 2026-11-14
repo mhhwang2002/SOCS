@@ -2,13 +2,13 @@
 
 from dataclasses import replace
 
-from examples.LogBridge.LoadPassive_LogBridge import makeModel
+from examples.LogBridge.LoadPassive_LogBridge import make_model
 from examples.LogBridge.exhaustive_search import run_logbridge_exhaustive_search
 from socs.decision.search_validator import SearchResultValidator
 
 
 def make_result():
-    return run_logbridge_exhaustive_search(makeModel())
+    return run_logbridge_exhaustive_search(make_model())
 
 
 def test_search_result_validator_accepts_valid_logbridge_result():

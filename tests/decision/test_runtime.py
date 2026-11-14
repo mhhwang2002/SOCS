@@ -10,7 +10,7 @@ from socs.devs.TESBase import PortValue
 from socs.devs.TESEngin import ExecutionResult, TESEnginThread
 
 from examples.LogBridge.LoadPassive import LoadPassive
-from examples.LogBridge.LoadPassive_LogBridge import makeModel
+from examples.LogBridge.LoadPassive_LogBridge import make_model
 from examples.LogBridge.LogBridge import LogBridge
 from examples.LogBridge.decision_generator import LogBridgeDecisionGenerator
 from socs.decision.decision import ControlDecision, NoControl
@@ -50,7 +50,7 @@ def get_loads_and_bridge(model):
 
 
 def test_generator_is_invoked_after_each_internal_devs_execution():
-    model = makeModel()
+    model = make_model()
     engine = make_engine(model)
     generator = LogBridgeDecisionGenerator()
     controller = DecisionRuntimeController(engine, generator)
@@ -73,7 +73,7 @@ def test_generator_is_invoked_after_each_internal_devs_execution():
 
 
 def test_generator_is_invoked_after_external_devs_execution():
-    model = makeModel()
+    model = make_model()
     loads, _ = get_loads_and_bridge(model)
     engine = make_engine(model)
     generator = RecordingGenerator()
@@ -91,7 +91,7 @@ def test_generator_is_invoked_after_external_devs_execution():
 
 
 def test_generator_is_not_invoked_after_continuous_execution():
-    model = makeModel()
+    model = make_model()
     engine = make_engine(model, continuous_interval=1.0)
     generator = RecordingGenerator()
     controller = DecisionRuntimeController(engine, generator)
@@ -106,7 +106,7 @@ def test_generator_is_not_invoked_after_continuous_execution():
 
 
 def test_generator_is_not_invoked_at_time_bound():
-    model = makeModel()
+    model = make_model()
     engine = make_engine(model, end_time=1.0)
     generator = RecordingGenerator()
     controller = DecisionRuntimeController(engine, generator)
@@ -120,7 +120,7 @@ def test_generator_is_not_invoked_at_time_bound():
 
 
 def test_runtime_selects_and_executes_enter_bridge_decision():
-    model = makeModel()
+    model = make_model()
     loads, _ = get_loads_and_bridge(model)
     engine = make_engine(model)
     selector = FixedPrioritySelector(
@@ -157,7 +157,7 @@ def test_runtime_selects_and_executes_enter_bridge_decision():
 
 
 def test_wait_decision_leaves_engine_unchanged_until_next_step():
-    model = makeModel()
+    model = make_model()
     loads, _ = get_loads_and_bridge(model)
     engine = make_engine(model)
     selector = FixedPrioritySelector(

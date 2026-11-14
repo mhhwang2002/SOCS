@@ -113,7 +113,7 @@ class SimEngineBase():
 
     def executeAnimation(self, tNow, prevStepExeTime):
         if(tNow>prevStepExeTime):
-            unscheduleEventHappend = self.model.Delta_null(tNow) if self.model is not None else False
+            unscheduleEventHappend = self.model.Delta_t(tNow) if self.model is not None else False
         else:
             unscheduleEventHappend = False
         self.doAnimation() 
@@ -122,7 +122,7 @@ class SimEngineBase():
         #self._NbAnimationExecutions += 1
 
     def executeContinuous(self, tNow): 
-        unscheduleEventHappend = self.model.Delta_null(tNow) if self.model is not None else False   
+        unscheduleEventHappend = self.model.Delta_t(tNow) if self.model is not None else False   
         self._tNextContinuous = tNow + self.TimeIntervalContinuous  # update next one
         return ExecutionResult.UnscheduledEventOccurred if(unscheduleEventHappend) else ExecutionResult.NoEventOccurred
         #self._NbContinuousExecutions += 1
@@ -331,7 +331,7 @@ class SimEngine(threading.Thread, SimEngineBase):
         """Pause the simulation loop and update statistics."""
         if not self.SkipLoop:
             self.t_segment_end = self.tNow
-            self.model.Delta_null(self.tNow)
+            self.model.Delta_t(self.tNow)
             self.SkipLoop = True
 
     def inject(self):

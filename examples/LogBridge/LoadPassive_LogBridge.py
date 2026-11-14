@@ -14,7 +14,7 @@ from .runtime_executor import LogBridgeRuntimeExecutor
 from socs.decision.decision import ControlDecision, NoControl
  
 
-def makeModel():
+def make_model():
     """Build the coupled load log_bridge model."""
     load11 = LoadPassive("L11", 100, 5)
     load12 = LoadPassive("L12", 100)
@@ -22,11 +22,11 @@ def makeModel():
     load21 = LoadPassive("L21", 100, 4.5)
     load22 = LoadPassive("L22", 100)
     model = CoupledDEVS("Load_LogBridge")
-    model.addComponents(load11, load12, log_bridge, load21, load22)
-    model.addCouples(((load11, "!out"), (log_bridge, "?in1")))
-    model.addCouples(((log_bridge, "!out1"), (load12, "?in")))
-    model.addCouples(((load21, "!out"), (log_bridge, "?in2")))
-    model.addCouples(((log_bridge, "!out2"), (load22, "?in")))
+    model.add_components(load11, load12, log_bridge, load21, load22)
+    model.add_couples(((load11, "!out"), (log_bridge, "?in1")))
+    model.add_couples(((log_bridge, "!out1"), (load12, "?in")))
+    model.add_couples(((load21, "!out"), (log_bridge, "?in2")))
+    model.add_couples(((log_bridge, "!out2"), (load22, "?in")))
     return model
 
 
@@ -53,15 +53,15 @@ def select_go_event(model):
     return target_model, PortValue(target_model.IP["?go"])
 
 
-def runSimulation(model):
+def run_simulation(model):
     """Run the model with interactive external GO commands."""
     engine = TESEnginThread(model, inject_CBF=select_go_event)
     engine.StepByStep = True
     engine.sfactor = float("inf")
-    engine.runInteractiveMenu()
+    engine.run_interactive_menu()
  
  
-def runAutomaticSimulation(model, end_time=300.0):
+def run_automatic_simulation(model, end_time=300.0):
     """Run the model with automatic fixed-priority GO decisions."""
     engine = TESEnginThread(model)
     engine.bVerbose = False
@@ -69,7 +69,7 @@ def runAutomaticSimulation(model, end_time=300.0):
     controller = FixedPriorityController()
 
     while True:
-        result = engine.executeOneStep()
+        result = engine.execute_one_step()
         if result.name == "TimeBoundReached":
             break
         controller.dispatch(engine, model)
@@ -80,7 +80,7 @@ def runAutomaticSimulation(model, end_time=300.0):
 
 
 
-def runAutomaticFIFOSimulation(model, end_time=300.0):
+def run_automatic_fifo_simulation(model, end_time=300.0):
     """Run the model with automatic FIFO GO decisions."""
     engine = TESEnginThread(model)
     engine.bVerbose = False
@@ -88,7 +88,7 @@ def runAutomaticFIFOSimulation(model, end_time=300.0):
     controller = FIFOController()
 
     while True:
-        result = engine.executeOneStep()
+        result = engine.execute_one_step()
         if result.name == "TimeBoundReached":
             break
         controller.dispatch(engine, model)
@@ -99,7 +99,7 @@ def runAutomaticFIFOSimulation(model, end_time=300.0):
 
 
 
-def runDecisionRuntimeSimulation(model, end_time=100.0):
+def run_decision_runtime_simulation(model, end_time=100.0):
     """Run LogBridge through the SOCS runtime decision cycle."""
     engine = TESEnginThread(model)
     engine.bVerbose = False
@@ -141,7 +141,7 @@ def runDecisionRuntimeSimulation(model, end_time=100.0):
     return engine, controller, dispatch_history
 
 
-def runExhaustiveOptimization(
+def run_exhaustive_optimization(
     model=None,
     end_time=200.0,
     include_snapshot_details=True,
@@ -151,7 +151,7 @@ def runExhaustiveOptimization(
     from .exhaustive_search import run_logbridge_exhaustive_search
 
     if model is None:
-        model = makeModel()
+        model = make_model()
 
     result = run_logbridge_exhaustive_search(model, end_time=end_time)
     print("Decision-tree nodes:", result.node_count)
@@ -173,33 +173,33 @@ def runExhaustiveOptimization(
     return result
 
 
-def runVerification(model):
+def run_verification(model):
     """Placeholder for the legacy verification workflow."""
     inputs = []
     # The legacy VeriEngine integration is intentionally left disabled.
 
 
 if __name__ == "__main__":
-    model = makeModel()
-    print("isNetworkOf(LoadPassive) =", model.isNetworkOf(LoadPassive))
+    model = make_model()
+    print("is_network_of(LoadPassive) =", model.is_network_of(LoadPassive))
 
     running = True
     while running:
         command = input("(s)im, (a)uto, (f)ifo, (d)ecision, (o)ptimize, (v)eri, e(x)it> ").strip().lower()
         if command in ("s", "sim"):
-            runSimulation(model)
+            run_simulation(model)
         elif command in ("a", "auto"):
-            runAutomaticSimulation(model)
+            run_automatic_simulation(model)
         elif command in ("f", "fifo"):
-            runAutomaticFIFOSimulation(model)
+            run_automatic_fifo_simulation(model)
         elif command in ("d", "decision"):
-            engine, controller, history = runDecisionRuntimeSimulation(model)
+            engine, controller, history = run_decision_runtime_simulation(model)
             print("Decision dispatches:", history)
             print("DEVS executions:", controller.devs_execution_count)
         elif command in ("o", "optimize"):
-            runExhaustiveOptimization(makeModel())
+            run_exhaustive_optimization(make_model())
         elif command in ("v", "veri"):
-            runVerification(model)
+            run_verification(model)
         elif command in ("x", "exit"):
             running = False
         else:

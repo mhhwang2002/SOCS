@@ -142,17 +142,17 @@ class TES(HierNamedObj, AlarmClock):
             f"{classname(self)}::{function_name()} must be overridden."
         )
 
-    def Delta_y(self, t):
+    def Delta_y(self, t) -> "PortValue | list[PortValue] | tuple[PortValue, ...] | set[PortValue] | None":
         raise NotImplementedError(
             f"{classname(self)}::{function_name()} must be overridden."
         )
 
-    def Delta_null(self, t):
+    def Delta_t(self, t):
         """Advance time-dependent state, if the model defines any."""
         self.tNow = t
         return False
 
-    def addInputPorts(self, *args):
+    def add_input_ports(self, *args):
         """Add input ports by name."""
         for ipname in args:
             if not isinstance(ipname, str):
@@ -162,11 +162,11 @@ class TES(HierNamedObj, AlarmClock):
             else:
                 self.IP[ipname] = ipname
 
-    def to_IP_s(self):
+    def to_ip_s(self):
         """Return a string representation of input port names."""
         return "IP=" + str(list(self.IP.keys()))
 
-    def addOutputPorts(self, *args):
+    def add_output_ports(self, *args):
         """Add output ports by name."""
         for opname in args:
             if not isinstance(opname, str):
@@ -176,7 +176,7 @@ class TES(HierNamedObj, AlarmClock):
             else:
                 self.OP[opname] = opname
 
-    def to_OP_s(self):
+    def to_op_s(self):
         """Return a string representation of output port names."""
         return "OP=" + str(list(self.OP.keys()))
 
@@ -185,7 +185,7 @@ class TES(HierNamedObj, AlarmClock):
     def model_id(self) -> UUID | None:
         return self._model_id
 
-    def updateStatistics(self, t):
+    def update_statistics(self, t):
         """Accumulate time spent in each statistics state."""
         duration = t - self._statistics_since
         if duration <= 0:
@@ -212,8 +212,8 @@ class TES(HierNamedObj, AlarmClock):
     def __str__(self):
         """Return a string representation of the model and its interfaces."""
         result = super().__str__() + "\n"
-        result += self.to_IP_s() + "\n"
-        result += self.to_OP_s() + "\n"
+        result += self.to_ip_s() + "\n"
+        result += self.to_op_s() + "\n"
         result += "clock=" + self.format_clock() + "\n"
         return result
 

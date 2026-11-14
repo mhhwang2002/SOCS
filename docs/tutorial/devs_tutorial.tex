@@ -31,7 +31,10 @@ Make it available on \api{PATH} or install it in the standard Windows
 Graphviz location recognized by SOCS.
 
 \partmark{Part 1 \enspace Discrete Event System}
+
 \chaptermark{Chapter 1 \enspace Timed Event System}
+The class \emph{Timed Event System} is the basic class abstracting all timed event systems which is 7-tuple as equation \eqref{eq:tes}.
+
 \begin{center}
 \includegraphics[width=.94\linewidth,height=10cm,keepaspectratio]{images/TimedEventSystem.jpg}\par
 \figurelabel{Timed Event System}
@@ -51,7 +54,7 @@ where
   \item $\Delta_y: S \times T \rightarrow S\times Y$ is the internal transition function defining how the system changes its state and generates an output event at a certain time. 
 \end{itemize}
 \newpage
-\chaptermark{Chapter 2 \enspace DEVS}
+\chaptermark{Chapter 2 \enspace DEVS(Discrete Event System Specification)}
 \begin{center}
 \includegraphics[width=.94\linewidth,height=10cm,keepaspectratio]{images/DEVS.jpg}\par
 \figurelabel{DEVS}
@@ -66,8 +69,8 @@ DEVS=(X, Y, S, s_0, \delta_x, \delta_y, \tau)
 	\item $Y$ is the set of output events.
 	\item $S$ is the set of states.
 	\item $s_0 \in S$ is the initial state. 
-	\item $\delta_x: S \times X \rightarrow S$ is the external transition function defining how the system changes its state when it receives an input event at a certain time.
-	\item $\delta_y: S \rightarrow S\times Y$ is the internal transition function defining how the system changes its state and generates an output event at a certain time. 
+	\item $\delta_x: Q \times X \rightarrow S$ is the external transition function $\delta_x(s,e,x)=s'$ defining how the system changes its state $s \in S$ when it receives an input event $x \in X$ at elapsed time $e \in [0, \tau(s)]$.
+	\item $\delta_y: S \rightarrow S\times Y^\phi$ is the internal transition function $\delta_y(s)=(s',y)$ defining how the system changes its state $s \in S$ and generates an output event $y \in Y^\phi = Y \cup \{\phi\}$ at a time $e = \tau(s)$ where $\phi \notin Y$ is the \textit{silent-event}.
 \end{itemize}
 \newpage
 \chaptermark{2.1 \enspace DEVS}
@@ -81,6 +84,10 @@ the port name is a string and the value may be omitted.
 \begin{Code}
 python -m examples.DEVS_Simple.DEVSCounter --count 3
 \end{Code}
+In the constructor, \api{self.add\_output\_ports("!c")} registers the
+port for output events in \(Y\). Each event on \api{!c} carries a sum.
+The counter has no input ports, so \(X=\varnothing\).
+
 Read the \api{Counter} class in \api{DEVSCounter.py}. \api{set\_initial\_state()}
 initializes the model. \api{tau()} gives the time until its next internal
 event. At each scheduled event, \api{delta\_y()} returns the current sum
@@ -211,8 +218,8 @@ def delta_y(self):
         return None
 \end{Code}
 \begin{Code}
-model.addOutputPorts("!ping", "!pong")
-model.addCouples(
+model.add_output_ports("!ping", "!pong")
+model.add_couples(
     ((player_a, "!s"), (player_b, "?r")),
     ((player_b, "!s"), (player_a, "?r")),
     ((player_a, "!s"), (model, "!ping")),
@@ -238,10 +245,43 @@ $\to$ updated model $\to$ view.
 
 \newpage
 \chaptermark{2.2 \enspace DEVSph}
-\begin{equation}
-DEVS_{ph}=(X, Y, S_{p}, \delta_{0,p}, \delta_{0,p}, \delta_{0,p})
-\label{eq:devsph}
+\begin{equation}\label{eq:devsph}
+D_{\mathrm{ph}}=(X,Y,Q,V,q_0,v_0,\tau,E_x,E_y),
+\qquad S=Q\times V,\qquad s_0=(q_0,v_0).
 \end{equation}
+\begin{equation}\label{eq:devsph-edges}
+e_x=(q,q',i,m,g,a,r)\in E_x,\qquad
+e_y=(q,q',g,a,o)\in E_y.
+\end{equation}
+Here $X$ and $Y$ are input and output events, $Q$ is the phase set,
+and $V$ is the space of model variables. The initial phase and variables
+are $q_0$ and $v_0$. The time advance $\tau(q,v)$ is supplied by the
+current phase as a constant or a function of the model state.
+
+An external edge $e_x$ accepts an input $x=(i,u)$ on port $i$ when the
+value match $m(u)$ and guard $g(s,x)$ are true. The action updates
+the variables to $a(s,x)$ and the edge sets the phase to $q'$.
+The Boolean $r$, given directly or computed from the updated state and
+input, determines whether to reschedule. If no edge is enabled, the
+state and schedule stay as they were.
+
+At a scheduled internal event, an internal edge $e_y$ is enabled when
+$g(s)$ is true. It emits $o(s)$, evaluated on the source state, then
+updates the state to $(q',a(s))$. Guards and matches default to true,
+actions default to preserving the variables, and outputs default to
+no event. SOCS requires one enabled edge for an internal event and
+allows at most one for an external event.
+
+\begin{align}
+s' &= (q',a(s,x)), &
+\delta_x(s,x) &= (s',r(s',x))
+  \label{eq:devsph-delta-x}\\
+\delta_y(s) &= \bigl((q',a(s)),o(s)\bigr)
+  \label{eq:devsph-delta-y}\\
+\tau(s) &= \tau_q(v), \qquad s=(q,v).
+  \label{eq:devsph-tau}
+\end{align}
+In \eqref{eq:devsph-delta-x}, if no edge is enabled, $\delta_x(s,x)=(s,\mathrm{false})$. The output $o(s)$ in \eqref{eq:devsph-delta-y} is evaluated before the action. In \eqref{eq:devsph-tau}, the toaster has $\tau_{\mathrm{Idle}}=\infty$ and $\tau_{\mathrm{Toasting}}=10$ seconds by default. The Python methods \api{delta\_x()} and \api{delta\_y()} update the model in place and return the reschedule flag and output event, respectively.
 
 DEVSph and cDEVSph examples open a live window by default. \api{--live} is explicit; use \api{--console} for a text run.
 
@@ -302,8 +342,8 @@ The Animation interval is 0.01 simulation time units. In
 With \api{--console}, the command accepts \api{--steps 4} to print four sends.
 
 \begin{Code}
-self.addInputPorts("?r")
-self.addOutputPorts("!s")
+self.add_input_ports("?r")
+self.add_output_ports("!s")
 self.add_phase("Sending", tau=send_time, initial=starts)
 self.add_phase("Waiting", tau=inf, initial=not starts)
 self.add_external_transition(
@@ -339,7 +379,7 @@ updated count and sum, so this example requires no guard or action.
 
 Here are the first two nodes and the first edge, expanded from the construction loop.
 \begin{Code}
-self.addOutputPorts("!c")
+self.add_output_ports("!c")
 self.add_phase("Count(0, 0)", tau=5, initial=True)
 self.add_phase("Count(1, 1)", tau=5)
 self.add_internal_transition(
@@ -361,7 +401,7 @@ The same counter can use two phase nodes and keep the count and sum
 in \api{self.\_variable}. From Count there are two internal edges.
 
 \begin{Code}
-self.addOutputPorts("!c")
+self.add_output_ports("!c")
 self.add_phase("Count", tau=5, initial=True)
 self.add_phase("Done", tau=inf)
 self.add_internal_transition(
@@ -405,6 +445,64 @@ Neither counter has an external input port. Use Play/Pause, Step, Mode, and Rese
 \includegraphics[width=.92\linewidth,height=5.1cm,keepaspectratio]{images/counter.jpg}\par
 \figurelabel{The two Count edges are labeled with their guard and action names.}
 \end{center}
+
+\newpage
+\chaptermark{2.3 \enspace DEVSphPetriNet}
+A DEVSphPetriNet model combines a DEVSph phase graph $D_{\mathrm{ph}}$
+with a colored Petri net and two port relations.
+\begin{equation}\label{eq:devsph-petri}
+D_{\mathrm{phPN}}=(D_{\mathrm{ph}},N,C_{\mathrm{in}},C_{\mathrm{out}}),
+\qquad N=(P,T,A^-,A^+,G,M_0).
+\end{equation}
+Here $P$ is the set of places, $T$ the set of Petri transitions, and
+$M_0$ the initial marking. The state is $(q,v,M)$, where $q$ is the
+DEVS phase, $v$ the DEVSph variables, and $M(p)$ the ordered list of
+colored token values in place $p$. Ordering matters when choosing the
+first enabled binding.
+
+\topic{Binding and firing}
+Each input arc $(p,t,z)\in A^-$ binds one token from $p$ to variable $z$.
+Arcs select distinct token positions. Repeated variables require equal
+values. A binding $b$ is enabled when all input arcs can be satisfied
+and the transition guard $G_t(b)$ is true. Each output arc
+$(t,p,e)\in A^+$ computes one token $e(b)$. For a selected binding,
+\begin{equation}\label{eq:petri-fire}
+M'(p)=\bigl(M(p)\setminus_{\mathrm{pos}} I_{t,b}(p)\bigr)
+      \mathbin{\|} O_{t,b}(p).
+\end{equation}
+Here $I_{t,b}(p)$ lists the consumed positions for the selected match,
+$O_{t,b}(p)$ lists the produced values in arc order, and $\|$ appends lists.
+
+\topic{DEVS ports}
+An input connection $(i,p,f,r)\in C_{\mathrm{in}}$ maps event
+$(i,x)$ to the token list $f(x)$ in place $p$. It appends the list
+when $r$ is false and replaces the marking of $p$ when $r$ is true.
+An output connection $(t,o,g,h)\in C_{\mathrm{out}}$ emits
+$(o,h(b))$ for a selected binding $b$ when $g(b)$ is true.
+DEVSph callbacks determine when these connections are applied and
+when a Petri transition fires. The DEVS phase graph supplies $\tau$.
+
+\topic{Input events that request a firing}
+An input port can put tokens in a place or request a Petri transition
+firing through a DEVS transition. The first path in
+\eqref{eq:petri-input-paths} covers \api{?1USD}, which adds a coin to
+\api{Credit}. The second covers \api{?refund}. With credit available,
+the input sets the phase to \api{Refunding} and schedules an internal
+event at the same time. Then $\delta_y$ computes \api{!refund} with the
+refund amount and fires \api{Refund} to consume all remaining coins.
+The arrow from the input port to the Petri transition depicts this
+request. The first path uses \api{connect\_input\_port()}. The second
+uses the external and internal DEVSph edges. A model can also fire a
+Petri transition in an external edge's action, in which case the firing
+takes place inside $\delta_x$.
+\begin{equation}\label{eq:petri-input-paths}
+\begin{aligned}
+(i,u)&\xrightarrow{C_{\mathrm{in}}} M'(p),\\
+(i,u)&\xrightarrow{\delta_x}(s',r)
+      \xrightarrow[\tau(s')=0]{r=\mathrm{true}}\delta_y(s')
+      \quad\text{(Vending Machine refund)}.
+\end{aligned}
+\end{equation}
 
 \newpage
 \partmark{Part 2 \enspace Continuous and Discrete Event System}

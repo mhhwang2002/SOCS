@@ -64,12 +64,12 @@ def simulation_system():
     root.add_child(nested)
     nested.add_child(atomic)
 
-    root.addInputPorts("decision")
-    nested.addInputPorts("external")
-    atomic.addInputPorts("in")
+    root.add_input_ports("decision")
+    nested.add_input_ports("external")
+    atomic.add_input_ports("in")
 
-    root.addCouple((root, "decision"), (nested, "external"))
-    nested.addCouple((nested, "external"), (atomic, "in"))
+    root.add_couple((root, "decision"), (nested, "external"))
+    nested.add_couple((nested, "external"), (atomic, "in"))
 
     engine = TESEnginThread(
         root,

@@ -3,7 +3,7 @@ import pytest
 from socs.devs.TESEngin import TESEnginThread
 from socs.tree.decision_tree import DecisionTree
 
-from examples.LogBridge.LoadPassive_LogBridge import makeModel
+from examples.LogBridge.LoadPassive_LogBridge import make_model
 from socs.decision.decision import ControlDecision
 from examples.LogBridge.decision_executor import LogBridgeDecisionExecutor
 
@@ -11,7 +11,7 @@ from examples.LogBridge.decision_executor import LogBridgeDecisionExecutor
 def make_root_snapshot():
     """Run the model until both source Loads are waiting."""
 
-    model = makeModel()
+    model = make_model()
     engine = TESEnginThread(model)
     engine.bVerbose = False
 
@@ -19,7 +19,7 @@ def make_root_snapshot():
     engine.set_simulation_time_bound(23.0)
 
     while True:
-        result = engine.executeOneStep()
+        result = engine.execute_one_step()
         if result.name == "TimeBoundReached":
             break
 

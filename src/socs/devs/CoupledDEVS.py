@@ -52,9 +52,9 @@ class CoupledDEVS(TES):
             child.parent = None
             raise
 
-        self.update_tN(update_parent=True)
+        self.update_tn(update_parent=True)
 
-    def addComponents(self, *args):
+    def add_components(self, *args):
         """Add child components using the legacy method name."""
         for component in args:
             self.add_child(component)
@@ -77,7 +77,7 @@ class CoupledDEVS(TES):
         super().remove_child(child)
         self._remove_child_couplings(child)
 
-        self.update_tN(update_parent=True)
+        self.update_tn(update_parent=True)
 
     def move_child_to(self, child, new_parent):
         """Move a child model to another parent within the same system."""
@@ -131,8 +131,8 @@ class CoupledDEVS(TES):
         child.parent = new_parent
 
         # Recompute scheduling information in both affected branches.
-        old_parent.update_tN(update_parent=True)
-        new_parent.update_tN(update_parent=True)
+        old_parent.update_tn(update_parent=True)
+        new_parent.update_tn(update_parent=True)
 
     def _remove_child_couplings(self, child):
         for source, destinations in list(self.Z.items()):
@@ -142,7 +142,7 @@ class CoupledDEVS(TES):
             else:
                 self.Z[source] = remaining
 
-    def addCouple(self, source, destination):
+    def add_couple(self, source, destination):
         """Connect two (model, port_name) endpoints in this coupled model."""
         for endpoint, is_source in ((source, True), (destination, False)):
             if (
@@ -162,16 +162,16 @@ class CoupledDEVS(TES):
             raise ValueError("A boundary input must couple to a child input.")
         self.Z.setdefault(source, set()).add(destination)
 
-    def addCouples(self, *couples):
+    def add_couples(self, *couples):
         """Add multiple (source_port, destination_port) couplings."""
         for src_port, dest_port in couples:
-            self.addCouple(src_port, dest_port)
+            self.add_couple(src_port, dest_port)
 
     def _after_restore_state(self):
         """Recompute derived scheduling state after restoring descendants."""
-        self.update_tN(update_parent=False)
+        self.update_tn(update_parent=False)
 
-    def update_tN(self, update_parent=False):
+    def update_tn(self, update_parent=False):
         """Update imminent components and this model's next event time."""
         next_time = float("inf")
         imminent = set()
@@ -185,7 +185,7 @@ class CoupledDEVS(TES):
         self.IMM = imminent
         self.tNext = next_time
         if update_parent and self.parent is not None:
-            self.parent.update_tN(update_parent=True)
+            self.parent.update_tn(update_parent=True)
 
     def set_init_total_state(self, t):
         """Initialize this coupled model and all child components."""
@@ -193,7 +193,7 @@ class CoupledDEVS(TES):
         self.tLast = t
         for component in self.M:
             component.set_init_total_state(t)
-        self.update_tN()
+        self.update_tn()
 
     def Delta_x(self, x, t):
         """Route an input event to destination ports."""
@@ -203,9 +203,9 @@ class CoupledDEVS(TES):
         self.tLast = t
         for model, port in self.Z.get((self, x.port), ()):
             model.Delta_x(PortValue(port, x.value), t)
-        self.update_tN()
+        self.update_tn()
 
-    def translateOutputEvent(self, source_model, y, t):
+    def translate_output_event(self, source_model, y, t):
         """Route a child output and return events on this model's output ports."""
         outputs = []
         if not isinstance(y, PortValue):
@@ -218,17 +218,17 @@ class CoupledDEVS(TES):
                 model.Delta_x(event, t)
         return outputs
 
-    def getAllInfluencee(self, source, XP):
+    def get_all_influencee(self, source, XP):
         """Collect terminal atomic input endpoints influenced by a source endpoint."""
         for model, port in self.Z.get(source, ()):
             if model is self:
                 continue
             if isinstance(model, CoupledDEVS):
-                model.getAllInfluencee((model, port), XP)
+                model.get_all_influencee((model, port), XP)
             else:
                 XP.add((model, port))
 
-    def Delta_y(self, t):
+    def Delta_y(self, t) -> list[PortValue]:
         """Generate output from an imminent child and update the schedule."""
         self.tNow = t
         self.tLast = t
@@ -239,24 +239,24 @@ class CoupledDEVS(TES):
             if result is not None:
                 events = result if isinstance(result, (list, tuple, set)) else [result]
                 for event in events:
-                    outputs.extend(self.translateOutputEvent(component, event, t))
-            self.update_tN()
+                    outputs.extend(self.translate_output_event(component, event, t))
+            self.update_tn()
         return outputs
 
-    def Delta_null(self, t):
+    def Delta_t(self, t):
         """Update time-dependent state in all children."""
         self.tNow = t
         unscheduled = False
         for component in self.M:
-            if component.Delta_null(t):
+            if component.Delta_t(t):
                 unscheduled = True
-        self.update_tN()
+        self.update_tn()
         return unscheduled
 
-    def updateStatistics(self, t):
+    def update_statistics(self, t):
         """Close the open statistics interval of each atomic descendant."""
         for component in self.M:
-            component.updateStatistics(t)
+            component.update_statistics(t)
 
     def get_statistics_str(self):
         """Return statistics for all descendants."""
@@ -268,7 +268,7 @@ class CoupledDEVS(TES):
                 result += "\t" + component.name + ": " + component.get_statistics_str() + "\n"
         return result
 
-    def to_Z_s(self):
+    def to_z_s(self):
         """Format the coupling map as a string."""
         parts = []
         for (model, port), destinations in self.Z.items():
@@ -278,18 +278,18 @@ class CoupledDEVS(TES):
         return "Z={" + ", ".join(parts) + "}"
 
     def __str__(self):
-        return super().__str__() + "M=" + str(self.M) + "\n" + self.to_Z_s()
+        return super().__str__() + "M=" + str(self.M) + "\n" + self.to_z_s()
 
     def state_to_s(self):
         """Format child states as a tuple-like string."""
         return "(" + ", ".join(component.qstate_to_s() for component in self.M) + ")"
 
-    def isNetworkOf(self, cclass):
+    def is_network_of(self, cclass):
         """Return whether all atomic descendants are instances of cclass."""
         if isinstance(self, cclass):
             return True
         for component in self.M:
-            if isinstance(component, CoupledDEVS) and not component.isNetworkOf(cclass):
+            if isinstance(component, CoupledDEVS) and not component.is_network_of(cclass):
                 return False
         return True
 

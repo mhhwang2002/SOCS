@@ -21,8 +21,8 @@ from .layout import BODY_OFFSETS, CONFIG, DWELL, FLOOR_DEPTH, FLOOR_WIDTH, SEGME
 class LiveSimulation:
     """Advance DEVS only as far as the current display clock."""
 
-    def __init__(self):
-        model, self.controller = make_model()
+    def __init__(self, model_factory=make_model):
+        model, self.controller = model_factory()
         self.engine = TESEnginBase(model)
         self.engine.bVerbose = False
         self.time = 0.0
@@ -33,7 +33,7 @@ class LiveSimulation:
     def advance(self, elapsed):
         self.time += elapsed
         while self.engine.model.tNext <= self.time:
-            self.engine.executeOneStep()
+            self.engine.execute_one_step()
             events = self.controller.state["events"]
             for kind, point, vehicle in events[self.read:]:
                 if kind == "enter":
@@ -78,7 +78,8 @@ def add_mesh(parent, data):
 
 
 class AGVViewer(ShowBase):
-    def __init__(self, speed=1.0, window_type=None):
+    def __init__(self, speed=1.0, window_type=None, *, model_factory=make_model, panel_factory=TrafficMap):
+        self.model_factory = model_factory
         super().__init__(windowType=window_type)
         self.disableMouse()
         self.setBackgroundColor(0.09, 0.13, 0.18)
@@ -107,7 +108,7 @@ class AGVViewer(ShowBase):
         light = self.render.attach_new_node(sun)
         light.set_hpr(-35, -58, 0)
         self.render.set_light(light)
-        self.traffic_map = TrafficMap(self.aspect2d)
+        self.traffic_map = panel_factory(self.aspect2d)
         self.split_view = True
         self.view_aspect = None
         self.camLens.set_fov(55)
@@ -177,7 +178,7 @@ class AGVViewer(ShowBase):
         self.paused = not self.paused
 
     def reset(self):
-        self.simulation = LiveSimulation()
+        self.simulation = LiveSimulation(self.model_factory)
         self.simulation.advance(0)
         self.draw_state()
 
@@ -203,14 +204,14 @@ class AGVViewer(ShowBase):
         return task.cont
 
 
-def main():
+def main(model_factory=make_model, title="AGVSystem", panel_factory=TrafficMap):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--speed", type=float, default=1.0)
     args = parser.parse_args()
     if not 0 < args.speed < float("inf"):
         parser.error("--speed must be positive and finite")
-    loadPrcFileData("", "window-title SOCS | AGVSystem\nwin-size 1280 820\nsync-video true")
-    AGVViewer(args.speed).run()
+    loadPrcFileData("", f"window-title SOCS | {title}\nwin-size 1280 820\nsync-video true")
+    AGVViewer(args.speed, model_factory=model_factory, panel_factory=panel_factory).run()
 
 
 if __name__ == "__main__":

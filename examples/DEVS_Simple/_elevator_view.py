@@ -12,7 +12,7 @@ def run_live(engine):
     """Drive one engine and refresh the shaft and phase diagram together."""
     model = engine.model
     engine.TimeIntervalAnimation = 0.05
-    engine.executeAnimation(engine.tNow, engine.tNow)
+    engine.execute_animation(engine.tNow, engine.tNow)
     root = tk.Tk()
     root.title("cDEVSph Elevator")
     views = ttk.Frame(root)
@@ -46,13 +46,13 @@ def run_live(engine):
     def schedule():
         nonlocal timer
         if timer is None and isfinite(model.tNext):
-            time, _ = engine.PickNextExecutionTime_Type()
+            time, _ = engine.pick_next_execution_time_type()
             timer = root.after(max(1, round(1000 * (time - engine.tNow))), advance)
 
     def advance():
         nonlocal timer
         timer = None
-        engine.executeOneStep()
+        engine.execute_one_step()
         refresh()
         schedule()
 

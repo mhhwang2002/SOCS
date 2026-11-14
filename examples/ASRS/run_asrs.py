@@ -31,8 +31,8 @@ class ASRSTESEnginThread(VisualTESEnginThread):
         )
         super().__init__(model, *args, **kwargs)
 
-    def executeOneStep(self):
-        result = super().executeOneStep()
+    def execute_one_step(self):
+        result = super().execute_one_step()
         if self.controller.phase == "completed" and not self.SkipLoop:
             self.pause()
             print("Controller completed all occupied-cell retrievals; simulation paused.")

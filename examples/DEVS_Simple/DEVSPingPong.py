@@ -13,8 +13,8 @@ class Player(DEVS):
         super().__init__(name, parent)
         self.initial_phase = initial_phase
         self.send_time = send_time
-        self.addInputPorts("?r")
-        self.addOutputPorts("!s")
+        self.add_input_ports("?r")
+        self.add_output_ports("!s")
         self.phase = initial_phase
 
     def set_initial_state(self):
@@ -50,15 +50,15 @@ class Player(DEVS):
         self.phase = state
 
 
-def makeModel():
+def make_model():
     """Build the coupled ping-pong model."""
     player_a = Player("A", "S", 0.1)
     player_b = Player("B", "W", 0.2)
 
     model = CoupledDEVS("PingPong")
-    model.addComponents(player_a, player_b)
-    model.addOutputPorts("!ping", "!pong")
-    model.addCouples(
+    model.add_components(player_a, player_b)
+    model.add_output_ports("!ping", "!pong")
+    model.add_couples(
         ((player_a, "!s"), (player_b, "?r")),
         ((player_b, "!s"), (player_a, "?r")),
         ((player_a, "!s"), (model, "!ping")),
@@ -67,15 +67,15 @@ def makeModel():
     return model
 
 
-def runSimulation(model):
+def run_simulation(model):
     """Run the model in the interactive simulation engine."""
     engine = TESEnginThread(model)
     engine.StepByStep = True
     engine.sfactor = float("inf")
-    engine.runInteractiveMenu()
+    engine.run_interactive_menu()
 
 
-def checkLiveness(KDAG):
+def check_liveness(KDAG):
     """Check whether a kernel DAG contains a state where players meet."""
     for key in KDAG.V:
         cluster = KDAG.kv[key]
@@ -97,23 +97,23 @@ def checkLiveness(KDAG):
     return False
 
 
-def runVerification(model):
+def run_verification(model):
     """Placeholder for the legacy verification workflow."""
     inputs = []
     # The legacy VeriEngine integration is intentionally left disabled.
 
 
 if __name__ == "__main__":
-    model = makeModel()
-    print("isNetworkOf(Player) =", model.isNetworkOf(Player))
+    model = make_model()
+    print("is_network_of(Player) =", model.is_network_of(Player))
 
     running = True
     while running:
         command = input("(s)im, (v)eri, e(x)it> ").strip().lower()
         if command in ("s", "sim"):
-            runSimulation(model)
+            run_simulation(model)
         elif command in ("v", "veri"):
-            runVerification(model)
+            run_verification(model)
         elif command in ("x", "exit"):
             running = False
         else:

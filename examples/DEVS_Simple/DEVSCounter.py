@@ -13,7 +13,7 @@ class Counter(DEVS):
         self.sum = 0
         self.count = 1
         self.phase = "C"
-        self.addOutputPorts("!c")
+        self.add_output_ports("!c")
 
     def set_initial_state(self):
         """Initialize the counter state."""
@@ -53,14 +53,14 @@ class Counter(DEVS):
         return phase, self.count - 1, self.sum
 
 
-def runSimulation(model):
+def run_simulation(model):
     """Run the model with the interactive simulation engine."""
     from socs.devs.TESEngin import TESEnginThread
 
     engine = TESEnginThread(model)
     engine.StepByStep = True
     engine.sfactor = float("inf")
-    engine.runInteractiveMenu()
+    engine.run_interactive_menu()
 
 
 if __name__ == "__main__":

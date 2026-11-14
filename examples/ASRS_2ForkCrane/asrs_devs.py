@@ -53,8 +53,8 @@ class ASRSCell(DEVS):
         self.initially_occupied = bool(occupied)
         self.initial_box_id = box_id or f"Box-{self.name}"
         self.initial_box_color = box_color
-        self.addInputPorts("?crane")
-        self.addOutputPorts("!box", "!status")
+        self.add_input_ports("?crane")
+        self.add_output_ports("!box", "!status")
         self.set_initial_state()
 
     def set_initial_state(self):
@@ -141,8 +141,8 @@ class ASRSController(DEVS):
         self.cell_names = tuple(cell_names)
         self._initial_retrieval_plan = tuple(dict(task) for task in retrieval_plan)
         self._initial_requested_order_items = dict(requested_order_items or {})
-        self.addInputPorts("?cell_status", "?crane_idle", "?box_out")
-        self.addOutputPorts("!command")
+        self.add_input_ports("?cell_status", "?crane_idle", "?box_out")
+        self.add_output_ports("!command")
         self.set_initial_state()
 
     def set_initial_state(self):
@@ -292,8 +292,8 @@ class TwoForkCrane(cDEVS):
 
     def __init__(self):
         super().__init__("TwoForkCrane")
-        self.addInputPorts("?command", "?box")
-        self.addOutputPorts("!retrieve_request", "!idle", "!box_out")
+        self.add_input_ports("?command", "?box")
+        self.add_output_ports("!retrieve_request", "!idle", "!box_out")
         self.fork1 = ForkState("Fork1", FORK_SPACING / 2.0)
         self.fork2 = ForkState("Fork2", -FORK_SPACING / 2.0)
         self._initial_moves = ()
@@ -749,12 +749,12 @@ def make_asrs_model(
     model.add_child(crane)
     model.add_child(controller)
     for cell in cells:
-        model.addCouple((crane, "!retrieve_request"), (cell, "?crane"))
-        model.addCouple((cell, "!box"), (crane, "?box"))
-        model.addCouple((cell, "!status"), (controller, "?cell_status"))
-    model.addCouple((controller, "!command"), (crane, "?command"))
-    model.addCouple((crane, "!idle"), (controller, "?crane_idle"))
-    model.addCouple((crane, "!box_out"), (controller, "?box_out"))
+        model.add_couple((crane, "!retrieve_request"), (cell, "?crane"))
+        model.add_couple((cell, "!box"), (crane, "?box"))
+        model.add_couple((cell, "!status"), (controller, "?cell_status"))
+    model.add_couple((controller, "!command"), (crane, "?command"))
+    model.add_couple((crane, "!idle"), (controller, "?crane_idle"))
+    model.add_couple((crane, "!box_out"), (controller, "?box_out"))
     return model
 
 

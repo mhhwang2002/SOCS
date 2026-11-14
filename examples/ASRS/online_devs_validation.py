@@ -56,7 +56,7 @@ def _execute_devs(instance, trace, table, policy, seed):
     engine.bVerbose = False
     steps = 0
     while controller.phase != "completed":
-        result = engine.executeOneStep()
+        result = engine.execute_one_step()
         steps += 1
         if result is ExecutionResult.TimeBoundReached:
             raise RuntimeError("The dynamic DEVS AS/RS model did not finish its arrival trace.")

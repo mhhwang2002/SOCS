@@ -16,8 +16,8 @@ class Toaster(DEVS):
         super().__init__(name, parent)
         self.tt = tt
         self.phase = "Idle"
-        self.addInputPorts("?push")
-        self.addOutputPorts("!pop")
+        self.add_input_ports("?push")
+        self.add_output_ports("!pop")
 
     def set_initial_state(self):
         """Reset the toaster to its initial idle phase."""
@@ -57,12 +57,12 @@ def make_input_event(model):
     return model, PortValue(model.IP["?push"])
 
 
-def runSimulation(model):
+def run_simulation(model):
     """Run the toaster model with the interactive simulation engine."""
     engine = TESEnginThread(model, make_input_event)
     engine.StepByStep = True
     engine.sfactor = float("inf")
-    engine.runInteractiveMenu()
+    engine.run_interactive_menu()
 
 
 if __name__ == "__main__":

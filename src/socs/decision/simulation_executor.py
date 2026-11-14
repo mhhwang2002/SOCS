@@ -60,6 +60,6 @@ class SimulationDecisionExecutor(
     def run_branch(self) -> None:
         """Advance the engine until the configured absolute time horizon."""
         while True:
-            result = self.engine.executeOneStep()
+            result = self.engine.execute_one_step()
             if result is ExecutionResult.TimeBoundReached:
                 return

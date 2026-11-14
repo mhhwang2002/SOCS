@@ -11,8 +11,8 @@ class LoadPassive(DEVS):
         self.length = length 
         self.walker_init_speed=int_walker_speed
         self.walker_speed=int_walker_speed
-        self.addInputPorts("?in", "?go")
-        self.addOutputPorts("!out")
+        self.add_input_ports("?in", "?go")
+        self.add_output_ports("!out")
 
     def set_initial_state(self):
         """Reset the Load to its initial idle phase.""" 
@@ -73,5 +73,5 @@ if __name__ == "__main__":
     engine = TESEnginThread(Load,make_input_event)
     engine.StepByStep = True
     engine.sfactor = float("inf")
-    engine.runInteractiveMenu()
+    engine.run_interactive_menu()
     print("good bye~!")

@@ -16,7 +16,7 @@ class DEVSphCounterBasic(DEVSph):
         super().__init__(name, parent)
         if count_no < 1:
             raise ValueError("count_no must be positive.")
-        self.addOutputPorts("!c")
+        self.add_output_ports("!c")
         self.phase_states = {}
         previous = None
         total = 0

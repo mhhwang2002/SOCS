@@ -50,8 +50,8 @@ class TwoForkAnimationEngineThread(VisualTESEnginThread):
         super().__init__(model, *args, **kwargs)
         self._hud_snapshot = self._capture_hud()
 
-    def executeOneStep(self):
-        result = super().executeOneStep()
+    def execute_one_step(self):
+        result = super().execute_one_step()
         snapshot = self._capture_hud()
         with self._hud_lock:
             self._hud_snapshot = snapshot
@@ -214,7 +214,7 @@ def run_headless(model):
     )
     engine.bVerbose = False
     while controller.phase != "completed":
-        result = engine.executeOneStep()
+        result = engine.execute_one_step()
         if result is ExecutionResult.TimeBoundReached:
             raise RuntimeError("Two-fork coupled model did not complete before its time bound.")
     shipped = sum(len(products) for products in controller.delivered_products_by_order.values())

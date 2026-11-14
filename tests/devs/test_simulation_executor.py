@@ -110,7 +110,7 @@ def test_engine_stops_at_absolute_simulation_time_horizon(engine_and_model):
     engine.set_simulation_time_bound(5.0)
 
     while True:
-        result = engine.executeOneStep()
+        result = engine.execute_one_step()
         if result is ExecutionResult.TimeBoundReached:
             break
 

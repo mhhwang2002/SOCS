@@ -10,8 +10,8 @@ class LogBridge(DEVS):
     def __init__(self, name, length, parent=None):
         super().__init__(name, parent)
         self.length = length   
-        self.addInputPorts("?in1", "?in2")
-        self.addOutputPorts("!out1", "!out2")
+        self.add_input_ports("?in1", "?in2")
+        self.add_output_ports("!out1", "!out2")
         self.walker_speed = 0
 
     def set_initial_state(self):
