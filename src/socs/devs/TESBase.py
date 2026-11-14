@@ -147,11 +147,6 @@ class TES(HierNamedObj, AlarmClock):
             f"{classname(self)}::{function_name()} must be overridden."
         )
 
-    def Delta_t(self, t):
-        """Advance time-dependent state, if the model defines any."""
-        self.tNow = t
-        return False
-
     def add_input_ports(self, *args):
         """Add input ports by name."""
         for ipname in args:

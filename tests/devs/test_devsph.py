@@ -60,7 +60,7 @@ def test_reschedule_callback_sees_updated_variables_and_destination_phase(restar
     )
     model.set_init_total_state(0)
     model.Delta_x(event, 2)
-    assert (model.tLast, model.tNext) == ((2, 5) if restart else (0, 10))
+    assert (model.tLast, model.tNext) == ((2, 5) if restart else (2, 10))
 
 
 def test_reschedule_rejects_non_boolean_constant(model):
@@ -81,7 +81,7 @@ def test_external_update_preserves_schedule_and_internal_output_precedes_action(
     model.Delta_x(PortValue("start", "go"), 2)
     model.Delta_x(PortValue("update", 7), 3)
     assert model._variable == {"count": 7}
-    assert model.tLast == 2
+    assert model.tLast == 3
     assert model.tNext == 6
     assert model.Delta_y(6) == PortValue("done", 7)
     assert model.get_state() == ("Idle", {"count": 0})
@@ -95,7 +95,7 @@ def test_snapshot_restores_phase_variables_and_clock(model):
     model.Delta_y(5)
     model.restore_state(snapshot)
     assert model.get_state() == ("Active", {"count": 3})
-    assert (model.tLast, model.tNext) == (1, 5)
+    assert (model.tLast, model.tNext) == (2, 5)
     assert model.Delta_y(5) == PortValue("done", 3)
 
 
@@ -180,6 +180,6 @@ def test_same_phase_monitor_update_retains_dashed_edge_and_callback_names():
     model.set_init_total_state(0)
     assert model.Delta_x(PortValue("?traffic"), 1) is False
     assert model.get_state() == ("Idle", {"occupied": True})
-    assert (model.tLast, model.tNext) == (0, inf)
+    assert (model.tLast, model.tNext) == (1, inf)
     line = next(line for line in model.to_dot().splitlines() if "p0 -> p0" in line)
     assert all(text in line for text in ("?traffic", "resource_available", "update_occupancy", "style=dashed"))

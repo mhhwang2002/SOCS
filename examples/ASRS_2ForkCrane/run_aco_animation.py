@@ -9,6 +9,7 @@ from socs.devs.TESEngin import ExecutionResult, TESEnginBase
 from socs.visual3D import VisualEntityState, VisualTESEnginThread
 from socs.visual3D.panda_viewer import Panda3DViewer
 
+from examples.ASRS.asrs_devs import FORK_RETRACT_Y, LOAD_CENTER_OFFSET
 from examples.ASRS.run_asrs import add_rack_geometry, reset_camera
 from .aco_optimization import (
     TwoForkAntColonyOptimizer,
@@ -142,7 +143,7 @@ def _visual_state(model, product_colors):
                 (
                     (cell.bay - 0.5) * CELL_WIDTH,
                     RACK_DEPTH / 2.0,
-                    (cell.level - 1) * LEVEL_PITCH + 0.27,
+                    (cell.level - 1) * LEVEL_PITCH + LOAD_CENTER_OFFSET,
                 ),
                 color=BOX_COLORS.get(cell.box_color, (0.76, 0.82, 0.84, 1.0)),
                 visible=cell.occupied,
@@ -172,12 +173,22 @@ def _visual_state(model, product_colors):
             VisualEntityState("CraneChassis", (crane.x, AISLE_Y, 0.18), color=(0.95, 0.38, 0.08, 1.0)),
             VisualEntityState("CraneMast", (crane.x, AISLE_Y, 2.55), color=(0.95, 0.38, 0.08, 1.0)),
             VisualEntityState("CraneHoist", (crane.x, AISLE_Y, crane.z), color=(0.16, 0.20, 0.22, 1.0)),
-            VisualEntityState("Fork1", (crane.x + crane.fork1.x_offset, AISLE_Y + crane.fork1.reach / 2.0, crane.z + crane.fork1.lift - 0.08), color=(0.88, 0.71, 0.22, 1.0)),
-            VisualEntityState("Fork2", (crane.x + crane.fork2.x_offset, AISLE_Y + crane.fork2.reach / 2.0, crane.z + crane.fork2.lift - 0.08), color=(0.88, 0.71, 0.22, 1.0)),
-            VisualEntityState("ForkLoad1", (crane.x + crane.fork1.x_offset, AISLE_Y + crane.fork1.reach, crane.z + crane.fork1.lift - 0.08 + LOAD_HEIGHT / 2.0), color=BOX_COLORS.get(crane.fork1.box_color, (0.70, 0.78, 0.80, 1.0)), visible=crane.fork1.has_load),
-            VisualEntityState("ForkLoad2", (crane.x + crane.fork2.x_offset, AISLE_Y + crane.fork2.reach, crane.z + crane.fork2.lift - 0.08 + LOAD_HEIGHT / 2.0), color=BOX_COLORS.get(crane.fork2.box_color, (0.70, 0.78, 0.80, 1.0)), visible=crane.fork2.has_load),
+            VisualEntityState("ForkSupport", (crane.x, AISLE_Y, crane.z - 0.08), color=(0.55, 0.43, 0.17, 1.0)),
+            VisualEntityState("ForkGuide1", (crane.x + crane.fork1.x_offset, -0.90, crane.z + crane.fork1.lift - 0.08), color=(0.55, 0.43, 0.17, 1.0)),
+            VisualEntityState("ForkGuide2", (crane.x + crane.fork2.x_offset, -0.90, crane.z + crane.fork2.lift - 0.08), color=(0.55, 0.43, 0.17, 1.0)),
+            VisualEntityState("ForkLoad1", (crane.x + crane.fork1.x_offset, FORK_RETRACT_Y + crane.fork1.reach, crane.z + crane.fork1.lift - 0.08 + LOAD_HEIGHT / 2.0), color=BOX_COLORS.get(crane.fork1.box_color, (0.70, 0.78, 0.80, 1.0)), visible=crane.fork1.has_load),
+            VisualEntityState("ForkLoad2", (crane.x + crane.fork2.x_offset, FORK_RETRACT_Y + crane.fork2.reach, crane.z + crane.fork2.lift - 0.08 + LOAD_HEIGHT / 2.0), color=BOX_COLORS.get(crane.fork2.box_color, (0.70, 0.78, 0.80, 1.0)), visible=crane.fork2.has_load),
         )
     )
+    for index, fork in enumerate((crane.fork1, crane.fork2), start=1):
+        for side, offset in (("Left", -0.18), ("Right", 0.18)):
+            states.append(VisualEntityState(
+                f"Fork{index}{side}",
+                (crane.x + fork.x_offset + offset,
+                 FORK_RETRACT_Y + fork.reach - 0.5,
+                 crane.z + fork.lift - 0.08),
+                color=(0.88, 0.71, 0.22, 1.0),
+            ))
     return states
 
 
@@ -328,10 +339,15 @@ def main(argv=None):
         "CraneChassis": (0.82, 0.68, 0.24),
         "CraneMast": (0.16, 0.18, 5.1),
         "CraneHoist": (0.62, 0.50, 0.24),
-        "Fork1": (0.08, 1.2, 0.05),
-        "Fork2": (0.08, 1.2, 0.05),
-        "ForkLoad1": (0.72, 0.68, LOAD_HEIGHT),
-        "ForkLoad2": (0.72, 0.68, LOAD_HEIGHT),
+        "ForkSupport": (CELL_WIDTH + 0.20, 0.40, 0.32),
+        "ForkGuide1": (0.48, 0.90, 0.07),
+        "ForkGuide2": (0.48, 0.90, 0.07),
+        "Fork1Left": (0.08, 1.2, 0.05),
+        "Fork1Right": (0.08, 1.2, 0.05),
+        "Fork2Left": (0.08, 1.2, 0.05),
+        "Fork2Right": (0.08, 1.2, 0.05),
+        "ForkLoad1": (0.78, 0.76, LOAD_HEIGHT),
+        "ForkLoad2": (0.78, 0.76, LOAD_HEIGHT),
     }.items():
         viewer.create_box_entity(entity_id, size)
 

@@ -611,6 +611,9 @@ class Crane(cDEVS):
         return float("inf")
 
     def delta_x(self, event):
+        if event is None:
+            return self.delta_cont(self._continuous_elapsed) is True
+
         if not isinstance(event, PortValue):
             return False
         if event.port == "?command":
@@ -723,7 +726,7 @@ class Crane(cDEVS):
     def delta_cont(self, elapsed):
         if not self._profiles:
             return False
-        elapsed = max(0.0, self.tLast + elapsed - self._move_start_time)
+        elapsed = max(0.0, self.tNow - self._move_start_time)
         for axis, profile in self._profiles.items():
             move_time = min(elapsed, profile["total_time"])
             accel_time = profile["accel_time"]

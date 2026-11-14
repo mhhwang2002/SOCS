@@ -62,19 +62,38 @@ class DEVS(TES, ABC):
         self.set_initial_state()
         self.tNext = t + self.ta()
 
-    def Delta_x(self, x: PortValue, t) -> bool:
+    def delta_cont(self, elapsed):
+        """Advance continuous state and optionally request rescheduling."""
+        return False
+
+    def Delta_x(self, x: PortValue | None, t) -> bool:
         """Apply an external event, rescheduling only when requested."""
         self.validate_event_time(t)
 
-        if not isinstance(x, PortValue):
-            raise TypeError("Delta_x expects a PortValue.")
+        if x is not None and not isinstance(x, PortValue):
+            raise TypeError("Delta_x expects a PortValue or None.")
+        previous_time = self.tLast
         self.tNow = t
-        self.update_statistics(t)
-        reschedule = self.delta_x(x)
+        reschedule = False
+        if t > previous_time and type(self).delta_cont is not DEVS.delta_cont:
+            self._continuous_elapsed = t - previous_time
+            try:
+                reschedule = self.delta_x(None)
+            finally:
+                del self._continuous_elapsed
+            if not isinstance(reschedule, bool):
+                raise TypeError("delta_x() must return a bool.")
+
+        if x is not None:
+            self.update_statistics(t)
+            input_reschedule = self.delta_x(x)
+            if not isinstance(input_reschedule, bool):
+                raise TypeError("delta_x() must return a bool.")
+            reschedule = reschedule or input_reschedule
         if not isinstance(reschedule, bool):
             raise TypeError("delta_x() must return a bool.")
+        self.tLast = t
         if reschedule:
-            self.tLast = t
             self.tNext = t + self.ta()
         return reschedule
 

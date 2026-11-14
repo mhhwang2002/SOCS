@@ -16,7 +16,7 @@ class Elevator(cDEVSph):
     RAMP_TIME = 0.5
 
     def __init__(self, name="Elevator"):
-        super().__init__(name, variables=dict(position=0.0, velocity=0.0, floor=1, target=1))
+        super().__init__(name, variables=dict(position=0.0, velocity=0.0, floor=1, target=1, motion_started_at=0.0))
         self.add_input_ports("?floor")
         self.add_output_ports("!arrived")
         self.add_phase("Idle", tau=inf, initial=True)
@@ -43,17 +43,24 @@ class Elevator(cDEVSph):
     @staticmethod
     def set_target(model, event):
         model._variable.target = event.value
+        model._variable.motion_started_at = model.tNow
 
     @staticmethod
     def finish_trip(model, event):
         target = model._variable.target
         model._variable.update(floor=target, position=(target - 1) * model.FLOOR_HEIGHT, velocity=0.0)
 
+    def delta_x(self, event):
+        if event is None:
+            return self.delta_cont(self._continuous_elapsed) is True
+        return super().delta_x(event)
+
     def delta_cont(self, elapsed):
-        """Evaluate motion at elapsed seconds after the current phase began."""
+        """Evaluate the current motion profile from the trip start."""
         if self.phase == "Idle":
             return
         state = self._variable
+        elapsed = self.tNow - state.motion_started_at
         direction = state.target - state.floor
         start = (state.floor - 1) * self.FLOOR_HEIGHT
         ramp_distance = self.TOP_SPEED * self.RAMP_TIME / 2
@@ -62,9 +69,11 @@ class Elevator(cDEVSph):
             distance = acceleration * elapsed**2 / 2
             speed = acceleration * elapsed
         elif self.phase == "Cruising":
+            elapsed -= self.RAMP_TIME
             distance = ramp_distance + self.TOP_SPEED * elapsed
             speed = self.TOP_SPEED
         else:
+            elapsed -= self.FLOOR_HEIGHT / self.TOP_SPEED
             distance = self.FLOOR_HEIGHT - ramp_distance + self.TOP_SPEED * elapsed
             distance -= acceleration * elapsed**2 / 2
             speed = self.TOP_SPEED - acceleration * elapsed

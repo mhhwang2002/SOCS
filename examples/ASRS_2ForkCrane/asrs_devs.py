@@ -23,13 +23,14 @@ from examples.ASRS.asrs_devs import (
     RACK_COLUMNS,
     RACK_DEPTH,
     RACK_LEVELS,
-    UNLOAD_REACH,
+    FORK_RETRACT_Y,
     UNLOAD_STATION_XS,
     UNLOAD_Y,
 )
 
 STARTUP_DELAY = 10.0
 FORK_SPACING = CELL_WIDTH
+UNLOAD_REACH = UNLOAD_Y - FORK_RETRACT_Y
 FORK_LIFT_HEIGHT = 0.12
 CRANE_X_ACCELERATION = 1.0
 CRANE_X_DECELERATION = 1.0
@@ -332,6 +333,9 @@ class TwoForkCrane(cDEVS):
         return float("inf")
 
     def delta_x(self, event):
+        if event is None:
+            return self.delta_cont(self._continuous_elapsed) is True
+
         if not isinstance(event, PortValue):
             return False
         if event.port == "?command":
@@ -432,7 +436,7 @@ class TwoForkCrane(cDEVS):
     def delta_cont(self, elapsed):
         if not self._profiles:
             return False
-        elapsed = max(0.0, self.tLast + elapsed - self._move_start_time)
+        elapsed = max(0.0, self.tNow - self._move_start_time)
         for axis, profile in self._profiles.items():
             move_time = min(elapsed, profile["total_time"])
             acceleration_time = profile["acceleration_time"]

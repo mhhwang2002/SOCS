@@ -16,7 +16,7 @@ def test_tutorial_counters_produce_same_trace(counter_type):
     counter.set_init_total_state(0)
     for time, count, total, output in [(5, 1, 1, 0), (10, 2, 3, 1), (15, 3, 6, 3)]:
         assert counter.tNext == time
-        counter.Delta_t(time)
+        counter.Delta_x(None, time)
         assert counter.Delta_y(time) == PortValue("!c", output)
         assert counter.display_state() == ("Done" if count == 3 else "Count", count, total)
     assert counter.tNext == float("inf")
@@ -58,5 +58,5 @@ def test_tutorial_ping_pong_couplings_produce_same_boundary_outputs(factory):
     for time, port in [(0.1, "!ping"), (0.3, "!pong"), (0.4, "!ping"), (0.6, "!pong")]:
         next_time = model.tNext
         assert next_time == pytest.approx(time)
-        model.Delta_t(next_time)
+        model.Delta_x(None, next_time)
         assert model.Delta_y(next_time) == [PortValue(port)]

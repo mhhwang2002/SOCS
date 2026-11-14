@@ -257,7 +257,7 @@ class TESEnginBase:
 
         unscheduled = False
         if math.isfinite(next_time) and next_time > self.tNow:
-            unscheduled = self.model.Delta_t(next_time)
+            unscheduled = self.model.Delta_x(None, next_time)
             self.tNow = next_time
         if next_type != ExecutionType.END:
             next_time, next_type = self.pick_next_execution_time_type()

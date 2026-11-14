@@ -49,14 +49,14 @@ def test_callback_time_is_independent_of_schedule_and_restored():
     model = Model("counter", delay=2)
     model.set_init_total_state(0)
     assert model.Delta_x(PortValue(value=0), 1) is False
-    assert (model.tNow, model.tLast, model.tNext) == (1, 0, 2)
+    assert (model.tNow, model.tLast, model.tNext) == (1, 1, 2)
     snapshot = model.capture_state()
     model.Delta_y(2)
     assert model.tNow == 2
     model.restore_state(snapshot)
     assert model.tNow == 1
-    assert model.time_elapsed() == 1
-    assert model.time_elapsed(0.5) == 0.5
+    assert model.time_elapsed() == 0
+    assert model.time_elapsed(1.5) == 0.5
 
 
 # DEVS behavior
@@ -123,7 +123,7 @@ def test_external_transition_preserves_schedule_when_not_requested():
     model.Delta_x(PortValue(value=0), 1.0)
 
     assert model.get_state() == 0
-    assert model.tLast == 0.0
+    assert model.tLast == 1.0
     assert model.tNext == original_time_next
 
 

@@ -39,7 +39,7 @@ SOCS가 인식하는 Windows 기본 경로에 설치되어 있어야 합니다.
 \figurelabel{시간 이벤트 시스템}
 \end{center}
 \begin{equation}
-TES = (X, Y, S, s_0, \Delta_t, \Delta_x, \Delta_y)
+\mathrm{TES}=(X,Y,S,s_0,\Delta_x,\Delta_y)
 \label{eq:tes}
 \end{equation}
 각 기호의 뜻은 다음과 같습니다.
@@ -48,9 +48,8 @@ TES = (X, Y, S, s_0, \Delta_t, \Delta_x, \Delta_y)
   \item $Y$는 출력 이벤트의 집합입니다.
   \item $S$는 상태의 집합입니다.
   \item $s_0 \in S$는 초기 상태입니다.
-  \item $\Delta_t: S \times T \rightarrow S$는 연속 천이 함수입니다. 여기서 $T=[0,\infty)$는 시각을 나타내는 음이 아닌 실수의 집합입니다.
-  \item $\Delta_x: S \times T \times X \rightarrow S$는 특정 시각에 입력 이벤트를 받았을 때 시스템의 상태가 어떻게 바뀌는지 정의하는 외부 천이 함수입니다.
-  \item $\Delta_y: S \times T \rightarrow S\times Y$는 특정 시각에 시스템의 상태가 어떻게 바뀌고 어떤 출력 이벤트를 생성하는지 정의하는 내부 천이 함수입니다.
+  \item $\delta_x\colon Q\times X\to S\times\{\mathrm{false},\mathrm{true}\}$는 외부 천이 함수입니다. $Q=\{(s,e):s\in S,\ 0\le e\le\tau(s)\}$에서 $e$는 경과 시간입니다. $\delta_x(s,e,x)=(s',r)$는 외부 입력 $x$를 적용한 새 상태 $s'$와 재예약 여부 $r$을 정합니다.
+  \item $\Delta_y\colon S\times T\to S\times (Y\cup\{\phi\})$는 예약 시각에 새 상태와 출력 이벤트를 정하는 내부 천이 함수입니다. 출력이 없으면 $\phi$를 반환합니다.
 \end{itemize}
 
 \newpage
@@ -69,8 +68,8 @@ DEVS=(X, Y, S, s_0, \delta_x, \delta_y, \tau)
   \item $Y$는 출력 이벤트의 집합입니다.
   \item $S$는 상태의 집합입니다.
   \item $s_0 \in S$는 초기 상태입니다.
-  \item $\delta_x: Q \times X \rightarrow S$는 상태 $s \in S$에서 경과 시간 $e \in [0,\tau(s)]$에 입력 이벤트 $x \in X$를 받았을 때 새 상태 $s'$를 정하는 외부 천이 함수입니다. 이를 $\delta_x(s,e,x)=s'$로 씁니다.
-  \item $\delta_y: S \rightarrow S\times Y^\phi$는 $e=\tau(s)$일 때 새 상태와 출력 이벤트를 정하는 내부 천이 함수입니다. 이를 $\delta_y(s)=(s',y)$로 쓰며, $y \in Y^\phi=Y\cup\{\phi\}$입니다. 여기서 $\phi \notin Y$는 출력이 없는 경우를 나타냅니다.
+  \item $\delta_x\colon Q\times X\to S\times\{\mathrm{false},\mathrm{true}\}$는 외부 천이 함수입니다. $Q=\{(s,e):s\in S,\ 0\le e\le\tau(s)\}$에서 $e$는 경과 시간입니다. $\delta_x(s,e,x)=(s',r)$는 외부 입력 $x$를 적용한 새 상태 $s'$와 재예약 여부 $r$을 정합니다.
+  \item 내부 천이 및 출력 함수 $\delta_y\colon S\to S\times (Y\cup\{\phi\})$는 예약된 내부 이벤트가 발생할 때 다음 상태 $s'$와 출력 $y$를 정합니다. 이를 $\delta_y(s)=(s',y)$로 쓰며, 출력이 없으면 $y=\phi$입니다.
 \end{itemize}
 
 \newpage
@@ -240,41 +239,39 @@ t=0.6  !pong
 \newpage
 \chaptermark{2.2 \enspace DEVSph}
 \begin{equation}\label{eq:devsph}
-D_{\mathrm{ph}}=(X,Y,Q,V,q_0,v_0,\tau,E_x,E_y),
-\qquad S=Q\times V,\qquad s_0=(q_0,v_0).
+D_{\mathrm{ph}}=(X,Y,G,q_0,V,v_0),
+\qquad G=(Q,E_x\sqcup E_y,\tau),
+\qquad S=Q\times V,\quad s_0=(q_0,v_0).
 \end{equation}
 \begin{equation}\label{eq:devsph-edges}
-e_x=(q,q',i,m,g,a,r)\in E_x,\qquad
-e_y=(q,q',g,a,o)\in E_y.
+e_x:\ q\xrightarrow{(i,m,g,a,r)}q'\quad(e_x\in E_x),
+\qquad
+e_y:\ q\xrightarrow{(g,a,o)}q'\quad(e_y\in E_y).
 \end{equation}
-$X$와 $Y$는 입출력 이벤트 집합, $Q$는 phase 집합, $V$는 모델
-변수의 값 공간입니다. 초기 phase와 변수는 $q_0$, $v_0$입니다.
-시간 전진 함수 $\tau(q,v)$는 현재 phase에 지정된 상수 또는 모델
-상태의 함수로 주어집니다.
 
-외부 간선 $e_x$는 포트 $i$로 입력 $x=(i,u)$를 받았을 때
-값 일치 조건 $m(u)$와 가드 $g(s,x)$가 참이면 활성화됩니다.
-액션이 변수를 $a(s,x)$로 갱신하고 간선이 phase를 $q'$로 바꿉니다.
-불리언 $r$은 직접 지정하거나 갱신된 상태와 입력으로 계산하며,
-재예약 여부를 결정합니다. 활성화된 간선이 없으면 상태와 예약은
-그대로 유지됩니다.
+$G$는 속성이 있는 방향 그래프입니다. 정점 집합 $Q$의 각 정점은
+phase이며, 초기 정점은 $q_0$입니다. 정점 $q$는 시간 전진 함수
+$\tau_q$를 가지며, 같은 두 정점 사이에 여러 간선이 있을 수 있습니다.
+$X$와 $Y$는 입출력 이벤트 집합이고, $V$는 모델 변수의 값 공간,
+$v_0$는 초기 변수 값입니다.
 
-예약된 내부 이벤트 시점에는 $g(s)$가 참인 내부 간선 $e_y$가
-활성화됩니다. 원래 상태에서 계산한 $o(s)$를 출력한 뒤 상태를
-$(q',a(s))$로 갱신합니다. 생략된 가드와 값 일치 조건은 참이며,
-액션을 생략하면 변수가 유지되고 출력을 생략하면 이벤트가 없습니다.
-SOCS에서는 내부 이벤트에 활성 간선이 하나 필요하고 외부 이벤트에는
-최대 하나가 허용됩니다.
+현재 정점 $q$의 외부 간선은 입력 $x=(i_x,u)$의 포트가 간선의
+포트 $i$와 같고, 값 일치 조건 $m(u)$와 가드 $g(s,x)$가 참일 때
+활성화됩니다. 액션 $a$를 실행한 뒤 $q'$로 이동합니다. 재예약 여부
+$r$은 상수 또는 갱신된 상태와 입력으로 계산하는 불리언입니다.
+예약 시각에는 현재 정점의 내부 간선 중 $g(s)$가 참인 간선을 택해,
+원래 상태에서 출력 $o(s)$를 계산한 뒤 액션을 실행하고 $q'$로 이동합니다.
+SOCS에서는 외부 이벤트에 활성 간선이 최대 하나, 내부 이벤트에
+정확히 하나 있어야 합니다. 생략된 가드와 값 일치 조건은 참입니다.
 
-\begin{align}
-s' &= (q',a(s,x)), &
-\delta_x(s,x) &= (s',r(s',x))
+\begin{alignat}{2}
+\delta_x(s,x) &= (s',r(s',x)), &\qquad s' &= (q',a(s,x))
   \label{eq:devsph-delta-x}\\
-\delta_y(s) &= \bigl((q',a(s)),o(s)\bigr)
+\delta_y(s)   &= \bigl((q',a(s)),o(s)\bigr)
   \label{eq:devsph-delta-y}\\
-\tau(s) &= \tau_q(v), \qquad s=(q,v).
+\tau(s)       &= \tau_q(v), &\qquad s &= (q,v).
   \label{eq:devsph-tau}
-\end{align}
+\end{alignat}
 식~\eqref{eq:devsph-delta-x}에서 활성 간선이 없으면 $\delta_x(s,x)=(s,\mathrm{false})$입니다. 식~\eqref{eq:devsph-delta-y}의 출력 $o(s)$는 액션 실행 전의 상태에서 계산합니다. 식~\eqref{eq:devsph-tau}에서 토스터의 기본 시간 전진 값은 $\tau_{\mathrm{Idle}}=\infty$, $\tau_{\mathrm{Toasting}}=10$초입니다. Python의 \api{delta\_x()}와 \api{delta\_y()}는 모델 상태를 직접 갱신하고 각각 재예약 여부와 출력 이벤트를 반환합니다.
 
 DEVSph와 cDEVSph 예제는 기본으로 라이브 창을 엽니다. \api{--live}로 명시해도 같고, 텍스트 실행은 \api{--console}을 사용합니다.
@@ -434,61 +431,92 @@ def increment(model, event):
 \end{center}
 
 \newpage
-\chaptermark{2.3 \enspace DEVSphPetriNet}
-DEVSphPetriNet 모델은 DEVSph의 phase 그래프 $D_{\mathrm{ph}}$에
-컬러 페트리 넷과 두 포트 연결 관계를 결합한다.
-\begin{equation}\label{eq:devsph-petri}
-D_{\mathrm{phPN}}=(D_{\mathrm{ph}},N,C_{\mathrm{in}},C_{\mathrm{out}}),
-\qquad N=(P,T,A^-,A^+,G,M_0).
+\chaptermark{2.3 \enspace DEVSPetriNet}
+\begin{equation}\label{eq:devs-petri}
+N=(P,T,A^-,A^+,G,M_0),\qquad
+S=\mathcal M(N),\qquad s_0=M_0.
 \end{equation}
-$P$는 장소 집합, $T$는 페트리 전이 집합, $M_0$는 초기 마킹이다.
-상태는 $(q,v,M)$이며, $q$는 DEVS phase, $v$는 DEVSph 변수,
-$M(p)$는 장소 $p$에 있는 컬러 토큰의 순서 있는 목록이다.
-첫 번째 발화 가능 바인딩을 선택할 때 이 순서를 사용한다.
+\begin{equation}\label{eq:devs-petri-model}
+D_{\mathrm{PN}}=(X,Y,S,s_0,\delta_x,\delta_y,\tau;
+                  N,C_{\mathrm{in}},C_{\mathrm{out}}).
+\end{equation}
+\begin{align}
+\widehat M &= U_x(M), \qquad M_x=F_{\sigma_x(\widehat M,x)}(\widehat M),
+   &\delta_x(M,x)&=(M_x,R(M,x,M_x)),\label{eq:petri-delta-x}\\
+\delta_y(M)&=\bigl(F_{\sigma_y(M)}(M),\,O(M,\sigma_y(M))\bigr),
+   &&\label{eq:petri-delta-y}
+\end{align}
+$U_x$는 모델이 선택한 입력 포트 연결을 마킹에 적용합니다.
+$\sigma_x$와 $\sigma_y$는 각각 외부 및 내부 이벤트에서 실행할
+전이와 바인딩의 순서를 선택합니다. $F_\sigma$는 각 발화에서
+갱신된 마킹을 다음 발화에 넘기며, 빈 순서는 마킹을 유지합니다.
+$R$은 재예약 여부를 결정합니다. $O$는 모델의 출력 규칙이며,
+선택한 바인딩에 출력 연결을 적용해 이벤트를 만들 수 있습니다.
+이 선택과 규칙은 모델에서 정의합니다. 상태가 마킹이므로
+$\tau(M)$도 모델이 마킹으로부터 정하는 지연입니다.
 
-\topic{바인딩과 발화}
-입력 아크 $(p,t,z)\in A^-$는 $p$의 토큰 하나를 변수 $z$에
-바인딩한다. 각 아크는 서로 다른 토큰 위치를 선택하며, 같은 변수가
-여러 번 등장하면 값이 같아야 한다. 모든 입력 아크를 만족하고
-전이의 가드 $G_t(b)$가 참이면 바인딩 $b$로 발화할 수 있다.
-출력 아크 $(t,p,e)\in A^+$는 토큰 $e(b)$ 하나를 계산한다.
-선택된 바인딩으로 발화하면 마킹은 다음과 같이 바뀐다.
+$P$는 장소 집합, $T$는 페트리 전이 집합, $A^-$와 $A^+$는
+입력 및 출력 아크, $G$는 전이 가드, $M_0$는 초기 마킹입니다.
+$\mathcal M(N)$은 가능한 마킹의 집합이며, $M(p)$는 장소 $p$의
+순서 있는 토큰 목록입니다.
+상태는 마킹 $M$입니다. $X$와 $Y$는 입출력
+이벤트 집합이며, $C_{\mathrm{in}}$과 $C_{\mathrm{out}}$은 포트 연결입니다.
+
+입력 아크는 서로 다른 토큰 위치에서 값을 골라 변수에 바인딩합니다.
+같은 변수가 반복되면 값이 같아야 합니다. 입력 아크의 조건과
+전이 가드를 만족하면 해당 바인딩으로 발화할 수 있습니다.
+아래 식에서 $I_{t,b}(p)$는 제거할 토큰 위치이고,
+$O_{t,b}(p)$는 출력 아크가 생성한 토큰 목록입니다. $\|$는 목록 연결입니다.
 \begin{equation}\label{eq:petri-fire}
 M'(p)=\bigl(M(p)\setminus_{\mathrm{pos}} I_{t,b}(p)\bigr)
-      \mathbin{\|} O_{t,b}(p).
+       \mathbin{\|} O_{t,b}(p).
 \end{equation}
-$I_{t,b}(p)$는 선택한 토큰의 위치, $O_{t,b}(p)$는 아크 순서로
-생성한 토큰 값의 목록이며, $\|$는 목록을 이어 붙이는 연산이다.
 
-\topic{DEVS 포트}
-입력 연결 $(i,p,f,r)\in C_{\mathrm{in}}$은 이벤트 $(i,x)$의 값을
-토큰 목록 $f(x)$로 변환한다. $r$이 거짓이면 장소 $p$의 목록
-뒤에 추가하고, 참이면 그 목록을 교체한다.
-출력 연결 $(t,o,g,h)\in C_{\mathrm{out}}$은 선택한 바인딩 $b$에
-대해 $g(b)$가 참일 때 이벤트 $(o,h(b))$를 만든다.
-DEVSph 콜백에서 포트 연결의 적용 시점과 페트리 전이의 발화
-시점을 정한다. $\tau$는 DEVS phase 그래프에서 결정한다.
 
-\topic{입력 이벤트에서 페트리 전이로}
-입력 포트는 장소에 토큰을 넣거나 DEVS 천이를 통해 페트리 전이의
-발화를 요청할 수 있다. 식~\eqref{eq:petri-input-paths}의 첫 경로는
-\api{?1USD}가 \api{Credit}에 동전을 넣는 경우다. 두 번째는
-\api{?refund}가 잔액이 있을 때 phase를 \api{Refunding}으로 바꾸고
-즉시 내부 이벤트를 예약하는 경우다. 그 시각에 $\delta_y$가
-\api{!refund}와 반환 금액을 계산한 뒤 \api{Refund}를 발화시켜
-남은 동전 토큰을 모두 소비한다. 그림의 입력 포트에서 전이로 가는
-화살표는 이 요청 경로를 나타낸다. 구현에서는 첫 경로에
-\api{connect\_input\_port()}를 쓰고, 두 번째 경로에는 DEVSph의
-외부·내부 간선을 쓴다. 외부 간선의 액션 안에서 전이를
-발화시키는 모델에서는 그 발화가 $\delta_x$ 안에서 일어난다.
-\begin{equation}\label{eq:petri-input-paths}
-\begin{aligned}
-(i,u)&\xrightarrow{C_{\mathrm{in}}} M'(p),\\
-(i,u)&\xrightarrow{\delta_x}(s',r)
-      \xrightarrow[\tau(s')=0]{r=\mathrm{true}}\delta_y(s')
-      \quad\text{(Vending Machine refund)}.
-\end{aligned}
+$C_{\mathrm{in}}$의 연결 $(i,p,f,r)$은 입력 $(i,u)$를 토큰 목록
+$f(u)$로 변환해 장소 $p$에 추가하거나, $r$이 참이면 기존 목록을
+교체합니다. $C_{\mathrm{out}}$의 연결 $(t,o,g,h)$은 선택된 바인딩
+$b$에 대해 $g(b)$가 참이면 출력 $(o,h(b))$를 만듭니다.
+모델의 $\delta_x$와 $\delta_y$가 포트 연결 적용과 발화 시점을 정합니다.
+$\delta_x$는 새 상태와 재예약 여부를, $\delta_y$는 새 상태와 출력
+이벤트를 결정합니다. $\tau$는 재예약에 사용하는 지연 시간입니다.
+
+기본 자판기는 재고 토큰 다섯 개로 시작합니다. \api{?1USD}는
+\api{Credit}에 동전 하나를 넣습니다. \api{?Coke}를 받았을 때
+\api{Pending}이 비어 있고 동전 두 개와 재고 한 개가 있으면,
+$\delta_x$는 \api{StartSale}을 발화시키고 재예약을 요청합니다.
+이 발화는 동전 두 개와 재고 한 개를 소비하고 \api{Pending}에
+Coke 토큰을 넣습니다. 조건을 만족하지 않으면 구매 요청을 무시합니다.
+\begin{equation}\label{eq:devs-petri-vending-tau}
+\tau(M)=
+\begin{cases}
+3\,\mathrm{s}, & M(\mathrm{Pending})\ne [],\\
+\infty, & M(\mathrm{Pending})=[].
+\end{cases}
 \end{equation}
+정해진 시각에 $\delta_y$는 \api{Deliver}를 발화시켜 대기 토큰을 소비하고 \api{!Coke}를 출력합니다. 배출을 기다리는 중에 동전을 넣어도 기존 예약 시각은 유지됩니다.
+
+환불 예제는 \api{RefundRequested}에 요청 토큰을 넣습니다. 이 토큰이 있으면 $\tau(M)=0$이며, $\delta_y$는 요청 토큰과 남은 동전을 제거하고 반환 금액을 출력합니다.
+
+기본 자판기에서 $B(M)$은 \api{Pending}이 비어 있고 \api{Credit}에 동전이 두 개 이상이며 \api{Stock}에 재고가 하나 이상 있다는 조건입니다. $F_t$는 전이 $t$의 발화에 따른 마킹 갱신이며, $M+\mathrm{coin}_{\mathrm{Credit}}$은 동전 토큰 하나를 추가한 마킹입니다.
+\begin{equation}\label{eq:vending-delta-x}
+\delta_x(M,x)=
+\begin{cases}
+(M+\mathrm{coin}_{\mathrm{Credit}},\mathrm{false}), & x=\texttt{?1USD},\\
+(F_{\mathrm{StartSale}}(M),\mathrm{true}), &
+ x=\texttt{?Coke}\ \land\ B(M),\\
+(M,\mathrm{false}), & \text{otherwise}.
+\end{cases}
+\end{equation}
+\begin{equation}\label{eq:vending-delta-y}
+\delta_y(M)=\bigl(F_{\mathrm{Deliver}}(M),[\texttt{!Coke}]\bigr),
+\qquad S_{\mathrm{int}}=\{M\in S: M(\mathrm{Pending})\ne []\}.
+\end{equation}
+\begin{center}
+\includegraphics[width=.94\linewidth]{images/DEVSPetriNetVendingMachine.png}\par
+\figurelabel{구매 직후의 기본 자판기}
+\end{center}
+그림은 동전 두 개를 넣고 \textbf{Coke}를 누른 직후입니다. $\delta_x$가 동전과 재고를 소비해 \api{Credit}은 0, \api{Stock}은 4, \api{Pending}은 1입니다. $\tau(M)$로 예약한 3초가 지나면 $\delta_y$가 대기 토큰을 소비하고 \api{!Coke}를 출력합니다.
 
 \newpage
 \partmark{Part 2 \enspace 연속 및 이산 이벤트 시스템}

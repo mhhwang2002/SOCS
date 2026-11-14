@@ -181,7 +181,7 @@ class DEVSph(DEVS):
     def Delta_x(self, x, t):
         src = self.phase
         reschedule = super().Delta_x(x, t)
-        if not self.graph.V:
+        if x is not None and not self.graph.V:
             self._observe(src, "external", x, reschedule=reschedule)
         return reschedule
 

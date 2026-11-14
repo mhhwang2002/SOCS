@@ -197,6 +197,11 @@ class CoupledDEVS(TES):
 
     def Delta_x(self, x, t):
         """Route an input event to destination ports."""
+        if x is None:
+            self.tNow = self.tLast = t
+            rescheduled = [component.Delta_x(None, t) for component in self.M]
+            self.update_tn()
+            return any(rescheduled)
         if not isinstance(x, PortValue):
             raise TypeError(f"{x!r} is not a PortValue.")
         self.tNow = t
@@ -242,16 +247,6 @@ class CoupledDEVS(TES):
                     outputs.extend(self.translate_output_event(component, event, t))
             self.update_tn()
         return outputs
-
-    def Delta_t(self, t):
-        """Update time-dependent state in all children."""
-        self.tNow = t
-        unscheduled = False
-        for component in self.M:
-            if component.Delta_t(t):
-                unscheduled = True
-        self.update_tn()
-        return unscheduled
 
     def update_statistics(self, t):
         """Close the open statistics interval of each atomic descendant."""

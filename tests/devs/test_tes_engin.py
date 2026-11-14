@@ -22,9 +22,14 @@ def test_engine_updates_time_once_before_due_events(
     calls = []
 
     class Model(PeriodicModel):
-        def Delta_t(self, t):
-            calls.append(("null", t))
-            return super().Delta_t(t)
+        def delta_x(self, event):
+            if event is None:
+                return self.delta_cont(self._continuous_elapsed)
+            return super().delta_x(event)
+
+        def delta_cont(self, elapsed):
+            calls.append(("null", self.tNow))
+            return False
 
     class Engine(TESEnginBase):
         def do_animation(self):
@@ -50,9 +55,14 @@ def test_same_time_inputs_and_zero_delay_event_share_update_after_restore():
     calls = []
 
     class Model(SinkModel):
-        def Delta_t(self, t):
-            calls.append(t)
-            return super().Delta_t(t)
+        def delta_x(self, event):
+            if event is None:
+                return self.delta_cont(self._continuous_elapsed)
+            return super().delta_x(event)
+
+        def delta_cont(self, elapsed):
+            calls.append(self.tNow)
+            return False
 
         def delta_y(self):
             self.interval = math.inf
@@ -74,9 +84,14 @@ def test_same_time_inputs_and_zero_delay_event_share_update_after_restore():
 
 def test_coupled_null_reschedule_invalidates_previously_selected_event():
     class Model(PeriodicModel):
-        def Delta_t(self, t):
-            if t == 5:
-                self.tNext = 7
+        def delta_x(self, event):
+            if event is None:
+                return self.delta_cont(self._continuous_elapsed)
+            return super().delta_x(event)
+
+        def delta_cont(self, elapsed):
+            if self.tNow == 5:
+                self.interval = 2
                 return True
             return False
 
@@ -100,9 +115,14 @@ def test_finite_time_bound_updates_model_once_without_executing_due_transition()
     calls = []
 
     class Model(PeriodicModel):
-        def Delta_t(self, t):
-            calls.append(t)
-            return super().Delta_t(t)
+        def delta_x(self, event):
+            if event is None:
+                return self.delta_cont(self._continuous_elapsed)
+            return super().delta_x(event)
+
+        def delta_cont(self, elapsed):
+            calls.append(self.tNow)
+            return False
 
     model = Model("model", 5)
     engine = TESEnginBase(model, TimeSimulationEnd=5)
@@ -145,7 +165,7 @@ def test_external_event_without_rescheduling_closes_statistics_interval():
     assert model.StatePercentage == {}
     engine.XBuffer.append((model, PortValue("change", 1)))
     assert engine.execute_one_step() == ExecutionResult.ExternalEventOccurred
-    assert (model.tLast, model.tNext) == (0, 10)
+    assert (model.tLast, model.tNext) == (3, 10)
     assert model.StatePercentage == {"0": 3}
     assert engine.execute_one_step() == ExecutionResult.TimeBoundReached
     assert model.StatePercentage == {"0": 3, "1": 2}

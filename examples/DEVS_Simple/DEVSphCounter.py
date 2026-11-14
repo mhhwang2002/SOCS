@@ -213,7 +213,7 @@ def main(model_type=DEVSphCounter, description=__doc__):
         counter.set_init_total_state(0)
         while isfinite(counter.tNext):
             time = counter.tNext
-            counter.Delta_t(time)
+            counter.Delta_x(None, time)
             output = counter.Delta_y(time)
             phase, count, total = counter.display_state()
             print(f"t={time:g} phase={phase} count={count} sum={total} {output.port}={output.value}")

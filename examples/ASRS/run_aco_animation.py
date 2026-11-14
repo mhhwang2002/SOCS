@@ -287,7 +287,7 @@ def _visual_state(model):
             ),
             VisualEntityState(
                 "ForkCarriage",
-                (crane.x, AISLE_Y + 0.05, crane.z + crane.fork_lift - 0.08),
+                (crane.x, AISLE_Y + 0.35, crane.z + crane.fork_lift - 0.08),
                 color=(0.88, 0.71, 0.22, 1.0),
             ),
             VisualEntityState(
@@ -496,7 +496,7 @@ def main(argv=None):
         "CraneWheelRR": (0.20, 0.12, 0.16),
         "ForkLeft": (0.07, 1.0, 0.045),
         "ForkRight": (0.07, 1.0, 0.045),
-        "ForkCarriage": (0.52, 0.42, 0.08),
+        "ForkCarriage": (0.52, 0.90, 0.08),
     }
     for entity_id, size in moving_boxes.items():
         viewer.create_box_entity(entity_id, size)

@@ -40,7 +40,7 @@ The class \emph{Timed Event System} is the basic class abstracting all timed eve
 \figurelabel{Timed Event System}
 \end{center}
 \begin{equation}
-TES = (X, Y, S, s_0, \Delta_t, \Delta_x, \Delta_y)
+\mathrm{TES}=(X,Y,S,s_0,\Delta_x,\Delta_y)
 \label{eq:tes}
 \end{equation}
 where
@@ -49,9 +49,8 @@ where
   \item $Y$ is the set of output events.
   \item $S$ is the set of states.
   \item $s_0 \in S$ is the initial state.
-  \item $\Delta_t: S \times T \rightarrow S$ is the continuous transition function, here  $T=[0,\infty)$ is a set of non-negative real numbers representing $times$. 
-  \item $\Delta_x: S \times T \times X \rightarrow S$ is the external transition function defining how the system changes its state when it receives an input event at a certain time.
-  \item $\Delta_y: S \times T \rightarrow S\times Y$ is the internal transition function defining how the system changes its state and generates an output event at a certain time. 
+  \item $\delta_x\colon Q\times X\to S\times\{\mathrm{false},\mathrm{true}\}$ is the external transition function. In $Q=\{(s,e):s\in S,\ 0\le e\le\tau(s)\}$, $e$ is the elapsed time. For an external input $x$, $\delta_x(s,e,x)=(s',r)$ gives the resulting state $s'$ and the reschedule flag $r$.
+  \item $\Delta_y\colon S\times T\to S\times (Y\cup\{\phi\})$ is the internal transition function. At the scheduled time, it returns the resulting state and an output event, or $\phi$ if there is no output.
 \end{itemize}
 \newpage
 \chaptermark{Chapter 2 \enspace DEVS(Discrete Event System Specification)}
@@ -68,9 +67,9 @@ DEVS=(X, Y, S, s_0, \delta_x, \delta_y, \tau)
 	\item $X$ is the set of input events.
 	\item $Y$ is the set of output events.
 	\item $S$ is the set of states.
-	\item $s_0 \in S$ is the initial state. 
-	\item $\delta_x: Q \times X \rightarrow S$ is the external transition function $\delta_x(s,e,x)=s'$ defining how the system changes its state $s \in S$ when it receives an input event $x \in X$ at elapsed time $e \in [0, \tau(s)]$.
-	\item $\delta_y: S \rightarrow S\times Y^\phi$ is the internal transition function $\delta_y(s)=(s',y)$ defining how the system changes its state $s \in S$ and generates an output event $y \in Y^\phi = Y \cup \{\phi\}$ at a time $e = \tau(s)$ where $\phi \notin Y$ is the \textit{silent-event}.
+	\item $s_0 \in S$ is the initial state.
+  \item $\delta_x\colon Q\times X\to S\times\{\mathrm{false},\mathrm{true}\}$ is the external transition function. In $Q=\{(s,e):s\in S,\ 0\le e\le\tau(s)\}$, $e$ is the elapsed time. For an external input $x$, $\delta_x(s,e,x)=(s',r)$ gives the resulting state $s'$ and the reschedule flag $r$.
+  \item The internal transition and output function $\delta_y\colon S\to S\times (Y\cup\{\phi\})$ determines the next state $s'$ and any output event $y$ when the scheduled internal event occurs. We write $\delta_y(s)=(s',y)$, with $y=\phi$ when there is no output.
 \end{itemize}
 \newpage
 \chaptermark{2.1 \enspace DEVS}
@@ -86,7 +85,7 @@ python -m examples.DEVS_Simple.DEVSCounter --count 3
 \end{Code}
 In the constructor, \api{self.add\_output\_ports("!c")} registers the
 port for output events in \(Y\). Each event on \api{!c} carries a sum.
-The counter has no input ports, so \(X=\varnothing\).
+The counter has no input ports, so $X=\emptyset$.
 
 Read the \api{Counter} class in \api{DEVSCounter.py}. \api{set\_initial\_state()}
 initializes the model. \api{tau()} gives the time until its next internal
@@ -246,41 +245,40 @@ $\to$ updated model $\to$ view.
 \newpage
 \chaptermark{2.2 \enspace DEVSph}
 \begin{equation}\label{eq:devsph}
-D_{\mathrm{ph}}=(X,Y,Q,V,q_0,v_0,\tau,E_x,E_y),
-\qquad S=Q\times V,\qquad s_0=(q_0,v_0).
+D_{\mathrm{ph}}=(X,Y,G,q_0,V,v_0),
+\qquad G=(Q,E_x\sqcup E_y,\tau),
+\qquad S=Q\times V,\quad s_0=(q_0,v_0).
 \end{equation}
 \begin{equation}\label{eq:devsph-edges}
-e_x=(q,q',i,m,g,a,r)\in E_x,\qquad
-e_y=(q,q',g,a,o)\in E_y.
+e_x:\ q\xrightarrow{(i,m,g,a,r)}q'\quad(e_x\in E_x),
+\qquad
+e_y:\ q\xrightarrow{(g,a,o)}q'\quad(e_y\in E_y).
 \end{equation}
-Here $X$ and $Y$ are input and output events, $Q$ is the phase set,
-and $V$ is the space of model variables. The initial phase and variables
-are $q_0$ and $v_0$. The time advance $\tau(q,v)$ is supplied by the
-current phase as a constant or a function of the model state.
 
-An external edge $e_x$ accepts an input $x=(i,u)$ on port $i$ when the
-value match $m(u)$ and guard $g(s,x)$ are true. The action updates
-the variables to $a(s,x)$ and the edge sets the phase to $q'$.
-The Boolean $r$, given directly or computed from the updated state and
-input, determines whether to reschedule. If no edge is enabled, the
-state and schedule stay as they were.
+$G$ is a directed graph with attributes and may have parallel edges.
+Each vertex $q\in Q$ is a phase and carries a time advance $\tau_q$.
+The initial vertex is $q_0$. The sets $X$ and $Y$ contain input and
+output events, and $V$ is the space of model variable values with initial
+value $v_0$.
 
-At a scheduled internal event, an internal edge $e_y$ is enabled when
-$g(s)$ is true. It emits $o(s)$, evaluated on the source state, then
-updates the state to $(q',a(s))$. Guards and matches default to true,
-actions default to preserving the variables, and outputs default to
-no event. SOCS requires one enabled edge for an internal event and
-allows at most one for an external event.
+From the current vertex $q$, an external edge is enabled for an incoming
+event $x=(i_x,u)$ if $i_x=i$, the value predicate $m(u)$ is true, and
+the guard $g(s,x)$ is true. The model runs action $a$ and moves to $q'$.
+The reschedule flag $r$ is fixed or computed from the updated state and
+input. At a scheduled event, the model takes an outgoing internal edge
+whose guard $g(s)$ is true. It computes output $o(s)$ in the source
+state, runs the action, and moves to $q'$. SOCS allows at most one enabled
+edge for an external event and requires exactly one for an internal event.
+Omitted guards and value predicates default to true.
 
-\begin{align}
-s' &= (q',a(s,x)), &
-\delta_x(s,x) &= (s',r(s',x))
+\begin{alignat}{3}
+\delta_x(s,x) &= (s',r(s',x)), &\qquad\text{where}\quad & s' &= (q',a(s,x))
   \label{eq:devsph-delta-x}\\
-\delta_y(s) &= \bigl((q',a(s)),o(s)\bigr)
+\delta_y(s)   &= \bigl((q',a(s)),o(s)\bigr)
   \label{eq:devsph-delta-y}\\
-\tau(s) &= \tau_q(v), \qquad s=(q,v).
+\tau(s)       &= \tau_q(v), &\qquad\text{where}\quad & s &= (q,v).
   \label{eq:devsph-tau}
-\end{align}
+\end{alignat}
 In \eqref{eq:devsph-delta-x}, if no edge is enabled, $\delta_x(s,x)=(s,\mathrm{false})$. The output $o(s)$ in \eqref{eq:devsph-delta-y} is evaluated before the action. In \eqref{eq:devsph-tau}, the toaster has $\tau_{\mathrm{Idle}}=\infty$ and $\tau_{\mathrm{Toasting}}=10$ seconds by default. The Python methods \api{delta\_x()} and \api{delta\_y()} update the model in place and return the reschedule flag and output event, respectively.
 
 DEVSph and cDEVSph examples open a live window by default. \api{--live} is explicit; use \api{--console} for a text run.
@@ -447,62 +445,94 @@ Neither counter has an external input port. Use Play/Pause, Step, Mode, and Rese
 \end{center}
 
 \newpage
-\chaptermark{2.3 \enspace DEVSphPetriNet}
-A DEVSphPetriNet model combines a DEVSph phase graph $D_{\mathrm{ph}}$
-with a colored Petri net and two port relations.
-\begin{equation}\label{eq:devsph-petri}
-D_{\mathrm{phPN}}=(D_{\mathrm{ph}},N,C_{\mathrm{in}},C_{\mathrm{out}}),
-\qquad N=(P,T,A^-,A^+,G,M_0).
+\chaptermark{2.3 \enspace DEVSPetriNet}
+\begin{equation}\label{eq:devs-petri}
+N=(P,T,A^-,A^+,G,M_0),\qquad
+S=\mathcal M(N),\qquad s_0=M_0.
 \end{equation}
-Here $P$ is the set of places, $T$ the set of Petri transitions, and
-$M_0$ the initial marking. The state is $(q,v,M)$, where $q$ is the
-DEVS phase, $v$ the DEVSph variables, and $M(p)$ the ordered list of
-colored token values in place $p$. Ordering matters when choosing the
-first enabled binding.
+\begin{equation}\label{eq:devs-petri-model}
+D_{\mathrm{PN}}=(X,Y,S,s_0,\delta_x,\delta_y,\tau;
+                  N,C_{\mathrm{in}},C_{\mathrm{out}}).
+\end{equation}
+\begin{align}
+\widehat M &= U_x(M), \qquad M_x=F_{\sigma_x(\widehat M,x)}(\widehat M),
+   &\delta_x(M,x)&=(M_x,R(M,x,M_x)),\label{eq:petri-delta-x}\\
+\delta_y(M)&=\bigl(F_{\sigma_y(M)}(M),\,O(M,\sigma_y(M))\bigr),
+   &&\label{eq:petri-delta-y}
+\end{align}
+$U_x$ applies the input connections selected by the model.
+The rules $\sigma_x$ and $\sigma_y$ select sequences of transition and
+binding pairs for external and internal events, respectively.
+$F_\sigma$ applies each firing to the marking produced by the preceding
+one. An empty sequence leaves the marking unchanged.
+$R$ decides whether to reschedule. $O$ specifies the output events and
+can use the selected bindings with the declared output connections.
+The model supplies these rules. Since the state is the marking,
+$\tau(M)$ is the delay the model assigns to that marking.
 
-\topic{Binding and firing}
-Each input arc $(p,t,z)\in A^-$ binds one token from $p$ to variable $z$.
-Arcs select distinct token positions. Repeated variables require equal
-values. A binding $b$ is enabled when all input arcs can be satisfied
-and the transition guard $G_t(b)$ is true. Each output arc
-$(t,p,e)\in A^+$ computes one token $e(b)$. For a selected binding,
+$P$ is the set of places, $T$ the set of Petri transitions, $A^-$ and
+$A^+$ the input and output arcs, $G$ the transition guards, and $M_0$
+the initial marking. $\mathcal M(N)$ is the set of markings, where
+$M(p)$ is the ordered list of tokens in place $p$. The state is the marking $M$.
+$X$ and $Y$ are input and output events. $C_{\mathrm{in}}$ and
+$C_{\mathrm{out}}$ describe port connections.
+
+Input arcs bind values from distinct token positions. Repeated variables
+require equal values. A binding can fire when it satisfies the input arcs
+and the transition guard. In the equation below, $I_{t,b}(p)$ gives the
+token positions to remove and $O_{t,b}(p)$ lists the values produced by
+the output arcs. The operator $\|$ concatenates lists.
 \begin{equation}\label{eq:petri-fire}
 M'(p)=\bigl(M(p)\setminus_{\mathrm{pos}} I_{t,b}(p)\bigr)
-      \mathbin{\|} O_{t,b}(p).
+       \mathbin{\|} O_{t,b}(p).
 \end{equation}
-Here $I_{t,b}(p)$ lists the consumed positions for the selected match,
-$O_{t,b}(p)$ lists the produced values in arc order, and $\|$ appends lists.
 
-\topic{DEVS ports}
-An input connection $(i,p,f,r)\in C_{\mathrm{in}}$ maps event
-$(i,x)$ to the token list $f(x)$ in place $p$. It appends the list
-when $r$ is false and replaces the marking of $p$ when $r$ is true.
-An output connection $(t,o,g,h)\in C_{\mathrm{out}}$ emits
-$(o,h(b))$ for a selected binding $b$ when $g(b)$ is true.
-DEVSph callbacks determine when these connections are applied and
-when a Petri transition fires. The DEVS phase graph supplies $\tau$.
 
-\topic{Input events that request a firing}
-An input port can put tokens in a place or request a Petri transition
-firing through a DEVS transition. The first path in
-\eqref{eq:petri-input-paths} covers \api{?1USD}, which adds a coin to
-\api{Credit}. The second covers \api{?refund}. With credit available,
-the input sets the phase to \api{Refunding} and schedules an internal
-event at the same time. Then $\delta_y$ computes \api{!refund} with the
-refund amount and fires \api{Refund} to consume all remaining coins.
-The arrow from the input port to the Petri transition depicts this
-request. The first path uses \api{connect\_input\_port()}. The second
-uses the external and internal DEVSph edges. A model can also fire a
-Petri transition in an external edge's action, in which case the firing
-takes place inside $\delta_x$.
-\begin{equation}\label{eq:petri-input-paths}
-\begin{aligned}
-(i,u)&\xrightarrow{C_{\mathrm{in}}} M'(p),\\
-(i,u)&\xrightarrow{\delta_x}(s',r)
-      \xrightarrow[\tau(s')=0]{r=\mathrm{true}}\delta_y(s')
-      \quad\text{(Vending Machine refund)}.
-\end{aligned}
+An input connection $(i,p,f,r)\in C_{\mathrm{in}}$ maps $(i,u)$ to
+tokens $f(u)$ and appends them to place $p$, or replaces its list when
+$r$ is true. An output connection $(t,o,g,h)\in C_{\mathrm{out}}$
+produces $(o,h(b))$ when $g(b)$ holds for the selected binding $b$.
+The model's $\delta_x$ and $\delta_y$ determine when to apply connections
+and fire transitions. An external event determines the new state and
+whether to reschedule. An internal event determines the new state and
+output. The time advance $\tau$ gives the delay used when scheduling.
+
+The basic vending machine starts with five stock tokens. Each
+\api{?1USD} adds one coin to \api{Credit}. On \api{?Coke}, if
+\api{Pending} is empty and two coins and one stock token are available,
+$\delta_x$ fires \api{StartSale} and requests rescheduling. This consumes
+two coins and one stock token and puts a Coke token in \api{Pending}.
+If the conditions fail, the purchase request is ignored.
+\begin{equation}\label{eq:devs-petri-vending-tau}
+\tau(M)=
+\begin{cases}
+3\,\mathrm{s}, & M(\mathrm{Pending})\ne [],\\
+\infty, & M(\mathrm{Pending})=[].
+\end{cases}
 \end{equation}
+At the scheduled time, $\delta_y$ fires \api{Deliver}, consumes the pending token, and emits \api{!Coke}. Inserting a coin during the delay preserves the scheduled delivery time.
+
+The refund example puts a request token in \api{RefundRequested}. With that token present, $\tau(M)=0$. The internal transition clears the request and remaining coin tokens and emits the refund amount.
+
+For the basic vending machine, $B(M)$ means that \api{Pending} is empty, \api{Credit} contains at least two coins, and \api{Stock} contains at least one Coke. $F_t$ updates the marking by firing transition $t$. The expression $M+\mathrm{coin}_{\mathrm{Credit}}$ appends one coin to \api{Credit}.
+\begin{equation}\label{eq:vending-delta-x}
+\delta_x(M,x)=
+\begin{cases}
+(M+\mathrm{coin}_{\mathrm{Credit}},\mathrm{false}), & x=\texttt{?1USD},\\
+(F_{\mathrm{StartSale}}(M),\mathrm{true}), &
+ x=\texttt{?Coke}\ \land\ B(M),\\
+(M,\mathrm{false}), & \text{otherwise}.
+\end{cases}
+\end{equation}
+\begin{equation}\label{eq:vending-delta-y}
+\delta_y(M)=\bigl(F_{\mathrm{Deliver}}(M),[\texttt{!Coke}]\bigr),
+\qquad S_{\mathrm{int}}=\{M\in S: M(\mathrm{Pending})\ne []\}.
+\end{equation}
+\begin{center}
+\includegraphics[width=.94\linewidth]{images/DEVSPetriNetVendingMachine.png}\par
+\figurelabel{Basic vending machine immediately after a purchase}
+\end{center}
+The screenshot shows the state just after inserting two coins and pressing \textbf{Coke}. The external transition $\delta_x$ leaves zero coins in \api{Credit}, four Cokes in \api{Stock}, and one Coke in \api{Pending}. The three-second countdown comes from $\tau(M)$. At the due time, $\delta_y$ consumes the pending Coke and emits \api{!Coke}.
 
 \newpage
 \partmark{Part 2 \enspace Continuous and Discrete Event System}

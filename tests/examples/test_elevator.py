@@ -43,7 +43,7 @@ def test_elevator_advances_to_finite_bound_and_restores_continuous_state():
     assert model._variable.position == pytest.approx(0.375)
 
 
-def test_elevator_evaluates_elapsed_from_schedule_origin_without_double_counting():
+def test_elevator_uses_trip_origin_while_last_update_time_advances():
     model = Elevator()
     engine = TESEnginBase(model, TimeIntervalAnimation=0.1)
     engine.bVerbose = False
@@ -51,6 +51,6 @@ def test_elevator_evaluates_elapsed_from_schedule_origin_without_double_counting
     engine.execute_one_step()
     assert model._variable.position == pytest.approx(0.015)
     engine.execute_one_step()
-    assert model.tLast == 0
+    assert model.tLast == 0.2
     assert model._variable.position == pytest.approx(0.06)
     assert model._variable.velocity == pytest.approx(0.6)

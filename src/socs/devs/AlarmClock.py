@@ -20,7 +20,7 @@ class AlarmClock:
       return self.tNext - time
 
    def time_elapsed(self, tNow=None):
-      """Return time since the scheduling reference at now or a supplied time."""
+      """Return time since the last state update at now or a supplied time."""
       time = self.tNow if tNow is None else tNow
       return time - self.tLast
 

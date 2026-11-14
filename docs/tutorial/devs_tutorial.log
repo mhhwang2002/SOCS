@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (MiKTeX 25.12) (preloaded format=xelatex 2026.11.9)  14 NOV 2026 00:58
+This is XeTeX, Version 3.141592653-2.6-0.999997 (MiKTeX 25.12) (preloaded format=xelatex 2026.11.9)  14 NOV 2026 16:36
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -453,17 +453,7 @@ File: images/TimedEventSystem.jpg Graphic file (type bmp)
 ]
 File: images/DEVS.jpg Graphic file (type bmp)
 <images/DEVS.jpg>
- [2]
-! Undefined control sequence.
-l.89 ...ter has no input ports, so \(X=\varnothing
-                                                  \).
-The control sequence at the end of the top line
-of your error message was never \def'ed. If you have
-misspelled it (e.g., `\hobx'), type `I' and the correct
-spelling (e.g., `I\hbox'). Otherwise just continue,
-and I'll forget about whatever was undefined.
-
-[3] [4] [5] [6]
+ [2] [3] [4] [5] [6]
 File: images/toaster.jpg Graphic file (type bmp)
 <images/toaster.jpg>
  [7]
@@ -472,42 +462,34 @@ File: images/pingpong.jpg Graphic file (type bmp)
  [8]
 File: images/counter_basic.jpg Graphic file (type bmp)
 <images/counter_basic.jpg>
- [9]
+
+[9]
 File: images/counter.jpg Graphic file (type bmp)
 <images/counter.jpg>
  [10]
-
-LaTeX Warning: Reference `eq:petri-input-paths' on page 11 undefined on input l
-ine 488.
-
-[11]
+File: images/DEVSPetriNetVendingMachine.png Graphic file (type bmp)
+<images/DEVSPetriNetVendingMachine.png>
+ [11] [12]
 File: images/CDEVS.jpg Graphic file (type bmp)
 <images/CDEVS.jpg>
- [12] [13]
+ [13] [14]
 File: images/elevator.jpg Graphic file (type bmp)
 <images/elevator.jpg>
- [14] (devs_tutorial.aux)
+ [15] (devs_tutorial.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2025-12-24>
  ***********
-
-
-LaTeX Warning: There were undefined references.
-
-
-LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
-
 Package rerunfilecheck Info: File `devs_tutorial.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 12548 strings out of 402987
- 239633 string characters out of 5448938
- 716951 words of memory out of 5000000
- 41131 multiletter control sequences out of 15000+600000
+ 12565 strings out of 402987
+ 240165 string characters out of 5448938
+ 719113 words of memory out of 5000000
+ 41146 multiletter control sequences out of 15000+600000
  631638 words of font info for 71 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 73i,17n,79p,489b,336s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 73i,12n,79p,489b,450s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on devs_tutorial.pdf (14 pages).
+Output written on devs_tutorial.pdf (15 pages).
