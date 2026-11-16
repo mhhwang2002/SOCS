@@ -34,10 +34,15 @@ def permit(truck, route, *obstacles):
 
 
 def frame(tick, trucks, goals):
-    return tick * STEP, tuple(
-        (truck.position, truck.heading, not truck.actions and truck.position != goal)
-        for truck, goal in zip(trucks, goals)
-    )
+    poses = []
+    for truck, goal in zip(trucks, goals):
+        status = ""
+        if truck.actions and truck.actions[0].turn:
+            status = "R"
+        elif not truck.actions and truck.position != goal:
+            status = "W"
+        poses.append((truck.position, truck.heading, status))
+    return tick * STEP, tuple(poses)
 
 
 def evaluate(case, *, check_collisions=False):

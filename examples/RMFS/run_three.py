@@ -1,16 +1,16 @@
 """Replay the three-robot warehouse experiment in Panda3D."""
 
 from argparse import ArgumentParser
+from bisect import bisect_right
 from .playback import RouteProgress, highlight, motion_events, playback_time, register_selection_color, speed_label
 
-from panda3d.core import loadPrcFileData
+from panda3d.core import TextNode, loadPrcFileData
 
 from .run_panda import Viewer
-from .warehouse_three import CASES, C_ROUTE, STEP, evaluate
+from .warehouse_three import CASES, C_ROUTE, evaluate
 from .warehouse_snapshot import OPPOSING
 
 COLORS = ((0, 0, 1, 1), (1, 0, 0, 1), (0, 1, 0, 1))
-WAITING = (0, 0, 0, 1)
 
 
 class ThreeViewer(Viewer):
@@ -29,6 +29,20 @@ class ThreeViewer(Viewer):
         super().build_scene()
         self.robots = (self.robot, self.robot.copyTo(self.render), self.robot.copyTo(self.render))
         self.loads = tuple(list(self.racks.values())[:3])
+        self.build_status_labels()
+
+    def build_status_labels(self):
+        self.status_labels = []
+        for index in range(len(self.loads)):
+            text = TextNode(f"robot-status-{index}")
+            text.setAlign(TextNode.ACenter)
+            text.setTextColor(1, 1, 1, 1)
+            text.setShadow(.04, .04)
+            text.setShadowColor(0, 0, 0, 1)
+            label = self.render.attachNewNode(text)
+            label.setScale(.85)
+            label.hide()
+            self.status_labels.append(label)
 
     def next_order(self):
         pass
@@ -54,19 +68,29 @@ class ThreeViewer(Viewer):
     def route_display(self, option):
         return (option.first + option.onward[1:], OPPOSING, C_ROUTE), COLORS
 
+    def frame_index(self, frames):
+        return max(0, bisect_right(frames, self.time + 1e-8, key=lambda frame: frame[0]) - 1)
+
     def advance(self, elapsed):
         option, status, _, frames = self.results[self.selected]
         self.time = playback_time(self.time, elapsed, self.speed, frames[-1][0], self.event_times)
-        index = min(len(frames) - 1, int(self.time / STEP + 1e-8))
+        index = self.frame_index(frames)
         self.update_remaining_routes(index)
         time, poses = frames[index]
-        for robot, rack, color, (position, heading, waiting) in zip(
-            self.robots, self.loads, COLORS, poses
+        for robot, rack, label, color, (position, heading, mode) in zip(
+            self.robots, self.loads, self.status_labels, self.route_colors, poses
         ):
             robot.setPos(*position, 0)
             robot.setH(heading)
             rack.setPos(*position, .1)
-            rack.setColor(*(WAITING if waiting else color), 1)
+            rack.setColor(*color, 1)
+            if mode:
+                label.setPos(*position, 2.2)
+                label.node().setText(mode)
+                label.setQuat(self.render, self.camera.getQuat(self.render))
+                label.show()
+            else:
+                label.hide()
         state = status.upper() if index == len(frames) - 1 else "PAUSED" if self.paused else "PLAYING"
         lines = []
         for number, (candidate, outcome, makespan, _) in enumerate(self.results):

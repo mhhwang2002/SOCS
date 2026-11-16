@@ -5,9 +5,9 @@ from argparse import ArgumentParser
 from panda3d.core import loadPrcFileData
 
 from .run_panda import Viewer
-from .run_three import WAITING, ThreeViewer
+from .run_three import ThreeViewer
 from .playback import register_selection_color
-from .warehouse_crossings import STEP, evaluate, routes_for
+from .warehouse_crossings import evaluate, routes_for
 
 CROSSING_COLORS = (
     (.95, .68, .23, 1),  # amber
@@ -21,10 +21,13 @@ CROSSING_COLORS = (
 
 
 class CrossingsViewer(ThreeViewer):
-    def __init__(self, robot_count, *, check_collisions=False):
+    def __init__(self, robot_count, *, check_collisions=False, crossing_delay=0.0):
         self.robot_count = robot_count
         self.label = f"{robot_count} robots at crossings"
-        self.results = [row[:4] for row in evaluate(robot_count, check_collisions=check_collisions)]
+        self.results = [
+            row[:4] for row in evaluate(robot_count, check_collisions=check_collisions,
+                                       crossing_delay=crossing_delay)
+        ]
         self.selected = 0
         self.paths = []
         self.speed = 2.
@@ -37,6 +40,7 @@ class CrossingsViewer(ThreeViewer):
         Viewer.build_scene(self)
         self.robots = (self.robot, *(self.robot.copyTo(self.render) for _ in range(self.robot_count - 1)))
         self.loads = tuple(list(self.racks.values())[:self.robot_count])
+        self.build_status_labels()
 
     def route_display(self, option):
         routes, colors = super().route_display(option)
@@ -45,15 +49,6 @@ class CrossingsViewer(ThreeViewer):
 
     def advance(self, elapsed):
         super().advance(elapsed)
-        frames = self.results[self.selected][3]
-        _, poses = frames[min(len(frames) - 1, int(self.time / STEP + 1e-8))]
-        for robot, rack, (position, heading, waiting), color in zip(
-            self.robots[3:], self.loads[3:], poses[3:], CROSSING_COLORS
-        ):
-            robot.setPos(*position, 0)
-            robot.setH(heading)
-            rack.setPos(*position, .1)
-            rack.setColor(*(WAITING if waiting else color), 1)
         self.monitor.setText(self.monitor.getText().replace("THREE ROBOTS", "YIELDING EXPERIMENT", 1))
 
 
@@ -62,9 +57,12 @@ def main():
     parser.add_argument("--robots", type=int, choices=(5, 10), required=True)
     parser.add_argument("--check-collisions", action="store_true",
                         help="check robot footprints at each simulation sample")
+    parser.add_argument("--crossing-delay", type=float, default=0.0,
+                        help="delay crossing robot entries by this many seconds")
     args = parser.parse_args()
     loadPrcFileData("", f"win-size 1320 800\nwindow-title RMFS | {args.robots} robots at crossings")
-    CrossingsViewer(args.robots, check_collisions=args.check_collisions).run()
+    CrossingsViewer(args.robots, check_collisions=args.check_collisions,
+                    crossing_delay=args.crossing_delay).run()
 
 
 if __name__ == "__main__":
