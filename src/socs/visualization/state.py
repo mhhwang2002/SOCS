@@ -14,6 +14,7 @@ class VisualEntityState:
     heading: float = 0.0
     color: tuple[float, float, float, float] | None = None
     visible: bool = True
+    text: str | None = None
 
     def __post_init__(self):
         if not self.entity_id:

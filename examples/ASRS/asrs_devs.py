@@ -520,6 +520,79 @@ class ASRSController(DEVS):
         self._rng.setstate(rng_state)
 
 
+def motion_position(profile, elapsed):
+    """Sample the AS/RS acceleration, cruise and braking profile."""
+    move_time = min(elapsed, profile["total_time"])
+    accel_time = profile["accel_time"]
+    cruise_time = profile["cruise_time"]
+    if move_time <= accel_time:
+        distance = 0.5 * profile["acceleration"] * move_time**2
+    elif move_time <= accel_time + cruise_time:
+        distance = profile["accel_distance"] + profile["peak_speed"] * (
+            move_time - accel_time
+        )
+    else:
+        decel_elapsed = min(
+            move_time - accel_time - cruise_time,
+            profile["decel_time"],
+        )
+        distance = (
+            profile["accel_distance"]
+            + profile["cruise_distance"]
+            + profile["peak_speed"] * decel_elapsed
+            - 0.5 * profile["deceleration"] * decel_elapsed**2
+        )
+    distance = min(distance, profile["distance"])
+    return profile["start"] + profile["direction"] * distance
+
+
+def motion_profile(start, target, acceleration, deceleration, max_speed):
+    """Build an axis profile, including short moves with no cruise phase."""
+    distance = abs(target - start)
+    if distance <= 1e-12:
+        return None
+    peak_speed = min(
+        max_speed,
+        sqrt(2.0 * distance * acceleration * deceleration / (acceleration + deceleration)),
+    )
+    accel_time = peak_speed / acceleration
+    decel_time = peak_speed / deceleration
+    accel_distance = 0.5 * acceleration * accel_time**2
+    decel_distance = 0.5 * deceleration * decel_time**2
+    cruise_distance = max(0.0, distance - accel_distance - decel_distance)
+    cruise_time = cruise_distance / peak_speed
+
+    # Skip a zero-length cruise phase; all boundaries are relative to the
+    # common start time for this group of simultaneous axis moves.
+    durations = [accel_time]
+    if cruise_time > 1e-12:
+        durations.append(cruise_time)
+    durations.append(decel_time)
+    boundaries = []
+    total = 0.0
+    for duration in durations:
+        total += duration
+        boundaries.append(total)
+
+    return {
+        "start": start,
+        "target": target,
+        "distance": distance,
+        "direction": 1.0 if target >= start else -1.0,
+        "acceleration": acceleration,
+        "deceleration": deceleration,
+        "peak_speed": peak_speed,
+        "accel_time": accel_time,
+        "cruise_time": cruise_time,
+        "decel_time": decel_time,
+        "accel_distance": accel_distance,
+        "cruise_distance": cruise_distance,
+        "total_time": total,
+        "boundaries": boundaries,
+        "segment_index": 0,
+    }
+
+
 class Crane(cDEVS):
     """Single-mast crane with X/Z positioning and a Y-axis telescopic fork."""
 
@@ -728,31 +801,7 @@ class Crane(cDEVS):
             return False
         elapsed = max(0.0, self.tNow - self._move_start_time)
         for axis, profile in self._profiles.items():
-            move_time = min(elapsed, profile["total_time"])
-            accel_time = profile["accel_time"]
-            cruise_time = profile["cruise_time"]
-            if move_time <= accel_time:
-                distance = 0.5 * profile["acceleration"] * move_time**2
-            elif move_time <= accel_time + cruise_time:
-                distance = profile["accel_distance"] + profile["peak_speed"] * (
-                    move_time - accel_time
-                )
-            else:
-                decel_elapsed = min(
-                    move_time - accel_time - cruise_time,
-                    profile["decel_time"],
-                )
-                distance = (
-                    profile["accel_distance"]
-                    + profile["cruise_distance"]
-                    + profile["peak_speed"] * decel_elapsed
-                    - 0.5 * profile["deceleration"] * decel_elapsed**2
-                )
-            distance = min(distance, profile["distance"])
-            self._set_axis(
-                axis,
-                profile["start"] + profile["direction"] * distance,
-            )
+            self._set_axis(axis, motion_position(profile, elapsed))
         return False
 
     def _begin_next_move(self, t):
@@ -827,46 +876,7 @@ class Crane(cDEVS):
                 self.fork_max_speed,
             )
 
-        peak_speed = min(
-            max_speed,
-            sqrt(2.0 * distance * acceleration * deceleration / (acceleration + deceleration)),
-        )
-        accel_time = peak_speed / acceleration
-        decel_time = peak_speed / deceleration
-        accel_distance = 0.5 * acceleration * accel_time**2
-        decel_distance = 0.5 * deceleration * decel_time**2
-        cruise_distance = max(0.0, distance - accel_distance - decel_distance)
-        cruise_time = cruise_distance / peak_speed
-
-        # Skip a zero-length cruise phase; all boundaries are relative to the
-        # common start time for this group of simultaneous axis moves.
-        durations = [accel_time]
-        if cruise_time > 1e-12:
-            durations.append(cruise_time)
-        durations.append(decel_time)
-        boundaries = []
-        total = 0.0
-        for duration in durations:
-            total += duration
-            boundaries.append(total)
-
-        return {
-            "start": start,
-            "target": target,
-            "distance": distance,
-            "direction": 1.0 if target >= start else -1.0,
-            "acceleration": acceleration,
-            "deceleration": deceleration,
-            "peak_speed": peak_speed,
-            "accel_time": accel_time,
-            "cruise_time": cruise_time,
-            "decel_time": decel_time,
-            "accel_distance": accel_distance,
-            "cruise_distance": cruise_distance,
-            "total_time": total,
-            "boundaries": boundaries,
-            "segment_index": 0,
-        }
+        return motion_profile(start, target, acceleration, deceleration, max_speed)
 
     def _get_axis(self, axis):
         return getattr(self, axis.lower())

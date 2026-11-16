@@ -128,7 +128,7 @@ def visual_state(model):
     return states
 
 
-def add_rack_geometry(viewer):
+def add_rack_geometry(viewer, *, show_shelf_decks=True):
     """Build a shaded warehouse floor, rack frames, shelves, and rails."""
     length = RACK_COLUMNS * CELL_WIDTH
     height = RACK_LEVELS * LEVEL_PITCH
@@ -170,14 +170,15 @@ def add_rack_geometry(viewer):
                 (0.05, RACK_DEPTH, 0.05),
                 beam_color,
             )
-    for level in range(RACK_LEVELS):
-        for bay in range(RACK_COLUMNS):
-            viewer.add_box(
-                f"Shelf deck L{level + 1} B{bay + 1:02d}",
-                ((bay + 0.5) * CELL_WIDTH, RACK_DEPTH / 2.0, level * LEVEL_PITCH + 0.035),
-                (CELL_WIDTH - 0.09, RACK_DEPTH - 0.12, 0.025),
-                deck_color,
-            )
+    if show_shelf_decks:
+        for level in range(RACK_LEVELS):
+            for bay in range(RACK_COLUMNS):
+                viewer.add_box(
+                    f"Shelf deck L{level + 1} B{bay + 1:02d}",
+                    ((bay + 0.5) * CELL_WIDTH, RACK_DEPTH / 2.0, level * LEVEL_PITCH + 0.035),
+                    (CELL_WIDTH - 0.09, RACK_DEPTH - 0.12, 0.025),
+                    deck_color,
+                )
 
     for y in (AISLE_Y - 0.32, AISLE_Y + 0.32):
         viewer.add_box(

@@ -275,6 +275,10 @@ class Panda3DViewer:
 
             node.setPos(*entity.position)
             node.setH(entity.heading)
+            if entity.text is not None:
+                text_node = node.node()
+                if text_node.getText() != entity.text:
+                    text_node.setText(entity.text)
             if entity.color is not None:
                 node.setColorScale(*entity.color)
             if entity.visible:
