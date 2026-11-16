@@ -129,6 +129,13 @@ class Robot(DEVSph):
             phases[-1][0], "Done", output="!returned"
         )
 
+    def get_snapshot(self):
+        return super().get_snapshot(), self.collided_with
+
+    def set_snapshot(self, state):
+        phase_state, self.collided_with = state
+        super().set_snapshot(phase_state)
+
     def delta_x(self, x):
         if x is not None and x.port == "?collision":
             self.collided_with = tuple(x.value)

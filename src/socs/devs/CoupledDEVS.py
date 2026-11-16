@@ -248,21 +248,6 @@ class CoupledDEVS(TES):
             self.update_tn()
         return outputs
 
-    def update_statistics(self, t):
-        """Close the open statistics interval of each atomic descendant."""
-        for component in self.M:
-            component.update_statistics(t)
-
-    def get_statistics_str(self):
-        """Return statistics for all descendants."""
-        result = self.name + "\n"
-        for component in self.M:
-            if isinstance(component, CoupledDEVS):
-                result += component.get_statistics_str() + "\n"
-            else:
-                result += "\t" + component.name + ": " + component.get_statistics_str() + "\n"
-        return result
-
     def to_z_s(self):
         """Format the coupling map as a string."""
         parts = []

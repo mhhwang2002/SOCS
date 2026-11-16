@@ -315,6 +315,13 @@ class CoupledRMFS(CoupledDEVS):
         super().__init__("RMFSFleet")
         self.blocked_robots = set()
 
+    def get_snapshot(self):
+        return frozenset(self.blocked_robots)
+
+    def set_snapshot(self, state):
+        self.blocked_robots.clear()
+        self.blocked_robots.update(state)
+
     def set_init_total_state(self, t):
         self.blocked_robots.clear()
         super().set_init_total_state(t)

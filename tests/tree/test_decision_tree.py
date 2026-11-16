@@ -222,8 +222,6 @@ def test_snapshot_formatter_includes_engine_and_recursive_model_state():
         common_state={
             "time_last": 2.0,
             "time_next": 5.0,
-            "statistics_since": 2.0,
-            "state_percentage": 0.4,
         },
         model_state=("ACTIVE", 3),
         has_model_state=True,
@@ -234,8 +232,6 @@ def test_snapshot_formatter_includes_engine_and_recursive_model_state():
                 common_state={
                     "time_last": 2.0,
                     "time_next": float("inf"),
-                    "statistics_since": 2.0,
-                    "state_percentage": 0.0,
                 },
                 model_state={"phase": "WAITING"},
                 has_model_state=True,
@@ -264,40 +260,10 @@ def test_snapshot_formatter_includes_engine_and_recursive_model_state():
     assert "Model: Root" in text
     assert "time_last: 2" in text
     assert "time_next: 5" in text
-    assert "statistics_since:" not in text
-    assert "state_percentage:" not in text
     assert "model_state: ('ACTIVE', 3)" in text
     assert "Model: Root.Child" in text
     assert "time_next: inf" in text
     assert "model_state: {'phase': 'WAITING'}" in text
-
-
-def test_snapshot_formatter_can_optionally_include_state_percentage():
-    from socs.tree import SnapshotFormatter
-
-    root_snapshot = ModelSnapshot(
-        model_id=1,
-        model_path="Root",
-        common_state={"state_percentage": {"B,5": 20.0}},
-        has_model_state=False,
-    )
-    snapshot = SystemSnapshot(
-        t_now=2.0,
-        root_model=root_snapshot,
-        t_next_continuous=float("inf"),
-        t_next_animation=float("inf"),
-    )
-    tree = DecisionTree()
-    root_id = tree.add_root(snapshot)
-
-    default_text = tree.format_path(root_id, node_formatter=SnapshotFormatter())
-    optional_text = tree.format_path(
-        root_id,
-        node_formatter=SnapshotFormatter(show_state_percentage=True),
-    )
-
-    assert "state_percentage:" not in default_text
-    assert "state_percentage: {'B,5': 20.0}" in optional_text
 
 
 def test_snapshot_formatter_omits_uncaptured_model_state():

@@ -91,9 +91,9 @@ def test_external_update_preserves_schedule_and_internal_output_precedes_action(
 def test_snapshot_restores_phase_variables_and_clock(model):
     model.Delta_x(PortValue("start", "go"), 1)
     model.Delta_x(PortValue("update", 3), 2)
-    snapshot = model.capture_state()
+    snapshot = model.capture_snapshot()
     model.Delta_y(5)
-    model.restore_state(snapshot)
+    model.restore_snapshot(snapshot)
     assert model.get_state() == ("Active", {"count": 3})
     assert (model.tLast, model.tNext) == (2, 5)
     assert model.Delta_y(5) == PortValue("done", 3)

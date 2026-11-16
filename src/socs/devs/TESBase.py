@@ -128,8 +128,6 @@ class TES(HierNamedObj, AlarmClock):
         AlarmClock.__init__(self, tl, tn)
         self.IP = {}
         self.OP = {}
-        self._statistics_since = tl
-        self.StatePercentage = {}
         self._model_id = None
 
     def set_init_total_state(self, t):
@@ -180,30 +178,6 @@ class TES(HierNamedObj, AlarmClock):
     def model_id(self) -> UUID | None:
         return self._model_id
 
-    def update_statistics(self, t):
-        """Accumulate time spent in each statistics state."""
-        duration = t - self._statistics_since
-        if duration <= 0:
-            return
-        state = self.get_statistics_state()
-        self.StatePercentage[state] = self.StatePercentage.get(state, 0.0) + duration
-        self._statistics_since = t
-
-    def get_statistics_state(self):
-        """Return the current state used for statistics."""
-        return self.state_to_s()
-
-    def get_statistics_str(self):
-        """Return normalized state-time statistics as a string."""
-        total_t = sum(self.StatePercentage.values())
-        if total_t <= 0:
-            return ""
-
-        return "".join(
-            f"P({state})={duration / total_t:.3f},"
-            for state, duration in self.StatePercentage.items()
-        )
-
     def __str__(self):
         """Return a string representation of the model and its interfaces."""
         result = super().__str__() + "\n"
@@ -224,16 +198,19 @@ class TES(HierNamedObj, AlarmClock):
         return f"({self.name}:{self.format_clock()})"
 
 
-    def capture_state(self):
-        """Capture this model's dynamic state and its descendants."""
-        get_state = getattr(self, "get_state", None)
-        set_state = getattr(self, "set_state", None)
+    def _snapshot_hooks(self):
+        getter = getattr(self, "get_snapshot", None)
+        setter = getattr(self, "set_snapshot", None)
+        if getter is None and setter is None:
+            getter = getattr(self, "get_state", None)
+            setter = getattr(self, "set_state", None)
+        if callable(getter) != callable(setter):
+            raise TypeError(f"{self.path}: snapshot getter and setter must be implemented together.")
+        return getter, setter
 
-        if callable(get_state) != callable(set_state):
-            raise TypeError(
-                f"{self.path}: get_state() and set_state() "
-                "must be implemented together."
-            )
+    def capture_snapshot(self):
+        """Capture this model's dynamic state and its descendants."""
+        get_state, _ = self._snapshot_hooks()
 
         has_model_state = callable(get_state)
         model_state = deepcopy(get_state()) if has_model_state else None
@@ -251,7 +228,7 @@ class TES(HierNamedObj, AlarmClock):
                     f"{self.path}: duplicate child name {child.name!r}."
                 )
 
-            children[child.name] = child.capture_state()
+            children[child.name] = child.capture_snapshot()
 
         return ModelSnapshot(
             model_id=id(self),
@@ -260,15 +237,13 @@ class TES(HierNamedObj, AlarmClock):
                 "time_now": self.tNow,
                 "time_last": self.tLast,
                 "time_next": self.tNext,
-                "statistics_since": self._statistics_since,
-                "state_percentage": deepcopy(self.StatePercentage),
             },
             model_state=model_state,
             has_model_state=has_model_state,
             children=children,
         )
 
-    def restore_state(self, snapshot):
+    def restore_snapshot(self, snapshot):
         """Restore this model and its descendants from a ModelSnapshot."""
         self._validate_snapshot(snapshot)
 
@@ -276,16 +251,15 @@ class TES(HierNamedObj, AlarmClock):
         self.tNow = common_state.get("time_now", common_state["time_last"])
 
         if snapshot.has_model_state:
-            self.set_state(deepcopy(snapshot.model_state))
+            _, set_snapshot = self._snapshot_hooks()
+            set_snapshot(deepcopy(snapshot.model_state))
 
         self.tLast = common_state["time_last"]
         self.tNext = common_state["time_next"]
 
-        self._statistics_since = common_state["statistics_since"]
-        self.StatePercentage = deepcopy(common_state["state_percentage"])
 
         for child in self.children:
-            child.restore_state(snapshot.children[child.name])
+            child.restore_snapshot(snapshot.children[child.name])
 
         self._after_restore_state()
 
@@ -313,16 +287,8 @@ class TES(HierNamedObj, AlarmClock):
                 "the current model hierarchy."
             )
 
-        get_state = getattr(self, "get_state", None)
-        set_state = getattr(self, "set_state", None)
-
-        supports_model_state = callable(get_state) and callable(set_state)
-
-        if callable(get_state) != callable(set_state):
-            raise TypeError(
-                f"{self.path}: get_state() and set_state() "
-                "must be implemented together."
-            )
+        get_snapshot, _ = self._snapshot_hooks()
+        supports_model_state = callable(get_snapshot)
 
         if supports_model_state != snapshot.has_model_state:
             raise ValueError(
@@ -338,8 +304,6 @@ class TES(HierNamedObj, AlarmClock):
         required_keys = {
             "time_last",
             "time_next",
-            "statistics_since",
-            "state_percentage",
         }
 
         if not required_keys.issubset(snapshot.common_state):

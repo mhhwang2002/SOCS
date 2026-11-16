@@ -151,9 +151,6 @@ class DEVSph(DEVS):
         self.phase, variables = state
         self._variable = AttrDict(variables)
 
-    def get_statistics_state(self):
-        return self.phase
-
     def _ensure_observed_phase(self, phase):
         if not isinstance(phase, str) or not phase:
             raise ValueError("DEVSph models must maintain a nonempty string self.phase.")

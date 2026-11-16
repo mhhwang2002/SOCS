@@ -130,29 +130,9 @@ def test_finite_time_bound_updates_model_once_without_executing_due_transition()
     assert engine.execute_one_step() == ExecutionResult.TimeBoundReached
     assert calls == [5]
     assert model.state == 0
-    assert sum(model.StatePercentage.values()) == 5
 
 
-def test_coupled_statistics_include_passive_child_and_same_time_events_once():
-    root = CoupledDEVS("root")
-    first = PeriodicModel("first", 5)
-    second = PeriodicModel("second", 5)
-    passive = PeriodicModel("passive", math.inf)
-    root.add_components(first, second, passive)
-    engine = TESEnginBase(root, TimeIntervalAnimation=5, TimeSimulationEnd=7)
-    engine.bVerbose = False
-    assert engine.execute_one_step() == ExecutionResult.NoEventOccurred
-    assert all(child.StatePercentage == {} for child in root.M)
-    assert engine.execute_one_step() == ExecutionResult.ScheduledEventOccurred
-    assert engine.execute_one_step() == ExecutionResult.ScheduledEventOccurred
-    assert first.StatePercentage == second.StatePercentage == {"0": 5}
-    assert passive.StatePercentage == {}
-    assert engine.execute_one_step() == ExecutionResult.TimeBoundReached
-    assert first.StatePercentage == second.StatePercentage == {"0": 5, "1": 2}
-    assert passive.StatePercentage == {"0": 7}
-
-
-def test_external_event_without_rescheduling_closes_statistics_interval():
+def test_external_event_without_rescheduling_preserves_next_event():
     class Model(PeriodicModel):
         def delta_x(self, event):
             self.state = event.value
@@ -162,13 +142,10 @@ def test_external_event_without_rescheduling_closes_statistics_interval():
     engine = TESEnginBase(model, TimeIntervalAnimation=3, TimeSimulationEnd=5)
     engine.bVerbose = False
     engine.execute_one_step()
-    assert model.StatePercentage == {}
     engine.XBuffer.append((model, PortValue("change", 1)))
     assert engine.execute_one_step() == ExecutionResult.ExternalEventOccurred
     assert (model.tLast, model.tNext) == (3, 10)
-    assert model.StatePercentage == {"0": 3}
     assert engine.execute_one_step() == ExecutionResult.TimeBoundReached
-    assert model.StatePercentage == {"0": 3, "1": 2}
 
 
 def test_nested_output_routes_by_model_even_when_port_names_match():

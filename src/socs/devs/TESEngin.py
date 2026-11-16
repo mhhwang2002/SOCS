@@ -64,7 +64,6 @@ class TESEnginBase:
         self.iSimRun = 1
         self.bAutoresetByTimebound = False
         self.TotalSimRuns = 1
-        self.TrajStatistics = []
         self.last_progress = 0.0
         self.reset("")
 
@@ -80,7 +79,6 @@ class TESEnginBase:
         self.XBuffer.clear()
 
         if len(command) > 1 and command[1] == "-a":
-            self.TrajStatistics = []
             self.iSimRun = 1
 
     def _ensure_snapshot_safe(self):
@@ -132,7 +130,7 @@ class TESEnginBase:
 
         return SystemSnapshot(
             t_now=self.tNow,
-            root_model=self.model.capture_state(),
+            root_model=self.model.capture_snapshot(),
             t_next_continuous=self._tNextContinuous,
             t_next_animation=self._tNextAnimation,
             x_buffer=x_buffer,
@@ -167,7 +165,7 @@ class TESEnginBase:
         self.model._validate_snapshot(snapshot.root_model)
 
         # Restore model state first; model restoration may recompute schedules.
-        self.model.restore_state(snapshot.root_model)
+        self.model.restore_snapshot(snapshot.root_model)
 
         # Restore engine values last so recomputation cannot overwrite them.
         self.tNow = snapshot.t_now
@@ -277,7 +275,6 @@ class TESEnginBase:
         elif next_type == ExecutionType.ANIMATION:
             executionResult = self.execute_animation(self.tNow, prevStepExeTime)
         elif next_type == ExecutionType.END:
-            self.model.update_statistics(self.tNow)
             print(
                 "\nNext schedule reaches the simulation time bound " 
                 f"{next_time:.3f}."
@@ -330,9 +327,6 @@ class TESEnginThread(threading.Thread, TESEnginBase):
                     self.display_q()
                     if executionResult is ExecutionResult.TimeBoundReached:
                         if self.bAutoresetByTimebound:
-                            self.TrajStatistics.append(
-                                self.model.get_statistics_str()
-                            )
                             self.reset("")
                             print(f"Iter={self.iSimRun}")
                             if self.iSimRun < self.TotalSimRuns:
@@ -499,22 +493,7 @@ class TESEnginThread(threading.Thread, TESEnginBase):
     def display_menu(self):
         """Display the interactive menu."""
         print("-- simulation menu --")
-        print("e(x)it, (in)ject, (m)ode, (p)ause, reset, run, stat(i)stics>")
-
-    def print_statistics(self, cmd):
-        """Print statistics for the current or all trajectories."""
-        if len(cmd) > 1 and cmd[1] == "-a":
-            for index, statistics in enumerate(self.TrajStatistics, start=1):
-                print(f"Iter = {index}\n {statistics}")
-                print(
-                    "--------------------------------------------------------------- "
-                    f"End of Iter = {index}\n"
-                )
-        else:
-            print("=" * 86 + "\n")
-            print("statistics of the current trajectory")
-            print(self.model.get_statistics_str())
-            print("=" * 86 + "\n")
+        print("e(x)it, (in)ject, (m)ode, (p)ause, reset, run>")
 
     def display_progress(self):
         """Display a simple progress indicator."""
@@ -558,8 +537,6 @@ class TESEnginThread(threading.Thread, TESEnginBase):
                     self.make_run(command)
                 elif action == "reset":
                     self.reset(command)
-                elif action in ("statistics", "i"):
-                    self.print_statistics(command)
                 elif action in ("pause", "p"):
                     self.pause()
                 elif action in ("in", "inject"):

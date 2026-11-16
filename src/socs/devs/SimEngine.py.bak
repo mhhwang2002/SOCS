@@ -81,7 +81,7 @@ class SimEngineBase():
 
         return SystemSnapshot(
             t_now=self.tNow,
-            root_model=self.model.capture_state(),
+            root_model=self.model.capture_snapshot(),
         )
 
     def restore_snapshot(self, snapshot: SystemSnapshot) -> None:
@@ -94,7 +94,7 @@ class SimEngineBase():
 
         # Validate the full hierarchy before changing any model state.
         self.model._validate_snapshot(snapshot.root_model)
-        self.model.restore_state(snapshot.root_model)
+        self.model.restore_snapshot(snapshot.root_model)
         self.tNow = snapshot.t_now
 
     def print_src_and_event_segment(self, src_state_str, z, tnow):

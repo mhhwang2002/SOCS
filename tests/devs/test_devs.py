@@ -50,10 +50,10 @@ def test_callback_time_is_independent_of_schedule_and_restored():
     model.set_init_total_state(0)
     assert model.Delta_x(PortValue(value=0), 1) is False
     assert (model.tNow, model.tLast, model.tNext) == (1, 1, 2)
-    snapshot = model.capture_state()
+    snapshot = model.capture_snapshot()
     model.Delta_y(2)
     assert model.tNow == 2
-    model.restore_state(snapshot)
+    model.restore_snapshot(snapshot)
     assert model.tNow == 1
     assert model.time_elapsed() == 0
     assert model.time_elapsed(1.5) == 0.5

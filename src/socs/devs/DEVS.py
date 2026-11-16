@@ -55,8 +55,6 @@ class DEVS(TES, ABC):
 
     def set_init_total_state(self, t):
         """Reset the model state and clock at time t."""
-        self._statistics_since = t
-        self.StatePercentage = {}
         self.tNow = t
         self.tLast = t
         self.set_initial_state()
@@ -85,7 +83,6 @@ class DEVS(TES, ABC):
                 raise TypeError("delta_x() must return a bool.")
 
         if x is not None:
-            self.update_statistics(t)
             input_reschedule = self.delta_x(x)
             if not isinstance(input_reschedule, bool):
                 raise TypeError("delta_x() must return a bool.")
@@ -101,7 +98,6 @@ class DEVS(TES, ABC):
         """Process a scheduled internal event and update the clock."""
         self.validate_event_time(t, internal=True)
         self.tNow = t
-        self.update_statistics(t)
         output = self.delta_y()
         if output is not None and not isinstance(output, PortValue):
             if not isinstance(output, (list, tuple, set)) or not all(
@@ -115,6 +111,14 @@ class DEVS(TES, ABC):
     def set_state(self, state):
         """Set the model's current state; implement in a concrete model."""
         raise NotImplementedError("Implement set_state(state) in the model.")
+
+    def get_snapshot(self):
+        """Return the model state needed to resume simulation."""
+        return self.get_state()
+
+    def set_snapshot(self, state):
+        """Restore the model state needed to resume simulation."""
+        self.set_state(state)
 
     def get_state(self):
         """Return the model's current state; implement in the concrete model."""

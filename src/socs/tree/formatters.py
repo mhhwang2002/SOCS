@@ -17,15 +17,11 @@ class SnapshotFormatter:
         self,
         indent: int = 2,
         simulation_time_bound: float | None = None,
-        show_state_percentage: bool = False,
     ) -> None:
         if not isinstance(indent, int) or isinstance(indent, bool) or indent < 0:
             raise ValueError("indent must be a non-negative integer.")
-        if not isinstance(show_state_percentage, bool):
-            raise TypeError("show_state_percentage must be a bool.")
         self.indent = indent
         self.simulation_time_bound = simulation_time_bound
-        self.show_state_percentage = show_state_percentage
 
     def __call__(self, node_id: int, snapshot: SystemSnapshot) -> str:
         if not isinstance(snapshot, SystemSnapshot):
@@ -69,8 +65,6 @@ class SnapshotFormatter:
         lines.append(f"{model_prefix}Model: {model.model_path}")
 
         common_state_keys = ["time_last", "time_next"]
-        if self.show_state_percentage:
-            common_state_keys.append("state_percentage")
 
         for key in common_state_keys:
             if key in model.common_state:

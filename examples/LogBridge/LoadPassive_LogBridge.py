@@ -145,7 +145,6 @@ def run_exhaustive_optimization(
     model=None,
     end_time=200.0,
     include_snapshot_details=True,
-    show_state_percentage=False,
 ):
     """Enumerate all LogBridge decision paths and minimize makespan."""
     from .exhaustive_search import run_logbridge_exhaustive_search
@@ -165,7 +164,6 @@ def run_exhaustive_optimization(
 
             formatter = SnapshotFormatter(
                 simulation_time_bound=end_time,
-                show_state_percentage=show_state_percentage,
             )
             result.tree.print_path(node_id, node_formatter=formatter)
         else:

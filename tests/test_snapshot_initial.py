@@ -40,13 +40,13 @@ def test_capture_restore_counter_state_and_clock():
     model = Counter(name="counter", count_no=5)
     model.set_init_total_state(0)
 
-    snapshot = model.capture_state()
+    snapshot = model.capture_snapshot()
     original_state = model.get_state()
     original_tl = model.tLast
     original_tn = model.tNext
 
     model.Delta_y(5)
-    model.restore_state(snapshot)
+    model.restore_snapshot(snapshot)
 
     assert model.get_state() == original_state
     assert model.tLast == original_tl
@@ -57,26 +57,26 @@ def test_snapshot_is_independent_from_later_model_changes():
     model = Counter(name="counter", count_no=5)
     model.set_init_total_state(0)
 
-    snapshot = model.capture_state()
+    snapshot = model.capture_snapshot()
     saved_state = deepcopy(snapshot.model_state)
 
     model.sum = 999
     model.count = 999
 
     assert snapshot.model_state == saved_state
-    model.restore_state(snapshot)
+    model.restore_snapshot(snapshot)
     assert model.get_state() == ("C", 1, 0, 5)
 
 
 def test_snapshot_deep_copies_mutable_model_state():
     model = MutableStateModel("mutable")
     model.set_init_total_state(0)
-    snapshot = model.capture_state()
+    snapshot = model.capture_snapshot()
 
     model.state["items"].append(99)
 
     assert snapshot.model_state == {"items": [1, 2]}
-    model.restore_state(snapshot)
+    model.restore_snapshot(snapshot)
     assert model.state == {"items": [1, 2]}
     assert model.state is not snapshot.model_state
 
@@ -84,10 +84,10 @@ def test_snapshot_deep_copies_mutable_model_state():
 def test_snapshot_cannot_be_restored_to_another_model_instance():
     first = Counter(name="counter", count_no=5)
     second = Counter(name="counter", count_no=5)
-    snapshot = first.capture_state()
+    snapshot = first.capture_snapshot()
 
     with pytest.raises(ValueError, match="Snapshot model mismatch"):
-        second.restore_state(snapshot)
+        second.restore_snapshot(snapshot)
 
 
 def test_coupled_snapshot_restores_children_and_recomputes_imm():
@@ -98,7 +98,7 @@ def test_coupled_snapshot_restores_children_and_recomputes_imm():
     root.add_child(second)
     root.set_init_total_state(0)
 
-    snapshot = root.capture_state()
+    snapshot = root.capture_snapshot()
     assert root.tNext == 5
     assert root.IMM == {first, second}
 
@@ -106,7 +106,7 @@ def test_coupled_snapshot_restores_children_and_recomputes_imm():
     root.update_tn()
     assert first.get_state() == ("C", 2, 1, 3)
 
-    root.restore_state(snapshot)
+    root.restore_snapshot(snapshot)
 
     assert first.get_state() == ("C", 1, 0, 3)
     assert second.get_state() == ("C", 1, 0, 3)
@@ -120,13 +120,13 @@ def test_restore_rejects_changed_model_hierarchy_before_mutating_state():
     first = Counter("first", count_no=3)
     root.add_child(first)
     root.set_init_total_state(0)
-    snapshot = root.capture_state()
+    snapshot = root.capture_snapshot()
 
     first.sum = 77
     root.children.clear()
 
     with pytest.raises(ValueError, match="hierarchy does not match"):
-        root.restore_state(snapshot)
+        root.restore_snapshot(snapshot)
 
     assert first.sum == 77
 
@@ -138,7 +138,7 @@ def test_snapshot_branch_independence():
     model.tNext = 5.0
 
     initial_state = model.get_state()
-    snapshot = model.capture_state()
+    snapshot = model.capture_snapshot()
 
     # Branch A: Modify the model state and schedule.
     phase, count, total, count_no = initial_state
@@ -150,7 +150,7 @@ def test_snapshot_branch_independence():
     assert branch_a_state != initial_state
 
     # Restore the original snapshot before exploring Branch B.
-    model.restore_state(snapshot)
+    model.restore_snapshot(snapshot)
 
     assert model.get_state() == initial_state
     assert model.tLast == 2.0
@@ -164,7 +164,7 @@ def test_snapshot_branch_independence():
     assert branch_b_state != initial_state
 
     # Restore again and verify that Branch B did not alter the snapshot.
-    model.restore_state(snapshot)
+    model.restore_snapshot(snapshot)
 
     assert model.get_state() == initial_state
     assert model.tLast == 2.0
