@@ -17,27 +17,13 @@ MAX_ANIMATION_SPEED = 100.0
 
 
 class FleetViewer(Viewer):
-    def __init__(self, orders, speed, *, fleet=None):
+    def __init__(self, orders, speed, *, fleet=None, check_collisions=False):
+        self.check_collisions = check_collisions
         self.orders = orders
         self.fleet = fleet if fleet is not None else tuple(dict.fromkeys(order.robot for order in orders))
-        self.speed = inf if speed > MAX_ANIMATION_SPEED else max(MIN_SPEED, speed)
+        self.speed = inf if speed >= MAX_ANIMATION_SPEED else max(MIN_SPEED, speed)
         self.makespan = max(order.finish for order in orders)
         super().__init__()
-        for key, direction in (("u", 1), ("d", -1), ("shift-u", 1), ("shift-d", -1)):
-            self.accept(key, self.change_speed, [direction])
-            self.accept(f"{key}-repeat", self.change_speed, [direction])
-
-    def change_speed(self, direction):
-        if direction > 0:
-            self.speed = self.speed * 2
-            if self.speed > MAX_ANIMATION_SPEED:
-                self.speed = inf
-        else:
-            self.speed = (
-                max(MIN_SPEED, self.speed / 2) if isfinite(self.speed)
-                else MAX_ANIMATION_SPEED
-            )
-        self.advance(0)
 
     def build_scene(self):
         super().build_scene()
@@ -90,7 +76,8 @@ class FleetViewer(Viewer):
                 self.time = min(next_time, self.makespan)
         while self.engine.pick_next_execution_time_type()[0] <= self.time + 1e-8:
             self.engine.execute_one_step()
-        self.model.check_collisions(max(self.time, self.engine.tNow))
+        if self.check_collisions:
+            self.model.check_collisions(max(self.time, self.engine.tNow))
         active = {}
         pending = {}
         finished = {}
@@ -193,6 +180,7 @@ def main():
     parser.add_argument("--speed", type=float)
     parser.add_argument("--collision-demo", action="store_true",
                         help="run two conflicting routes in the warehouse layout")
+    parser.add_argument("--check-collisions", action="store_true")
     args = parser.parse_args()
     if args.speed is None:
         args.speed = 1 if args.collision_demo else 20
@@ -209,7 +197,7 @@ def main():
         fleet = parking_fleet(args.robots)
         title = f"RMFS | Robots: {args.robots}"
     loadPrcFileData("", f"win-size 1320 800\nwindow-title {title}")
-    FleetViewer(orders, args.speed, fleet=fleet).run()
+    FleetViewer(orders, args.speed, fleet=fleet, check_collisions=args.check_collisions or args.collision_demo).run()
 
 
 if __name__ == "__main__":

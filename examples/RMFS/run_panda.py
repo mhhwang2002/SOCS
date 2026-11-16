@@ -1,5 +1,8 @@
 """Live split-screen Panda3D view of the RMFS DEVS example."""
 
+from collections import defaultdict
+from itertools import pairwise
+from math import prod
 
 
 from direct.gui.OnscreenText import OnscreenText
@@ -14,6 +17,8 @@ from .traffic_layout import LANE_SEGMENTS, MID_SEGMENT_CONTROL_POINTS, RACK_POSI
 
 
 from .motion import final_heading
+from .fleet import dynamic_route
+from .playback import bind_speed, speed_label
 
 
 def box(parent, name, center, size, color):
@@ -36,9 +41,9 @@ ROUTE_COLORS = {
 }
 
 
-def draw_route(parent, phase, route):
+def draw_route(parent, phase, route, *, color=None):
     path = LineSegs(phase)
-    path.setColor(*ROUTE_COLORS[phase])
+    path.setColor(*(ROUTE_COLORS[phase] if color is None else color))
     path.setThickness(3.5)
     path.moveTo(*route[0], .025)
     for point in route[1:]:
@@ -46,9 +51,49 @@ def draw_route(parent, phase, route):
     return parent.attachNewNode(path.create())
 
 
+def draw_composite_routes(parent, routes, colors):
+    """Draw shared lane segments once using RGB screen blending."""
+    edges = defaultdict(set)
+    points = defaultdict(set)
+    for robot, route in enumerate(routes):
+        for point in route:
+            points[point].add(robot)
+        for edge in pairwise(route):
+            edges[tuple(sorted(edge))].add(robot)
+
+    def blend(owners):
+        return tuple(
+            1 - prod(1 - colors[robot][channel] for robot in sorted(owners))
+            for channel in range(3)
+        ) + (1,)
+
+    group = parent.attachNewNode("Robot routes")
+    shared = defaultdict(list)
+    for edge, owners in edges.items():
+        draw_route(group, "TravelToWorkstation", edge, color=blend(owners))
+        if len(owners) > 1:
+            for point in edge:
+                shared[point].append(owners)
+    for (x, y), owners in points.items():
+        if len(owners) > 1 and owners not in shared[x, y]:
+            box(group, "Shared control point", (x, y, .06), (.28, .28, .08), blend(owners))
+    return group
+
+
 class Viewer(ShowBase):
+    def update_remaining_routes(self, index):
+        routes = self.route_progress.remaining(index)
+        if routes != self.visible_routes:
+            for path in self.paths:
+                path.removeNode()
+            self.paths = [draw_composite_routes(self.render, routes, self.route_colors)]
+            self.visible_routes = routes
+
     def __init__(self):
         super().__init__()
+        if not hasattr(self, "speed"):
+            self.speed = 1.
+        bind_speed(self, lambda: self.advance(0.))
         clock = ClockObject.getGlobalClock()
         clock.setMode(ClockObject.MLimited)
         clock.setFrameRate(60)
@@ -233,15 +278,6 @@ class Viewer(ShowBase):
         light.setHpr(-35, -58, 0)
         self.render.setLight(light)
 
-    def draw_routes(self):
-        for line in self.route_lines.values():
-            line.removeNode()
-        self.route_lines.clear()
-        for phase, route in self.model.motion.routes.items():
-            if len(route) > 1:
-                self.route_lines[phase] = draw_route(self.render, phase, route)
-
-
     def next_order(self):
         if self.model.controller.phase == "Done":
             self.rack.clearColorScale()
@@ -252,7 +288,6 @@ class Viewer(ShowBase):
         self.model = RMFS(self.assignment)
         self.rack = self.racks[self.assignment.rack]
         self.rack.setColorScale(1, .72, .55, 1)
-        self.draw_routes()
         self.engine = TESEnginBase(self.model)
         self.engine.bVerbose = False
         self.time = 0
@@ -264,16 +299,29 @@ class Viewer(ShowBase):
         self.paused = not self.paused
 
     def advance(self, elapsed):
-        self.time += elapsed
+        if elapsed > 0:
+            next_event = self.engine.pick_next_execution_time_type()[0]
+            if self.speed == float("inf"):
+                if next_event < float("inf"):
+                    self.time = next_event
+            else:
+                self.time += min(.1, elapsed) * self.speed
         while self.engine.pick_next_execution_time_type()[0] <= self.time + 1e-9:
             self.engine.execute_one_step()
             self.events.append(f"{self.engine.tNow:5.1f}s  {self.model.robot.phase}")
         if self.model.controller.phase == "Done":
             self.time = self.engine.tNow
         phase = self.model.robot.phase
-        for route_phase, line in self.route_lines.items():
-            line.show() if route_phase == phase else line.hide()
         motion = self.model.motion
+        route = dynamic_route(motion, phase, self.time - self.model.robot.tLast) if phase in motion.routes else ()
+        key = (phase, route)
+        if key != getattr(self, "_visible_single_route", None):
+            for line in self.route_lines.values():
+                line.removeNode()
+            self.route_lines.clear()
+            if len(route) > 1:
+                self.route_lines[phase] = draw_route(self.render, phase, route)
+            self._visible_single_route = key
         if phase in motion.routes:
             position, heading = motion.pose(phase, self.time - self.model.robot.tLast)
         else:
@@ -296,6 +344,7 @@ class Viewer(ShowBase):
             f"Shipped orders   {int(shipped)} / 1\n\n{self.assignment.rack_id} / {self.assignment.workstation}\n"
             "10 clusters / 120 racks / 10 stations\n\nRECENT EVENTS\n"
             + "\n".join(self.events[-6:]) + "\n\nSpace  Pause    R  Replay    N  Next order"
+            + f"\nU/D Speed   {speed_label(self.speed)}"
         )
 
     def update(self, task):

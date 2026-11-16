@@ -29,8 +29,13 @@ def scenario_orders(case):
     return orders
 
 
+from .playback import bind_speed, speed_label
+
+
 class CollisionViewer(ShowBase):
-    def __init__(self, case):
+    def __init__(self, case, *, check_collisions=True):
+        self.speed = 1.
+        self.check_collisions = check_collisions
         super().__init__()
         self.disableMouse()
         self.setBackgroundColor(.07, .12, .17)
@@ -46,18 +51,20 @@ class CollisionViewer(ShowBase):
         self.moves = (first, second)
         self.orders = scenario_orders(case)
         self.racks = []
+        self.paths = []
         for index, (move, color) in enumerate(zip(self.moves, ((.25, .72, 1, 1), (1, .68, .23, 1))), 1):
             line = LineSegs(f"Path {index}")
             line.setColor(*color)
             line.setThickness(3)
             line.moveTo(*move.start, 0)
             line.drawTo(*move.end, 0)
-            self.render.attachNewNode(line.create())
+            self.paths.append(self.render.attachNewNode(line.create()))
             rack = self.render.attachNewNode(f"Rack {index}")
             box(rack, f"Rack {index} footprint", (0, 0, .1), (1.5, 1.5, .2), color)
             self.racks.append(rack)
         self.status = OnscreenText(parent=self.a2dTopLeft, pos=(.07, -.09), scale=.055,
                                    align=TextNode.ALeft, fg=(1, 1, 1, 1), mayChange=True)
+        bind_speed(self, self.draw_frame)
         self.accept("space", self.toggle_pause)
         self.accept("r", self.reset)
         self.accept("escape", self.userExit)
@@ -78,9 +85,10 @@ class CollisionViewer(ShowBase):
 
     def draw_frame(self):
         phases = []
-        for rack, mission in zip(self.racks, self.model.children):
+        for rack, mission, path, move in zip(self.racks, self.model.children, self.paths, self.moves):
             point, _, _ = mission_pose(mission, self.elapsed)
             rack.setPos(*point, 0)
+            path.hide() if point == move.end else path.show()
             phases.append(f"{mission.robot.name}  {mission.robot.phase}")
         state = "PAUSED" if self.paused else "RUNNING"
         if not isfinite(self.engine.pick_next_execution_time_type()[0]):
@@ -88,15 +96,18 @@ class CollisionViewer(ShowBase):
         self.status.setText(
             f"{self.label}\n{self.elapsed:.2f} s   {state}\n"
             + "\n".join(phases) + "\nSpace: play/pause   R: reset   Esc: exit"
+            + f"\nU/D Speed   {speed_label(self.speed)}"
         )
 
     def tick(self, task):
         if not self.paused and isfinite(self.engine.pick_next_execution_time_type()[0]):
             dt = ClockObject.getGlobalClock().getDt()
-            self.elapsed += min(dt, .1)
+            self.elapsed = (self.engine.pick_next_execution_time_type()[0]
+                            if self.speed == float("inf") else self.elapsed + min(dt, .1) * self.speed)
             while self.engine.pick_next_execution_time_type()[0] <= self.elapsed:
                 self.engine.execute_one_step()
-            self.model.check_collisions(self.elapsed)
+            if self.check_collisions:
+                self.model.check_collisions(self.elapsed)
             self.draw_frame()
         return task.cont
 
@@ -106,13 +117,15 @@ def main():
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("--case", type=int, choices=range(1, len(cases) + 1), default=1)
     parser.add_argument("--list", action="store_true", help="list the available scenarios")
+    from argparse import BooleanOptionalAction
+    parser.add_argument("--check-collisions", action=BooleanOptionalAction, default=True)
     args = parser.parse_args()
     if args.list:
         for number, case in enumerate(cases, 1):
             print(f"{number}. {case[0]}")
         return
     loadPrcFileData("", "win-size 1050 770\nwindow-title RMFS collision experiment")
-    CollisionViewer(cases[args.case - 1]).run()
+    CollisionViewer(cases[args.case - 1], check_collisions=args.check_collisions).run()
 
 
 if __name__ == "__main__":

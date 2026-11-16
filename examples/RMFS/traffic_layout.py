@@ -96,8 +96,10 @@ for source, destination in DIRECTED_ARCS:
 
 
 
-def shortest_route(start, goal):
+def shortest_route(start, goal, *, blocked_edges=(), blocked_nodes=()):
     """Find the shortest centerline path using A* and Euclidean distance."""
+    blocked_edges = set(blocked_edges)
+    blocked_nodes = set(blocked_nodes)
     costs = {start: 0.0}
     previous = {}
     queue = [(dist(start, goal), 0.0, start)]
@@ -111,6 +113,8 @@ def shortest_route(start, goal):
                 path.append(previous[path[-1]])
             return tuple(reversed(path))
         for neighbor in ADJACENCY[node]:
+            if neighbor in blocked_nodes or frozenset((node, neighbor)) in blocked_edges:
+                continue
             candidate = cost + dist(node, neighbor)
             if candidate < costs.get(neighbor, inf):
                 costs[neighbor] = candidate
