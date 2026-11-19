@@ -1,0 +1,6068 @@
+{
+  "units": "metres",
+  "footprint": [
+    1.5,
+    1.5
+  ],
+  "contact_is_interference": true,
+  "tolerance": 1e-09,
+  "safety_margin": 0.0,
+  "scope": "fixed vertex decomposition, wait duplication, untimed disjoint sweeps",
+  "results": [
+    {
+      "example": "02_01_RobotPath_Crossing_NoControl",
+      "status": "feasible",
+      "sufficient_condition": true,
+      "stages": 10,
+      "visited_states": 60,
+      "checked_transitions": 149,
+      "elapsed_seconds": 0.0003387999895494431,
+      "interference": {
+        "R1": [
+          [
+            [
+              0,
+              0.24999999949999996
+            ],
+            [
+              1,
+              0.7500000005
+            ]
+          ]
+        ],
+        "R2": [
+          [
+            [
+              0,
+              0.24999999949999996
+            ],
+            [
+              1,
+              0.7500000005
+            ]
+          ]
+        ]
+      },
+      "consumed_counts": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          4,
+          1
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          6,
+          6
+        ],
+        [
+          7,
+          7
+        ]
+      ],
+      "tuples": [
+        [
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": true
+          }
+        ]
+      ]
+    },
+    {
+      "example": "02_02_RobotPath_LeftEdge_NoControl",
+      "status": "feasible",
+      "sufficient_condition": false,
+      "stages": 7,
+      "visited_states": 60,
+      "checked_transitions": 153,
+      "elapsed_seconds": 0.00033320000511594117,
+      "interference": {
+        "R1": [
+          [
+            [
+              2,
+              0.24999999949999996
+            ],
+            [
+              3,
+              0.0
+            ]
+          ]
+        ],
+        "R2": [
+          [
+            [
+              0,
+              0.24999999949999996
+            ],
+            [
+              1,
+              0.7500000005
+            ]
+          ]
+        ]
+      },
+      "consumed_counts": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          6,
+          6
+        ],
+        [
+          7,
+          7
+        ]
+      ],
+      "tuples": [
+        [
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": true
+          }
+        ]
+      ]
+    },
+    {
+      "example": "02_03_RobotPath_SameDirection_Collision",
+      "status": "feasible",
+      "sufficient_condition": true,
+      "stages": 11,
+      "visited_states": 88,
+      "checked_transitions": 221,
+      "elapsed_seconds": 0.0005073999927844852,
+      "interference": {
+        "R1": [
+          [
+            [
+              2,
+              0.2499999995
+            ],
+            [
+              4,
+              0.7500000005
+            ]
+          ]
+        ],
+        "R2": [
+          [
+            [
+              0,
+              0.24999999949999996
+            ],
+            [
+              2,
+              0.7500000005
+            ]
+          ]
+        ]
+      },
+      "consumed_counts": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          4,
+          3
+        ],
+        [
+          5,
+          4
+        ],
+        [
+          6,
+          5
+        ],
+        [
+          7,
+          6
+        ],
+        [
+          8,
+          6
+        ],
+        [
+          9,
+          6
+        ],
+        [
+          10,
+          6
+        ],
+        [
+          11,
+          7
+        ]
+      ],
+      "tuples": [
+        [
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              4,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              4,
+              0.0
+            ],
+            "end": [
+              4,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              4,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": true
+          }
+        ]
+      ]
+    },
+    {
+      "example": "02_04_RobotPath_SameDirection_Clear",
+      "status": "feasible",
+      "sufficient_condition": false,
+      "stages": 11,
+      "visited_states": 44,
+      "checked_transitions": 105,
+      "elapsed_seconds": 0.0002403999969828874,
+      "interference": {
+        "R1": [
+          [
+            [
+              0,
+              0.0
+            ],
+            [
+              1,
+              0.7500000005
+            ]
+          ]
+        ],
+        "R2": [
+          [
+            [
+              1,
+              0.2499999995
+            ],
+            [
+              3,
+              0.7500000005
+            ]
+          ]
+        ]
+      },
+      "consumed_counts": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          4,
+          8
+        ],
+        [
+          4,
+          9
+        ],
+        [
+          4,
+          10
+        ],
+        [
+          5,
+          11
+        ]
+      ],
+      "tuples": [
+        [
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              4,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              4,
+              0.0
+            ],
+            "end": [
+              4,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              4,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": true
+          }
+        ]
+      ]
+    },
+    {
+      "example": "02_05_RobotPath_OppositeDirection_Collision",
+      "status": "infeasible",
+      "sufficient_condition": false,
+      "stages": null,
+      "visited_states": 24,
+      "checked_transitions": 72,
+      "elapsed_seconds": 0.0001652000064495951,
+      "interference": {
+        "R1": [
+          [
+            [
+              0,
+              0.0
+            ],
+            [
+              3,
+              0.0
+            ]
+          ]
+        ],
+        "R2": [
+          [
+            [
+              0,
+              0.0
+            ],
+            [
+              3,
+              0.0
+            ]
+          ]
+        ]
+      },
+      "consumed_counts": [],
+      "tuples": null
+    },
+    {
+      "example": "02_06_RobotPath_OppositeDirection_Clear",
+      "status": "feasible",
+      "sufficient_condition": false,
+      "stages": 11,
+      "visited_states": 52,
+      "checked_transitions": 129,
+      "elapsed_seconds": 0.0002696999872568995,
+      "interference": {
+        "R1": [
+          [
+            [
+              0,
+              0.0
+            ],
+            [
+              1,
+              0.7500000005
+            ]
+          ]
+        ],
+        "R2": [
+          [
+            [
+              2,
+              0.24999999949999996
+            ],
+            [
+              4,
+              0.7500000005
+            ]
+          ]
+        ]
+      },
+      "consumed_counts": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          4,
+          5
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          4,
+          8
+        ],
+        [
+          4,
+          9
+        ],
+        [
+          4,
+          10
+        ],
+        [
+          5,
+          11
+        ]
+      ],
+      "tuples": [
+        [
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              4,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              4,
+              0.0
+            ],
+            "end": [
+              4,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              4,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": true
+          }
+        ]
+      ]
+    },
+    {
+      "example": "02_07_RobotPath_OppositeDirection_EntryWait",
+      "status": "feasible",
+      "sufficient_condition": true,
+      "stages": 20,
+      "visited_states": 104,
+      "checked_transitions": 265,
+      "elapsed_seconds": 0.0005522999854292721,
+      "interference": {
+        "R1": [
+          [
+            [
+              0,
+              0.24999999949999996
+            ],
+            [
+              4,
+              0.7500000005
+            ]
+          ]
+        ],
+        "R2": [
+          [
+            [
+              0,
+              0.24999999949999996
+            ],
+            [
+              4,
+              0.7500000005
+            ]
+          ]
+        ]
+      },
+      "consumed_counts": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          8,
+          0
+        ],
+        [
+          9,
+          0
+        ],
+        [
+          10,
+          1
+        ],
+        [
+          10,
+          2
+        ],
+        [
+          10,
+          3
+        ],
+        [
+          10,
+          4
+        ],
+        [
+          10,
+          5
+        ],
+        [
+          10,
+          6
+        ],
+        [
+          10,
+          7
+        ],
+        [
+          10,
+          8
+        ],
+        [
+          10,
+          9
+        ],
+        [
+          10,
+          10
+        ],
+        [
+          11,
+          11
+        ]
+      ],
+      "tuples": [
+        [
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              4,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              4,
+              0.0
+            ],
+            "end": [
+              4,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              4,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              4,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              4,
+              0.0
+            ],
+            "end": [
+              4,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              4,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": true
+          }
+        ]
+      ]
+    },
+    {
+      "example": "02_08_RobotPath_DisjointSweeps",
+      "status": "feasible",
+      "sufficient_condition": true,
+      "stages": 7,
+      "visited_states": 64,
+      "checked_transitions": 161,
+      "elapsed_seconds": 0.00035099999513477087,
+      "interference": {
+        "R1": [],
+        "R2": []
+      },
+      "consumed_counts": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          6,
+          6
+        ],
+        [
+          7,
+          7
+        ]
+      ],
+      "tuples": [
+        [
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": true
+          }
+        ]
+      ]
+    },
+    {
+      "example": "02_09_RobotPath_FirstMoverMatters",
+      "status": "feasible",
+      "sufficient_condition": false,
+      "stages": 8,
+      "visited_states": 36,
+      "checked_transitions": 85,
+      "elapsed_seconds": 0.00021590001415461302,
+      "interference": {
+        "R1": [
+          [
+            [
+              0,
+              0.2499999995
+            ],
+            [
+              1,
+              0.7500000005
+            ]
+          ]
+        ],
+        "R2": [
+          [
+            [
+              0,
+              0.0
+            ],
+            [
+              0,
+              0.7500000005
+            ]
+          ]
+        ]
+      },
+      "consumed_counts": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          3,
+          2
+        ],
+        [
+          4,
+          2
+        ],
+        [
+          5,
+          3
+        ],
+        [
+          6,
+          4
+        ],
+        [
+          7,
+          5
+        ]
+      ],
+      "tuples": [
+        [
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          }
+        ]
+      ]
+    },
+    {
+      "example": "02_10_RobotPath_AlternatingProgress",
+      "status": "feasible",
+      "sufficient_condition": false,
+      "stages": 11,
+      "visited_states": 128,
+      "checked_transitions": 345,
+      "elapsed_seconds": 0.0007292999944183975,
+      "interference": {
+        "R1": [
+          [
+            [
+              0,
+              0.0
+            ],
+            [
+              0,
+              0.7500000005
+            ]
+          ],
+          [
+            [
+              3,
+              0.24999999949999996
+            ],
+            [
+              4,
+              0.7500000005
+            ]
+          ]
+        ],
+        "R2": [
+          [
+            [
+              0,
+              0.0
+            ],
+            [
+              0,
+              0.7500000005
+            ]
+          ],
+          [
+            [
+              3,
+              0.24999999949999996
+            ],
+            [
+              4,
+              0.7500000005
+            ]
+          ]
+        ]
+      },
+      "consumed_counts": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          2
+        ],
+        [
+          3,
+          3
+        ],
+        [
+          4,
+          4
+        ],
+        [
+          5,
+          5
+        ],
+        [
+          6,
+          6
+        ],
+        [
+          7,
+          7
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          9,
+          9
+        ],
+        [
+          10,
+          10
+        ],
+        [
+          11,
+          11
+        ]
+      ],
+      "tuples": [
+        [
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              4,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              4,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              4,
+              0.0
+            ],
+            "end": [
+              4,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              4,
+              0.0
+            ],
+            "end": [
+              4,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              4,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              4,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": true
+          }
+        ]
+      ]
+    },
+    {
+      "example": "02_11_RobotPath_SharedCorner",
+      "status": "feasible",
+      "sufficient_condition": true,
+      "stages": 26,
+      "visited_states": 196,
+      "checked_transitions": 525,
+      "elapsed_seconds": 0.0014624999894294888,
+      "interference": {
+        "R1": [
+          [
+            [
+              1,
+              0.24999999949999996
+            ],
+            [
+              6,
+              0.7500000005
+            ]
+          ]
+        ],
+        "R2": [
+          [
+            [
+              1,
+              0.24999999949999996
+            ],
+            [
+              6,
+              0.7500000005
+            ]
+          ]
+        ]
+      },
+      "consumed_counts": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ],
+        [
+          4,
+          0
+        ],
+        [
+          5,
+          0
+        ],
+        [
+          6,
+          0
+        ],
+        [
+          7,
+          0
+        ],
+        [
+          8,
+          0
+        ],
+        [
+          9,
+          0
+        ],
+        [
+          10,
+          0
+        ],
+        [
+          11,
+          0
+        ],
+        [
+          12,
+          1
+        ],
+        [
+          13,
+          2
+        ],
+        [
+          14,
+          3
+        ],
+        [
+          14,
+          4
+        ],
+        [
+          14,
+          5
+        ],
+        [
+          14,
+          6
+        ],
+        [
+          14,
+          7
+        ],
+        [
+          14,
+          8
+        ],
+        [
+          14,
+          9
+        ],
+        [
+          14,
+          10
+        ],
+        [
+          14,
+          11
+        ],
+        [
+          14,
+          12
+        ],
+        [
+          14,
+          13
+        ],
+        [
+          14,
+          14
+        ],
+        [
+          15,
+          15
+        ]
+      ],
+      "tuples": [
+        [
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              4,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              4,
+              0.0
+            ],
+            "end": [
+              4,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              4,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              6,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              6,
+              0.0
+            ],
+            "end": [
+              6,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              6,
+              0.0
+            ],
+            "end": [
+              7,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              7,
+              0.0
+            ],
+            "end": [
+              7,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              7,
+              0.0
+            ],
+            "end": [
+              7,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              7,
+              0.0
+            ],
+            "end": [
+              7,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              7,
+              0.0
+            ],
+            "end": [
+              7,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              7,
+              0.0
+            ],
+            "end": [
+              7,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              4,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              7,
+              0.0
+            ],
+            "end": [
+              7,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              4,
+              0.0
+            ],
+            "end": [
+              4,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              7,
+              0.0
+            ],
+            "end": [
+              7,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              4,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              7,
+              0.0
+            ],
+            "end": [
+              7,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              7,
+              0.0
+            ],
+            "end": [
+              7,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              6,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              7,
+              0.0
+            ],
+            "end": [
+              7,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              6,
+              0.0
+            ],
+            "end": [
+              6,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              7,
+              0.0
+            ],
+            "end": [
+              7,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              6,
+              0.0
+            ],
+            "end": [
+              7,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              7,
+              0.0
+            ],
+            "end": [
+              7,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              7,
+              0.0
+            ],
+            "end": [
+              7,
+              0.0
+            ],
+            "wait": true
+          }
+        ]
+      ]
+    },
+    {
+      "example": "03_01_RobotPath_ThreeWay_Collision",
+      "status": "infeasible",
+      "sufficient_condition": false,
+      "stages": null,
+      "visited_states": 56,
+      "checked_transitions": 344,
+      "elapsed_seconds": 0.0016376999847125262,
+      "interference": {
+        "R1": [
+          [
+            [
+              0,
+              0.0
+            ],
+            [
+              2,
+              0.0
+            ]
+          ]
+        ],
+        "R2": [
+          [
+            [
+              0,
+              0.0
+            ],
+            [
+              2,
+              0.0
+            ]
+          ]
+        ],
+        "R3": [
+          [
+            [
+              0,
+              0.24999999949999996
+            ],
+            [
+              1,
+              0.7500000005
+            ]
+          ]
+        ]
+      },
+      "consumed_counts": [],
+      "tuples": null
+    },
+    {
+      "example": "03_02_RobotPath_ThreeFollowing_Collision",
+      "status": "feasible",
+      "sufficient_condition": true,
+      "stages": 15,
+      "visited_states": 1344,
+      "checked_transitions": 7895,
+      "elapsed_seconds": 0.03454960000817664,
+      "interference": {
+        "R1": [
+          [
+            [
+              0,
+              0.2499999995
+            ],
+            [
+              2,
+              0.7500000005
+            ]
+          ]
+        ],
+        "R2": [
+          [
+            [
+              0,
+              0.24999999949999996
+            ],
+            [
+              4,
+              0.7500000005
+            ]
+          ]
+        ],
+        "R3": [
+          [
+            [
+              0,
+              0.2499999995
+            ],
+            [
+              4,
+              0.7500000005
+            ]
+          ]
+        ]
+      },
+      "consumed_counts": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          2,
+          1,
+          0
+        ],
+        [
+          3,
+          2,
+          0
+        ],
+        [
+          4,
+          3,
+          0
+        ],
+        [
+          5,
+          4,
+          1
+        ],
+        [
+          6,
+          5,
+          2
+        ],
+        [
+          6,
+          6,
+          3
+        ],
+        [
+          6,
+          7,
+          4
+        ],
+        [
+          6,
+          8,
+          5
+        ],
+        [
+          6,
+          9,
+          6
+        ],
+        [
+          6,
+          10,
+          7
+        ],
+        [
+          6,
+          10,
+          8
+        ],
+        [
+          7,
+          11,
+          9
+        ],
+        [
+          8,
+          12,
+          10
+        ],
+        [
+          9,
+          13,
+          11
+        ]
+      ],
+      "tuples": [
+        [
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              4,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              4,
+              0.0
+            ],
+            "end": [
+              4,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              4,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              4,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              4,
+              0.0
+            ],
+            "end": [
+              4,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              4,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              6,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              4,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              4,
+              0.0
+            ],
+            "end": [
+              4,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              6,
+              0.0
+            ],
+            "end": [
+              6,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": true
+          }
+        ]
+      ]
+    },
+    {
+      "example": "03_03_RobotPath_MixedDirection_Collision",
+      "status": "infeasible",
+      "sufficient_condition": false,
+      "stages": null,
+      "visited_states": 80,
+      "checked_transitions": 560,
+      "elapsed_seconds": 0.0018737999780569226,
+      "interference": {
+        "R1": [
+          [
+            [
+              0,
+              0.0
+            ],
+            [
+              3,
+              0.7500000005
+            ]
+          ]
+        ],
+        "R2": [
+          [
+            [
+              0,
+              0.2499999995
+            ],
+            [
+              4,
+              0.7500000005
+            ]
+          ]
+        ],
+        "R3": [
+          [
+            [
+              0,
+              0.0
+            ],
+            [
+              3,
+              0.7500000005
+            ]
+          ]
+        ]
+      },
+      "consumed_counts": [],
+      "tuples": null
+    },
+    {
+      "example": "03_04_RobotPath_SweepInterference",
+      "status": "feasible",
+      "sufficient_condition": false,
+      "stages": 11,
+      "visited_states": 976,
+      "checked_transitions": 5751,
+      "elapsed_seconds": 0.022029299987480044,
+      "interference": {
+        "R1": [
+          [
+            [
+              0,
+              0.0
+            ],
+            [
+              0,
+              0.7500000005
+            ]
+          ],
+          [
+            [
+              1,
+              0.24999999949999996
+            ],
+            [
+              2,
+              0.7500000005
+            ]
+          ],
+          [
+            [
+              3,
+              0.24999999949999996
+            ],
+            [
+              4,
+              0.7500000005
+            ]
+          ]
+        ],
+        "R2": [
+          [
+            [
+              0,
+              0.0
+            ],
+            [
+              0,
+              0.7500000005
+            ]
+          ],
+          [
+            [
+              3,
+              0.24999999949999996
+            ],
+            [
+              4,
+              0.7500000005
+            ]
+          ]
+        ],
+        "R3": [
+          [
+            [
+              1,
+              0.24999999949999996
+            ],
+            [
+              2,
+              0.7500000005
+            ]
+          ]
+        ]
+      },
+      "consumed_counts": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          1,
+          0
+        ],
+        [
+          2,
+          2,
+          0
+        ],
+        [
+          3,
+          3,
+          0
+        ],
+        [
+          4,
+          4,
+          0
+        ],
+        [
+          5,
+          5,
+          1
+        ],
+        [
+          6,
+          6,
+          2
+        ],
+        [
+          7,
+          7,
+          3
+        ],
+        [
+          8,
+          8,
+          4
+        ],
+        [
+          9,
+          9,
+          5
+        ],
+        [
+          10,
+          10,
+          6
+        ],
+        [
+          11,
+          11,
+          7
+        ]
+      ],
+      "tuples": [
+        [
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              4,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              4,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              4,
+              0.0
+            ],
+            "end": [
+              4,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              4,
+              0.0
+            ],
+            "end": [
+              4,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              4,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              4,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": true
+          }
+        ]
+      ]
+    },
+    {
+      "example": "03_05_RobotPath_LocalSafe_Deadlock",
+      "status": "feasible",
+      "sufficient_condition": true,
+      "stages": 20,
+      "visited_states": 416,
+      "checked_transitions": 2167,
+      "elapsed_seconds": 0.00787179998587817,
+      "interference": {
+        "R1": [
+          [
+            [
+              0,
+              0.24999999949999996
+            ],
+            [
+              4,
+              0.7500000005
+            ]
+          ]
+        ],
+        "R2": [
+          [
+            [
+              0,
+              0.24999999949999996
+            ],
+            [
+              4,
+              0.7500000005
+            ]
+          ]
+        ],
+        "R3": []
+      },
+      "consumed_counts": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          2,
+          0,
+          0
+        ],
+        [
+          3,
+          0,
+          0
+        ],
+        [
+          4,
+          0,
+          0
+        ],
+        [
+          5,
+          0,
+          0
+        ],
+        [
+          6,
+          0,
+          0
+        ],
+        [
+          7,
+          0,
+          0
+        ],
+        [
+          8,
+          0,
+          0
+        ],
+        [
+          9,
+          0,
+          0
+        ],
+        [
+          10,
+          1,
+          0
+        ],
+        [
+          10,
+          2,
+          0
+        ],
+        [
+          10,
+          3,
+          0
+        ],
+        [
+          10,
+          4,
+          0
+        ],
+        [
+          10,
+          5,
+          0
+        ],
+        [
+          10,
+          6,
+          0
+        ],
+        [
+          10,
+          7,
+          0
+        ],
+        [
+          10,
+          8,
+          0
+        ],
+        [
+          10,
+          9,
+          1
+        ],
+        [
+          10,
+          10,
+          2
+        ],
+        [
+          11,
+          11,
+          3
+        ]
+      ],
+      "tuples": [
+        [
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              4,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              4,
+              0.0
+            ],
+            "end": [
+              4,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              4,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              2,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              2,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              3,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              3,
+              0.0
+            ],
+            "end": [
+              4,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              4,
+              0.0
+            ],
+            "end": [
+              4,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              0,
+              0.0
+            ],
+            "wait": true
+          }
+        ],
+        [
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              4,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": false
+          },
+          {
+            "start": [
+              0,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": false
+          }
+        ],
+        [
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              5,
+              0.0
+            ],
+            "end": [
+              5,
+              0.0
+            ],
+            "wait": true
+          },
+          {
+            "start": [
+              1,
+              0.0
+            ],
+            "end": [
+              1,
+              0.0
+            ],
+            "wait": true
+          }
+        ]
+      ]
+    },
+    {
+      "example": "03_06_RobotPath_ThreeWay_CyclicWait",
+      "status": "infeasible",
+      "sufficient_condition": false,
+      "stages": null,
+      "visited_states": 32,
+      "checked_transitions": 224,
+      "elapsed_seconds": 0.0007512000156566501,
+      "interference": {
+        "R1": [
+          [
+            [
+              0,
+              0.0
+            ],
+            [
+              2,
+              0.7500000005
+            ]
+          ]
+        ],
+        "R2": [
+          [
+            [
+              0,
+              0.0
+            ],
+            [
+              2,
+              0.7500000005
+            ]
+          ]
+        ],
+        "R3": [
+          [
+            [
+              0,
+              0.0
+            ],
+            [
+              2,
+              0.7500000005
+            ]
+          ]
+        ]
+      },
+      "consumed_counts": [],
+      "tuples": null
+    }
+  ]
+}

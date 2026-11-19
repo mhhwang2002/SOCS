@@ -1,0 +1,75 @@
+% Compile with XeLaTeX.
+\documentclass[11pt]{article}
+\usepackage[margin=25mm]{geometry}
+\usepackage{amsmath}
+\title{RMFS route selection and snapshot lookahead}
+\date{}
+\begin{document}
+\maketitle
+
+\section{Warehouse and objective}
+The model uses ten 2-by-6 rack clusters, 120 racks and ten workstations. Four-connected paths support right-angle turns. Makespan is simulated completion time. Wall-clock runtime measures the cost of computing the decision.
+
+\section{DEVS crossing experiment}
+At simulated time 5 s, save a SOCS snapshot and restore it before each branch. Compare Wait on the distance-shortest A* route, north and south detours, Avoid B's Path, and three yield bays. Evaluate four diverse candidates first and expand when an unchecked candidate can still beat the incumbent under the free-flow bound. The branch clock advances to predicted rack clearance, motion completion, or scheduled entries. Continuous and animation sampling are disabled during lookahead. Verification can replay with footprint checks at 0.01 s.
+
+\section{Crossing results}
+With ten robots and zero entry delay, Detour North completed in 58.30 s versus 59.76 s for Wait. With a 0.25 s entry delay, both the single Wait baseline and lookahead selected Wait at 59.76 s. Single-run runtime was 0.316 s and lookahead runtime was 2.082 s. Six of seven branches were run. Five completed, one reached a dead end, zero repeated states were detected and zero timed out. Branch checks took 2.070 s total, 345 ms on average and 404 ms at maximum. Dead ends were counted from the STALLED status. A rack parked at the destination blocked a crossing route in the stalled branch.
+
+\section{100-order reservation experiment}
+Ten robots process 100 orders with seed 42. Each mission goes from home to rack to workstation, returns the rack to its original slot, and returns to home. Traffic waiting is placed before dispatch at home. At each order decision, evaluate a distance-shortest A* plan and alternatives that replace one mission leg after excluding a candidate edge. Evaluate each against the same space-time reservations and select the earliest predicted home return. This experiment scores routes by reservation calculation. The selected schedule is then replayed in DEVS.
+
+\section{100-order results}
+The search evaluated 701 candidates, averaging 7.01 per order (range 5 to 10). The baseline used one A* plan per order. Of the selected plans, 15 kept the original A* route, 78 used an equal-distance alternative, and 7 used a longer route. The equal-distance alternatives occurred on the home-to-rack, outbound, rack-return and home-return legs in counts of 13, 27, 26 and 12. The longer alternatives occurred on the outbound (2) and rack-return (5) legs. Makespan fell from 3433.63 s to 3111.06 s (9.4\%). Planning runtime rose from 0.803 s to 4.805 s. Candidate checks averaged 6.3 ms and peaked at 22.5 ms. DEVS replay completed all 100 orders with no collision detected at the checked event times.
+
+\section{Limits and follow-up}
+Recorded runtimes are machine-dependent observations. The crossing search branches at one decision point. Repeated online decisions, tail latency under a decision deadline, and general deadlock freedom remain to be evaluated. Sampled collision checks do not guarantee separation between samples. To distinguish the effects of geometry and timing, record shared nodes and segments, time-overlapping reservations, home wait, turns, and detour distance per candidate.
+
+\section{Reproduction commands}
+{\small
+\begin{verbatim}
+python -m examples.RMFS.warehouse_crossings --robots 10 --stats
+python -m examples.RMFS.warehouse_crossings --robots 10 `
+  --crossing-delay 0.25 --stats
+python -m examples.RMFS.fleet --robots 10 --orders 100 `
+  --seed 42 --home-route-stats
+\end{verbatim}
+}
+
+\section{Operating rules and next-leg planning}
+The experiment uses ten robots and 100 orders. Workstations are assigned before the run in order of fewest outbound assignments, with the lower workstation number breaking ties. All strategies use the same order list and workstation assignments.
+
+Orders are dispatched in creation order. Among available robots, the dispatcher chooses the robot with the fewest completed shipments, breaking ties by robot number. The robot chooses randomly among racks that are free of other assignments. Seed 42 fixes a random preference order for each order. Actual rack choices can differ across strategies when availability differs.
+
+\begin{enumerate}
+\item At dispatch, plan from the robot's current location to its new rack.
+\item At the rack, check workstation availability before lifting. Wait under the rack if another robot has begun lifting for the same workstation or still occupies it. After the lift, plan to the workstation.
+\item After completing outbound work, plan from the workstation to the original rack slot.
+\item After lowering the returned rack, make the robot available for dispatch. If no orders are queued, plan from the current location to home.
+\end{enumerate}
+
+Each event plans one leg. Later legs carry no provisional reservations. A* uses one distance-shortest route. A*k-X ranks tied shortest alternatives by shared nodes and edges with active routes. A*k-L compares arrival times from a snapshot for tied shortest alternatives. A*k-LD also includes detours produced by excluding edges. The tied predecessor limit is $k=2$ per node, and the candidate limit is $\ell=8$ per decision.
+
+Space-time cell reservations check occupancy during movement. A robot holds its destination until it can secure its next leg and may wait there when departure is blocked. The run records a deadlock when every active leg has ended and none of the remaining robots can move. Makespan is the time by which all 100 racks have been returned and the robots have reached home.
+
+\begin{table}[htbp]
+\centering
+\caption{Next-leg planning with ten robots}
+\label{tab:next-leg-dispatch}
+\begin{tabular}{rlrrrr}
+\hline
+No. & Metric & A* & A*k-X & A*k-L & A*k-LD\\
+\hline
+1 & Makespan (s) & NA & NA & NA & 2293.34\\
+2 & Orders returned & 53 & 42 & 97 & 100\\
+\hline
+\end{tabular}
+\end{table}
+
+A*k-LD returned all 100 racks and completed the home returns. The other strategies halted with no admissible next leg. In the A* run, all ten robots were waiting for rack-approach legs at termination.
+
+\begin{verbatim}
+python -m examples.RMFS.leg_dispatch
+\end{verbatim}
+
+\end{document}

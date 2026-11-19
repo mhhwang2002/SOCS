@@ -1,176 +1,112 @@
-"""Single-order robotic mobile fulfillment system."""
+"""Coupled DEVS model for the RMFS example."""
 
-from dataclasses import dataclass
-from itertools import pairwise
-from math import dist, inf
-from random import Random
+from math import inf
 
 from socs.devs import CoupledDEVS, DEVSph
 from socs.devs.TESBase import PortValue
 
-from .motion import MissionMotion
-from .traffic_layout import CLUSTERS, HORIZONTAL_LANES, RACK_POSITIONS, STANDBY, STATION_APPROACHES, WORKSTATIONS, shortest_route
-
-RACKS_PER_CLUSTER = 2 * 6
-BINS_PER_RACK = 8
-
-
-
-@dataclass(frozen=True)
-class Assignment:
-    rack: tuple[int, int, int]
-    workstation: str
-
-    @property
-    def rack_id(self):
-        cluster, row, col = self.rack
-        return f"C{cluster+1:02} R{row+1:02}-C{col+1:02}"
-
-
-class OrderAllocator:
-    """Keep cumulative workstation assignments across orders."""
-
-    def __init__(self, seed=None):
-        self.random = Random(seed)
-        self.counts = dict.fromkeys(STATION_APPROACHES, 0)
-
-    def assign(self):
-        minimum = min(self.counts.values())
-        eligible = [name for name, count in self.counts.items() if count == minimum]
-        workstation = self.random.choice(eligible)
-        rack = self.random.choice(tuple(RACK_POSITIONS))
-        self.counts[workstation] += 1
-        return Assignment(rack, workstation)
-
-
-
-@dataclass(frozen=True)
-class RobotStatus:
-    name: str
-    position: tuple[float, float]
-    available: bool = True
-
-
-DEMO_FLEET = (
-    RobotStatus("MiR600-01", (2, HORIZONTAL_LANES[3])),
-    RobotStatus("MiR600-02", STANDBY),
-    RobotStatus("MiR600-03", (40, HORIZONTAL_LANES[3])),
-)
-
-
-def select_robot(fleet, slot):
-    candidates = [
-        (robot, shortest_route(robot.position, slot))
-        for robot in fleet
-        if robot.available
-    ]
-    if not candidates:
-        raise ValueError("No available robot for the assigned rack.")
-    return min(
-        candidates,
-        key=lambda candidate: (
-            sum(dist(a, b) for a, b in pairwise(candidate[1])),
-            candidate[0].name,
-        ),
-    )
-
-
-class Controller(DEVSph):
-    """Dispatch the demo order and wait for the robot to return its rack."""
-
-    def __init__(self, assignment, dispatch_time=0):
-        super().__init__("Controller")
-        self.add_input_ports("?returned")
-        self.add_output_ports("!dispatch", "!complete")
-        self.add_phase("Dispatch", tau=dispatch_time, initial=True)
-        self.add_phase("AwaitReturn", tau=inf)
-        self.add_phase("ReportCompletion", tau=0)
-        self.add_phase("Done", tau=inf)
-        self.add_internal_transition("Dispatch", "AwaitReturn", output=PortValue("!dispatch", assignment))
-        self.add_external_transition(
-            "AwaitReturn", "ReportCompletion", input_port="?returned", reschedule=True
-        )
-        self.add_internal_transition("ReportCompletion", "Done", output="!complete")
-
-
-class Robot(DEVSph):
-    """Execute one assigned rack transport and return."""
-
-    def __init__(self, assignment, motion, name):
-        super().__init__(name)
-        self.add_input_ports("?dispatch")
-        self.add_input_ports("?collision")
-        self.collided_with = ()
-        self.blocked_robots = ()
-        self.add_output_ports("!progress", "!returned")
-        self.add_phase("Idle", tau=inf, initial=True)
-        self.add_phase("Done", tau=inf)
-        self.add_phase("Collided", tau=inf)
-        phases = (
-            ("TravelToRack", motion.travel_times["TravelToRack"], f"Arrived at {assignment.rack_id}"),
-            ("LiftRack", 1.4, "Rack lifted"),
-            ("TravelToWorkstation", motion.travel_times["TravelToWorkstation"], f"Arrived at {assignment.workstation}"),
-            ("PickBin", 3.0, f"Order shipped at {assignment.workstation}"),
-            ("ReturnRack", motion.travel_times["ReturnRack"], "Arrived at original rack slot"),
-            ("LowerRack", 1.4, "Rack returned to original slot"),
-            ("ReturnToStandby", motion.travel_times["ReturnToStandby"], "Robot at standby"),
-        )
-        for phase, duration, _ in phases:
-            self.add_phase(phase, tau=duration)
-        self.add_external_transition(
-            "Idle", phases[0][0], input_port="?dispatch", reschedule=True
-        )
-        for current, following in zip(phases, phases[1:]):
-            phase, _, milestone = current
-            self.add_internal_transition(
-                phase, following[0], output=PortValue("!progress", milestone)
-            )
-        self.add_internal_transition(
-            phases[-1][0], "Done", output="!returned"
-        )
-
-    def get_snapshot(self):
-        return super().get_snapshot(), self.collided_with
-
-    def set_snapshot(self, state):
-        phase_state, self.collided_with = state
-        super().set_snapshot(phase_state)
-
-    def delta_x(self, x):
-        if x is not None and x.port == "?collision":
-            self.collided_with = tuple(x.value)
-            self.phase = "Collided"
-            return True
-        if x is not None and x.port == "?dispatch" and self.name in self.blocked_robots:
-            return False
-        return super().delta_x(x)
+from .MRobot import MRobot
+from .PSensor import PSensor
 
 
 class RMFS(CoupledDEVS):
-    """Connect dispatch and completion signals between controller and robot."""
-
-    def __init__(self, assignment=None, fleet=DEMO_FLEET, *, name="RMFS", dispatch_time=0, approach=None, motion=None):
+    def __init__(self, name="RMFS", *, collision_check=False):
         super().__init__(name)
-        self.assignment = assignment if assignment is not None else OrderAllocator().assign()
-        self.slot = RACK_POSITIONS[self.assignment.rack]
-        self.station = STATION_APPROACHES[self.assignment.workstation]
-        if approach is None:
-            self.selected_robot, approach = select_robot(fleet, self.slot)
-        else:
-            self.selected_robot, = fleet
-        self.motion = motion if motion is not None else MissionMotion(self.slot, self.station, approach)
-        self.controller = Controller(self.assignment, dispatch_time)
-        self.robot = Robot(self.assignment, self.motion, self.selected_robot.name)
-        self.add_components(self.controller, self.robot)
-        self.add_output_ports("!progress", "!complete")
-        self.add_couples(
-            ((self.controller, "!dispatch"), (self.robot, "?dispatch")),
-            ((self.robot, "!returned"), (self.controller, "?returned")),
-            ((self.robot, "!progress"), (self, "!progress")),
-            ((self.controller, "!complete"), (self, "!complete")),
-        )
+        self.collision_check = collision_check
+        self.aabbs = {}
+        self.active_contacts = set()
+        self.collision_history = []
+
+    def set_init_total_state(self, t):
+        super().set_init_total_state(t)
+        self.aabbs = {}
+        self.active_contacts = set()
+        self.collision_history = []
+
+    def Delta_x(self, x, t):
+        rescheduled = super().Delta_x(x, t)
+        if not self.collision_check:
+            return rescheduled
+        return self.check_collision(t) or bool(rescheduled)
+
+    def check_collision(self, t):
+        """Refresh fixed rack footprints and sweep along X to find contact pairs."""
+        robots = {model.name: model for model in self.M if isinstance(model, MRobot)}
+        self.aabbs = {}
+        for name, robot in robots.items():
+            x, y = robot.position_at(t)
+            half_x, half_y = (side/2 for side in robot.rack_size)
+            self.aabbs[name] = ((x-half_x,y-half_y), (x+half_x,y+half_y))
+        boxes = sorted(self.aabbs.items(), key=lambda item: item[1][0][0])
+        contacts = set()
+        for index, (name, (lower,upper)) in enumerate(boxes):
+            for other, (other_lower,other_upper) in boxes[index+1:]:
+                if other_lower[0] > upper[0]:
+                    break
+                if lower[1] <= other_upper[1] and other_lower[1] <= upper[1]:
+                    contacts.add(tuple(sorted((name,other))))
+        previous_contacts = self.active_contacts
+        new_contacts = contacts-previous_contacts
+        self.active_contacts = contacts
+        affected = {name for pair in contacts | previous_contacts for name in pair}
+        for pair in sorted(new_contacts):
+            self.collision_history.append((t,pair))
+            print(f"Collision {pair} at={t}")
+        rescheduled = False
+        for name in sorted(affected):
+            robot = robots[name]
+            partners = tuple(sorted(
+                other for pair in contacts if name in pair
+                for other in pair if other != name
+            ))
+            event = PortValue("?collision", partners) if partners else None
+            # super().Delta_x has already advanced each child's clock to t.
+            # The atomic hook must explicitly receive None on clearance:
+            # the framework's Delta_x(None, t) does not call delta_x(None).
+            if event is None:
+                rescheduled = robot.delta_x(None) or rescheduled
+            elif robot.phase != "Collided":
+                rescheduled = robot.Delta_x(event,t) or rescheduled
+            for sensor, port in self.Z.get((robot,"!motion_plan"), ()):
+                if isinstance(sensor,PSensor):
+                    if event is None:
+                        rescheduled = sensor.delta_x(None) or rescheduled
+                    elif sensor.phase != "Collided":
+                        rescheduled = sensor.Delta_x(event,t) or rescheduled
+        self.update_tn()
+        return rescheduled
+
+    def get_snapshot(self):
+        return {
+            "active_contacts": tuple(sorted(self.active_contacts)),
+            "collision_history": tuple(self.collision_history),
+        }
+
+    def set_snapshot(self, snapshot):
+        self.active_contacts = set(snapshot["active_contacts"])
+        self.collision_history = list(snapshot["collision_history"])
+        self.aabbs = {}
 
 
+class Controller(DEVSph):
+    def __init__(self, robot_count, order_count):
+        super().__init__("Controller", variables={"pending_orders": []})
+        self.order_count = order_count
+        self.add_input_ports("?report", "?orders")
+        for number in range(1, robot_count + 1):
+            self.add_output_ports(f"!command_{number}", f"!grant_{number}")
+        self.add_phase("Idle", tau=inf, initial=True)
+        self.add_external_transition("Idle", "Idle", input_port="?orders",
+                                     reschedule=False, action=Controller.receive_orders)
+
+    def receive_orders(self, event):
+        self._variable["pending_orders"].extend(event.value)
 
 
-
+class Robot(DEVSph):
+    def __init__(self, number):
+        super().__init__(f"Robot{number}")
+        self.number = number
+        self.add_input_ports("?command", "?grant")
+        self.add_output_ports("!report")
+        self.add_phase("Idle", tau=inf, initial=True)
