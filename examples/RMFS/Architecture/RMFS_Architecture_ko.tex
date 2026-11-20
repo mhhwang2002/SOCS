@@ -1201,7 +1201,152 @@ P_3:&\ (1,3)\to(0,3)\to(0,0)\to(1,0).
 \par\medskip\footnotesize
 현재 유한 분스복 탐색기는 정해진 분할에서 해를 찾거나 탐색을 소진할 수 있다.
 이는 실험적 기준 계산기이며, 위 문제들을 간단한 구조적 조건으로 모두 규명한 것은 아니다.
-분스합에 의한 효율화와 실시간 제어 설계는 이후 과제로 남긴다.
+분스합의 보수적인 안전 조건과 첫 구현 결과는 다음에서 다룬다.
+최적의 합 선택과 실시간 제어 설계는 이후 과제로 남긴다.
+\end{frame}
+
+
+\begin{frame}{연속된 짝의 분스합: 연결과 연산}
+\small
+\[
+ (A_1,B_1),\ (A_2,B_2)
+ \quad\longrightarrow\quad (A_1\circ A_2,\ B_1\circ B_2)
+\]
+$A_r$는 물체 $i$, $B_r$는 물체 $j$의 부분경로이며,
+$\circ$는 같은 원 경로의 순서를 유지하는 연결이다.
+\begin{equation}
+ \operatorname{end}(A_1)=\operatorname{start}(A_2),\qquad
+ \operatorname{end}(B_1)=\operatorname{start}(B_2).
+ \tag{43}\label{eq:merge-continuity}
+\end{equation}
+\begin{equation}
+ S(A_1\circ A_2)=S(A_1)\cup S(A_2),\qquad
+ S(B_1\circ B_2)=S(B_1)\cup S(B_2).
+ \tag{44}\label{eq:merge-sweep-union}
+\end{equation}
+\begin{equation}
+ \boxed{(A_1,B_1)\oplus(A_2,B_2)
+       =(A_1\circ A_2,\ B_1\circ B_2).}
+ \tag{45}\label{eq:pair-merge}
+\end{equation}
+기존 중간점과 꺾임은 보존한다. 중간점에서의 정지 경계를 없애는 것이며,
+두 끝점을 잇는 새로운 직선으로 경로를 바꾸는 것이 아니다.
+\end{frame}
+
+\begin{frame}{분스합의 허용 조건: 교차 항까지 검사}
+\small
+\begin{equation}
+ \boxed{\bigl(S(A_1)\cup S(A_2)\bigr)
+ \cap\bigl(S(B_1)\cup S(B_2)\bigr)=\varnothing.}
+ \tag{46}\label{eq:safe-pair-merge}
+\end{equation}
+원래 두 짝이 각각 무간섭이라면, 추가로 확인할 조건은 다음 교차 항이다.
+\begin{equation}
+ S(A_1)\cap S(B_2)=\varnothing,\qquad
+ S(A_2)\cap S(B_1)=\varnothing.
+ \tag{47}\label{eq:merge-cross-terms}
+\end{equation}
+각 짝이 따로 안전하다는 사실만으로 합을 허용하지 않는다.
+합으로 단계 경계와 대기가 제거되므로, 서로 다른 단계의 스윕도 검사해야 한다.
+\medskip
+
+$n$개 물체의 연속된 묶음들을 합칠 때도, 합친 부분경로 $Q_i$에 대해
+\begin{equation}
+ S(Q_i)\cap S(Q_j)=\varnothing\quad(1\le i<j\le n)
+ \tag{48}\label{eq:safe-tuple-merge}
+\end{equation}
+를 모두 확인한다. 이는 시간 배치에 의존하지 않는 보수적인 충분조건이다.
+\end{frame}
+
+\begin{frame}{분스합의 성질과 현재 구현 범위}
+\small
+\textbf{성질: 안전성과 완료 가능성의 보존.}
+유한한 무간섭 묶음 실행에서 연속 단계들을 식 (43), (48)을 만족하도록
+합하고, 합친 각 부분경로의 이동이 유한시간에 완료된다고 하자.
+그러면 변환한 실행도 충돌 없이 각 원 경로를 완료한다.
+\medskip
+
+\textbf{증명.} 각 물체의 실행 중 점유 영역은 자신의 합친 스윕에 포함된다.
+식 (48)에 의해 같은 단계의 서로 다른 물체는 충돌하지 않는다.
+식 (43)에 의해 단계 사이의 위치와 원 경로 순서는 유지된다.
+합은 유한한 실행 단계들을 유한한 단계들로 대체하므로,
+각 단계의 유한시간 완료 가정에서 전체 완료가 따른다.
+\medskip
+
+\textbf{현재 구현.} 연속 단계들을 탐욕적으로 합하며 매번 식 (48)을 검사한다.
+최적의 합 또는 makespan 최소화를 보장하지 않는다.
+\textbf{이번 실행에서는 분스분리를 사용하지 않는다.}
+분리 함수는 합친 부분경로의 기존 중간점을 정지 가능한 경계로 복원하도록
+준비되어 있으며 새 기하학적 점을 삽입하지 않는다.
+\end{frame}
+
+
+
+\begin{frame}{분스합 $\times$ 이탈 보고 기반 조기 출발: $2\times2$ 비교}
+\small
+\begin{table}\centering
+\caption{원래 제어용 분스를 유지한 경우의 makespan (s)}
+\label{tab:merge-release-factorial}
+\begin{tabular}{rlrr}
+\hline
+물체 수 & 분스합 & 묶음 완료 후 출발 & 이탈 보고로 조기 출발 \\
+\hline
+10 & 미적용 & 431.798 & 128.432 \\
+10 & 적용 & 345.844 & 112.194 \\
+\hline
+20 & 미적용 & 729.582 & 211.108 \\
+20 & 적용 & 590.257 & 164.416 \\
+\hline
+\end{tabular}\end{table}
+\footnotesize
+\textbf{동일 조건:} $10\times10$ 점 격자, 간격 2 m, 시드 20261119.
+각 물체 수의 네 조합은 원 경로·원 제어용 분스계획·초기 위치·방향·모션 파라미터가
+동일하다. Makespan은 실행 시작부터 전원 목적지 도착까지이다.
+\par\medskip
+\textbf{분스합:} 다음 원 분스의 출발을 먼저 판단한 뒤, 현재 허용된 연속 분스까지만
+하나의 이동 명령으로 묶는다. 뒤쪽 분스가 막혀도 첫 분스의 출발은 늦추지 않는다.
+별도의 분스분리 연산으로 제어계획을 바꾸지는 않는다.
+\par\medskip
+\textbf{검증:} 0.01 s 간격 AABB 검사, 충돌 시 MRobot·PSensor 모두 정지.
+여덟 조합을 두 번씩 실행하여 매번 같은 완료 시각을 확인했고,
+검출 충돌 0건, 전원 도착이었다. 이 결과는 해당 예제의 결과이며 최적성을 뜻하지 않는다.
+\end{frame}
+
+
+
+\begin{frame}{제어용 분스와 이동 명령의 분리}
+\small
+\begin{center}
+\begin{tikzpicture}[every node/.style={font=\small},>=stealth]
+\node[draw,rounded corners,align=center,text width=4.8cm] (control) at (0,1.1)
+ {원 분스·간섭 관계 유지\\다음 원 분스의\\출발 조건 판단};
+\node[draw,rounded corners,align=center,text width=4.8cm] (command) at (6.3,1.1)
+ {허용된 연속 분스만\\이동 명령으로 합침\\첫 출발을 늦추지 않음};
+\node[draw,rounded corners,align=center,text width=10.8cm] (report) at (3.15,-.7)
+ {MRobot·PSensor 보고 $\to$ RoadMap 갱신\\잔여 원 분스로 재판단};
+\draw[->] (control)--(command);
+\draw[->] (command.south)--(report.north east);
+\draw[->] (report.north west)--(control.south);
+\end{tikzpicture}
+\end{center}
+\begin{table}\centering
+\caption{수정 후 R1의 최초 출발: 10개 물체, 조기 출발 사용}
+\label{tab:merge-release-r1-audit}
+\begin{tabular}{lrr}
+\hline
+ & 분스합 미적용 & 분스합 적용 \\
+\hline
+R1 첫 명령의 선분 수 & 1 & 3 \\
+R1 최초 출발 시각 (s) & 0.000 & 0.000 \\
+시각 0의 전체 출발 물체 수 & 8 & 8 \\
+\hline
+\end{tabular}
+\end{table}
+\footnotesize
+수정 전에는 합친 명령을 제어용 예약 단위로도 사용하여 R1의 첫 출발이
+150.239 s로 늦어졌다. 이 비교 조건의 혼합을 수정했다.
+현재는 원 제어용 분스계획의 동일성을 해시와 객체 내용으로 검사하고,
+허용된 앞부분까지만 명령을 합친다. 수정 전 결과는 별도 원자료로 보관한다.
 \end{frame}
 
 \end{document}

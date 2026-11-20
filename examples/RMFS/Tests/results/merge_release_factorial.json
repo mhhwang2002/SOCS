@@ -1,0 +1,804 @@
+[
+  {
+    "repetition": 0,
+    "robots": 10,
+    "merge_sweeps": false,
+    "event_release": false,
+    "makespan": 431.79814448250255,
+    "path_hash": "764d0d1e7128e875fa98bc7e16c43dcd49355b8030ae240c27829508ed811256",
+    "source_plan_hash": "a128c3fa7d07835184d561c168e972ea0f3ad809ee3295538031d99f489c112f",
+    "control_plan_hash": "a128c3fa7d07835184d561c168e972ea0f3ad809ee3295538031d99f489c112f",
+    "implementation": "original_control_units_with_safe_command_prefix_merging",
+    "collision_interval": 0.01,
+    "stop_on_collision": true,
+    "contacts": 0,
+    "completed": true,
+    "initial_commands": [
+      "R5",
+      "R10"
+    ],
+    "per_robot": {
+      "R1": {
+        "first_issue": 318.20114049364383,
+        "final_arrival": 357.5392288375947,
+        "commands": 8
+      },
+      "R2": {
+        "first_issue": 132.01426503185266,
+        "final_arrival": 201.4386585907728,
+        "commands": 13
+      },
+      "R3": {
+        "first_issue": 357.5392288375947,
+        "final_arrival": 386.04279509555784,
+        "commands": 6
+      },
+      "R4": {
+        "first_issue": 386.04279509555784,
+        "final_arrival": 431.79814448250255,
+        "commands": 9
+      },
+      "R5": {
+        "first_issue": 0.0,
+        "final_arrival": 38.920827300957036,
+        "commands": 7
+      },
+      "R6": {
+        "first_issue": 255.61126902071138,
+        "final_arrival": 318.20114049364383,
+        "commands": 11
+      },
+      "R7": {
+        "first_issue": 201.4386585907728,
+        "final_arrival": 229.5249638057421,
+        "commands": 5
+      },
+      "R8": {
+        "first_issue": 229.5249638057421,
+        "final_arrival": 255.61126902071138,
+        "commands": 5
+      },
+      "R9": {
+        "first_issue": 67.42439355892022,
+        "final_arrival": 132.01426503185266,
+        "commands": 11
+      },
+      "R10": {
+        "first_issue": 0.0,
+        "final_arrival": 67.42439355892022,
+        "commands": 13
+      }
+    }
+  },
+  {
+    "repetition": 0,
+    "robots": 10,
+    "merge_sweeps": false,
+    "event_release": true,
+    "makespan": 128.43152607484652,
+    "path_hash": "764d0d1e7128e875fa98bc7e16c43dcd49355b8030ae240c27829508ed811256",
+    "source_plan_hash": "a128c3fa7d07835184d561c168e972ea0f3ad809ee3295538031d99f489c112f",
+    "control_plan_hash": "a128c3fa7d07835184d561c168e972ea0f3ad809ee3295538031d99f489c112f",
+    "implementation": "original_control_units_with_safe_command_prefix_merging",
+    "collision_interval": 0.01,
+    "stop_on_collision": true,
+    "contacts": 0,
+    "completed": true,
+    "initial_commands": [
+      "R5",
+      "R10",
+      "R2",
+      "R7",
+      "R8",
+      "R6",
+      "R1",
+      "R3"
+    ],
+    "per_robot": {
+      "R1": {
+        "first_issue": 0.0,
+        "final_arrival": 106.76248190287107,
+        "commands": 8
+      },
+      "R2": {
+        "first_issue": 0.0,
+        "final_arrival": 113.17974294586493,
+        "commands": 13
+      },
+      "R3": {
+        "first_issue": 0.0,
+        "final_arrival": 115.59700398885879,
+        "commands": 6
+      },
+      "R4": {
+        "first_issue": 4.417261042993862,
+        "final_arrival": 128.43152607484652,
+        "commands": 9
+      },
+      "R5": {
+        "first_issue": 0.0,
+        "final_arrival": 36.920827300957036,
+        "commands": 7
+      },
+      "R6": {
+        "first_issue": 0.0,
+        "final_arrival": 122.01426503185264,
+        "commands": 11
+      },
+      "R7": {
+        "first_issue": 0.0,
+        "final_arrival": 89.5106987738895,
+        "commands": 5
+      },
+      "R8": {
+        "first_issue": 0.0,
+        "final_arrival": 115.59700398885879,
+        "commands": 5
+      },
+      "R9": {
+        "first_issue": 4.417261042993862,
+        "final_arrival": 69.00713251592634,
+        "commands": 11
+      },
+      "R10": {
+        "first_issue": 0.0,
+        "final_arrival": 63.424393558920215,
+        "commands": 13
+      }
+    }
+  },
+  {
+    "repetition": 0,
+    "robots": 10,
+    "merge_sweeps": true,
+    "event_release": false,
+    "makespan": 345.84415080119874,
+    "path_hash": "764d0d1e7128e875fa98bc7e16c43dcd49355b8030ae240c27829508ed811256",
+    "source_plan_hash": "a128c3fa7d07835184d561c168e972ea0f3ad809ee3295538031d99f489c112f",
+    "control_plan_hash": "a128c3fa7d07835184d561c168e972ea0f3ad809ee3295538031d99f489c112f",
+    "implementation": "original_control_units_with_safe_command_prefix_merging",
+    "collision_interval": 0.01,
+    "stop_on_collision": true,
+    "contacts": 0,
+    "completed": true,
+    "initial_commands": [
+      "R5",
+      "R10"
+    ],
+    "per_robot": {
+      "R1": {
+        "first_issue": 270.8569265174053,
+        "final_arrival": 295.3991868164312,
+        "commands": 1
+      },
+      "R2": {
+        "first_issue": 114.20514602514963,
+        "final_arrival": 169.61987427719512,
+        "commands": 2
+      },
+      "R3": {
+        "first_issue": 295.3991868164312,
+        "final_arrival": 315.71431889172936,
+        "commands": 2
+      },
+      "R4": {
+        "first_issue": 315.71431889172936,
+        "final_arrival": 345.84415080119874,
+        "commands": 1
+      },
+      "R5": {
+        "first_issue": 0.0,
+        "final_arrival": 38.920827300957036,
+        "commands": 7
+      },
+      "R6": {
+        "first_issue": 216.0297698758033,
+        "final_arrival": 270.8569265174053,
+        "commands": 2
+      },
+      "R7": {
+        "first_issue": 169.61987427719512,
+        "final_arrival": 195.11860788172095,
+        "commands": 2
+      },
+      "R8": {
+        "first_issue": 195.11860788172095,
+        "final_arrival": 216.0297698758033,
+        "commands": 1
+      },
+      "R9": {
+        "first_issue": 55.2161371244387,
+        "final_arrival": 114.20514602514963,
+        "commands": 1
+      },
+      "R10": {
+        "first_issue": 0.0,
+        "final_arrival": 55.2161371244387,
+        "commands": 8
+      }
+    }
+  },
+  {
+    "repetition": 0,
+    "robots": 10,
+    "merge_sweeps": true,
+    "event_release": true,
+    "makespan": 112.19421777947085,
+    "path_hash": "764d0d1e7128e875fa98bc7e16c43dcd49355b8030ae240c27829508ed811256",
+    "source_plan_hash": "a128c3fa7d07835184d561c168e972ea0f3ad809ee3295538031d99f489c112f",
+    "control_plan_hash": "a128c3fa7d07835184d561c168e972ea0f3ad809ee3295538031d99f489c112f",
+    "implementation": "original_control_units_with_safe_command_prefix_merging",
+    "collision_interval": 0.01,
+    "stop_on_collision": true,
+    "contacts": 0,
+    "completed": true,
+    "initial_commands": [
+      "R5",
+      "R10",
+      "R2",
+      "R7",
+      "R8",
+      "R6",
+      "R1",
+      "R3"
+    ],
+    "per_robot": {
+      "R1": {
+        "first_issue": 0.0,
+        "final_arrival": 96.12603617971693,
+        "commands": 5
+      },
+      "R2": {
+        "first_issue": 0.0,
+        "final_arrival": 100.5953601713409,
+        "commands": 3
+      },
+      "R3": {
+        "first_issue": 0.0,
+        "final_arrival": 102.37298665526117,
+        "commands": 3
+      },
+      "R4": {
+        "first_issue": 8.329991182183877,
+        "final_arrival": 112.19421777947085,
+        "commands": 3
+      },
+      "R5": {
+        "first_issue": 0.0,
+        "final_arrival": 28.732393118292023,
+        "commands": 1
+      },
+      "R6": {
+        "first_issue": 0.0,
+        "final_arrival": 110.75504078607516,
+        "commands": 7
+      },
+      "R7": {
+        "first_issue": 0.0,
+        "final_arrival": 83.42661774899896,
+        "commands": 5
+      },
+      "R8": {
+        "first_issue": 0.0,
+        "final_arrival": 104.3377797430813,
+        "commands": 2
+      },
+      "R9": {
+        "first_issue": 3.777626483920268,
+        "final_arrival": 64.73142847245136,
+        "commands": 4
+      },
+      "R10": {
+        "first_issue": 0.0,
+        "final_arrival": 36.420309079513714,
+        "commands": 1
+      }
+    }
+  },
+  {
+    "repetition": 0,
+    "robots": 20,
+    "merge_sweeps": false,
+    "event_release": false,
+    "makespan": 729.5820239331548,
+    "path_hash": "26202c0cc592c8a277f0e2ac31afa77f508330381410cdc114a28e235a98d3da",
+    "source_plan_hash": "a145b223c9aa2b10821c4ca135259e01abde1b7630628b4300ac3c05534e5df5",
+    "control_plan_hash": "a145b223c9aa2b10821c4ca135259e01abde1b7630628b4300ac3c05534e5df5",
+    "implementation": "original_control_units_with_safe_command_prefix_merging",
+    "collision_interval": 0.01,
+    "stop_on_collision": true,
+    "contacts": 0,
+    "completed": true,
+    "initial_commands": [
+      "R10"
+    ],
+    "per_robot": {
+      "R1": {
+        "first_issue": 609.9850199442948,
+        "final_arrival": 649.3231082882461,
+        "commands": 8
+      },
+      "R2": {
+        "first_issue": 128.01426503185266,
+        "final_arrival": 199.4386585907728,
+        "commands": 13
+      },
+      "R3": {
+        "first_issue": 435.79814448250255,
+        "final_arrival": 464.3017107404657,
+        "commands": 6
+      },
+      "R4": {
+        "first_issue": 464.3017107404657,
+        "final_arrival": 510.0570601274104,
+        "commands": 9
+      },
+      "R5": {
+        "first_issue": 199.4386585907728,
+        "final_arrival": 236.3594858917298,
+        "commands": 7
+      },
+      "R6": {
+        "first_issue": 373.2082730095701,
+        "final_arrival": 435.79814448250255,
+        "commands": 11
+      },
+      "R7": {
+        "first_issue": 306.20114049364383,
+        "final_arrival": 334.2874457086131,
+        "commands": 5
+      },
+      "R8": {
+        "first_issue": 347.12196779460083,
+        "final_arrival": 373.2082730095701,
+        "commands": 5
+      },
+      "R9": {
+        "first_issue": 63.424393558920215,
+        "final_arrival": 128.01426503185266,
+        "commands": 11
+      },
+      "R10": {
+        "first_issue": 0.0,
+        "final_arrival": 63.424393558920215,
+        "commands": 13
+      },
+      "R11": {
+        "first_issue": 236.3594858917298,
+        "final_arrival": 306.20114049364383,
+        "commands": 14
+      },
+      "R12": {
+        "first_issue": 649.3231082882461,
+        "final_arrival": 707.9129797611791,
+        "commands": 11
+      },
+      "R13": {
+        "first_issue": 609.9850199442948,
+        "final_arrival": 629.6540641162704,
+        "commands": 4
+      },
+      "R14": {
+        "first_issue": 128.01426503185266,
+        "final_arrival": 162.93509233280966,
+        "commands": 7
+      },
+      "R15": {
+        "first_issue": 306.20114049364383,
+        "final_arrival": 347.12196779460083,
+        "commands": 7
+      },
+      "R16": {
+        "first_issue": 510.0570601274104,
+        "final_arrival": 571.0641926433374,
+        "commands": 12
+      },
+      "R17": {
+        "first_issue": 63.424393558920215,
+        "final_arrival": 104.34522085987722,
+        "commands": 7
+      },
+      "R18": {
+        "first_issue": 707.9129797611791,
+        "final_arrival": 729.5820239331548,
+        "commands": 4
+      },
+      "R19": {
+        "first_issue": 571.0641926433374,
+        "final_arrival": 609.9850199442948,
+        "commands": 7
+      },
+      "R20": {
+        "first_issue": 571.0641926433374,
+        "final_arrival": 603.5677589013009,
+        "commands": 6
+      }
+    }
+  },
+  {
+    "repetition": 0,
+    "robots": 20,
+    "merge_sweeps": false,
+    "event_release": true,
+    "makespan": 211.10770276274823,
+    "path_hash": "26202c0cc592c8a277f0e2ac31afa77f508330381410cdc114a28e235a98d3da",
+    "source_plan_hash": "a145b223c9aa2b10821c4ca135259e01abde1b7630628b4300ac3c05534e5df5",
+    "control_plan_hash": "a145b223c9aa2b10821c4ca135259e01abde1b7630628b4300ac3c05534e5df5",
+    "implementation": "original_control_units_with_safe_command_prefix_merging",
+    "collision_interval": 0.01,
+    "stop_on_collision": true,
+    "contacts": 0,
+    "completed": true,
+    "initial_commands": [
+      "R10",
+      "R17",
+      "R2",
+      "R14",
+      "R5",
+      "R11",
+      "R7",
+      "R15",
+      "R8",
+      "R6",
+      "R3",
+      "R20",
+      "R13",
+      "R18"
+    ],
+    "per_robot": {
+      "R1": {
+        "first_issue": 4.417261042993862,
+        "final_arrival": 211.10770276274823,
+        "commands": 8
+      },
+      "R2": {
+        "first_issue": 0.0,
+        "final_arrival": 113.17974294586493,
+        "commands": 13
+      },
+      "R3": {
+        "first_issue": 0.0,
+        "final_arrival": 130.43152607484652,
+        "commands": 6
+      },
+      "R4": {
+        "first_issue": 4.417261042993862,
+        "final_arrival": 139.2660481608342,
+        "commands": 9
+      },
+      "R5": {
+        "first_issue": 0.0,
+        "final_arrival": 100.34522085987722,
+        "commands": 7
+      },
+      "R6": {
+        "first_issue": 0.0,
+        "final_arrival": 147.6833092038281,
+        "commands": 11
+      },
+      "R7": {
+        "first_issue": 0.0,
+        "final_arrival": 134.84878711784037,
+        "commands": 5
+      },
+      "R8": {
+        "first_issue": 0.0,
+        "final_arrival": 137.2660481608342,
+        "commands": 5
+      },
+      "R9": {
+        "first_issue": 4.417261042993862,
+        "final_arrival": 69.00713251592634,
+        "commands": 11
+      },
+      "R10": {
+        "first_issue": 0.0,
+        "final_arrival": 63.424393558920215,
+        "commands": 13
+      },
+      "R11": {
+        "first_issue": 0.0,
+        "final_arrival": 132.84878711784035,
+        "commands": 14
+      },
+      "R12": {
+        "first_issue": 4.417261042993862,
+        "final_arrival": 165.3523533758035,
+        "commands": 11
+      },
+      "R13": {
+        "first_issue": 0.0,
+        "final_arrival": 143.6833092038281,
+        "commands": 4
+      },
+      "R14": {
+        "first_issue": 0.0,
+        "final_arrival": 100.34522085987722,
+        "commands": 7
+      },
+      "R15": {
+        "first_issue": 0.0,
+        "final_arrival": 110.76248190287107,
+        "commands": 7
+      },
+      "R16": {
+        "first_issue": 4.417261042993862,
+        "final_arrival": 182.6041365047851,
+        "commands": 12
+      },
+      "R17": {
+        "first_issue": 0.0,
+        "final_arrival": 80.67617668790179,
+        "commands": 7
+      },
+      "R18": {
+        "first_issue": 0.0,
+        "final_arrival": 51.755349386944765,
+        "commands": 4
+      },
+      "R19": {
+        "first_issue": 178.18687546179123,
+        "final_arrival": 211.10770276274823,
+        "commands": 7
+      },
+      "R20": {
+        "first_issue": 0.0,
+        "final_arrival": 139.26604816083423,
+        "commands": 6
+      }
+    }
+  },
+  {
+    "repetition": 0,
+    "robots": 20,
+    "merge_sweeps": true,
+    "event_release": false,
+    "makespan": 590.2572343520544,
+    "path_hash": "26202c0cc592c8a277f0e2ac31afa77f508330381410cdc114a28e235a98d3da",
+    "source_plan_hash": "a145b223c9aa2b10821c4ca135259e01abde1b7630628b4300ac3c05534e5df5",
+    "control_plan_hash": "a145b223c9aa2b10821c4ca135259e01abde1b7630628b4300ac3c05534e5df5",
+    "implementation": "original_control_units_with_safe_command_prefix_merging",
+    "collision_interval": 0.01,
+    "stop_on_collision": true,
+    "contacts": 0,
+    "completed": true,
+    "initial_commands": [
+      "R10"
+    ],
+    "per_robot": {
+      "R1": {
+        "first_issue": 489.1989509876341,
+        "final_arrival": 523.361896110698,
+        "commands": 5
+      },
+      "R2": {
+        "first_issue": 95.40931798022466,
+        "final_arrival": 164.24613992870135,
+        "commands": 8
+      },
+      "R3": {
+        "first_issue": 355.84898345463597,
+        "final_arrival": 376.1641155299341,
+        "commands": 2
+      },
+      "R4": {
+        "first_issue": 376.1641155299341,
+        "final_arrival": 406.2939474394035,
+        "commands": 1
+      },
+      "R5": {
+        "first_issue": 164.24613992870135,
+        "final_arrival": 192.9785330469934,
+        "commands": 2
+      },
+      "R6": {
+        "first_issue": 301.021826813034,
+        "final_arrival": 355.84898345463597,
+        "commands": 2
+      },
+      "R7": {
+        "first_issue": 239.18983751799473,
+        "final_arrival": 267.276142732964,
+        "commands": 5
+      },
+      "R8": {
+        "first_issue": 280.1106648189517,
+        "final_arrival": 301.021826813034,
+        "commands": 1
+      },
+      "R9": {
+        "first_issue": 36.420309079513714,
+        "final_arrival": 95.40931798022466,
+        "commands": 8
+      },
+      "R10": {
+        "first_issue": 0.0,
+        "final_arrival": 36.420309079513714,
+        "commands": 1
+      },
+      "R11": {
+        "first_issue": 192.9785330469934,
+        "final_arrival": 239.18983751799473,
+        "commands": 2
+      },
+      "R12": {
+        "first_issue": 523.361896110698,
+        "final_arrival": 571.1757617905223,
+        "commands": 2
+      },
+      "R13": {
+        "first_issue": 489.1989509876341,
+        "final_arrival": 508.8679951596095,
+        "commands": 4
+      },
+      "R14": {
+        "first_issue": 95.40931798022466,
+        "final_arrival": 130.33014528118167,
+        "commands": 7
+      },
+      "R15": {
+        "first_issue": 239.18983751799473,
+        "final_arrival": 280.1106648189517,
+        "commands": 6
+      },
+      "R16": {
+        "first_issue": 406.2939474394035,
+        "final_arrival": 450.2781236866771,
+        "commands": 2
+      },
+      "R17": {
+        "first_issue": 36.420309079513714,
+        "final_arrival": 77.34113638047074,
+        "commands": 7
+      },
+      "R18": {
+        "first_issue": 571.1757617905223,
+        "final_arrival": 590.2572343520544,
+        "commands": 1
+      },
+      "R19": {
+        "first_issue": 450.2781236866771,
+        "final_arrival": 489.1989509876341,
+        "commands": 7
+      },
+      "R20": {
+        "first_issue": 450.2781236866771,
+        "final_arrival": 482.7816899446402,
+        "commands": 6
+      }
+    }
+  },
+  {
+    "repetition": 0,
+    "robots": 20,
+    "merge_sweeps": true,
+    "event_release": true,
+    "makespan": 164.41606272472364,
+    "path_hash": "26202c0cc592c8a277f0e2ac31afa77f508330381410cdc114a28e235a98d3da",
+    "source_plan_hash": "a145b223c9aa2b10821c4ca135259e01abde1b7630628b4300ac3c05534e5df5",
+    "control_plan_hash": "a145b223c9aa2b10821c4ca135259e01abde1b7630628b4300ac3c05534e5df5",
+    "implementation": "original_control_units_with_safe_command_prefix_merging",
+    "collision_interval": 0.01,
+    "stop_on_collision": true,
+    "contacts": 0,
+    "completed": true,
+    "initial_commands": [
+      "R10",
+      "R17",
+      "R2",
+      "R14",
+      "R5",
+      "R11",
+      "R7",
+      "R15",
+      "R8",
+      "R6",
+      "R3",
+      "R20",
+      "R13",
+      "R18"
+    ],
+    "per_robot": {
+      "R1": {
+        "first_issue": 3.777626483920268,
+        "final_arrival": 164.41606272472364,
+        "commands": 7
+      },
+      "R2": {
+        "first_issue": 0.0,
+        "final_arrival": 100.5953601713409,
+        "commands": 5
+      },
+      "R3": {
+        "first_issue": 0.0,
+        "final_arrival": 103.69814518400771,
+        "commands": 3
+      },
+      "R4": {
+        "first_issue": 8.329991182183877,
+        "final_arrival": 104.61577866944538,
+        "commands": 3
+      },
+      "R5": {
+        "first_issue": 0.0,
+        "final_arrival": 91.6735682245432,
+        "commands": 3
+      },
+      "R6": {
+        "first_issue": 0.0,
+        "final_arrival": 121.23848649925841,
+        "commands": 6
+      },
+      "R7": {
+        "first_issue": 0.0,
+        "final_arrival": 108.4039644132707,
+        "commands": 4
+      },
+      "R8": {
+        "first_issue": 0.0,
+        "final_arrival": 110.19844693364122,
+        "commands": 3
+      },
+      "R9": {
+        "first_issue": 3.777626483920268,
+        "final_arrival": 64.73142847245136,
+        "commands": 3
+      },
+      "R10": {
+        "first_issue": 0.0,
+        "final_arrival": 36.420309079513714,
+        "commands": 1
+      },
+      "R11": {
+        "first_issue": 0.0,
+        "final_arrival": 104.45602736190082,
+        "commands": 4
+      },
+      "R12": {
+        "first_issue": 4.417261042993862,
+        "final_arrival": 125.10122131219315,
+        "commands": 5
+      },
+      "R13": {
+        "first_issue": 0.0,
+        "final_arrival": 127.41079399627255,
+        "commands": 4
+      },
+      "R14": {
+        "first_issue": 0.0,
+        "final_arrival": 65.3778057866588,
+        "commands": 3
+      },
+      "R15": {
+        "first_issue": 0.0,
+        "final_arrival": 85.2000857715592,
+        "commands": 5
+      },
+      "R16": {
+        "first_issue": 8.329991182183877,
+        "final_arrival": 144.73722010378424,
+        "commands": 4
+      },
+      "R17": {
+        "first_issue": 0.0,
+        "final_arrival": 49.69042691158932,
+        "commands": 2
+      },
+      "R18": {
+        "first_issue": 0.0,
+        "final_arrival": 56.99323805488131,
+        "commands": 4
+      },
+      "R19": {
+        "first_issue": 142.26789611216026,
+        "final_arrival": 159.56320593564192,
+        "commands": 1
+      },
+      "R20": {
+        "first_issue": 0.0,
+        "final_arrival": 121.08080281408867,
+        "commands": 4
+      }
+    }
+  }
+]

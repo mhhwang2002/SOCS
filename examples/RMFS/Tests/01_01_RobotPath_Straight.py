@@ -352,6 +352,9 @@ def main(path=PATH, *, name="01_01_RobotPath_Straight", no_rack=False,
                 grid.drawTo(*control_points[end],.01)
             self.render.attachNewNode(grid.create())
             self.sweeps = {}
+            self.route_lines = {}
+            self.sweep_progress = {}
+            self.route_colors = dict(zip(self.routes,route_colors))
             robots_by_name = {robot.name: robot for robot in self.robots}
             for index,(robot_name,route_path) in enumerate(self.routes.items()):
                 self.sweeps[robot_name] = draw_sweep(
@@ -359,14 +362,14 @@ def main(path=PATH, *, name="01_01_RobotPath_Straight", no_rack=False,
                     robots_by_name[robot_name].rack_size,
                     route_colors[index % len(route_colors)],
                 )
-            for index, route_path in enumerate(self.routes.values()):
+            for index, (robot_name,route_path) in enumerate(self.routes.items()):
                 route = LineSegs()
                 route.setThickness(4)
                 route.setColor(*route_colors[index % len(route_colors)])
                 route.moveTo(*control_points[route_path[0]],.04)
                 for point in route_path[1:]:
                     route.drawTo(*control_points[point],.04)
-                self.render.attachNewNode(route.create())
+                self.route_lines[robot_name] = self.render.attachNewNode(route.create())
             for point in control_points:
                 x,y = control_points[point]
                 self.points[point] = box(self.render,(x,y,.06),(.13,.13,.1),
@@ -454,6 +457,26 @@ def main(path=PATH, *, name="01_01_RobotPath_Straight", no_rack=False,
 
         def draw(self, time):
             self.display_time = time
+            roadmap = getattr(getattr(self.model,"controller",None),"roadmap",None)
+            if roadmap is not None:
+                for robot in self.robots:
+                    name = robot.name
+                    progress = roadmap.robots[name]["released_progress"]
+                    if self.sweep_progress.get(name) == progress:
+                        continue
+                    self.sweep_progress[name] = progress
+                    coordinates = roadmap.remaining_subpath(name).coordinates()
+                    self.sweeps[name].removeNode()
+                    self.sweeps[name] = draw_sweep(self.render,coordinates,robot.rack_size,
+                                                   self.route_colors[name])
+                    self.route_lines[name].removeNode()
+                    line = LineSegs()
+                    line.setThickness(4)
+                    line.setColor(*self.route_colors[name])
+                    line.moveTo(*coordinates[0],.04)
+                    for point in coordinates[1:]:
+                        line.drawTo(*point,.04)
+                    self.route_lines[name] = self.render.attachNewNode(line.create())
             positions = {}
             robot_lines = []
             for robot, sensor in zip(self.robots, self.sensors):
@@ -497,6 +520,9 @@ def main(path=PATH, *, name="01_01_RobotPath_Straight", no_rack=False,
                            f"Awaiting: {awaiting} | "
                            f"Buffer: {len(manager.command_buffer)} | "
                            f"{'DONE' if manager.done else 'HALTED' if manager.halted else 'RUNNING'}")
+                if manager.event_release:
+                    releases = sum(e['event']=='release_dispatch' for e in roadmap.history)
+                    traffic += f" | Event release ON | Release dispatches: {releases}"
             if len(robot_lines) > 8:
                 robot_lines = robot_lines[:8] + [f"... {len(self.robots)} robots in total"]
             if getattr(self.model, "planning_error", None):
@@ -506,8 +532,9 @@ def main(path=PATH, *, name="01_01_RobotPath_Straight", no_rack=False,
                 "Space = Next event | A = Manual/Auto | R = Reset\n"
                 "U / D = Speed up / down\n"
                 "T = Top | I = Iso | Esc = Close\n"
-                "Translucent regions = full assigned path sweeps (static)\n"
-                f"t = {time:.4f} s{done} | Rack {'OFF' if args.no_rack else 'ON'}\n"
+                + ("Translucent regions = RoadMap remaining sweeps (reported release)\n"
+                   if roadmap is not None else "Translucent regions = full assigned path sweeps (static)\n")
+                + f"t = {time:.4f} s{done} | Rack {'OFF' if args.no_rack else 'ON'}\n"
                 + "\n".join(robot_lines) + "\n"
                 + f"Collision check {'ON' if args.collision_check else 'OFF'} | "
                   f"Stop {'OFF' if args.no_stop_on_collision else 'ON'} | "

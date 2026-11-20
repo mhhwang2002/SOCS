@@ -1,0 +1,124 @@
+[
+  {
+    "robots": 10,
+    "merged": false,
+    "time": 431.79814448250255,
+    "stages": 171,
+    "commands": 88,
+    "contacts": 0,
+    "completed": true,
+    "blocks": null,
+    "seed": 20261119,
+    "collision_interval": 0.01
+  },
+  {
+    "robots": 10,
+    "merged": true,
+    "time": 230.4073004348478,
+    "stages": 6,
+    "commands": 14,
+    "contacts": 0,
+    "completed": true,
+    "blocks": [
+      [
+        0,
+        28
+      ],
+      [
+        28,
+        63
+      ],
+      [
+        63,
+        86
+      ],
+      [
+        86,
+        118
+      ],
+      [
+        118,
+        148
+      ],
+      [
+        148,
+        171
+      ]
+    ],
+    "seed": 20261119,
+    "collision_interval": 0.01
+  },
+  {
+    "robots": 20,
+    "merged": false,
+    "time": 729.5820239331548,
+    "stages": 291,
+    "commands": 167,
+    "contacts": 0,
+    "completed": true,
+    "blocks": null,
+    "seed": 20261119,
+    "collision_interval": 0.01
+  },
+  {
+    "robots": 20,
+    "merged": true,
+    "time": 375.85565714605923,
+    "stages": 12,
+    "commands": 32,
+    "contacts": 0,
+    "completed": true,
+    "blocks": [
+      [
+        0,
+        28
+      ],
+      [
+        28,
+        53
+      ],
+      [
+        53,
+        86
+      ],
+      [
+        86,
+        111
+      ],
+      [
+        111,
+        128
+      ],
+      [
+        128,
+        156
+      ],
+      [
+        156,
+        179
+      ],
+      [
+        179,
+        215
+      ],
+      [
+        215,
+        228
+      ],
+      [
+        228,
+        245
+      ],
+      [
+        245,
+        274
+      ],
+      [
+        274,
+        291
+      ]
+    ],
+    "seed": 20261119,
+    "collision_interval": 0.01
+  }
+]

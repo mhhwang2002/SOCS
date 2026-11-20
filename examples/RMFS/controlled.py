@@ -12,7 +12,8 @@ from .wait_duplication import WaitDuplicationSolver
 def create_controlled_model(robot_paths, *, name="RMFS_WaitDuplication", lift_up=False,
                             rack_size=(1.5, 1.5), collision_check=True,
                             stop_on_collision=True, initial_headings=None,
-                            grid=None, allow_no_plan=False, plan_builder=None):
+                            grid=None, allow_no_plan=False, plan_builder=None,
+                            merge_sweeps=False, event_release=False):
     points_map = CONTROL_POINTS if grid is None else grid["control_points"]
     paths = {name: Path(name, tuple(points_map[p] for p in points))
              for name, points in robot_paths.items()}
@@ -28,8 +29,19 @@ def create_controlled_model(robot_paths, *, name="RMFS_WaitDuplication", lift_up
     model = RMFS(name, collision_check=collision_check)
     model.planning_error = (result.reason or "Exhaustive wait-duplication search found no plan."
                             if result.status != "feasible" else None)
+    execution_plan = result.tuple_path or TuplePath(tuple(paths), ())
+    model.merge_blocks = None
+    if merge_sweeps and result.status == "feasible":
+        from .sweep_operations import compact_tuple
+        execution_plan, model.merge_blocks = compact_tuple(
+            execution_plan, {name: shape for name in paths}, solver.policy)
+    model.execution_plan = execution_plan
+    # Keep the original control units for both merge settings. Compaction
+    # supplies only permissible command grouping boundaries, never priorities.
     controller = RMFSController(paths, result.tuple_path or TuplePath(tuple(paths), ()),
-                                planning_error=model.planning_error)
+                                planning_error=model.planning_error,event_release=event_release,
+                                footprints={name:shape for name in paths},
+                                command_blocks=model.merge_blocks)
     model.controller = controller
     model.plan_result = result
     robots = tuple(MRobot(name, route[0], lift_up=lift_up, rack_size=rack_size,
