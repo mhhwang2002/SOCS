@@ -15,12 +15,13 @@ from .path_geometry import (GeometryPolicy, PathPosition, RectangularFootprint,
 
 @dataclass(frozen=True)
 class SearchResult:
-    status: str  # feasible / infeasible; infeasible means exhaustive search
+    status: str  # feasible / infeasible (exhaustion or a geometric impossibility certificate)
     tuple_path: TuplePath | None
     consumed_counts: tuple[tuple[int, ...], ...]
     visited_states: int
     checked_transitions: int
     elapsed_seconds: float
+    reason: str | None = None
 
 
 class WaitDuplicationSolver:
@@ -63,6 +64,21 @@ class WaitDuplicationSolver:
 
     def solve(self):
         started = perf_counter()
+        for label, vertex in (("initial", 0), ("final", -1)):
+            if not self._safe(tuple(sweeps[vertex] for sweeps in self.wait_sweeps)):
+                return SearchResult("infeasible", None, (), 1, 0,
+                                    perf_counter() - started,
+                                    f"Overlapping {label} footprints: all objects must coexist there.")
+        for i, j in combinations(range(len(self.paths)), 2):
+            a, b = self.paths[i].vertices, self.paths[j].vertices
+            for axis in (0, 1):
+                fixed = 1 - axis
+                if (all(p[fixed] == a[0][fixed] for p in (*a, *b)) and
+                        (a[0][axis] - b[0][axis]) * (a[-1][axis] - b[-1][axis]) < 0):
+                    return SearchResult("infeasible", None, (), 1, 0,
+                                        perf_counter() - started,
+                                        f"Reversed order on a shared straight line: "
+                                        f"{self.names[i]} and {self.names[j]} cannot pass.")
         initial = (0,) * len(self.paths)
         queue = deque([initial])
         parent = {initial: None}

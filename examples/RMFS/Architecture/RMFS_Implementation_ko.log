@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (MiKTeX 25.12) (preloaded format=xelatex 2026.11.9)  19 NOV 2026 13:21
+This is XeTeX, Version 3.141592653-2.6-0.999997 (MiKTeX 25.12) (preloaded format=xelatex 2026.11.9)  19 NOV 2026 19:23
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1057,7 +1057,17 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 ] [5
 
-] [6
+]
+Underfull \hbox (badness 10000) in paragraph at lines 143--143
+[]\TU/MalgunGothic(0)/m/n/9 WaitDuplicationSolver 를 TrafficMan-
+ []
+
+
+Underfull \hbox (badness 1163) in paragraph at lines 143--143
+\TU/MalgunGothic(0)/m/n/9 ager·RMFSController 와 연 결; 뒤 에 통 합 기
+ []
+
+[6
 
 ] [7
 
@@ -1069,6 +1079,18 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 ] [11
 
+] [12
+
+] [13
+
+] [14
+
+] [15
+
+] [16
+
+] [17
+
 ]
 \tf@nav=\write6
 \openout6 = `RMFS_Implementation_ko.nav'.
@@ -1079,7 +1101,8 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 \tf@snm=\write8
 \openout8 = `RMFS_Implementation_ko.snm'.
 
- (RMFS_Implementation_ko.aux)
+
+(RMFS_Implementation_ko.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2025-12-24>
@@ -1089,12 +1112,12 @@ Package rerunfilecheck Info: File `RMFS_Implementation_ko.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 27597 strings out of 402987
- 584277 string characters out of 5448938
- 1030441 words of memory out of 5000000
- 55785 multiletter control sequences out of 15000+600000
+ 27736 strings out of 402987
+ 586455 string characters out of 5448938
+ 1032874 words of memory out of 5000000
+ 55924 multiletter control sequences out of 15000+600000
  634697 words of font info for 101 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
- 133i,11n,126p,498b,793s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 133i,11n,126p,498b,1002s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on RMFS_Implementation_ko.pdf (11 pages).
+Output written on RMFS_Implementation_ko.pdf (17 pages).

@@ -24,6 +24,8 @@ def example_paths(module_name):
 def run_all():
     results = []
     for source in sorted(FilePath(__file__).parent.glob("0[23]_*.py")):
+        if "_Controlled" in source.stem:
+            continue  # controller demos reuse original routes; keep the original 17-case report
         paths = example_paths(source.stem)
         solver = WaitDuplicationSolver(paths)
         result = solver.solve()

@@ -1,6 +1,7 @@
 """R1 straight run: Space advances one DEVS step; T/I select the camera."""
 
 from argparse import ArgumentParser
+from colorsys import hsv_to_rgb
 from math import atan2, cos, degrees, isfinite, pi, sin
 
 from socs.devs.TESEngin import ExecutionType, TESEnginBase
@@ -14,6 +15,12 @@ from ..model import RMFS
 PATH = tuple((ix, POINTS_PER_AXIS // 2) for ix in range(POINTS_PER_AXIS))
 EXTENT = (POINTS_PER_AXIS - 1) * SPACING_M
 COLLISION_INTERVAL = .01
+
+
+def robot_color(index):
+    fixed = ((1, 0, 0, 1), (0, 1, 0, 1), (0, 0, 1, 1),
+             (1, .5, 0, 1), (0, .7, 1, 1))
+    return fixed[index] if index < len(fixed) else (*hsv_to_rgb((index*.618034) % 1, .85, 1), 1)
 
 
 def path_sweep_rectangles(points, rack_size):
@@ -85,7 +92,7 @@ def create_scene(path, name, lift_up, model_factory=None, *,
 
 def run_headless(path=PATH, *, name="01_01_RobotPath_Straight", lift_up=True,
                  model_factory=None, robot_paths=None, collision_check=False,
-                 stop_on_collision=True, initial_headings=None):
+                 stop_on_collision=True, initial_headings=None, grid=None):
     model, robots, sensors = create_scene(
         path, name, lift_up, model_factory, collision_check=collision_check,
         stop_on_collision=stop_on_collision, initial_headings=initial_headings,
@@ -96,15 +103,27 @@ def run_headless(path=PATH, *, name="01_01_RobotPath_Straight", lift_up=True,
     engine.bVerbose = False
     while isfinite(model.tNext):
         engine.execute_one_step()
+    if getattr(model, "planning_error", None):
+        assert all(robot.phase == "Wait" for robot in robots)
+        assert not model.controller.traffic_manager.command_buffer
+        print(f"NO PLAN: {model.planning_error}; no plant commands emitted.")
+        return
+    points_map = CONTROL_POINTS if grid is None else grid["control_points"]
     routes = robot_paths or {"R1": path}
     for robot, sensor in zip(robots, sensors):
         assert robot.phase in ("Wait","Collided")
         if robot.phase == "Wait":
-            assert robot._variable.current_position == CONTROL_POINTS[routes[robot.name][-1]]
+            assert robot._variable.current_position == points_map[routes[robot.name][-1]]
             assert sensor.phase == "Idle"
         else:
             assert sensor.phase == "Collided"
         assert not sensor._variable.pending_events
+    if hasattr(model, "controller"):
+        manager = model.controller.traffic_manager
+        assert manager.done and not manager.awaiting and not manager.command_buffer
+        assert not model.collision_history
+        print(f"TrafficManager completed {len(manager.completed_stages)} tuple stages; "
+              f"commands={manager.next_command_id}; contacts=0")
     states = "; ".join(
         f"{robot.name}={robot.phase}; {sensor.name}={sensor.phase}"
         for robot, sensor in zip(robots, sensors)
@@ -114,7 +133,10 @@ def run_headless(path=PATH, *, name="01_01_RobotPath_Straight", lift_up=True,
 
 def main(path=PATH, *, name="01_01_RobotPath_Straight", no_rack=False,
          model_factory=None, robot_paths=None, collision_check=False,
-         stop_on_collision=True, initial_headings=None):
+         stop_on_collision=True, initial_headings=None, grid=None):
+    control_points = CONTROL_POINTS if grid is None else grid["control_points"]
+    segments = SEGMENTS if grid is None else grid["segments"]
+    extent = EXTENT if grid is None else grid["extent"]
     parser = ArgumentParser(description=__doc__)
     parser.add_argument("--non-interactive", action="store_true",
                         help="advance automatically to the final point")
@@ -155,7 +177,7 @@ def main(path=PATH, *, name="01_01_RobotPath_Straight", no_rack=False,
                      model_factory=model_factory, robot_paths=robot_paths,
                      collision_check=args.collision_check,
                      stop_on_collision=not args.no_stop_on_collision,
-                     initial_headings=headings)
+                     initial_headings=headings, grid=grid)
         return
     from direct.showbase.ShowBase import ShowBase
     from direct.gui.OnscreenText import OnscreenText
@@ -303,7 +325,16 @@ def main(path=PATH, *, name="01_01_RobotPath_Straight", no_rack=False,
             for robot in self.robots[1:]:
                 self.bodies[robot.name] = self.body.copyTo(self.render)
                 self.racks[robot.name] = self.rack.copyTo(self.render)
-            route_colors = ((1,0,0,1), (0,1,0,1), (0,0,1,1))
+            self.motion_labels = {}
+            for robot in self.robots:
+                text = TextNode(f"motion-{robot.name}")
+                text.setTextColor(*((.12,.18,.23,1) if args.white_background else (.9,.95,1,1)))
+                node = self.bodies[robot.name].attachNewNode(text)
+                node.setPos(0,0,1.35)
+                node.setScale(.4)
+                node.setBillboardPointEye()
+                self.motion_labels[robot.name] = text
+            route_colors = tuple(robot_color(i) for i in range(len(self.robots)))
             if len(self.robots) > 1:
                 for index, robot in enumerate(self.robots):
                     label = TextNode(robot.name)
@@ -316,15 +347,15 @@ def main(path=PATH, *, name="01_01_RobotPath_Straight", no_rack=False,
             self.points = {}
             grid = LineSegs()
             grid.setColor(*((.55,.6,.63,1) if args.white_background else (.35,.43,.48,1)))
-            for start,end in SEGMENTS:
-                grid.moveTo(*CONTROL_POINTS[start],.01)
-                grid.drawTo(*CONTROL_POINTS[end],.01)
+            for start,end in segments:
+                grid.moveTo(*control_points[start],.01)
+                grid.drawTo(*control_points[end],.01)
             self.render.attachNewNode(grid.create())
             self.sweeps = {}
             robots_by_name = {robot.name: robot for robot in self.robots}
             for index,(robot_name,route_path) in enumerate(self.routes.items()):
                 self.sweeps[robot_name] = draw_sweep(
-                    self.render, tuple(CONTROL_POINTS[p] for p in route_path),
+                    self.render, tuple(control_points[p] for p in route_path),
                     robots_by_name[robot_name].rack_size,
                     route_colors[index % len(route_colors)],
                 )
@@ -332,12 +363,12 @@ def main(path=PATH, *, name="01_01_RobotPath_Straight", no_rack=False,
                 route = LineSegs()
                 route.setThickness(4)
                 route.setColor(*route_colors[index % len(route_colors)])
-                route.moveTo(*CONTROL_POINTS[route_path[0]],.04)
+                route.moveTo(*control_points[route_path[0]],.04)
                 for point in route_path[1:]:
-                    route.drawTo(*CONTROL_POINTS[point],.04)
+                    route.drawTo(*control_points[point],.04)
                 self.render.attachNewNode(route.create())
-            for point in CONTROL_POINTS:
-                x,y = CONTROL_POINTS[point]
+            for point in control_points:
+                x,y = control_points[point]
                 self.points[point] = box(self.render,(x,y,.06),(.13,.13,.1),
                                          (.65,.72,.77,1))
             for point in dict.fromkeys(
@@ -348,7 +379,7 @@ def main(path=PATH, *, name="01_01_RobotPath_Straight", no_rack=False,
                 label.setTextColor(*((.12,.18,.23,1) if args.white_background else (.85,.9,1,1)))
                 node = self.render.attachNewNode(label)
                 node.setScale(.43)
-                node.setPos(*CONTROL_POINTS[point],.35)
+                node.setPos(*control_points[point],.35)
                 node.setBillboardPointEye()
             self.status = OnscreenText(pos=(-1.36,.91),scale=.045,
                                        align=TextNode.ALeft,mayChange=True,
@@ -369,16 +400,18 @@ def main(path=PATH, *, name="01_01_RobotPath_Straight", no_rack=False,
             self.view = view
             lens = OrthographicLens()
             aspect = self.getAspectRatio()
-            width = (EXTENT + max(2.0, EXTENT*.2)) * max(1, aspect)
+            width = (extent + max(2.0, extent*.2)) * max(1, aspect)
+            if hasattr(self.model, "controller"):
+                width *= 1.12  # keep W/R labels inside the controlled example's view
             lens.setFilmSize(width,width/aspect)
             lens.setNearFar(.1,250)
             self.cam.node().setLens(lens)
             if view == "top":
-                self.camera.setPos(EXTENT/2,EXTENT/2,60)
+                self.camera.setPos(extent/2,extent/2,60)
                 self.camera.setHpr(0,-90,0)
             else:
-                self.camera.setPos(EXTENT*1.5,-EXTENT,EXTENT*1.7)
-                self.camera.lookAt(EXTENT/2,EXTENT/2,0)
+                self.camera.setPos(extent*1.5,-extent,extent*1.7)
+                self.camera.lookAt(extent/2,extent/2,0)
 
         def step(self):
             if self.interactive and isfinite(self.model.tNext):
@@ -428,7 +461,7 @@ def main(path=PATH, *, name="01_01_RobotPath_Straight", no_rack=False,
                 positions[robot.name] = position
                 direction = robot.direction_at(time)
                 if not robot._variable.direction_initialized:
-                    first,second = (CONTROL_POINTS[p] for p in self.routes[robot.name][:2])
+                    first,second = (control_points[p] for p in self.routes[robot.name][:2])
                     direction = (second[0]-first[0],second[1]-first[1])
                 heading = degrees(atan2(direction[1],direction[0]))
                 self.bodies[robot.name].setPos(*position,0)
@@ -437,12 +470,14 @@ def main(path=PATH, *, name="01_01_RobotPath_Straight", no_rack=False,
                 chassis.setColor(*((1,.08,.06,1) if robot._variable.collision_active
                                    else (.18,.72,.30,1)))
                 self.racks[robot.name].setPos(*position,0)
+                self.motion_labels[robot.name].setText(
+                    "W" if robot.phase == "Wait" else "R" if robot.phase == "RotateTo" else "")
                 robot_lines.append(
                     f"{robot.name} {robot.phase} | {sensor.name} {sensor.phase} | "
                     f"({position[0]:.3f}, {position[1]:.3f}) m | {heading:.1f} deg"
                 )
             for point,node in self.points.items():
-                coordinate = CONTROL_POINTS[point]
+                coordinate = control_points[point]
                 covered = any(
                     all(abs(p-c) <= side/2 for p,c,side in
                         zip(positions[robot.name],coordinate,robot.rack_size))
@@ -452,6 +487,20 @@ def main(path=PATH, *, name="01_01_RobotPath_Straight", no_rack=False,
             speed = "Events only" if self.speed > 100 else f"{self.speed:g}x"
             mode = "Space = next DEVS step" if self.interactive else "Automatic"
             done = " | FINISHED" if self.finished else ""
+            traffic = "No traffic control"
+            if hasattr(self.model, "controller"):
+                manager = self.model.controller.traffic_manager
+                stage = min(manager.stage + 1, len(manager.tuple_path.stages))
+                awaiting = (', '.join(sorted(manager.awaiting)) or '-'
+                            if len(manager.awaiting) <= 5 else f'{len(manager.awaiting)} robots')
+                traffic = (f"TrafficManager stage {stage}/{len(manager.tuple_path.stages)} | "
+                           f"Awaiting: {awaiting} | "
+                           f"Buffer: {len(manager.command_buffer)} | "
+                           f"{'DONE' if manager.done else 'HALTED' if manager.halted else 'RUNNING'}")
+            if len(robot_lines) > 8:
+                robot_lines = robot_lines[:8] + [f"... {len(self.robots)} robots in total"]
+            if getattr(self.model, "planning_error", None):
+                traffic = "NO PLAN: " + self.model.planning_error
             self.status.setText(
                 f"{mode} | Speed {speed}\n"
                 "Space = Next event | A = Manual/Auto | R = Reset\n"
@@ -463,7 +512,7 @@ def main(path=PATH, *, name="01_01_RobotPath_Straight", no_rack=False,
                 + f"Collision check {'ON' if args.collision_check else 'OFF'} | "
                   f"Stop {'OFF' if args.no_stop_on_collision else 'ON'} | "
                   f"Contacts {len(self.model.collision_history)}\n"
-                + ("Red = R1 | Green = R2 | Blue = R3 | No traffic control"
+                + (f"Path colors match robot labels\n{traffic}"
                    if len(self.robots) > 1 else
                    "Red = commanded path and sweep | Red points = occupied")
             )

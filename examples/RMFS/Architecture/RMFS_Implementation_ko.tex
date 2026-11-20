@@ -9,7 +9,7 @@
 \large 주어진 경로에서 분스복으로 무간섭 실행을 구성하기 위한 자료 구조
 \par\bigskip\normalsize
 이 문서는 이론 문서와 별도로 구현 결정을 기록한다.
-현재 범위는 \textbf{자료 구조와 독립적인 분스복 검증 구현}이다.
+현재 범위는 \textbf{자료 구조, 분스복 검증 및 제어기·Plant의 첫 통합}이다.
 뒤의 구현·검증 기록은 이 설계에 따른 첫 구현의 범위를 명시한다.
 \par\bigskip
 \begin{itemize}
@@ -20,8 +20,8 @@
 \end{itemize}
 \par\medskip\small
 책임 경계: RobotPathPlanner는 원 경로 생성, TrafficManager는 교통 제어를 담당한다.
-검증은 작은 독립 객체에서 먼저 진행하고, 이후 TrafficManager의 재사용 또는 이식을 검토한다.
-TrafficManager에는 아직 통합하지 않는다. 검증용 일반 객체의 API는 뒤에 기록한다.
+독립 검증을 거친 분스복 객체를 재사용하고 TrafficManager가 실행을 관리한다.
+RobotPathPlanner는 아직 도입하지 않고 주어진 원 경로를 사용한다.
 \end{frame}
 
 \begin{frame}{자료 구조의 관계}
@@ -129,7 +129,7 @@ TuplePath는 이 묶음들의 순서열이다. 두 물체일 때는 짝 경로�
 1 & 진행 위치의 타입과 정규화 & 정수 정점 + 선분 내부 비율; 비율 1은 다음 정점으로 정규화\\
 2 & 수치 허용오차와 안전 여유 & 각각 독립 인자; 기본값 $10^{-9}$ m, 0 m\\
 3 & 실행 부분경로의 경계 & 주어진 유한한 정점에서만 이동 시작·종료·대기\\
-4 & 테스트용 객체와 통합 범위 & WaitDuplicationSolver; DEVS·TrafficManager 변경 없음\\\bottomrule
+4 & 테스트용 객체와 통합 범위 & WaitDuplicationSolver를 TrafficManager·RMFSController와 연결; 뒤에 통합 기록\\\bottomrule
 \end{tabular}
 \par\bigskip
 \textbf{검증 순서:}
@@ -253,6 +253,134 @@ infeasible은 제한 시간 종료가 아니라 유한 탐색의 소진을 뜻�
 JSON에는 각 예제의 판정·탐색 통계·간섭구간·성공 묶음·진행 기록을 저장했다.
 별도 실행은 \texttt{--output} 인자로 결과 파일을 지정한다.
 이 검증은 분스복 구현의 회귀 검사이며, 모든 물리 상황의 충돌 회피를 실험으로 증명했다는 뜻은 아니다.
+\end{frame}
+
+\begin{frame}{통합 구조: 한 제어기와 실제 Plant}
+\begin{center}\begin{tikzpicture}[x=1cm,y=1cm]
+\draw[accent,dashed,rounded corners] (-2.5,0) rectangle (5.8,3.4);
+\node[above] at (1.7,3.4){RMFSController (DEVSph)};
+\node[module] (solver) at (-4.6,2.5){WaitDuplication\\Solver};
+\node[module] (tm) at (1.1,2.5){TrafficManager};
+\node[module] (map) at (-.4,1){RoadMap};
+\node[module] (buf) at (3.7,1){명령 버퍼};
+\node[module] (plant) at (0,-1.2){MRobot + PSensor\\물체마다 한 쌍};
+\draw[flow] (solver)--node[lab,above]{묶음경로}(tm);
+\draw[flow] (tm)--node[lab,left]{승인 기록}(map);
+\draw[flow] (tm)--node[lab,right]{명령 추가}(buf);
+\draw[flow] (buf)--node[lab,right]{Controller 출력}(plant);
+\draw[flow] (plant)--node[lab,left]{실제 보고}(map);
+\end{tikzpicture}\end{center}
+\small 분스복 Solver는 모델 생성 시 묶음경로를 계산한다.
+RMFSController 내부의 TrafficManager와 RoadMap은 일반 객체다.
+RMFS는 이 제어기 하나와 물체별 물리 MRobot·PSensor만 결합한다.
+실행용 가상 로봇, 오더별 로봇, 별도 DEVS 조정 모델은 만들지 않는다.
+\end{frame}
+
+\begin{frame}{명령 승인과 실제 상태는 다르다}
+\small
+RoadMap은 물체별로 \textbf{승인 경로·명령 상태}와
+\textbf{마지막 실제 보고 위치·시각·운동 상태}를 구별해 저장한다.
+\begin{center}\begin{tikzpicture}[node distance=7mm]
+\node[module] (a) at (-4,1){RoadMap 승인};
+\node[module] (b) at (0,1){버퍼에 추가};
+\node[module] (c) at (4,1){Controller 출력};
+\node[module] (d) at (4,-1){Plant 이동·회전};
+\node[module] (e) at (-1,-1){보고로 실제 상태 갱신};
+\draw[flow] (a)--(b);\draw[flow] (b)--(c);
+\draw[flow] (c)--(d);\draw[flow] (d)--(e);
+\end{tikzpicture}\end{center}
+승인과 출력만으로 물체의 실제 위치를 목적지로 바꾸지 않는다.
+PSensor의 이탈 보고와 MRobot의 회전 시작·종료·최종 도착 보고를 받아 갱신한다.
+이탈 보고는 현재 묶음 전체의 완료를 뜻하지 않는다.
+\par\medskip
+현재 묶음의 이동 성분이 \textbf{모두 도착}한 뒤에 다음 묶음을 승인한다.
+점경로에는 이동 명령을 보내지 않는다. 모든 성분이 점경로인 단계는 즉시 완료할 수 있다.
+제어기는 시간 간격으로 확인하지 않고 도착 이벤트로 진행한다.
+\end{frame}
+
+\begin{frame}{RMFSController의 Command / Wait 실행}
+\begin{center}\begin{tikzpicture}
+\node[phase] (w) at (-3,0){Wait\\$\tau=\infty$};
+\node[phase] (c) at (3,0){Command\\$\tau=0$};
+\draw[ext] (w) to[bend left=25] node[lab,above]{[보고 처리 후 버퍼에 명령 있음]} (c);
+\draw[flow] (c) to[bend left=25] node[lab,below]{버퍼 명령 출력 / 버퍼 비움} (w);
+\draw[ext] (w) edge[loop left] node[lab,left]{[보고 후 버퍼 비어 있음]\\RoadMap 갱신} (w);
+\end{tikzpicture}\end{center}
+\small 초기화 시 실행할 이동 명령이 있으면 Command에서 시작한다.
+TrafficManager가 명령을 생성하고 RMFSController의 출력 함수만 실제 포트 출력을 수행한다.
+동일 묶음에 여러 이동 성분이 있으면 해당 명령들을 같은 시각에 함께 출력한다.
+\par\medskip
+MRobot의 새 \texttt{command\_coordinates="metres"} 옵션으로 Controller는 m 좌표를 보낸다.
+기존 예제는 기본 \texttt{"grid"} 입력을 유지한다.
+회전과 가감속은 실제 MRobot이 수행한다. 이번에는 분스합 없이 주어진 각 이동 성분의
+끝점에서 멈추므로, 효율적인 연속 주행은 아직 대상이 아니다.
+\end{frame}
+
+\begin{frame}{통합 Plant 검증과 실행 예제}
+\small
+\textbf{65개 RMFS 테스트 통과.} 기존 30개에 통합 검증 35개를 추가했다.
+13개 해 있는 경로를 DEVS only와 충돌검사 간격 0.01 s에서 각각 실행했다.
+모두 목적지에 도착하고 Controller는 Wait, MRobot은 Wait, PSensor는 Idle로 종료했다.
+검사용 충돌 샘플링에서 접촉은 0건이었다.
+\par\medskip
+해 없는 4개는 Plant를 실행하기 전에 거부했다.
+승인 선행 기록, 승인과 실제 위치의 분리, 복수 동시 명령, 마지막 도착까지 대기,
+회전 보고, loaded 실행, Reset 및 실행 중 snapshot 복구를 확인했다.
+\par\medskip
+\textbf{새 3D 예제:}\par
+{\scriptsize\ttfamily python -m examples.RMFS.Tests.02\_12\_RobotPath\_ControlledAlternating}\par
+{\scriptsize\ttfamily python -m examples.RMFS.Tests.03\_07\_RobotPath\_ControlledSweeps}
+\par\smallskip
+Space: 다음 사건, A: 수동/자동, R: Reset, T/I: Top/Iso, U/D: 속도.
+W는 대기, R은 회전이며 정상 이동 중에는 글자를 표시하지 않는다.
+\par\smallskip\footnotesize
+\texttt{--headless}는 창 없이, \texttt{--non-interactive}는 자동 애니메이션이다.
+기존 02\_10·03\_04 무제어 예제는 보존했다.
+전체 재실행: \texttt{python -m examples.RMFS.Tests.run\_controlled\_plant}.
+상세 결과: \texttt{Tests/results/controlled\_plant.json}.
+\end{frame}
+
+\begin{frame}{단위 경로쌍의 16개 유형: 별도 기하 검증기}
+\small
+\texttt{Tests/run\_unit\_pair\_classification.py}는 제어기와 독립적인 검증기다.
+기존 4$\times$4 격자에서 최대 5선분의 단순 경로 1,616개를 생성하고 모든 순서 있는 쌍을 검사한다.
+\begin{itemize}
+\item 격자 간격 2 m, 정사각형 물체 한 변 1.5 m, 경계 접촉은 간섭.
+\item 초기 위치가 같은 쌍을 제외한다.
+\item 중심 경로의 공통 정점·선분 그래프가 연결되거나 비어 있는 쌍만 포함한다.
+\item 독립 정점 진행 DAG는 물체를 한 정점 전진시키거나 대기시키는 묶음을 검사한다.
+좌표를 정수로 배율 변환해 스윕 교차를 계산하며 생산 코드의 기하 함수를 사용하지 않는다.
+\end{itemize}
+\begin{center}\begin{tabular}{lr}\toprule
+검사한 단위·독립 경로쌍 & 1,799,096\\
+완결 가능 / 불가능 & 1,586,016 / 213,080\\
+16유형 분류식과의 불일치 & 0\\
+생산 Solver와의 교차 검사 & 유형별 20개, 총 320개\\\bottomrule
+\end{tabular}\end{center}
+\footnotesize 실행:\par
+\texttt{\detokenize{python -m examples.RMFS.Tests.run_unit_pair_classification --max-edges 5}}\par
+결과: \texttt{Tests/results/unit\_pair\_classification.json}.
+\end{frame}
+
+\begin{frame}{분류식의 적용 경계와 회귀 검사}
+\small
+\textbf{문서와 구현의 범위 구별.} 분류식은 하나의 공통 중심 부분경로를 가진 쌍에 대한 것이다.
+일반 스윕의 교집합이 하나인 경우 또는 간섭 진행 구간 하나인 경우와 자동으로 동일시하지 않는다.
+\par\medskip
+\textbf{회귀 검사 추가:} \texttt{test\_unit\_pair\_classification.py}에 17개 테스트를 추가했다.
+16개 끝점 유형의 대표 예를 실제 스윕 판정과 WaitDuplicationSolver로 다시 검사한다.
+별도 정사각형 순환 예에서는 간섭 진행 구간이 하나여도 공통 경로가 두 조각일 수 있고,
+1111 유형으로 표시되면서도 풀린다는 사실을 확인한다.
+\par\medskip
+\textbf{명령:}\par
+{\scriptsize\ttfamily python -m pytest tests/examples/RMFS/test\_unit\_pair\_classification.py -q}
+\par\medskip
+17개 모두 통과했다. 이 검증기의 분류식을 기존 TrafficManager나 Plant의 제어 규칙으로
+교체하지 않았다. 복수 물체의 진행 의존성과 순환 대기는 별도 설계·증명 대상이다.
+\par\medskip\footnotesize
+이론 문서의 식 (35)--(40)과 연결된다.
+직렬 통과 구성의 요구 관계와 현재 점유에 의한 대기 관계는 구별한다.
+특히 앞 물체가 전체 간섭구간을 이탈해야만 뒤 물체가 이동할 수 있다고 일괄 가정하지 않는다.
 \end{frame}
 
 \end{document}

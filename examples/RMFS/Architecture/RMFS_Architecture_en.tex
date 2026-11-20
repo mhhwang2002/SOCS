@@ -750,7 +750,7 @@ Even with several interference components, use the first and last boundaries of 
 \node[below] at (5.5,0){\footnotesize Interfering / non-interfering parts};
 \node[below] at (9.5,0){\footnotesize Terminal subpath};
 \node[above] at (0,0){$s_i$};\node[above] at (3,0){$a_i$};
-\node[above] at (8,0){$b_i$};\node[above] at (11,0){$g_i$};
+\node[above] at (8,0){$b_i$};\node[above] at (11,0){$e_i$};
 \end{tikzpicture}\end{center}
 \footnotesize If there is no interference, the two full paths are already disjoint.
 Lengths in this schematic are conceptual, not execution times.
@@ -794,11 +794,11 @@ construct an interference-free paired path that completes both originals.
 \par\medskip
 Write the constituent sequences as $A_1,\ldots,A_r$ for $P_1$ and $B_1,\ldots,B_s$ for $P_2$.
 Let $\langle s_1\rangle$ denote object 1's initial point path and
-$\langle g_2\rangle$ object 2's terminal point path. Construct the pairing
+$\langle e_2\rangle$ object 2's terminal point path. Construct the pairing
 \begin{equation}
  \mathcal P=\bigl(
  (\langle s_1\rangle,B_1),\ldots,(\langle s_1\rangle,B_s),
- (A_1,\langle g_2\rangle),\ldots,(A_r,\langle g_2\rangle)
+ (A_1,\langle e_2\rangle),\ldots,(A_r,\langle e_2\rangle)
  \bigr).
  \tag{29}
 \end{equation}
@@ -824,8 +824,8 @@ no original constituent is deleted or reordered. The horizontal axis denotes exe
 \textbf{Proof.} The nonempty initial subpath places $s_1$ outside the entire image of $P_2$.
 Thus object 1 waiting at $s_1$ is disjoint from every constituent $B_k$ of object 2.
 \par\medskip
-Similarly, the nonempty terminal subpath places $g_2$ outside the entire image of $P_1$.
-Object 2 waiting at $g_2$ is therefore disjoint from every constituent $A_k$ of object 1.
+Similarly, the nonempty terminal subpath places $e_2$ outside the entire image of $P_1$.
+Object 2 waiting at $e_2$ is therefore disjoint from every constituent $A_k$ of object 1.
 Consequently every pair in Eq. (29) is interference-free.
 \par\medskip
 Concatenating each object's components only adds repetitions of point paths to the original.
@@ -861,9 +861,9 @@ For nonempty $C_i$, set $a_i=\min C_i$, $b_i=\max C_i$ and define
  \tag{31}
 \end{equation}
 \textbf{Theorem 3 assumption.} Every path has nonempty initial and terminal subpaths.
-Consequently $s_i=P_i(0)$ and $g_i=P_i(1)$ satisfy
+Consequently $s_i=P_i(0)$ and $e_i=P_i(1)$ satisfy
 \begin{equation}
- \{s_i,g_i\}\cap\bigcup_{j\ne i}\operatorname{im}P_j=\varnothing
+ \{s_i,e_i\}\cap\bigcup_{j\ne i}\operatorname{im}P_j=\varnothing
  \qquad(i=1,\ldots,n).
  \tag{32}
 \end{equation}
@@ -882,7 +882,7 @@ Write object $i$'s constituent sequence as $A_{i,1},\ldots,A_{i,r_i}$.
 Send objects in order $1,2,\ldots,n$. During constituent $k$ of object $i$, use the tuple
 \begin{equation}
  T_{i,k}=\bigl(
- \langle g_1\rangle,\ldots,\langle g_{i-1}\rangle,
+ \langle e_1\rangle,\ldots,\langle e_{i-1}\rangle,
  A_{i,k},
  \langle s_{i+1}\rangle,\ldots,\langle s_n\rangle
  \bigr)
@@ -909,7 +909,7 @@ in its original order; all added constituents are copies of an initial or termin
 \begin{frame}{Theorem 3: tuple safety and completion}
 \small
 \textbf{Tuple safety.} Only object $i$ can move in $T_{i,k}$.
-Every other object $j$ waits at $w_j=s_j$ or $w_j=g_j$.
+Every other object $j$ waits at $w_j=s_j$ or $w_j=e_j$.
 By Eq. (32), $w_j\notin\operatorname{im}P_i$, hence
 \begin{equation}
  \{w_j\}\cap\operatorname{im}A_{i,k}=\varnothing.

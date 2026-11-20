@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999997 (MiKTeX 25.12) (preloaded format=xelatex 2026.11.9)  19 NOV 2026 11:57
+This is XeTeX, Version 3.141592653-2.6-0.999997 (MiKTeX 25.12) (preloaded format=xelatex 2026.11.9)  19 NOV 2026 20:11
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1232,6 +1232,30 @@ File: assets/cycle3_r3_center_white.png Graphic file (type bmp)
 ] [44
 
 ]
+Overfull \vbox (2.72514pt too high) detected at line 965
+ []
+
+[45
+
+] [46
+
+] [47
+
+] [48
+
+] [49
+
+] [50
+
+] [51
+
+] [52
+
+] [53
+
+] [54
+
+]
 \tf@nav=\write6
 \openout6 = `RMFS_Architecture_ko.nav'.
 
@@ -1241,8 +1265,7 @@ File: assets/cycle3_r3_center_white.png Graphic file (type bmp)
 \tf@snm=\write8
 \openout8 = `RMFS_Architecture_ko.snm'.
 
-
-(RMFS_Architecture_ko.aux)
+ (RMFS_Architecture_ko.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2025-12-24>
@@ -1251,12 +1274,12 @@ Package rerunfilecheck Info: File `RMFS_Architecture_ko.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 28555 strings out of 402987
- 612048 string characters out of 5448938
- 1052596 words of memory out of 5000000
- 56698 multiletter control sequences out of 15000+600000
- 636250 words of font info for 108 fonts, out of 8000000 for 9000
+ 28673 strings out of 402987
+ 614130 string characters out of 5448938
+ 1056236 words of memory out of 5000000
+ 56811 multiletter control sequences out of 15000+600000
+ 636569 words of font info for 109 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  133i,12n,126p,496b,1018s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on RMFS_Architecture_ko.pdf (44 pages).
+Output written on RMFS_Architecture_ko.pdf (54 pages).

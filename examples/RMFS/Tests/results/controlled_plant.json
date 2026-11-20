@@ -1,0 +1,6714 @@
+[
+  {
+    "example": "02_01_RobotPath_Crossing_NoControl",
+    "status": "completed",
+    "time": 22.086305214969308,
+    "tuple_stages": 10,
+    "commands": 6,
+    "engine_steps": 2231,
+    "collision_samples_enabled": true,
+    "contacts": [],
+    "roadmap_history": [
+      {
+        "event": "approved",
+        "time": 0.0,
+        "robot": "R1",
+        "command_id": 0,
+        "stage": 1
+      },
+      {
+        "event": "issued",
+        "time": 0.0,
+        "robot": "R1",
+        "command_id": 0,
+        "stage": 1
+      },
+      {
+        "event": "leaving",
+        "time": 1.9127301391900149,
+        "robot": "R1",
+        "position": [
+          5.25,
+          4.0
+        ],
+        "stage": 1
+      },
+      {
+        "event": "arrived",
+        "time": 4.417261042993862,
+        "robot": "R1",
+        "command_id": 0,
+        "stage": 1,
+        "position": [
+          4.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 4.417261042993862,
+        "robot": "R1",
+        "command_id": 1,
+        "stage": 3
+      },
+      {
+        "event": "issued",
+        "time": 4.417261042993862,
+        "robot": "R1",
+        "command_id": 1,
+        "stage": 3
+      },
+      {
+        "event": "leaving",
+        "time": 6.329991182183877,
+        "robot": "R1",
+        "position": [
+          3.25,
+          4.0
+        ],
+        "stage": 3
+      },
+      {
+        "event": "arrived",
+        "time": 8.834522085987723,
+        "robot": "R1",
+        "command_id": 1,
+        "stage": 3,
+        "position": [
+          2.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 8.834522085987723,
+        "robot": "R2",
+        "command_id": 2,
+        "stage": 4
+      },
+      {
+        "event": "issued",
+        "time": 8.834522085987723,
+        "robot": "R2",
+        "command_id": 2,
+        "stage": 4
+      },
+      {
+        "event": "leaving",
+        "time": 10.74725222517774,
+        "robot": "R2",
+        "position": [
+          4.0,
+          5.25
+        ],
+        "stage": 4
+      },
+      {
+        "event": "arrived",
+        "time": 13.251783128981586,
+        "robot": "R2",
+        "command_id": 2,
+        "stage": 4,
+        "position": [
+          4.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 13.251783128981586,
+        "robot": "R2",
+        "command_id": 3,
+        "stage": 6
+      },
+      {
+        "event": "issued",
+        "time": 13.251783128981586,
+        "robot": "R2",
+        "command_id": 3,
+        "stage": 6
+      },
+      {
+        "event": "leaving",
+        "time": 15.1645132681716,
+        "robot": "R2",
+        "position": [
+          4.0,
+          3.25
+        ],
+        "stage": 6
+      },
+      {
+        "event": "arrived",
+        "time": 17.669044171975447,
+        "robot": "R2",
+        "command_id": 3,
+        "stage": 6,
+        "position": [
+          4.0,
+          2.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 17.669044171975447,
+        "robot": "R1",
+        "command_id": 4,
+        "stage": 8
+      },
+      {
+        "event": "approved",
+        "time": 17.669044171975447,
+        "robot": "R2",
+        "command_id": 5,
+        "stage": 8
+      },
+      {
+        "event": "issued",
+        "time": 17.669044171975447,
+        "robot": "R1",
+        "command_id": 4,
+        "stage": 8
+      },
+      {
+        "event": "issued",
+        "time": 17.669044171975447,
+        "robot": "R2",
+        "command_id": 5,
+        "stage": 8
+      },
+      {
+        "event": "leaving",
+        "time": 19.58177431116546,
+        "robot": "R2",
+        "position": [
+          4.0,
+          1.25
+        ],
+        "stage": 8
+      },
+      {
+        "event": "leaving",
+        "time": 19.58177431116546,
+        "robot": "R1",
+        "position": [
+          1.25,
+          4.0
+        ],
+        "stage": 8
+      },
+      {
+        "event": "arrived",
+        "time": 22.086305214969308,
+        "robot": "R2",
+        "command_id": 5,
+        "stage": 8,
+        "position": [
+          4.0,
+          0.0
+        ]
+      },
+      {
+        "event": "arrived",
+        "time": 22.086305214969308,
+        "robot": "R1",
+        "command_id": 4,
+        "stage": 8,
+        "position": [
+          0.0,
+          4.0
+        ]
+      }
+    ],
+    "stage_history": [
+      {
+        "stage": 0,
+        "event": "started",
+        "time": 0.0
+      },
+      {
+        "stage": 0,
+        "event": "completed",
+        "time": 0.0
+      },
+      {
+        "stage": 1,
+        "event": "started",
+        "time": 0.0
+      },
+      {
+        "stage": 1,
+        "event": "completed",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 2,
+        "event": "started",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 2,
+        "event": "completed",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 3,
+        "event": "started",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 3,
+        "event": "completed",
+        "time": 8.834522085987723
+      },
+      {
+        "stage": 4,
+        "event": "started",
+        "time": 8.834522085987723
+      },
+      {
+        "stage": 4,
+        "event": "completed",
+        "time": 13.251783128981586
+      },
+      {
+        "stage": 5,
+        "event": "started",
+        "time": 13.251783128981586
+      },
+      {
+        "stage": 5,
+        "event": "completed",
+        "time": 13.251783128981586
+      },
+      {
+        "stage": 6,
+        "event": "started",
+        "time": 13.251783128981586
+      },
+      {
+        "stage": 6,
+        "event": "completed",
+        "time": 17.669044171975447
+      },
+      {
+        "stage": 7,
+        "event": "started",
+        "time": 17.669044171975447
+      },
+      {
+        "stage": 7,
+        "event": "completed",
+        "time": 17.669044171975447
+      },
+      {
+        "stage": 8,
+        "event": "started",
+        "time": 17.669044171975447
+      },
+      {
+        "stage": 8,
+        "event": "completed",
+        "time": 22.086305214969308
+      },
+      {
+        "stage": 9,
+        "event": "started",
+        "time": 22.086305214969308
+      },
+      {
+        "stage": 9,
+        "event": "completed",
+        "time": 22.086305214969308
+      }
+    ]
+  },
+  {
+    "example": "02_02_RobotPath_LeftEdge_NoControl",
+    "status": "completed",
+    "time": 13.251783128981586,
+    "tuple_stages": 7,
+    "commands": 6,
+    "engine_steps": 1346,
+    "collision_samples_enabled": true,
+    "contacts": [],
+    "roadmap_history": [
+      {
+        "event": "approved",
+        "time": 0.0,
+        "robot": "R1",
+        "command_id": 0,
+        "stage": 1
+      },
+      {
+        "event": "approved",
+        "time": 0.0,
+        "robot": "R2",
+        "command_id": 1,
+        "stage": 1
+      },
+      {
+        "event": "issued",
+        "time": 0.0,
+        "robot": "R1",
+        "command_id": 0,
+        "stage": 1
+      },
+      {
+        "event": "issued",
+        "time": 0.0,
+        "robot": "R2",
+        "command_id": 1,
+        "stage": 1
+      },
+      {
+        "event": "leaving",
+        "time": 1.9127301391900149,
+        "robot": "R2",
+        "position": [
+          0.0,
+          5.25
+        ],
+        "stage": 1
+      },
+      {
+        "event": "leaving",
+        "time": 1.9127301391900149,
+        "robot": "R1",
+        "position": [
+          5.25,
+          4.0
+        ],
+        "stage": 1
+      },
+      {
+        "event": "arrived",
+        "time": 4.417261042993862,
+        "robot": "R2",
+        "command_id": 1,
+        "stage": 1,
+        "position": [
+          0.0,
+          4.0
+        ]
+      },
+      {
+        "event": "arrived",
+        "time": 4.417261042993862,
+        "robot": "R1",
+        "command_id": 0,
+        "stage": 1,
+        "position": [
+          4.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 4.417261042993862,
+        "robot": "R1",
+        "command_id": 2,
+        "stage": 3
+      },
+      {
+        "event": "approved",
+        "time": 4.417261042993862,
+        "robot": "R2",
+        "command_id": 3,
+        "stage": 3
+      },
+      {
+        "event": "issued",
+        "time": 4.417261042993862,
+        "robot": "R1",
+        "command_id": 2,
+        "stage": 3
+      },
+      {
+        "event": "issued",
+        "time": 4.417261042993862,
+        "robot": "R2",
+        "command_id": 3,
+        "stage": 3
+      },
+      {
+        "event": "leaving",
+        "time": 6.329991182183877,
+        "robot": "R2",
+        "position": [
+          0.0,
+          3.25
+        ],
+        "stage": 3
+      },
+      {
+        "event": "leaving",
+        "time": 6.329991182183877,
+        "robot": "R1",
+        "position": [
+          3.25,
+          4.0
+        ],
+        "stage": 3
+      },
+      {
+        "event": "arrived",
+        "time": 8.834522085987723,
+        "robot": "R2",
+        "command_id": 3,
+        "stage": 3,
+        "position": [
+          0.0,
+          2.0
+        ]
+      },
+      {
+        "event": "arrived",
+        "time": 8.834522085987723,
+        "robot": "R1",
+        "command_id": 2,
+        "stage": 3,
+        "position": [
+          2.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 8.834522085987723,
+        "robot": "R1",
+        "command_id": 4,
+        "stage": 5
+      },
+      {
+        "event": "approved",
+        "time": 8.834522085987723,
+        "robot": "R2",
+        "command_id": 5,
+        "stage": 5
+      },
+      {
+        "event": "issued",
+        "time": 8.834522085987723,
+        "robot": "R1",
+        "command_id": 4,
+        "stage": 5
+      },
+      {
+        "event": "issued",
+        "time": 8.834522085987723,
+        "robot": "R2",
+        "command_id": 5,
+        "stage": 5
+      },
+      {
+        "event": "leaving",
+        "time": 10.74725222517774,
+        "robot": "R2",
+        "position": [
+          0.0,
+          1.25
+        ],
+        "stage": 5
+      },
+      {
+        "event": "leaving",
+        "time": 10.74725222517774,
+        "robot": "R1",
+        "position": [
+          1.25,
+          4.0
+        ],
+        "stage": 5
+      },
+      {
+        "event": "arrived",
+        "time": 13.251783128981586,
+        "robot": "R2",
+        "command_id": 5,
+        "stage": 5,
+        "position": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "event": "arrived",
+        "time": 13.251783128981586,
+        "robot": "R1",
+        "command_id": 4,
+        "stage": 5,
+        "position": [
+          0.0,
+          4.0
+        ]
+      }
+    ],
+    "stage_history": [
+      {
+        "stage": 0,
+        "event": "started",
+        "time": 0.0
+      },
+      {
+        "stage": 0,
+        "event": "completed",
+        "time": 0.0
+      },
+      {
+        "stage": 1,
+        "event": "started",
+        "time": 0.0
+      },
+      {
+        "stage": 1,
+        "event": "completed",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 2,
+        "event": "started",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 2,
+        "event": "completed",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 3,
+        "event": "started",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 3,
+        "event": "completed",
+        "time": 8.834522085987723
+      },
+      {
+        "stage": 4,
+        "event": "started",
+        "time": 8.834522085987723
+      },
+      {
+        "stage": 4,
+        "event": "completed",
+        "time": 8.834522085987723
+      },
+      {
+        "stage": 5,
+        "event": "started",
+        "time": 8.834522085987723
+      },
+      {
+        "stage": 5,
+        "event": "completed",
+        "time": 13.251783128981586
+      },
+      {
+        "stage": 6,
+        "event": "started",
+        "time": 13.251783128981586
+      },
+      {
+        "stage": 6,
+        "event": "completed",
+        "time": 13.251783128981586
+      }
+    ]
+  },
+  {
+    "example": "02_03_RobotPath_SameDirection_Collision",
+    "status": "completed",
+    "time": 41.3380883439509,
+    "tuple_stages": 11,
+    "commands": 8,
+    "engine_steps": 4171,
+    "collision_samples_enabled": true,
+    "contacts": [],
+    "roadmap_history": [
+      {
+        "event": "approved",
+        "time": 0.0,
+        "robot": "R1",
+        "command_id": 0,
+        "stage": 1
+      },
+      {
+        "event": "issued",
+        "time": 0.0,
+        "robot": "R1",
+        "command_id": 0,
+        "stage": 1
+      },
+      {
+        "event": "leaving",
+        "time": 1.9127301391900149,
+        "robot": "R1",
+        "position": [
+          0.0,
+          0.75
+        ],
+        "stage": 1
+      },
+      {
+        "event": "arrived",
+        "time": 4.417261042993862,
+        "robot": "R1",
+        "command_id": 0,
+        "stage": 1,
+        "position": [
+          0.0,
+          2.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 4.417261042993862,
+        "robot": "R2",
+        "command_id": 1,
+        "stage": 2
+      },
+      {
+        "event": "issued",
+        "time": 4.417261042993862,
+        "robot": "R2",
+        "command_id": 1,
+        "stage": 2
+      },
+      {
+        "event": "leaving",
+        "time": 6.329991182183877,
+        "robot": "R2",
+        "position": [
+          2.0,
+          5.25
+        ],
+        "stage": 2
+      },
+      {
+        "event": "arrived",
+        "time": 8.834522085987723,
+        "robot": "R2",
+        "command_id": 1,
+        "stage": 2,
+        "position": [
+          2.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 8.834522085987723,
+        "robot": "R1",
+        "command_id": 2,
+        "stage": 3
+      },
+      {
+        "event": "issued",
+        "time": 8.834522085987723,
+        "robot": "R1",
+        "command_id": 2,
+        "stage": 3
+      },
+      {
+        "event": "leaving",
+        "time": 10.74725222517774,
+        "robot": "R1",
+        "position": [
+          0.0,
+          2.75
+        ],
+        "stage": 3
+      },
+      {
+        "event": "arrived",
+        "time": 13.251783128981586,
+        "robot": "R1",
+        "command_id": 2,
+        "stage": 3,
+        "position": [
+          0.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 13.251783128981586,
+        "robot": "R2",
+        "command_id": 3,
+        "stage": 4
+      },
+      {
+        "event": "issued",
+        "time": 13.251783128981586,
+        "robot": "R2",
+        "command_id": 3,
+        "stage": 4
+      },
+      {
+        "event": "rotation_started",
+        "time": 13.251783128981586,
+        "robot": "R2",
+        "position": [
+          2.0,
+          4.0
+        ],
+        "stage": 4
+      },
+      {
+        "event": "rotation_finished",
+        "time": 15.251783128981586,
+        "robot": "R2",
+        "position": [
+          2.0,
+          4.0
+        ],
+        "stage": 4
+      },
+      {
+        "event": "leaving",
+        "time": 17.1645132681716,
+        "robot": "R2",
+        "position": [
+          2.75,
+          4.0
+        ],
+        "stage": 4
+      },
+      {
+        "event": "arrived",
+        "time": 19.669044171975447,
+        "robot": "R2",
+        "command_id": 3,
+        "stage": 4,
+        "position": [
+          4.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 19.669044171975447,
+        "robot": "R1",
+        "command_id": 4,
+        "stage": 5
+      },
+      {
+        "event": "issued",
+        "time": 19.669044171975447,
+        "robot": "R1",
+        "command_id": 4,
+        "stage": 5
+      },
+      {
+        "event": "rotation_started",
+        "time": 19.669044171975447,
+        "robot": "R1",
+        "position": [
+          0.0,
+          4.0
+        ],
+        "stage": 5
+      },
+      {
+        "event": "rotation_finished",
+        "time": 21.669044171975447,
+        "robot": "R1",
+        "position": [
+          0.0,
+          4.0
+        ],
+        "stage": 5
+      },
+      {
+        "event": "leaving",
+        "time": 23.58177431116546,
+        "robot": "R1",
+        "position": [
+          0.75,
+          4.0
+        ],
+        "stage": 5
+      },
+      {
+        "event": "arrived",
+        "time": 26.086305214969308,
+        "robot": "R1",
+        "command_id": 4,
+        "stage": 5,
+        "position": [
+          2.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 26.086305214969308,
+        "robot": "R2",
+        "command_id": 5,
+        "stage": 6
+      },
+      {
+        "event": "issued",
+        "time": 26.086305214969308,
+        "robot": "R2",
+        "command_id": 5,
+        "stage": 6
+      },
+      {
+        "event": "rotation_started",
+        "time": 26.086305214969308,
+        "robot": "R2",
+        "position": [
+          4.0,
+          4.0
+        ],
+        "stage": 6
+      },
+      {
+        "event": "rotation_finished",
+        "time": 28.086305214969308,
+        "robot": "R2",
+        "position": [
+          4.0,
+          4.0
+        ],
+        "stage": 6
+      },
+      {
+        "event": "leaving",
+        "time": 29.99903535415932,
+        "robot": "R2",
+        "position": [
+          4.0,
+          4.75
+        ],
+        "stage": 6
+      },
+      {
+        "event": "arrived",
+        "time": 32.50356625796317,
+        "robot": "R2",
+        "command_id": 5,
+        "stage": 6,
+        "position": [
+          4.0,
+          6.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 32.50356625796317,
+        "robot": "R1",
+        "command_id": 6,
+        "stage": 7
+      },
+      {
+        "event": "issued",
+        "time": 32.50356625796317,
+        "robot": "R1",
+        "command_id": 6,
+        "stage": 7
+      },
+      {
+        "event": "leaving",
+        "time": 34.41629639715319,
+        "robot": "R1",
+        "position": [
+          2.75,
+          4.0
+        ],
+        "stage": 7
+      },
+      {
+        "event": "arrived",
+        "time": 36.920827300957036,
+        "robot": "R1",
+        "command_id": 6,
+        "stage": 7,
+        "position": [
+          4.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 36.920827300957036,
+        "robot": "R1",
+        "command_id": 7,
+        "stage": 9
+      },
+      {
+        "event": "issued",
+        "time": 36.920827300957036,
+        "robot": "R1",
+        "command_id": 7,
+        "stage": 9
+      },
+      {
+        "event": "leaving",
+        "time": 38.833557440147054,
+        "robot": "R1",
+        "position": [
+          4.75,
+          4.0
+        ],
+        "stage": 9
+      },
+      {
+        "event": "arrived",
+        "time": 41.3380883439509,
+        "robot": "R1",
+        "command_id": 7,
+        "stage": 9,
+        "position": [
+          6.0,
+          4.0
+        ]
+      }
+    ],
+    "stage_history": [
+      {
+        "stage": 0,
+        "event": "started",
+        "time": 0.0
+      },
+      {
+        "stage": 0,
+        "event": "completed",
+        "time": 0.0
+      },
+      {
+        "stage": 1,
+        "event": "started",
+        "time": 0.0
+      },
+      {
+        "stage": 1,
+        "event": "completed",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 2,
+        "event": "started",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 2,
+        "event": "completed",
+        "time": 8.834522085987723
+      },
+      {
+        "stage": 3,
+        "event": "started",
+        "time": 8.834522085987723
+      },
+      {
+        "stage": 3,
+        "event": "completed",
+        "time": 13.251783128981586
+      },
+      {
+        "stage": 4,
+        "event": "started",
+        "time": 13.251783128981586
+      },
+      {
+        "stage": 4,
+        "event": "completed",
+        "time": 19.669044171975447
+      },
+      {
+        "stage": 5,
+        "event": "started",
+        "time": 19.669044171975447
+      },
+      {
+        "stage": 5,
+        "event": "completed",
+        "time": 26.086305214969308
+      },
+      {
+        "stage": 6,
+        "event": "started",
+        "time": 26.086305214969308
+      },
+      {
+        "stage": 6,
+        "event": "completed",
+        "time": 32.50356625796317
+      },
+      {
+        "stage": 7,
+        "event": "started",
+        "time": 32.50356625796317
+      },
+      {
+        "stage": 7,
+        "event": "completed",
+        "time": 36.920827300957036
+      },
+      {
+        "stage": 8,
+        "event": "started",
+        "time": 36.920827300957036
+      },
+      {
+        "stage": 8,
+        "event": "completed",
+        "time": 36.920827300957036
+      },
+      {
+        "stage": 9,
+        "event": "started",
+        "time": 36.920827300957036
+      },
+      {
+        "stage": 9,
+        "event": "completed",
+        "time": 41.3380883439509
+      },
+      {
+        "stage": 10,
+        "event": "started",
+        "time": 41.3380883439509
+      },
+      {
+        "stage": 10,
+        "event": "completed",
+        "time": 41.3380883439509
+      }
+    ]
+  },
+  {
+    "example": "02_04_RobotPath_SameDirection_Clear",
+    "status": "completed",
+    "time": 34.92082730095703,
+    "tuple_stages": 11,
+    "commands": 7,
+    "engine_steps": 3524,
+    "collision_samples_enabled": true,
+    "contacts": [],
+    "roadmap_history": [
+      {
+        "event": "approved",
+        "time": 0.0,
+        "robot": "R2",
+        "command_id": 0,
+        "stage": 1
+      },
+      {
+        "event": "issued",
+        "time": 0.0,
+        "robot": "R2",
+        "command_id": 0,
+        "stage": 1
+      },
+      {
+        "event": "leaving",
+        "time": 1.9127301391900149,
+        "robot": "R2",
+        "position": [
+          0.0,
+          5.25
+        ],
+        "stage": 1
+      },
+      {
+        "event": "arrived",
+        "time": 4.417261042993862,
+        "robot": "R2",
+        "command_id": 0,
+        "stage": 1,
+        "position": [
+          0.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 4.417261042993862,
+        "robot": "R1",
+        "command_id": 1,
+        "stage": 2
+      },
+      {
+        "event": "issued",
+        "time": 4.417261042993862,
+        "robot": "R1",
+        "command_id": 1,
+        "stage": 2
+      },
+      {
+        "event": "leaving",
+        "time": 6.329991182183877,
+        "robot": "R1",
+        "position": [
+          2.75,
+          4.0
+        ],
+        "stage": 2
+      },
+      {
+        "event": "arrived",
+        "time": 8.834522085987723,
+        "robot": "R1",
+        "command_id": 1,
+        "stage": 2,
+        "position": [
+          4.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 8.834522085987723,
+        "robot": "R2",
+        "command_id": 2,
+        "stage": 3
+      },
+      {
+        "event": "issued",
+        "time": 8.834522085987723,
+        "robot": "R2",
+        "command_id": 2,
+        "stage": 3
+      },
+      {
+        "event": "rotation_started",
+        "time": 8.834522085987723,
+        "robot": "R2",
+        "position": [
+          0.0,
+          4.0
+        ],
+        "stage": 3
+      },
+      {
+        "event": "rotation_finished",
+        "time": 10.834522085987723,
+        "robot": "R2",
+        "position": [
+          0.0,
+          4.0
+        ],
+        "stage": 3
+      },
+      {
+        "event": "leaving",
+        "time": 12.74725222517774,
+        "robot": "R2",
+        "position": [
+          0.75,
+          4.0
+        ],
+        "stage": 3
+      },
+      {
+        "event": "arrived",
+        "time": 15.251783128981586,
+        "robot": "R2",
+        "command_id": 2,
+        "stage": 3,
+        "position": [
+          2.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 15.251783128981586,
+        "robot": "R1",
+        "command_id": 3,
+        "stage": 4
+      },
+      {
+        "event": "issued",
+        "time": 15.251783128981586,
+        "robot": "R1",
+        "command_id": 3,
+        "stage": 4
+      },
+      {
+        "event": "leaving",
+        "time": 17.1645132681716,
+        "robot": "R1",
+        "position": [
+          4.75,
+          4.0
+        ],
+        "stage": 4
+      },
+      {
+        "event": "arrived",
+        "time": 19.669044171975447,
+        "robot": "R1",
+        "command_id": 3,
+        "stage": 4,
+        "position": [
+          6.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 19.669044171975447,
+        "robot": "R2",
+        "command_id": 4,
+        "stage": 5
+      },
+      {
+        "event": "issued",
+        "time": 19.669044171975447,
+        "robot": "R2",
+        "command_id": 4,
+        "stage": 5
+      },
+      {
+        "event": "leaving",
+        "time": 21.58177431116546,
+        "robot": "R2",
+        "position": [
+          2.75,
+          4.0
+        ],
+        "stage": 5
+      },
+      {
+        "event": "arrived",
+        "time": 24.086305214969308,
+        "robot": "R2",
+        "command_id": 4,
+        "stage": 5,
+        "position": [
+          4.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 24.086305214969308,
+        "robot": "R2",
+        "command_id": 5,
+        "stage": 7
+      },
+      {
+        "event": "issued",
+        "time": 24.086305214969308,
+        "robot": "R2",
+        "command_id": 5,
+        "stage": 7
+      },
+      {
+        "event": "rotation_started",
+        "time": 24.086305214969308,
+        "robot": "R2",
+        "position": [
+          4.0,
+          4.0
+        ],
+        "stage": 7
+      },
+      {
+        "event": "rotation_finished",
+        "time": 26.086305214969308,
+        "robot": "R2",
+        "position": [
+          4.0,
+          4.0
+        ],
+        "stage": 7
+      },
+      {
+        "event": "leaving",
+        "time": 27.99903535415932,
+        "robot": "R2",
+        "position": [
+          4.0,
+          3.25
+        ],
+        "stage": 7
+      },
+      {
+        "event": "arrived",
+        "time": 30.50356625796317,
+        "robot": "R2",
+        "command_id": 5,
+        "stage": 7,
+        "position": [
+          4.0,
+          2.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 30.50356625796317,
+        "robot": "R2",
+        "command_id": 6,
+        "stage": 9
+      },
+      {
+        "event": "issued",
+        "time": 30.50356625796317,
+        "robot": "R2",
+        "command_id": 6,
+        "stage": 9
+      },
+      {
+        "event": "leaving",
+        "time": 32.41629639715318,
+        "robot": "R2",
+        "position": [
+          4.0,
+          1.25
+        ],
+        "stage": 9
+      },
+      {
+        "event": "arrived",
+        "time": 34.92082730095703,
+        "robot": "R2",
+        "command_id": 6,
+        "stage": 9,
+        "position": [
+          4.0,
+          0.0
+        ]
+      }
+    ],
+    "stage_history": [
+      {
+        "stage": 0,
+        "event": "started",
+        "time": 0.0
+      },
+      {
+        "stage": 0,
+        "event": "completed",
+        "time": 0.0
+      },
+      {
+        "stage": 1,
+        "event": "started",
+        "time": 0.0
+      },
+      {
+        "stage": 1,
+        "event": "completed",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 2,
+        "event": "started",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 2,
+        "event": "completed",
+        "time": 8.834522085987723
+      },
+      {
+        "stage": 3,
+        "event": "started",
+        "time": 8.834522085987723
+      },
+      {
+        "stage": 3,
+        "event": "completed",
+        "time": 15.251783128981586
+      },
+      {
+        "stage": 4,
+        "event": "started",
+        "time": 15.251783128981586
+      },
+      {
+        "stage": 4,
+        "event": "completed",
+        "time": 19.669044171975447
+      },
+      {
+        "stage": 5,
+        "event": "started",
+        "time": 19.669044171975447
+      },
+      {
+        "stage": 5,
+        "event": "completed",
+        "time": 24.086305214969308
+      },
+      {
+        "stage": 6,
+        "event": "started",
+        "time": 24.086305214969308
+      },
+      {
+        "stage": 6,
+        "event": "completed",
+        "time": 24.086305214969308
+      },
+      {
+        "stage": 7,
+        "event": "started",
+        "time": 24.086305214969308
+      },
+      {
+        "stage": 7,
+        "event": "completed",
+        "time": 30.50356625796317
+      },
+      {
+        "stage": 8,
+        "event": "started",
+        "time": 30.50356625796317
+      },
+      {
+        "stage": 8,
+        "event": "completed",
+        "time": 30.50356625796317
+      },
+      {
+        "stage": 9,
+        "event": "started",
+        "time": 30.50356625796317
+      },
+      {
+        "stage": 9,
+        "event": "completed",
+        "time": 34.92082730095703
+      },
+      {
+        "stage": 10,
+        "event": "started",
+        "time": 34.92082730095703
+      },
+      {
+        "stage": 10,
+        "event": "completed",
+        "time": 34.92082730095703
+      }
+    ]
+  },
+  {
+    "example": "02_05_RobotPath_OppositeDirection_Collision",
+    "status": "no_plan",
+    "reason": "No wait-duplication tuple path exists for these fixed routes."
+  },
+  {
+    "example": "02_06_RobotPath_OppositeDirection_Clear",
+    "status": "completed",
+    "time": 34.92082730095703,
+    "tuple_stages": 11,
+    "commands": 7,
+    "engine_steps": 3524,
+    "collision_samples_enabled": true,
+    "contacts": [],
+    "roadmap_history": [
+      {
+        "event": "approved",
+        "time": 0.0,
+        "robot": "R2",
+        "command_id": 0,
+        "stage": 1
+      },
+      {
+        "event": "issued",
+        "time": 0.0,
+        "robot": "R2",
+        "command_id": 0,
+        "stage": 1
+      },
+      {
+        "event": "leaving",
+        "time": 1.9127301391900149,
+        "robot": "R2",
+        "position": [
+          6.0,
+          0.75
+        ],
+        "stage": 1
+      },
+      {
+        "event": "arrived",
+        "time": 4.417261042993862,
+        "robot": "R2",
+        "command_id": 0,
+        "stage": 1,
+        "position": [
+          6.0,
+          2.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 4.417261042993862,
+        "robot": "R1",
+        "command_id": 1,
+        "stage": 2
+      },
+      {
+        "event": "issued",
+        "time": 4.417261042993862,
+        "robot": "R1",
+        "command_id": 1,
+        "stage": 2
+      },
+      {
+        "event": "leaving",
+        "time": 6.329991182183877,
+        "robot": "R1",
+        "position": [
+          2.75,
+          4.0
+        ],
+        "stage": 2
+      },
+      {
+        "event": "arrived",
+        "time": 8.834522085987723,
+        "robot": "R1",
+        "command_id": 1,
+        "stage": 2,
+        "position": [
+          4.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 8.834522085987723,
+        "robot": "R2",
+        "command_id": 2,
+        "stage": 3
+      },
+      {
+        "event": "issued",
+        "time": 8.834522085987723,
+        "robot": "R2",
+        "command_id": 2,
+        "stage": 3
+      },
+      {
+        "event": "leaving",
+        "time": 10.74725222517774,
+        "robot": "R2",
+        "position": [
+          6.0,
+          2.75
+        ],
+        "stage": 3
+      },
+      {
+        "event": "arrived",
+        "time": 13.251783128981586,
+        "robot": "R2",
+        "command_id": 2,
+        "stage": 3,
+        "position": [
+          6.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 13.251783128981586,
+        "robot": "R1",
+        "command_id": 3,
+        "stage": 4
+      },
+      {
+        "event": "issued",
+        "time": 13.251783128981586,
+        "robot": "R1",
+        "command_id": 3,
+        "stage": 4
+      },
+      {
+        "event": "rotation_started",
+        "time": 13.251783128981586,
+        "robot": "R1",
+        "position": [
+          4.0,
+          4.0
+        ],
+        "stage": 4
+      },
+      {
+        "event": "rotation_finished",
+        "time": 15.251783128981586,
+        "robot": "R1",
+        "position": [
+          4.0,
+          4.0
+        ],
+        "stage": 4
+      },
+      {
+        "event": "leaving",
+        "time": 17.1645132681716,
+        "robot": "R1",
+        "position": [
+          4.0,
+          4.75
+        ],
+        "stage": 4
+      },
+      {
+        "event": "arrived",
+        "time": 19.669044171975447,
+        "robot": "R1",
+        "command_id": 3,
+        "stage": 4,
+        "position": [
+          4.0,
+          6.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 19.669044171975447,
+        "robot": "R2",
+        "command_id": 4,
+        "stage": 5
+      },
+      {
+        "event": "issued",
+        "time": 19.669044171975447,
+        "robot": "R2",
+        "command_id": 4,
+        "stage": 5
+      },
+      {
+        "event": "rotation_started",
+        "time": 19.669044171975447,
+        "robot": "R2",
+        "position": [
+          6.0,
+          4.0
+        ],
+        "stage": 5
+      },
+      {
+        "event": "rotation_finished",
+        "time": 21.669044171975447,
+        "robot": "R2",
+        "position": [
+          6.0,
+          4.0
+        ],
+        "stage": 5
+      },
+      {
+        "event": "leaving",
+        "time": 23.58177431116546,
+        "robot": "R2",
+        "position": [
+          5.25,
+          4.0
+        ],
+        "stage": 5
+      },
+      {
+        "event": "arrived",
+        "time": 26.086305214969308,
+        "robot": "R2",
+        "command_id": 4,
+        "stage": 5,
+        "position": [
+          4.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 26.086305214969308,
+        "robot": "R2",
+        "command_id": 5,
+        "stage": 7
+      },
+      {
+        "event": "issued",
+        "time": 26.086305214969308,
+        "robot": "R2",
+        "command_id": 5,
+        "stage": 7
+      },
+      {
+        "event": "leaving",
+        "time": 27.99903535415932,
+        "robot": "R2",
+        "position": [
+          3.25,
+          4.0
+        ],
+        "stage": 7
+      },
+      {
+        "event": "arrived",
+        "time": 30.50356625796317,
+        "robot": "R2",
+        "command_id": 5,
+        "stage": 7,
+        "position": [
+          2.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 30.50356625796317,
+        "robot": "R2",
+        "command_id": 6,
+        "stage": 9
+      },
+      {
+        "event": "issued",
+        "time": 30.50356625796317,
+        "robot": "R2",
+        "command_id": 6,
+        "stage": 9
+      },
+      {
+        "event": "leaving",
+        "time": 32.41629639715318,
+        "robot": "R2",
+        "position": [
+          1.25,
+          4.0
+        ],
+        "stage": 9
+      },
+      {
+        "event": "arrived",
+        "time": 34.92082730095703,
+        "robot": "R2",
+        "command_id": 6,
+        "stage": 9,
+        "position": [
+          0.0,
+          4.0
+        ]
+      }
+    ],
+    "stage_history": [
+      {
+        "stage": 0,
+        "event": "started",
+        "time": 0.0
+      },
+      {
+        "stage": 0,
+        "event": "completed",
+        "time": 0.0
+      },
+      {
+        "stage": 1,
+        "event": "started",
+        "time": 0.0
+      },
+      {
+        "stage": 1,
+        "event": "completed",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 2,
+        "event": "started",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 2,
+        "event": "completed",
+        "time": 8.834522085987723
+      },
+      {
+        "stage": 3,
+        "event": "started",
+        "time": 8.834522085987723
+      },
+      {
+        "stage": 3,
+        "event": "completed",
+        "time": 13.251783128981586
+      },
+      {
+        "stage": 4,
+        "event": "started",
+        "time": 13.251783128981586
+      },
+      {
+        "stage": 4,
+        "event": "completed",
+        "time": 19.669044171975447
+      },
+      {
+        "stage": 5,
+        "event": "started",
+        "time": 19.669044171975447
+      },
+      {
+        "stage": 5,
+        "event": "completed",
+        "time": 26.086305214969308
+      },
+      {
+        "stage": 6,
+        "event": "started",
+        "time": 26.086305214969308
+      },
+      {
+        "stage": 6,
+        "event": "completed",
+        "time": 26.086305214969308
+      },
+      {
+        "stage": 7,
+        "event": "started",
+        "time": 26.086305214969308
+      },
+      {
+        "stage": 7,
+        "event": "completed",
+        "time": 30.50356625796317
+      },
+      {
+        "stage": 8,
+        "event": "started",
+        "time": 30.50356625796317
+      },
+      {
+        "stage": 8,
+        "event": "completed",
+        "time": 30.50356625796317
+      },
+      {
+        "stage": 9,
+        "event": "started",
+        "time": 30.50356625796317
+      },
+      {
+        "stage": 9,
+        "event": "completed",
+        "time": 34.92082730095703
+      },
+      {
+        "stage": 10,
+        "event": "started",
+        "time": 34.92082730095703
+      },
+      {
+        "stage": 10,
+        "event": "completed",
+        "time": 34.92082730095703
+      }
+    ]
+  },
+  {
+    "example": "02_07_RobotPath_OppositeDirection_EntryWait",
+    "status": "completed",
+    "time": 52.17261042993863,
+    "tuple_stages": 20,
+    "commands": 10,
+    "engine_steps": 5265,
+    "collision_samples_enabled": true,
+    "contacts": [],
+    "roadmap_history": [
+      {
+        "event": "approved",
+        "time": 0.0,
+        "robot": "R1",
+        "command_id": 0,
+        "stage": 1
+      },
+      {
+        "event": "issued",
+        "time": 0.0,
+        "robot": "R1",
+        "command_id": 0,
+        "stage": 1
+      },
+      {
+        "event": "leaving",
+        "time": 1.9127301391900149,
+        "robot": "R1",
+        "position": [
+          0.0,
+          5.25
+        ],
+        "stage": 1
+      },
+      {
+        "event": "arrived",
+        "time": 4.417261042993862,
+        "robot": "R1",
+        "command_id": 0,
+        "stage": 1,
+        "position": [
+          0.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 4.417261042993862,
+        "robot": "R1",
+        "command_id": 1,
+        "stage": 3
+      },
+      {
+        "event": "issued",
+        "time": 4.417261042993862,
+        "robot": "R1",
+        "command_id": 1,
+        "stage": 3
+      },
+      {
+        "event": "rotation_started",
+        "time": 4.417261042993862,
+        "robot": "R1",
+        "position": [
+          0.0,
+          4.0
+        ],
+        "stage": 3
+      },
+      {
+        "event": "rotation_finished",
+        "time": 6.417261042993862,
+        "robot": "R1",
+        "position": [
+          0.0,
+          4.0
+        ],
+        "stage": 3
+      },
+      {
+        "event": "leaving",
+        "time": 8.329991182183877,
+        "robot": "R1",
+        "position": [
+          0.75,
+          4.0
+        ],
+        "stage": 3
+      },
+      {
+        "event": "arrived",
+        "time": 10.834522085987723,
+        "robot": "R1",
+        "command_id": 1,
+        "stage": 3,
+        "position": [
+          2.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 10.834522085987723,
+        "robot": "R1",
+        "command_id": 2,
+        "stage": 5
+      },
+      {
+        "event": "issued",
+        "time": 10.834522085987723,
+        "robot": "R1",
+        "command_id": 2,
+        "stage": 5
+      },
+      {
+        "event": "leaving",
+        "time": 12.74725222517774,
+        "robot": "R1",
+        "position": [
+          2.75,
+          4.0
+        ],
+        "stage": 5
+      },
+      {
+        "event": "arrived",
+        "time": 15.251783128981586,
+        "robot": "R1",
+        "command_id": 2,
+        "stage": 5,
+        "position": [
+          4.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 15.251783128981586,
+        "robot": "R1",
+        "command_id": 3,
+        "stage": 7
+      },
+      {
+        "event": "issued",
+        "time": 15.251783128981586,
+        "robot": "R1",
+        "command_id": 3,
+        "stage": 7
+      },
+      {
+        "event": "leaving",
+        "time": 17.1645132681716,
+        "robot": "R1",
+        "position": [
+          4.75,
+          4.0
+        ],
+        "stage": 7
+      },
+      {
+        "event": "arrived",
+        "time": 19.669044171975447,
+        "robot": "R1",
+        "command_id": 3,
+        "stage": 7,
+        "position": [
+          6.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 19.669044171975447,
+        "robot": "R1",
+        "command_id": 4,
+        "stage": 9
+      },
+      {
+        "event": "issued",
+        "time": 19.669044171975447,
+        "robot": "R1",
+        "command_id": 4,
+        "stage": 9
+      },
+      {
+        "event": "rotation_started",
+        "time": 19.669044171975447,
+        "robot": "R1",
+        "position": [
+          6.0,
+          4.0
+        ],
+        "stage": 9
+      },
+      {
+        "event": "rotation_finished",
+        "time": 21.669044171975447,
+        "robot": "R1",
+        "position": [
+          6.0,
+          4.0
+        ],
+        "stage": 9
+      },
+      {
+        "event": "leaving",
+        "time": 23.58177431116546,
+        "robot": "R1",
+        "position": [
+          6.0,
+          4.75
+        ],
+        "stage": 9
+      },
+      {
+        "event": "arrived",
+        "time": 26.086305214969308,
+        "robot": "R1",
+        "command_id": 4,
+        "stage": 9,
+        "position": [
+          6.0,
+          6.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 26.086305214969308,
+        "robot": "R2",
+        "command_id": 5,
+        "stage": 10
+      },
+      {
+        "event": "issued",
+        "time": 26.086305214969308,
+        "robot": "R2",
+        "command_id": 5,
+        "stage": 10
+      },
+      {
+        "event": "leaving",
+        "time": 27.99903535415932,
+        "robot": "R2",
+        "position": [
+          6.0,
+          2.75
+        ],
+        "stage": 10
+      },
+      {
+        "event": "arrived",
+        "time": 30.50356625796317,
+        "robot": "R2",
+        "command_id": 5,
+        "stage": 10,
+        "position": [
+          6.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 30.50356625796317,
+        "robot": "R2",
+        "command_id": 6,
+        "stage": 12
+      },
+      {
+        "event": "issued",
+        "time": 30.50356625796317,
+        "robot": "R2",
+        "command_id": 6,
+        "stage": 12
+      },
+      {
+        "event": "rotation_started",
+        "time": 30.50356625796317,
+        "robot": "R2",
+        "position": [
+          6.0,
+          4.0
+        ],
+        "stage": 12
+      },
+      {
+        "event": "rotation_finished",
+        "time": 32.50356625796317,
+        "robot": "R2",
+        "position": [
+          6.0,
+          4.0
+        ],
+        "stage": 12
+      },
+      {
+        "event": "leaving",
+        "time": 34.41629639715319,
+        "robot": "R2",
+        "position": [
+          5.25,
+          4.0
+        ],
+        "stage": 12
+      },
+      {
+        "event": "arrived",
+        "time": 36.920827300957036,
+        "robot": "R2",
+        "command_id": 6,
+        "stage": 12,
+        "position": [
+          4.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 36.920827300957036,
+        "robot": "R2",
+        "command_id": 7,
+        "stage": 14
+      },
+      {
+        "event": "issued",
+        "time": 36.920827300957036,
+        "robot": "R2",
+        "command_id": 7,
+        "stage": 14
+      },
+      {
+        "event": "leaving",
+        "time": 38.833557440147054,
+        "robot": "R2",
+        "position": [
+          3.25,
+          4.0
+        ],
+        "stage": 14
+      },
+      {
+        "event": "arrived",
+        "time": 41.3380883439509,
+        "robot": "R2",
+        "command_id": 7,
+        "stage": 14,
+        "position": [
+          2.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 41.3380883439509,
+        "robot": "R2",
+        "command_id": 8,
+        "stage": 16
+      },
+      {
+        "event": "issued",
+        "time": 41.3380883439509,
+        "robot": "R2",
+        "command_id": 8,
+        "stage": 16
+      },
+      {
+        "event": "leaving",
+        "time": 43.25081848314092,
+        "robot": "R2",
+        "position": [
+          1.25,
+          4.0
+        ],
+        "stage": 16
+      },
+      {
+        "event": "arrived",
+        "time": 45.755349386944765,
+        "robot": "R2",
+        "command_id": 8,
+        "stage": 16,
+        "position": [
+          0.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 45.755349386944765,
+        "robot": "R2",
+        "command_id": 9,
+        "stage": 18
+      },
+      {
+        "event": "issued",
+        "time": 45.755349386944765,
+        "robot": "R2",
+        "command_id": 9,
+        "stage": 18
+      },
+      {
+        "event": "rotation_started",
+        "time": 45.755349386944765,
+        "robot": "R2",
+        "position": [
+          0.0,
+          4.0
+        ],
+        "stage": 18
+      },
+      {
+        "event": "rotation_finished",
+        "time": 47.755349386944765,
+        "robot": "R2",
+        "position": [
+          0.0,
+          4.0
+        ],
+        "stage": 18
+      },
+      {
+        "event": "leaving",
+        "time": 49.66807952613478,
+        "robot": "R2",
+        "position": [
+          0.0,
+          3.25
+        ],
+        "stage": 18
+      },
+      {
+        "event": "arrived",
+        "time": 52.17261042993863,
+        "robot": "R2",
+        "command_id": 9,
+        "stage": 18,
+        "position": [
+          0.0,
+          2.0
+        ]
+      }
+    ],
+    "stage_history": [
+      {
+        "stage": 0,
+        "event": "started",
+        "time": 0.0
+      },
+      {
+        "stage": 0,
+        "event": "completed",
+        "time": 0.0
+      },
+      {
+        "stage": 1,
+        "event": "started",
+        "time": 0.0
+      },
+      {
+        "stage": 1,
+        "event": "completed",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 2,
+        "event": "started",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 2,
+        "event": "completed",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 3,
+        "event": "started",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 3,
+        "event": "completed",
+        "time": 10.834522085987723
+      },
+      {
+        "stage": 4,
+        "event": "started",
+        "time": 10.834522085987723
+      },
+      {
+        "stage": 4,
+        "event": "completed",
+        "time": 10.834522085987723
+      },
+      {
+        "stage": 5,
+        "event": "started",
+        "time": 10.834522085987723
+      },
+      {
+        "stage": 5,
+        "event": "completed",
+        "time": 15.251783128981586
+      },
+      {
+        "stage": 6,
+        "event": "started",
+        "time": 15.251783128981586
+      },
+      {
+        "stage": 6,
+        "event": "completed",
+        "time": 15.251783128981586
+      },
+      {
+        "stage": 7,
+        "event": "started",
+        "time": 15.251783128981586
+      },
+      {
+        "stage": 7,
+        "event": "completed",
+        "time": 19.669044171975447
+      },
+      {
+        "stage": 8,
+        "event": "started",
+        "time": 19.669044171975447
+      },
+      {
+        "stage": 8,
+        "event": "completed",
+        "time": 19.669044171975447
+      },
+      {
+        "stage": 9,
+        "event": "started",
+        "time": 19.669044171975447
+      },
+      {
+        "stage": 9,
+        "event": "completed",
+        "time": 26.086305214969308
+      },
+      {
+        "stage": 10,
+        "event": "started",
+        "time": 26.086305214969308
+      },
+      {
+        "stage": 10,
+        "event": "completed",
+        "time": 30.50356625796317
+      },
+      {
+        "stage": 11,
+        "event": "started",
+        "time": 30.50356625796317
+      },
+      {
+        "stage": 11,
+        "event": "completed",
+        "time": 30.50356625796317
+      },
+      {
+        "stage": 12,
+        "event": "started",
+        "time": 30.50356625796317
+      },
+      {
+        "stage": 12,
+        "event": "completed",
+        "time": 36.920827300957036
+      },
+      {
+        "stage": 13,
+        "event": "started",
+        "time": 36.920827300957036
+      },
+      {
+        "stage": 13,
+        "event": "completed",
+        "time": 36.920827300957036
+      },
+      {
+        "stage": 14,
+        "event": "started",
+        "time": 36.920827300957036
+      },
+      {
+        "stage": 14,
+        "event": "completed",
+        "time": 41.3380883439509
+      },
+      {
+        "stage": 15,
+        "event": "started",
+        "time": 41.3380883439509
+      },
+      {
+        "stage": 15,
+        "event": "completed",
+        "time": 41.3380883439509
+      },
+      {
+        "stage": 16,
+        "event": "started",
+        "time": 41.3380883439509
+      },
+      {
+        "stage": 16,
+        "event": "completed",
+        "time": 45.755349386944765
+      },
+      {
+        "stage": 17,
+        "event": "started",
+        "time": 45.755349386944765
+      },
+      {
+        "stage": 17,
+        "event": "completed",
+        "time": 45.755349386944765
+      },
+      {
+        "stage": 18,
+        "event": "started",
+        "time": 45.755349386944765
+      },
+      {
+        "stage": 18,
+        "event": "completed",
+        "time": 52.17261042993863
+      },
+      {
+        "stage": 19,
+        "event": "started",
+        "time": 52.17261042993863
+      },
+      {
+        "stage": 19,
+        "event": "completed",
+        "time": 52.17261042993863
+      }
+    ]
+  },
+  {
+    "example": "02_08_RobotPath_DisjointSweeps",
+    "status": "completed",
+    "time": 13.251783128981586,
+    "tuple_stages": 7,
+    "commands": 6,
+    "engine_steps": 1346,
+    "collision_samples_enabled": true,
+    "contacts": [],
+    "roadmap_history": [
+      {
+        "event": "approved",
+        "time": 0.0,
+        "robot": "R1",
+        "command_id": 0,
+        "stage": 1
+      },
+      {
+        "event": "approved",
+        "time": 0.0,
+        "robot": "R2",
+        "command_id": 1,
+        "stage": 1
+      },
+      {
+        "event": "issued",
+        "time": 0.0,
+        "robot": "R1",
+        "command_id": 0,
+        "stage": 1
+      },
+      {
+        "event": "issued",
+        "time": 0.0,
+        "robot": "R2",
+        "command_id": 1,
+        "stage": 1
+      },
+      {
+        "event": "leaving",
+        "time": 1.9127301391900149,
+        "robot": "R2",
+        "position": [
+          5.25,
+          4.0
+        ],
+        "stage": 1
+      },
+      {
+        "event": "leaving",
+        "time": 1.9127301391900149,
+        "robot": "R1",
+        "position": [
+          0.75,
+          0.0
+        ],
+        "stage": 1
+      },
+      {
+        "event": "arrived",
+        "time": 4.417261042993862,
+        "robot": "R2",
+        "command_id": 1,
+        "stage": 1,
+        "position": [
+          4.0,
+          4.0
+        ]
+      },
+      {
+        "event": "arrived",
+        "time": 4.417261042993862,
+        "robot": "R1",
+        "command_id": 0,
+        "stage": 1,
+        "position": [
+          2.0,
+          0.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 4.417261042993862,
+        "robot": "R1",
+        "command_id": 2,
+        "stage": 3
+      },
+      {
+        "event": "approved",
+        "time": 4.417261042993862,
+        "robot": "R2",
+        "command_id": 3,
+        "stage": 3
+      },
+      {
+        "event": "issued",
+        "time": 4.417261042993862,
+        "robot": "R1",
+        "command_id": 2,
+        "stage": 3
+      },
+      {
+        "event": "issued",
+        "time": 4.417261042993862,
+        "robot": "R2",
+        "command_id": 3,
+        "stage": 3
+      },
+      {
+        "event": "leaving",
+        "time": 6.329991182183877,
+        "robot": "R2",
+        "position": [
+          3.25,
+          4.0
+        ],
+        "stage": 3
+      },
+      {
+        "event": "leaving",
+        "time": 6.329991182183877,
+        "robot": "R1",
+        "position": [
+          2.75,
+          0.0
+        ],
+        "stage": 3
+      },
+      {
+        "event": "arrived",
+        "time": 8.834522085987723,
+        "robot": "R2",
+        "command_id": 3,
+        "stage": 3,
+        "position": [
+          2.0,
+          4.0
+        ]
+      },
+      {
+        "event": "arrived",
+        "time": 8.834522085987723,
+        "robot": "R1",
+        "command_id": 2,
+        "stage": 3,
+        "position": [
+          4.0,
+          0.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 8.834522085987723,
+        "robot": "R1",
+        "command_id": 4,
+        "stage": 5
+      },
+      {
+        "event": "approved",
+        "time": 8.834522085987723,
+        "robot": "R2",
+        "command_id": 5,
+        "stage": 5
+      },
+      {
+        "event": "issued",
+        "time": 8.834522085987723,
+        "robot": "R1",
+        "command_id": 4,
+        "stage": 5
+      },
+      {
+        "event": "issued",
+        "time": 8.834522085987723,
+        "robot": "R2",
+        "command_id": 5,
+        "stage": 5
+      },
+      {
+        "event": "leaving",
+        "time": 10.74725222517774,
+        "robot": "R2",
+        "position": [
+          1.25,
+          4.0
+        ],
+        "stage": 5
+      },
+      {
+        "event": "leaving",
+        "time": 10.74725222517774,
+        "robot": "R1",
+        "position": [
+          4.75,
+          0.0
+        ],
+        "stage": 5
+      },
+      {
+        "event": "arrived",
+        "time": 13.251783128981586,
+        "robot": "R2",
+        "command_id": 5,
+        "stage": 5,
+        "position": [
+          0.0,
+          4.0
+        ]
+      },
+      {
+        "event": "arrived",
+        "time": 13.251783128981586,
+        "robot": "R1",
+        "command_id": 4,
+        "stage": 5,
+        "position": [
+          6.0,
+          0.0
+        ]
+      }
+    ],
+    "stage_history": [
+      {
+        "stage": 0,
+        "event": "started",
+        "time": 0.0
+      },
+      {
+        "stage": 0,
+        "event": "completed",
+        "time": 0.0
+      },
+      {
+        "stage": 1,
+        "event": "started",
+        "time": 0.0
+      },
+      {
+        "stage": 1,
+        "event": "completed",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 2,
+        "event": "started",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 2,
+        "event": "completed",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 3,
+        "event": "started",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 3,
+        "event": "completed",
+        "time": 8.834522085987723
+      },
+      {
+        "stage": 4,
+        "event": "started",
+        "time": 8.834522085987723
+      },
+      {
+        "stage": 4,
+        "event": "completed",
+        "time": 8.834522085987723
+      },
+      {
+        "stage": 5,
+        "event": "started",
+        "time": 8.834522085987723
+      },
+      {
+        "stage": 5,
+        "event": "completed",
+        "time": 13.251783128981586
+      },
+      {
+        "stage": 6,
+        "event": "started",
+        "time": 13.251783128981586
+      },
+      {
+        "stage": 6,
+        "event": "completed",
+        "time": 13.251783128981586
+      }
+    ]
+  },
+  {
+    "example": "02_09_RobotPath_FirstMoverMatters",
+    "status": "completed",
+    "time": 17.669044171975447,
+    "tuple_stages": 8,
+    "commands": 5,
+    "engine_steps": 1785,
+    "collision_samples_enabled": true,
+    "contacts": [],
+    "roadmap_history": [
+      {
+        "event": "approved",
+        "time": 0.0,
+        "robot": "R2",
+        "command_id": 0,
+        "stage": 1
+      },
+      {
+        "event": "issued",
+        "time": 0.0,
+        "robot": "R2",
+        "command_id": 0,
+        "stage": 1
+      },
+      {
+        "event": "leaving",
+        "time": 1.9127301391900149,
+        "robot": "R2",
+        "position": [
+          2.0,
+          2.75
+        ],
+        "stage": 1
+      },
+      {
+        "event": "arrived",
+        "time": 4.417261042993862,
+        "robot": "R2",
+        "command_id": 0,
+        "stage": 1,
+        "position": [
+          2.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 4.417261042993862,
+        "robot": "R1",
+        "command_id": 1,
+        "stage": 2
+      },
+      {
+        "event": "issued",
+        "time": 4.417261042993862,
+        "robot": "R1",
+        "command_id": 1,
+        "stage": 2
+      },
+      {
+        "event": "leaving",
+        "time": 6.329991182183877,
+        "robot": "R1",
+        "position": [
+          0.75,
+          2.0
+        ],
+        "stage": 2
+      },
+      {
+        "event": "arrived",
+        "time": 8.834522085987723,
+        "robot": "R1",
+        "command_id": 1,
+        "stage": 2,
+        "position": [
+          2.0,
+          2.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 8.834522085987723,
+        "robot": "R1",
+        "command_id": 2,
+        "stage": 4
+      },
+      {
+        "event": "issued",
+        "time": 8.834522085987723,
+        "robot": "R1",
+        "command_id": 2,
+        "stage": 4
+      },
+      {
+        "event": "leaving",
+        "time": 10.74725222517774,
+        "robot": "R1",
+        "position": [
+          2.75,
+          2.0
+        ],
+        "stage": 4
+      },
+      {
+        "event": "arrived",
+        "time": 13.251783128981586,
+        "robot": "R1",
+        "command_id": 2,
+        "stage": 4,
+        "position": [
+          4.0,
+          2.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 13.251783128981586,
+        "robot": "R1",
+        "command_id": 3,
+        "stage": 6
+      },
+      {
+        "event": "approved",
+        "time": 13.251783128981586,
+        "robot": "R2",
+        "command_id": 4,
+        "stage": 6
+      },
+      {
+        "event": "issued",
+        "time": 13.251783128981586,
+        "robot": "R1",
+        "command_id": 3,
+        "stage": 6
+      },
+      {
+        "event": "issued",
+        "time": 13.251783128981586,
+        "robot": "R2",
+        "command_id": 4,
+        "stage": 6
+      },
+      {
+        "event": "leaving",
+        "time": 15.1645132681716,
+        "robot": "R2",
+        "position": [
+          2.0,
+          4.75
+        ],
+        "stage": 6
+      },
+      {
+        "event": "leaving",
+        "time": 15.1645132681716,
+        "robot": "R1",
+        "position": [
+          4.75,
+          2.0
+        ],
+        "stage": 6
+      },
+      {
+        "event": "arrived",
+        "time": 17.669044171975447,
+        "robot": "R1",
+        "command_id": 3,
+        "stage": 6,
+        "position": [
+          6.0,
+          2.0
+        ]
+      },
+      {
+        "event": "arrived",
+        "time": 17.669044171975447,
+        "robot": "R2",
+        "command_id": 4,
+        "stage": 6,
+        "position": [
+          2.0,
+          6.0
+        ]
+      }
+    ],
+    "stage_history": [
+      {
+        "stage": 0,
+        "event": "started",
+        "time": 0.0
+      },
+      {
+        "stage": 0,
+        "event": "completed",
+        "time": 0.0
+      },
+      {
+        "stage": 1,
+        "event": "started",
+        "time": 0.0
+      },
+      {
+        "stage": 1,
+        "event": "completed",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 2,
+        "event": "started",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 2,
+        "event": "completed",
+        "time": 8.834522085987723
+      },
+      {
+        "stage": 3,
+        "event": "started",
+        "time": 8.834522085987723
+      },
+      {
+        "stage": 3,
+        "event": "completed",
+        "time": 8.834522085987723
+      },
+      {
+        "stage": 4,
+        "event": "started",
+        "time": 8.834522085987723
+      },
+      {
+        "stage": 4,
+        "event": "completed",
+        "time": 13.251783128981586
+      },
+      {
+        "stage": 5,
+        "event": "started",
+        "time": 13.251783128981586
+      },
+      {
+        "stage": 5,
+        "event": "completed",
+        "time": 13.251783128981586
+      },
+      {
+        "stage": 6,
+        "event": "started",
+        "time": 13.251783128981586
+      },
+      {
+        "stage": 6,
+        "event": "completed",
+        "time": 17.669044171975447
+      },
+      {
+        "stage": 7,
+        "event": "started",
+        "time": 17.669044171975447
+      },
+      {
+        "stage": 7,
+        "event": "completed",
+        "time": 17.669044171975447
+      }
+    ]
+  },
+  {
+    "example": "02_10_RobotPath_AlternatingProgress",
+    "status": "completed",
+    "time": 26.086305214969308,
+    "tuple_stages": 11,
+    "commands": 10,
+    "engine_steps": 2649,
+    "collision_samples_enabled": true,
+    "contacts": [],
+    "roadmap_history": [
+      {
+        "event": "approved",
+        "time": 0.0,
+        "robot": "R1",
+        "command_id": 0,
+        "stage": 1
+      },
+      {
+        "event": "approved",
+        "time": 0.0,
+        "robot": "R2",
+        "command_id": 1,
+        "stage": 1
+      },
+      {
+        "event": "issued",
+        "time": 0.0,
+        "robot": "R1",
+        "command_id": 0,
+        "stage": 1
+      },
+      {
+        "event": "issued",
+        "time": 0.0,
+        "robot": "R2",
+        "command_id": 1,
+        "stage": 1
+      },
+      {
+        "event": "leaving",
+        "time": 1.9127301391900149,
+        "robot": "R2",
+        "position": [
+          3.25,
+          6.0
+        ],
+        "stage": 1
+      },
+      {
+        "event": "leaving",
+        "time": 1.9127301391900149,
+        "robot": "R1",
+        "position": [
+          0.75,
+          2.0
+        ],
+        "stage": 1
+      },
+      {
+        "event": "arrived",
+        "time": 4.417261042993862,
+        "robot": "R1",
+        "command_id": 0,
+        "stage": 1,
+        "position": [
+          2.0,
+          2.0
+        ]
+      },
+      {
+        "event": "arrived",
+        "time": 4.417261042993862,
+        "robot": "R2",
+        "command_id": 1,
+        "stage": 1,
+        "position": [
+          2.0,
+          6.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 4.417261042993862,
+        "robot": "R1",
+        "command_id": 2,
+        "stage": 3
+      },
+      {
+        "event": "approved",
+        "time": 4.417261042993862,
+        "robot": "R2",
+        "command_id": 3,
+        "stage": 3
+      },
+      {
+        "event": "issued",
+        "time": 4.417261042993862,
+        "robot": "R1",
+        "command_id": 2,
+        "stage": 3
+      },
+      {
+        "event": "issued",
+        "time": 4.417261042993862,
+        "robot": "R2",
+        "command_id": 3,
+        "stage": 3
+      },
+      {
+        "event": "leaving",
+        "time": 6.329991182183877,
+        "robot": "R2",
+        "position": [
+          1.25,
+          6.0
+        ],
+        "stage": 3
+      },
+      {
+        "event": "leaving",
+        "time": 6.329991182183877,
+        "robot": "R1",
+        "position": [
+          2.75,
+          2.0
+        ],
+        "stage": 3
+      },
+      {
+        "event": "arrived",
+        "time": 8.834522085987723,
+        "robot": "R1",
+        "command_id": 2,
+        "stage": 3,
+        "position": [
+          4.0,
+          2.0
+        ]
+      },
+      {
+        "event": "arrived",
+        "time": 8.834522085987723,
+        "robot": "R2",
+        "command_id": 3,
+        "stage": 3,
+        "position": [
+          0.0,
+          6.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 8.834522085987723,
+        "robot": "R1",
+        "command_id": 4,
+        "stage": 5
+      },
+      {
+        "event": "approved",
+        "time": 8.834522085987723,
+        "robot": "R2",
+        "command_id": 5,
+        "stage": 5
+      },
+      {
+        "event": "issued",
+        "time": 8.834522085987723,
+        "robot": "R1",
+        "command_id": 4,
+        "stage": 5
+      },
+      {
+        "event": "issued",
+        "time": 8.834522085987723,
+        "robot": "R2",
+        "command_id": 5,
+        "stage": 5
+      },
+      {
+        "event": "rotation_started",
+        "time": 8.834522085987723,
+        "robot": "R1",
+        "position": [
+          4.0,
+          2.0
+        ],
+        "stage": 5
+      },
+      {
+        "event": "rotation_started",
+        "time": 8.834522085987723,
+        "robot": "R2",
+        "position": [
+          0.0,
+          6.0
+        ],
+        "stage": 5
+      },
+      {
+        "event": "rotation_finished",
+        "time": 10.834522085987723,
+        "robot": "R1",
+        "position": [
+          4.0,
+          2.0
+        ],
+        "stage": 5
+      },
+      {
+        "event": "rotation_finished",
+        "time": 10.834522085987723,
+        "robot": "R2",
+        "position": [
+          0.0,
+          6.0
+        ],
+        "stage": 5
+      },
+      {
+        "event": "leaving",
+        "time": 12.74725222517774,
+        "robot": "R2",
+        "position": [
+          0.0,
+          5.25
+        ],
+        "stage": 5
+      },
+      {
+        "event": "leaving",
+        "time": 12.74725222517774,
+        "robot": "R1",
+        "position": [
+          4.0,
+          2.75
+        ],
+        "stage": 5
+      },
+      {
+        "event": "arrived",
+        "time": 15.251783128981586,
+        "robot": "R1",
+        "command_id": 4,
+        "stage": 5,
+        "position": [
+          4.0,
+          4.0
+        ]
+      },
+      {
+        "event": "arrived",
+        "time": 15.251783128981586,
+        "robot": "R2",
+        "command_id": 5,
+        "stage": 5,
+        "position": [
+          0.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 15.251783128981586,
+        "robot": "R1",
+        "command_id": 6,
+        "stage": 7
+      },
+      {
+        "event": "approved",
+        "time": 15.251783128981586,
+        "robot": "R2",
+        "command_id": 7,
+        "stage": 7
+      },
+      {
+        "event": "issued",
+        "time": 15.251783128981586,
+        "robot": "R1",
+        "command_id": 6,
+        "stage": 7
+      },
+      {
+        "event": "issued",
+        "time": 15.251783128981586,
+        "robot": "R2",
+        "command_id": 7,
+        "stage": 7
+      },
+      {
+        "event": "leaving",
+        "time": 17.1645132681716,
+        "robot": "R2",
+        "position": [
+          0.0,
+          3.25
+        ],
+        "stage": 7
+      },
+      {
+        "event": "leaving",
+        "time": 17.1645132681716,
+        "robot": "R1",
+        "position": [
+          4.0,
+          4.75
+        ],
+        "stage": 7
+      },
+      {
+        "event": "arrived",
+        "time": 19.669044171975447,
+        "robot": "R1",
+        "command_id": 6,
+        "stage": 7,
+        "position": [
+          4.0,
+          6.0
+        ]
+      },
+      {
+        "event": "arrived",
+        "time": 19.669044171975447,
+        "robot": "R2",
+        "command_id": 7,
+        "stage": 7,
+        "position": [
+          0.0,
+          2.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 19.669044171975447,
+        "robot": "R1",
+        "command_id": 8,
+        "stage": 9
+      },
+      {
+        "event": "approved",
+        "time": 19.669044171975447,
+        "robot": "R2",
+        "command_id": 9,
+        "stage": 9
+      },
+      {
+        "event": "issued",
+        "time": 19.669044171975447,
+        "robot": "R1",
+        "command_id": 8,
+        "stage": 9
+      },
+      {
+        "event": "issued",
+        "time": 19.669044171975447,
+        "robot": "R2",
+        "command_id": 9,
+        "stage": 9
+      },
+      {
+        "event": "rotation_started",
+        "time": 19.669044171975447,
+        "robot": "R1",
+        "position": [
+          4.0,
+          6.0
+        ],
+        "stage": 9
+      },
+      {
+        "event": "leaving",
+        "time": 21.58177431116546,
+        "robot": "R2",
+        "position": [
+          0.0,
+          1.25
+        ],
+        "stage": 9
+      },
+      {
+        "event": "rotation_finished",
+        "time": 21.669044171975447,
+        "robot": "R1",
+        "position": [
+          4.0,
+          6.0
+        ],
+        "stage": 9
+      },
+      {
+        "event": "leaving",
+        "time": 23.58177431116546,
+        "robot": "R1",
+        "position": [
+          4.75,
+          6.0
+        ],
+        "stage": 9
+      },
+      {
+        "event": "arrived",
+        "time": 24.086305214969308,
+        "robot": "R2",
+        "command_id": 9,
+        "stage": 9,
+        "position": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "event": "arrived",
+        "time": 26.086305214969308,
+        "robot": "R1",
+        "command_id": 8,
+        "stage": 9,
+        "position": [
+          6.0,
+          6.0
+        ]
+      }
+    ],
+    "stage_history": [
+      {
+        "stage": 0,
+        "event": "started",
+        "time": 0.0
+      },
+      {
+        "stage": 0,
+        "event": "completed",
+        "time": 0.0
+      },
+      {
+        "stage": 1,
+        "event": "started",
+        "time": 0.0
+      },
+      {
+        "stage": 1,
+        "event": "completed",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 2,
+        "event": "started",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 2,
+        "event": "completed",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 3,
+        "event": "started",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 3,
+        "event": "completed",
+        "time": 8.834522085987723
+      },
+      {
+        "stage": 4,
+        "event": "started",
+        "time": 8.834522085987723
+      },
+      {
+        "stage": 4,
+        "event": "completed",
+        "time": 8.834522085987723
+      },
+      {
+        "stage": 5,
+        "event": "started",
+        "time": 8.834522085987723
+      },
+      {
+        "stage": 5,
+        "event": "completed",
+        "time": 15.251783128981586
+      },
+      {
+        "stage": 6,
+        "event": "started",
+        "time": 15.251783128981586
+      },
+      {
+        "stage": 6,
+        "event": "completed",
+        "time": 15.251783128981586
+      },
+      {
+        "stage": 7,
+        "event": "started",
+        "time": 15.251783128981586
+      },
+      {
+        "stage": 7,
+        "event": "completed",
+        "time": 19.669044171975447
+      },
+      {
+        "stage": 8,
+        "event": "started",
+        "time": 19.669044171975447
+      },
+      {
+        "stage": 8,
+        "event": "completed",
+        "time": 19.669044171975447
+      },
+      {
+        "stage": 9,
+        "event": "started",
+        "time": 19.669044171975447
+      },
+      {
+        "stage": 9,
+        "event": "completed",
+        "time": 26.086305214969308
+      },
+      {
+        "stage": 10,
+        "event": "started",
+        "time": 26.086305214969308
+      },
+      {
+        "stage": 10,
+        "event": "completed",
+        "time": 26.086305214969308
+      }
+    ]
+  },
+  {
+    "example": "02_11_RobotPath_SharedCorner",
+    "status": "completed",
+    "time": 73.84165460191407,
+    "tuple_stages": 26,
+    "commands": 14,
+    "engine_steps": 7452,
+    "collision_samples_enabled": true,
+    "contacts": [],
+    "roadmap_history": [
+      {
+        "event": "approved",
+        "time": 0.0,
+        "robot": "R1",
+        "command_id": 0,
+        "stage": 1
+      },
+      {
+        "event": "issued",
+        "time": 0.0,
+        "robot": "R1",
+        "command_id": 0,
+        "stage": 1
+      },
+      {
+        "event": "leaving",
+        "time": 1.9127301391900149,
+        "robot": "R1",
+        "position": [
+          2.0,
+          0.75
+        ],
+        "stage": 1
+      },
+      {
+        "event": "arrived",
+        "time": 4.417261042993862,
+        "robot": "R1",
+        "command_id": 0,
+        "stage": 1,
+        "position": [
+          2.0,
+          2.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 4.417261042993862,
+        "robot": "R1",
+        "command_id": 1,
+        "stage": 3
+      },
+      {
+        "event": "issued",
+        "time": 4.417261042993862,
+        "robot": "R1",
+        "command_id": 1,
+        "stage": 3
+      },
+      {
+        "event": "rotation_started",
+        "time": 4.417261042993862,
+        "robot": "R1",
+        "position": [
+          2.0,
+          2.0
+        ],
+        "stage": 3
+      },
+      {
+        "event": "rotation_finished",
+        "time": 6.417261042993862,
+        "robot": "R1",
+        "position": [
+          2.0,
+          2.0
+        ],
+        "stage": 3
+      },
+      {
+        "event": "leaving",
+        "time": 8.329991182183877,
+        "robot": "R1",
+        "position": [
+          1.25,
+          2.0
+        ],
+        "stage": 3
+      },
+      {
+        "event": "arrived",
+        "time": 10.834522085987723,
+        "robot": "R1",
+        "command_id": 1,
+        "stage": 3,
+        "position": [
+          0.0,
+          2.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 10.834522085987723,
+        "robot": "R1",
+        "command_id": 2,
+        "stage": 5
+      },
+      {
+        "event": "issued",
+        "time": 10.834522085987723,
+        "robot": "R1",
+        "command_id": 2,
+        "stage": 5
+      },
+      {
+        "event": "rotation_started",
+        "time": 10.834522085987723,
+        "robot": "R1",
+        "position": [
+          0.0,
+          2.0
+        ],
+        "stage": 5
+      },
+      {
+        "event": "rotation_finished",
+        "time": 12.834522085987723,
+        "robot": "R1",
+        "position": [
+          0.0,
+          2.0
+        ],
+        "stage": 5
+      },
+      {
+        "event": "leaving",
+        "time": 14.74725222517774,
+        "robot": "R1",
+        "position": [
+          0.0,
+          2.75
+        ],
+        "stage": 5
+      },
+      {
+        "event": "arrived",
+        "time": 17.251783128981586,
+        "robot": "R1",
+        "command_id": 2,
+        "stage": 5,
+        "position": [
+          0.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 17.251783128981586,
+        "robot": "R1",
+        "command_id": 3,
+        "stage": 7
+      },
+      {
+        "event": "issued",
+        "time": 17.251783128981586,
+        "robot": "R1",
+        "command_id": 3,
+        "stage": 7
+      },
+      {
+        "event": "leaving",
+        "time": 19.1645132681716,
+        "robot": "R1",
+        "position": [
+          0.0,
+          4.75
+        ],
+        "stage": 7
+      },
+      {
+        "event": "arrived",
+        "time": 21.669044171975447,
+        "robot": "R1",
+        "command_id": 3,
+        "stage": 7,
+        "position": [
+          0.0,
+          6.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 21.669044171975447,
+        "robot": "R1",
+        "command_id": 4,
+        "stage": 9
+      },
+      {
+        "event": "issued",
+        "time": 21.669044171975447,
+        "robot": "R1",
+        "command_id": 4,
+        "stage": 9
+      },
+      {
+        "event": "rotation_started",
+        "time": 21.669044171975447,
+        "robot": "R1",
+        "position": [
+          0.0,
+          6.0
+        ],
+        "stage": 9
+      },
+      {
+        "event": "rotation_finished",
+        "time": 23.669044171975447,
+        "robot": "R1",
+        "position": [
+          0.0,
+          6.0
+        ],
+        "stage": 9
+      },
+      {
+        "event": "leaving",
+        "time": 25.58177431116546,
+        "robot": "R1",
+        "position": [
+          0.75,
+          6.0
+        ],
+        "stage": 9
+      },
+      {
+        "event": "arrived",
+        "time": 28.086305214969308,
+        "robot": "R1",
+        "command_id": 4,
+        "stage": 9,
+        "position": [
+          2.0,
+          6.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 28.086305214969308,
+        "robot": "R1",
+        "command_id": 5,
+        "stage": 11
+      },
+      {
+        "event": "issued",
+        "time": 28.086305214969308,
+        "robot": "R1",
+        "command_id": 5,
+        "stage": 11
+      },
+      {
+        "event": "leaving",
+        "time": 29.99903535415932,
+        "robot": "R1",
+        "position": [
+          2.75,
+          6.0
+        ],
+        "stage": 11
+      },
+      {
+        "event": "arrived",
+        "time": 32.50356625796317,
+        "robot": "R1",
+        "command_id": 5,
+        "stage": 11,
+        "position": [
+          4.0,
+          6.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 32.50356625796317,
+        "robot": "R2",
+        "command_id": 6,
+        "stage": 12
+      },
+      {
+        "event": "issued",
+        "time": 32.50356625796317,
+        "robot": "R2",
+        "command_id": 6,
+        "stage": 12
+      },
+      {
+        "event": "leaving",
+        "time": 34.41629639715319,
+        "robot": "R2",
+        "position": [
+          5.25,
+          4.0
+        ],
+        "stage": 12
+      },
+      {
+        "event": "arrived",
+        "time": 36.920827300957036,
+        "robot": "R2",
+        "command_id": 6,
+        "stage": 12,
+        "position": [
+          4.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 36.920827300957036,
+        "robot": "R1",
+        "command_id": 7,
+        "stage": 13
+      },
+      {
+        "event": "issued",
+        "time": 36.920827300957036,
+        "robot": "R1",
+        "command_id": 7,
+        "stage": 13
+      },
+      {
+        "event": "leaving",
+        "time": 38.833557440147054,
+        "robot": "R1",
+        "position": [
+          4.75,
+          6.0
+        ],
+        "stage": 13
+      },
+      {
+        "event": "arrived",
+        "time": 41.3380883439509,
+        "robot": "R1",
+        "command_id": 7,
+        "stage": 13,
+        "position": [
+          6.0,
+          6.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 41.3380883439509,
+        "robot": "R2",
+        "command_id": 8,
+        "stage": 14
+      },
+      {
+        "event": "issued",
+        "time": 41.3380883439509,
+        "robot": "R2",
+        "command_id": 8,
+        "stage": 14
+      },
+      {
+        "event": "rotation_started",
+        "time": 41.3380883439509,
+        "robot": "R2",
+        "position": [
+          4.0,
+          4.0
+        ],
+        "stage": 14
+      },
+      {
+        "event": "rotation_finished",
+        "time": 43.3380883439509,
+        "robot": "R2",
+        "position": [
+          4.0,
+          4.0
+        ],
+        "stage": 14
+      },
+      {
+        "event": "leaving",
+        "time": 45.25081848314092,
+        "robot": "R2",
+        "position": [
+          4.0,
+          4.75
+        ],
+        "stage": 14
+      },
+      {
+        "event": "arrived",
+        "time": 47.755349386944765,
+        "robot": "R2",
+        "command_id": 8,
+        "stage": 14,
+        "position": [
+          4.0,
+          6.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 47.755349386944765,
+        "robot": "R2",
+        "command_id": 9,
+        "stage": 16
+      },
+      {
+        "event": "issued",
+        "time": 47.755349386944765,
+        "robot": "R2",
+        "command_id": 9,
+        "stage": 16
+      },
+      {
+        "event": "rotation_started",
+        "time": 47.755349386944765,
+        "robot": "R2",
+        "position": [
+          4.0,
+          6.0
+        ],
+        "stage": 16
+      },
+      {
+        "event": "rotation_finished",
+        "time": 49.755349386944765,
+        "robot": "R2",
+        "position": [
+          4.0,
+          6.0
+        ],
+        "stage": 16
+      },
+      {
+        "event": "leaving",
+        "time": 51.66807952613478,
+        "robot": "R2",
+        "position": [
+          3.25,
+          6.0
+        ],
+        "stage": 16
+      },
+      {
+        "event": "arrived",
+        "time": 54.17261042993863,
+        "robot": "R2",
+        "command_id": 9,
+        "stage": 16,
+        "position": [
+          2.0,
+          6.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 54.17261042993863,
+        "robot": "R2",
+        "command_id": 10,
+        "stage": 18
+      },
+      {
+        "event": "issued",
+        "time": 54.17261042993863,
+        "robot": "R2",
+        "command_id": 10,
+        "stage": 18
+      },
+      {
+        "event": "leaving",
+        "time": 56.08534056912865,
+        "robot": "R2",
+        "position": [
+          1.25,
+          6.0
+        ],
+        "stage": 18
+      },
+      {
+        "event": "arrived",
+        "time": 58.589871472932494,
+        "robot": "R2",
+        "command_id": 10,
+        "stage": 18,
+        "position": [
+          0.0,
+          6.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 58.589871472932494,
+        "robot": "R2",
+        "command_id": 11,
+        "stage": 20
+      },
+      {
+        "event": "issued",
+        "time": 58.589871472932494,
+        "robot": "R2",
+        "command_id": 11,
+        "stage": 20
+      },
+      {
+        "event": "rotation_started",
+        "time": 58.589871472932494,
+        "robot": "R2",
+        "position": [
+          0.0,
+          6.0
+        ],
+        "stage": 20
+      },
+      {
+        "event": "rotation_finished",
+        "time": 60.589871472932494,
+        "robot": "R2",
+        "position": [
+          0.0,
+          6.0
+        ],
+        "stage": 20
+      },
+      {
+        "event": "leaving",
+        "time": 62.50260161212251,
+        "robot": "R2",
+        "position": [
+          0.0,
+          5.25
+        ],
+        "stage": 20
+      },
+      {
+        "event": "arrived",
+        "time": 65.00713251592636,
+        "robot": "R2",
+        "command_id": 11,
+        "stage": 20,
+        "position": [
+          0.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 65.00713251592636,
+        "robot": "R2",
+        "command_id": 12,
+        "stage": 22
+      },
+      {
+        "event": "issued",
+        "time": 65.00713251592636,
+        "robot": "R2",
+        "command_id": 12,
+        "stage": 22
+      },
+      {
+        "event": "leaving",
+        "time": 66.91986265511638,
+        "robot": "R2",
+        "position": [
+          0.0,
+          3.25
+        ],
+        "stage": 22
+      },
+      {
+        "event": "arrived",
+        "time": 69.42439355892022,
+        "robot": "R2",
+        "command_id": 12,
+        "stage": 22,
+        "position": [
+          0.0,
+          2.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 69.42439355892022,
+        "robot": "R2",
+        "command_id": 13,
+        "stage": 24
+      },
+      {
+        "event": "issued",
+        "time": 69.42439355892022,
+        "robot": "R2",
+        "command_id": 13,
+        "stage": 24
+      },
+      {
+        "event": "leaving",
+        "time": 71.33712369811023,
+        "robot": "R2",
+        "position": [
+          0.0,
+          1.25
+        ],
+        "stage": 24
+      },
+      {
+        "event": "arrived",
+        "time": 73.84165460191407,
+        "robot": "R2",
+        "command_id": 13,
+        "stage": 24,
+        "position": [
+          0.0,
+          0.0
+        ]
+      }
+    ],
+    "stage_history": [
+      {
+        "stage": 0,
+        "event": "started",
+        "time": 0.0
+      },
+      {
+        "stage": 0,
+        "event": "completed",
+        "time": 0.0
+      },
+      {
+        "stage": 1,
+        "event": "started",
+        "time": 0.0
+      },
+      {
+        "stage": 1,
+        "event": "completed",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 2,
+        "event": "started",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 2,
+        "event": "completed",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 3,
+        "event": "started",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 3,
+        "event": "completed",
+        "time": 10.834522085987723
+      },
+      {
+        "stage": 4,
+        "event": "started",
+        "time": 10.834522085987723
+      },
+      {
+        "stage": 4,
+        "event": "completed",
+        "time": 10.834522085987723
+      },
+      {
+        "stage": 5,
+        "event": "started",
+        "time": 10.834522085987723
+      },
+      {
+        "stage": 5,
+        "event": "completed",
+        "time": 17.251783128981586
+      },
+      {
+        "stage": 6,
+        "event": "started",
+        "time": 17.251783128981586
+      },
+      {
+        "stage": 6,
+        "event": "completed",
+        "time": 17.251783128981586
+      },
+      {
+        "stage": 7,
+        "event": "started",
+        "time": 17.251783128981586
+      },
+      {
+        "stage": 7,
+        "event": "completed",
+        "time": 21.669044171975447
+      },
+      {
+        "stage": 8,
+        "event": "started",
+        "time": 21.669044171975447
+      },
+      {
+        "stage": 8,
+        "event": "completed",
+        "time": 21.669044171975447
+      },
+      {
+        "stage": 9,
+        "event": "started",
+        "time": 21.669044171975447
+      },
+      {
+        "stage": 9,
+        "event": "completed",
+        "time": 28.086305214969308
+      },
+      {
+        "stage": 10,
+        "event": "started",
+        "time": 28.086305214969308
+      },
+      {
+        "stage": 10,
+        "event": "completed",
+        "time": 28.086305214969308
+      },
+      {
+        "stage": 11,
+        "event": "started",
+        "time": 28.086305214969308
+      },
+      {
+        "stage": 11,
+        "event": "completed",
+        "time": 32.50356625796317
+      },
+      {
+        "stage": 12,
+        "event": "started",
+        "time": 32.50356625796317
+      },
+      {
+        "stage": 12,
+        "event": "completed",
+        "time": 36.920827300957036
+      },
+      {
+        "stage": 13,
+        "event": "started",
+        "time": 36.920827300957036
+      },
+      {
+        "stage": 13,
+        "event": "completed",
+        "time": 41.3380883439509
+      },
+      {
+        "stage": 14,
+        "event": "started",
+        "time": 41.3380883439509
+      },
+      {
+        "stage": 14,
+        "event": "completed",
+        "time": 47.755349386944765
+      },
+      {
+        "stage": 15,
+        "event": "started",
+        "time": 47.755349386944765
+      },
+      {
+        "stage": 15,
+        "event": "completed",
+        "time": 47.755349386944765
+      },
+      {
+        "stage": 16,
+        "event": "started",
+        "time": 47.755349386944765
+      },
+      {
+        "stage": 16,
+        "event": "completed",
+        "time": 54.17261042993863
+      },
+      {
+        "stage": 17,
+        "event": "started",
+        "time": 54.17261042993863
+      },
+      {
+        "stage": 17,
+        "event": "completed",
+        "time": 54.17261042993863
+      },
+      {
+        "stage": 18,
+        "event": "started",
+        "time": 54.17261042993863
+      },
+      {
+        "stage": 18,
+        "event": "completed",
+        "time": 58.589871472932494
+      },
+      {
+        "stage": 19,
+        "event": "started",
+        "time": 58.589871472932494
+      },
+      {
+        "stage": 19,
+        "event": "completed",
+        "time": 58.589871472932494
+      },
+      {
+        "stage": 20,
+        "event": "started",
+        "time": 58.589871472932494
+      },
+      {
+        "stage": 20,
+        "event": "completed",
+        "time": 65.00713251592636
+      },
+      {
+        "stage": 21,
+        "event": "started",
+        "time": 65.00713251592636
+      },
+      {
+        "stage": 21,
+        "event": "completed",
+        "time": 65.00713251592636
+      },
+      {
+        "stage": 22,
+        "event": "started",
+        "time": 65.00713251592636
+      },
+      {
+        "stage": 22,
+        "event": "completed",
+        "time": 69.42439355892022
+      },
+      {
+        "stage": 23,
+        "event": "started",
+        "time": 69.42439355892022
+      },
+      {
+        "stage": 23,
+        "event": "completed",
+        "time": 69.42439355892022
+      },
+      {
+        "stage": 24,
+        "event": "started",
+        "time": 69.42439355892022
+      },
+      {
+        "stage": 24,
+        "event": "completed",
+        "time": 73.84165460191407
+      },
+      {
+        "stage": 25,
+        "event": "started",
+        "time": 73.84165460191407
+      },
+      {
+        "stage": 25,
+        "event": "completed",
+        "time": 73.84165460191407
+      }
+    ]
+  },
+  {
+    "example": "03_01_RobotPath_ThreeWay_Collision",
+    "status": "no_plan",
+    "reason": "No wait-duplication tuple path exists for these fixed routes."
+  },
+  {
+    "example": "03_02_RobotPath_ThreeFollowing_Collision",
+    "status": "completed",
+    "time": 65.00713251592636,
+    "tuple_stages": 15,
+    "commands": 15,
+    "engine_steps": 6569,
+    "collision_samples_enabled": true,
+    "contacts": [],
+    "roadmap_history": [
+      {
+        "event": "approved",
+        "time": 0.0,
+        "robot": "R1",
+        "command_id": 0,
+        "stage": 1
+      },
+      {
+        "event": "issued",
+        "time": 0.0,
+        "robot": "R1",
+        "command_id": 0,
+        "stage": 1
+      },
+      {
+        "event": "leaving",
+        "time": 1.9127301391900149,
+        "robot": "R1",
+        "position": [
+          2.0,
+          0.75
+        ],
+        "stage": 1
+      },
+      {
+        "event": "arrived",
+        "time": 4.417261042993862,
+        "robot": "R1",
+        "command_id": 0,
+        "stage": 1,
+        "position": [
+          2.0,
+          2.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 4.417261042993862,
+        "robot": "R2",
+        "command_id": 1,
+        "stage": 2
+      },
+      {
+        "event": "issued",
+        "time": 4.417261042993862,
+        "robot": "R2",
+        "command_id": 1,
+        "stage": 2
+      },
+      {
+        "event": "leaving",
+        "time": 6.329991182183877,
+        "robot": "R2",
+        "position": [
+          0.0,
+          3.25
+        ],
+        "stage": 2
+      },
+      {
+        "event": "arrived",
+        "time": 8.834522085987723,
+        "robot": "R2",
+        "command_id": 1,
+        "stage": 2,
+        "position": [
+          0.0,
+          2.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 8.834522085987723,
+        "robot": "R1",
+        "command_id": 2,
+        "stage": 3
+      },
+      {
+        "event": "issued",
+        "time": 8.834522085987723,
+        "robot": "R1",
+        "command_id": 2,
+        "stage": 3
+      },
+      {
+        "event": "rotation_started",
+        "time": 8.834522085987723,
+        "robot": "R1",
+        "position": [
+          2.0,
+          2.0
+        ],
+        "stage": 3
+      },
+      {
+        "event": "rotation_finished",
+        "time": 10.834522085987723,
+        "robot": "R1",
+        "position": [
+          2.0,
+          2.0
+        ],
+        "stage": 3
+      },
+      {
+        "event": "leaving",
+        "time": 12.74725222517774,
+        "robot": "R1",
+        "position": [
+          2.75,
+          2.0
+        ],
+        "stage": 3
+      },
+      {
+        "event": "arrived",
+        "time": 15.251783128981586,
+        "robot": "R1",
+        "command_id": 2,
+        "stage": 3,
+        "position": [
+          4.0,
+          2.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 15.251783128981586,
+        "robot": "R2",
+        "command_id": 3,
+        "stage": 4
+      },
+      {
+        "event": "issued",
+        "time": 15.251783128981586,
+        "robot": "R2",
+        "command_id": 3,
+        "stage": 4
+      },
+      {
+        "event": "rotation_started",
+        "time": 15.251783128981586,
+        "robot": "R2",
+        "position": [
+          0.0,
+          2.0
+        ],
+        "stage": 4
+      },
+      {
+        "event": "rotation_finished",
+        "time": 17.251783128981586,
+        "robot": "R2",
+        "position": [
+          0.0,
+          2.0
+        ],
+        "stage": 4
+      },
+      {
+        "event": "leaving",
+        "time": 19.1645132681716,
+        "robot": "R2",
+        "position": [
+          0.75,
+          2.0
+        ],
+        "stage": 4
+      },
+      {
+        "event": "arrived",
+        "time": 21.669044171975447,
+        "robot": "R2",
+        "command_id": 3,
+        "stage": 4,
+        "position": [
+          2.0,
+          2.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 21.669044171975447,
+        "robot": "R1",
+        "command_id": 4,
+        "stage": 5
+      },
+      {
+        "event": "approved",
+        "time": 21.669044171975447,
+        "robot": "R3",
+        "command_id": 5,
+        "stage": 5
+      },
+      {
+        "event": "issued",
+        "time": 21.669044171975447,
+        "robot": "R1",
+        "command_id": 4,
+        "stage": 5
+      },
+      {
+        "event": "issued",
+        "time": 21.669044171975447,
+        "robot": "R3",
+        "command_id": 5,
+        "stage": 5
+      },
+      {
+        "event": "rotation_started",
+        "time": 21.669044171975447,
+        "robot": "R1",
+        "position": [
+          4.0,
+          2.0
+        ],
+        "stage": 5
+      },
+      {
+        "event": "leaving",
+        "time": 23.58177431116546,
+        "robot": "R3",
+        "position": [
+          0.0,
+          0.75
+        ],
+        "stage": 5
+      },
+      {
+        "event": "rotation_finished",
+        "time": 23.669044171975447,
+        "robot": "R1",
+        "position": [
+          4.0,
+          2.0
+        ],
+        "stage": 5
+      },
+      {
+        "event": "leaving",
+        "time": 25.58177431116546,
+        "robot": "R1",
+        "position": [
+          4.0,
+          2.75
+        ],
+        "stage": 5
+      },
+      {
+        "event": "arrived",
+        "time": 26.086305214969308,
+        "robot": "R3",
+        "command_id": 5,
+        "stage": 5,
+        "position": [
+          0.0,
+          2.0
+        ]
+      },
+      {
+        "event": "arrived",
+        "time": 28.086305214969308,
+        "robot": "R1",
+        "command_id": 4,
+        "stage": 5,
+        "position": [
+          4.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 28.086305214969308,
+        "robot": "R2",
+        "command_id": 6,
+        "stage": 6
+      },
+      {
+        "event": "issued",
+        "time": 28.086305214969308,
+        "robot": "R2",
+        "command_id": 6,
+        "stage": 6
+      },
+      {
+        "event": "leaving",
+        "time": 29.99903535415932,
+        "robot": "R2",
+        "position": [
+          2.75,
+          2.0
+        ],
+        "stage": 6
+      },
+      {
+        "event": "arrived",
+        "time": 32.50356625796317,
+        "robot": "R2",
+        "command_id": 6,
+        "stage": 6,
+        "position": [
+          4.0,
+          2.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 32.50356625796317,
+        "robot": "R3",
+        "command_id": 7,
+        "stage": 7
+      },
+      {
+        "event": "issued",
+        "time": 32.50356625796317,
+        "robot": "R3",
+        "command_id": 7,
+        "stage": 7
+      },
+      {
+        "event": "rotation_started",
+        "time": 32.50356625796317,
+        "robot": "R3",
+        "position": [
+          0.0,
+          2.0
+        ],
+        "stage": 7
+      },
+      {
+        "event": "rotation_finished",
+        "time": 34.50356625796317,
+        "robot": "R3",
+        "position": [
+          0.0,
+          2.0
+        ],
+        "stage": 7
+      },
+      {
+        "event": "leaving",
+        "time": 36.41629639715319,
+        "robot": "R3",
+        "position": [
+          0.75,
+          2.0
+        ],
+        "stage": 7
+      },
+      {
+        "event": "arrived",
+        "time": 38.920827300957036,
+        "robot": "R3",
+        "command_id": 7,
+        "stage": 7,
+        "position": [
+          2.0,
+          2.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 38.920827300957036,
+        "robot": "R2",
+        "command_id": 8,
+        "stage": 8
+      },
+      {
+        "event": "issued",
+        "time": 38.920827300957036,
+        "robot": "R2",
+        "command_id": 8,
+        "stage": 8
+      },
+      {
+        "event": "leaving",
+        "time": 40.833557440147054,
+        "robot": "R2",
+        "position": [
+          4.75,
+          2.0
+        ],
+        "stage": 8
+      },
+      {
+        "event": "arrived",
+        "time": 43.3380883439509,
+        "robot": "R2",
+        "command_id": 8,
+        "stage": 8,
+        "position": [
+          6.0,
+          2.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 43.3380883439509,
+        "robot": "R3",
+        "command_id": 9,
+        "stage": 9
+      },
+      {
+        "event": "issued",
+        "time": 43.3380883439509,
+        "robot": "R3",
+        "command_id": 9,
+        "stage": 9
+      },
+      {
+        "event": "leaving",
+        "time": 45.25081848314092,
+        "robot": "R3",
+        "position": [
+          2.75,
+          2.0
+        ],
+        "stage": 9
+      },
+      {
+        "event": "arrived",
+        "time": 47.755349386944765,
+        "robot": "R3",
+        "command_id": 9,
+        "stage": 9,
+        "position": [
+          4.0,
+          2.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 47.755349386944765,
+        "robot": "R2",
+        "command_id": 10,
+        "stage": 10
+      },
+      {
+        "event": "issued",
+        "time": 47.755349386944765,
+        "robot": "R2",
+        "command_id": 10,
+        "stage": 10
+      },
+      {
+        "event": "rotation_started",
+        "time": 47.755349386944765,
+        "robot": "R2",
+        "position": [
+          6.0,
+          2.0
+        ],
+        "stage": 10
+      },
+      {
+        "event": "rotation_finished",
+        "time": 49.755349386944765,
+        "robot": "R2",
+        "position": [
+          6.0,
+          2.0
+        ],
+        "stage": 10
+      },
+      {
+        "event": "leaving",
+        "time": 51.66807952613478,
+        "robot": "R2",
+        "position": [
+          6.0,
+          2.75
+        ],
+        "stage": 10
+      },
+      {
+        "event": "arrived",
+        "time": 54.17261042993863,
+        "robot": "R2",
+        "command_id": 10,
+        "stage": 10,
+        "position": [
+          6.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 54.17261042993863,
+        "robot": "R3",
+        "command_id": 11,
+        "stage": 11
+      },
+      {
+        "event": "issued",
+        "time": 54.17261042993863,
+        "robot": "R3",
+        "command_id": 11,
+        "stage": 11
+      },
+      {
+        "event": "leaving",
+        "time": 56.08534056912865,
+        "robot": "R3",
+        "position": [
+          4.75,
+          2.0
+        ],
+        "stage": 11
+      },
+      {
+        "event": "arrived",
+        "time": 58.589871472932494,
+        "robot": "R3",
+        "command_id": 11,
+        "stage": 11,
+        "position": [
+          6.0,
+          2.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 58.589871472932494,
+        "robot": "R1",
+        "command_id": 12,
+        "stage": 13
+      },
+      {
+        "event": "approved",
+        "time": 58.589871472932494,
+        "robot": "R2",
+        "command_id": 13,
+        "stage": 13
+      },
+      {
+        "event": "approved",
+        "time": 58.589871472932494,
+        "robot": "R3",
+        "command_id": 14,
+        "stage": 13
+      },
+      {
+        "event": "issued",
+        "time": 58.589871472932494,
+        "robot": "R1",
+        "command_id": 12,
+        "stage": 13
+      },
+      {
+        "event": "issued",
+        "time": 58.589871472932494,
+        "robot": "R2",
+        "command_id": 13,
+        "stage": 13
+      },
+      {
+        "event": "issued",
+        "time": 58.589871472932494,
+        "robot": "R3",
+        "command_id": 14,
+        "stage": 13
+      },
+      {
+        "event": "rotation_started",
+        "time": 58.589871472932494,
+        "robot": "R3",
+        "position": [
+          6.0,
+          2.0
+        ],
+        "stage": 13
+      },
+      {
+        "event": "leaving",
+        "time": 60.50260161212251,
+        "robot": "R2",
+        "position": [
+          6.0,
+          4.75
+        ],
+        "stage": 13
+      },
+      {
+        "event": "leaving",
+        "time": 60.50260161212251,
+        "robot": "R1",
+        "position": [
+          4.0,
+          4.75
+        ],
+        "stage": 13
+      },
+      {
+        "event": "rotation_finished",
+        "time": 60.589871472932494,
+        "robot": "R3",
+        "position": [
+          6.0,
+          2.0
+        ],
+        "stage": 13
+      },
+      {
+        "event": "leaving",
+        "time": 62.50260161212251,
+        "robot": "R3",
+        "position": [
+          6.0,
+          1.25
+        ],
+        "stage": 13
+      },
+      {
+        "event": "arrived",
+        "time": 63.00713251592636,
+        "robot": "R2",
+        "command_id": 13,
+        "stage": 13,
+        "position": [
+          6.0,
+          6.0
+        ]
+      },
+      {
+        "event": "arrived",
+        "time": 63.00713251592636,
+        "robot": "R1",
+        "command_id": 12,
+        "stage": 13,
+        "position": [
+          4.0,
+          6.0
+        ]
+      },
+      {
+        "event": "arrived",
+        "time": 65.00713251592636,
+        "robot": "R3",
+        "command_id": 14,
+        "stage": 13,
+        "position": [
+          6.0,
+          0.0
+        ]
+      }
+    ],
+    "stage_history": [
+      {
+        "stage": 0,
+        "event": "started",
+        "time": 0.0
+      },
+      {
+        "stage": 0,
+        "event": "completed",
+        "time": 0.0
+      },
+      {
+        "stage": 1,
+        "event": "started",
+        "time": 0.0
+      },
+      {
+        "stage": 1,
+        "event": "completed",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 2,
+        "event": "started",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 2,
+        "event": "completed",
+        "time": 8.834522085987723
+      },
+      {
+        "stage": 3,
+        "event": "started",
+        "time": 8.834522085987723
+      },
+      {
+        "stage": 3,
+        "event": "completed",
+        "time": 15.251783128981586
+      },
+      {
+        "stage": 4,
+        "event": "started",
+        "time": 15.251783128981586
+      },
+      {
+        "stage": 4,
+        "event": "completed",
+        "time": 21.669044171975447
+      },
+      {
+        "stage": 5,
+        "event": "started",
+        "time": 21.669044171975447
+      },
+      {
+        "stage": 5,
+        "event": "completed",
+        "time": 28.086305214969308
+      },
+      {
+        "stage": 6,
+        "event": "started",
+        "time": 28.086305214969308
+      },
+      {
+        "stage": 6,
+        "event": "completed",
+        "time": 32.50356625796317
+      },
+      {
+        "stage": 7,
+        "event": "started",
+        "time": 32.50356625796317
+      },
+      {
+        "stage": 7,
+        "event": "completed",
+        "time": 38.920827300957036
+      },
+      {
+        "stage": 8,
+        "event": "started",
+        "time": 38.920827300957036
+      },
+      {
+        "stage": 8,
+        "event": "completed",
+        "time": 43.3380883439509
+      },
+      {
+        "stage": 9,
+        "event": "started",
+        "time": 43.3380883439509
+      },
+      {
+        "stage": 9,
+        "event": "completed",
+        "time": 47.755349386944765
+      },
+      {
+        "stage": 10,
+        "event": "started",
+        "time": 47.755349386944765
+      },
+      {
+        "stage": 10,
+        "event": "completed",
+        "time": 54.17261042993863
+      },
+      {
+        "stage": 11,
+        "event": "started",
+        "time": 54.17261042993863
+      },
+      {
+        "stage": 11,
+        "event": "completed",
+        "time": 58.589871472932494
+      },
+      {
+        "stage": 12,
+        "event": "started",
+        "time": 58.589871472932494
+      },
+      {
+        "stage": 12,
+        "event": "completed",
+        "time": 58.589871472932494
+      },
+      {
+        "stage": 13,
+        "event": "started",
+        "time": 58.589871472932494
+      },
+      {
+        "stage": 13,
+        "event": "completed",
+        "time": 65.00713251592636
+      },
+      {
+        "stage": 14,
+        "event": "started",
+        "time": 65.00713251592636
+      },
+      {
+        "stage": 14,
+        "event": "completed",
+        "time": 65.00713251592636
+      }
+    ]
+  },
+  {
+    "example": "03_03_RobotPath_MixedDirection_Collision",
+    "status": "no_plan",
+    "reason": "No wait-duplication tuple path exists for these fixed routes."
+  },
+  {
+    "example": "03_04_RobotPath_SweepInterference",
+    "status": "completed",
+    "time": 28.086305214969308,
+    "tuple_stages": 11,
+    "commands": 13,
+    "engine_steps": 2862,
+    "collision_samples_enabled": true,
+    "contacts": [],
+    "roadmap_history": [
+      {
+        "event": "approved",
+        "time": 0.0,
+        "robot": "R1",
+        "command_id": 0,
+        "stage": 1
+      },
+      {
+        "event": "approved",
+        "time": 0.0,
+        "robot": "R2",
+        "command_id": 1,
+        "stage": 1
+      },
+      {
+        "event": "issued",
+        "time": 0.0,
+        "robot": "R1",
+        "command_id": 0,
+        "stage": 1
+      },
+      {
+        "event": "issued",
+        "time": 0.0,
+        "robot": "R2",
+        "command_id": 1,
+        "stage": 1
+      },
+      {
+        "event": "leaving",
+        "time": 1.9127301391900149,
+        "robot": "R2",
+        "position": [
+          3.25,
+          6.0
+        ],
+        "stage": 1
+      },
+      {
+        "event": "leaving",
+        "time": 1.9127301391900149,
+        "robot": "R1",
+        "position": [
+          0.75,
+          2.0
+        ],
+        "stage": 1
+      },
+      {
+        "event": "arrived",
+        "time": 4.417261042993862,
+        "robot": "R2",
+        "command_id": 1,
+        "stage": 1,
+        "position": [
+          2.0,
+          6.0
+        ]
+      },
+      {
+        "event": "arrived",
+        "time": 4.417261042993862,
+        "robot": "R1",
+        "command_id": 0,
+        "stage": 1,
+        "position": [
+          2.0,
+          2.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 4.417261042993862,
+        "robot": "R1",
+        "command_id": 2,
+        "stage": 3
+      },
+      {
+        "event": "approved",
+        "time": 4.417261042993862,
+        "robot": "R2",
+        "command_id": 3,
+        "stage": 3
+      },
+      {
+        "event": "issued",
+        "time": 4.417261042993862,
+        "robot": "R1",
+        "command_id": 2,
+        "stage": 3
+      },
+      {
+        "event": "issued",
+        "time": 4.417261042993862,
+        "robot": "R2",
+        "command_id": 3,
+        "stage": 3
+      },
+      {
+        "event": "leaving",
+        "time": 6.329991182183877,
+        "robot": "R2",
+        "position": [
+          1.25,
+          6.0
+        ],
+        "stage": 3
+      },
+      {
+        "event": "leaving",
+        "time": 6.329991182183877,
+        "robot": "R1",
+        "position": [
+          2.75,
+          2.0
+        ],
+        "stage": 3
+      },
+      {
+        "event": "arrived",
+        "time": 8.834522085987723,
+        "robot": "R2",
+        "command_id": 3,
+        "stage": 3,
+        "position": [
+          0.0,
+          6.0
+        ]
+      },
+      {
+        "event": "arrived",
+        "time": 8.834522085987723,
+        "robot": "R1",
+        "command_id": 2,
+        "stage": 3,
+        "position": [
+          4.0,
+          2.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 8.834522085987723,
+        "robot": "R1",
+        "command_id": 4,
+        "stage": 5
+      },
+      {
+        "event": "approved",
+        "time": 8.834522085987723,
+        "robot": "R2",
+        "command_id": 5,
+        "stage": 5
+      },
+      {
+        "event": "approved",
+        "time": 8.834522085987723,
+        "robot": "R3",
+        "command_id": 6,
+        "stage": 5
+      },
+      {
+        "event": "issued",
+        "time": 8.834522085987723,
+        "robot": "R1",
+        "command_id": 4,
+        "stage": 5
+      },
+      {
+        "event": "issued",
+        "time": 8.834522085987723,
+        "robot": "R2",
+        "command_id": 5,
+        "stage": 5
+      },
+      {
+        "event": "issued",
+        "time": 8.834522085987723,
+        "robot": "R3",
+        "command_id": 6,
+        "stage": 5
+      },
+      {
+        "event": "rotation_started",
+        "time": 8.834522085987723,
+        "robot": "R2",
+        "position": [
+          0.0,
+          6.0
+        ],
+        "stage": 5
+      },
+      {
+        "event": "rotation_started",
+        "time": 8.834522085987723,
+        "robot": "R1",
+        "position": [
+          4.0,
+          2.0
+        ],
+        "stage": 5
+      },
+      {
+        "event": "leaving",
+        "time": 10.74725222517774,
+        "robot": "R3",
+        "position": [
+          6.0,
+          0.75
+        ],
+        "stage": 5
+      },
+      {
+        "event": "rotation_finished",
+        "time": 10.834522085987723,
+        "robot": "R2",
+        "position": [
+          0.0,
+          6.0
+        ],
+        "stage": 5
+      },
+      {
+        "event": "rotation_finished",
+        "time": 10.834522085987723,
+        "robot": "R1",
+        "position": [
+          4.0,
+          2.0
+        ],
+        "stage": 5
+      },
+      {
+        "event": "leaving",
+        "time": 12.74725222517774,
+        "robot": "R2",
+        "position": [
+          0.0,
+          5.25
+        ],
+        "stage": 5
+      },
+      {
+        "event": "leaving",
+        "time": 12.74725222517774,
+        "robot": "R1",
+        "position": [
+          4.0,
+          2.75
+        ],
+        "stage": 5
+      },
+      {
+        "event": "arrived",
+        "time": 13.251783128981586,
+        "robot": "R3",
+        "command_id": 6,
+        "stage": 5,
+        "position": [
+          6.0,
+          2.0
+        ]
+      },
+      {
+        "event": "arrived",
+        "time": 15.251783128981586,
+        "robot": "R2",
+        "command_id": 5,
+        "stage": 5,
+        "position": [
+          0.0,
+          4.0
+        ]
+      },
+      {
+        "event": "arrived",
+        "time": 15.251783128981586,
+        "robot": "R1",
+        "command_id": 4,
+        "stage": 5,
+        "position": [
+          4.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 15.251783128981586,
+        "robot": "R1",
+        "command_id": 7,
+        "stage": 7
+      },
+      {
+        "event": "approved",
+        "time": 15.251783128981586,
+        "robot": "R2",
+        "command_id": 8,
+        "stage": 7
+      },
+      {
+        "event": "approved",
+        "time": 15.251783128981586,
+        "robot": "R3",
+        "command_id": 9,
+        "stage": 7
+      },
+      {
+        "event": "issued",
+        "time": 15.251783128981586,
+        "robot": "R1",
+        "command_id": 7,
+        "stage": 7
+      },
+      {
+        "event": "issued",
+        "time": 15.251783128981586,
+        "robot": "R2",
+        "command_id": 8,
+        "stage": 7
+      },
+      {
+        "event": "issued",
+        "time": 15.251783128981586,
+        "robot": "R3",
+        "command_id": 9,
+        "stage": 7
+      },
+      {
+        "event": "rotation_started",
+        "time": 15.251783128981586,
+        "robot": "R3",
+        "position": [
+          6.0,
+          2.0
+        ],
+        "stage": 7
+      },
+      {
+        "event": "leaving",
+        "time": 17.1645132681716,
+        "robot": "R2",
+        "position": [
+          0.0,
+          3.25
+        ],
+        "stage": 7
+      },
+      {
+        "event": "leaving",
+        "time": 17.1645132681716,
+        "robot": "R1",
+        "position": [
+          4.0,
+          4.75
+        ],
+        "stage": 7
+      },
+      {
+        "event": "rotation_finished",
+        "time": 17.251783128981586,
+        "robot": "R3",
+        "position": [
+          6.0,
+          2.0
+        ],
+        "stage": 7
+      },
+      {
+        "event": "leaving",
+        "time": 19.1645132681716,
+        "robot": "R3",
+        "position": [
+          5.25,
+          2.0
+        ],
+        "stage": 7
+      },
+      {
+        "event": "arrived",
+        "time": 19.669044171975447,
+        "robot": "R2",
+        "command_id": 8,
+        "stage": 7,
+        "position": [
+          0.0,
+          2.0
+        ]
+      },
+      {
+        "event": "arrived",
+        "time": 19.669044171975447,
+        "robot": "R1",
+        "command_id": 7,
+        "stage": 7,
+        "position": [
+          4.0,
+          6.0
+        ]
+      },
+      {
+        "event": "arrived",
+        "time": 21.669044171975447,
+        "robot": "R3",
+        "command_id": 9,
+        "stage": 7,
+        "position": [
+          4.0,
+          2.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 21.669044171975447,
+        "robot": "R1",
+        "command_id": 10,
+        "stage": 9
+      },
+      {
+        "event": "approved",
+        "time": 21.669044171975447,
+        "robot": "R2",
+        "command_id": 11,
+        "stage": 9
+      },
+      {
+        "event": "approved",
+        "time": 21.669044171975447,
+        "robot": "R3",
+        "command_id": 12,
+        "stage": 9
+      },
+      {
+        "event": "issued",
+        "time": 21.669044171975447,
+        "robot": "R1",
+        "command_id": 10,
+        "stage": 9
+      },
+      {
+        "event": "issued",
+        "time": 21.669044171975447,
+        "robot": "R2",
+        "command_id": 11,
+        "stage": 9
+      },
+      {
+        "event": "issued",
+        "time": 21.669044171975447,
+        "robot": "R3",
+        "command_id": 12,
+        "stage": 9
+      },
+      {
+        "event": "rotation_started",
+        "time": 21.669044171975447,
+        "robot": "R3",
+        "position": [
+          4.0,
+          2.0
+        ],
+        "stage": 9
+      },
+      {
+        "event": "rotation_started",
+        "time": 21.669044171975447,
+        "robot": "R1",
+        "position": [
+          4.0,
+          6.0
+        ],
+        "stage": 9
+      },
+      {
+        "event": "leaving",
+        "time": 23.58177431116546,
+        "robot": "R2",
+        "position": [
+          0.0,
+          1.25
+        ],
+        "stage": 9
+      },
+      {
+        "event": "rotation_finished",
+        "time": 23.669044171975447,
+        "robot": "R3",
+        "position": [
+          4.0,
+          2.0
+        ],
+        "stage": 9
+      },
+      {
+        "event": "rotation_finished",
+        "time": 23.669044171975447,
+        "robot": "R1",
+        "position": [
+          4.0,
+          6.0
+        ],
+        "stage": 9
+      },
+      {
+        "event": "leaving",
+        "time": 25.58177431116546,
+        "robot": "R3",
+        "position": [
+          4.0,
+          1.25
+        ],
+        "stage": 9
+      },
+      {
+        "event": "leaving",
+        "time": 25.58177431116546,
+        "robot": "R1",
+        "position": [
+          4.75,
+          6.0
+        ],
+        "stage": 9
+      },
+      {
+        "event": "arrived",
+        "time": 26.086305214969308,
+        "robot": "R2",
+        "command_id": 11,
+        "stage": 9,
+        "position": [
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "event": "arrived",
+        "time": 28.086305214969308,
+        "robot": "R3",
+        "command_id": 12,
+        "stage": 9,
+        "position": [
+          4.0,
+          0.0
+        ]
+      },
+      {
+        "event": "arrived",
+        "time": 28.086305214969308,
+        "robot": "R1",
+        "command_id": 10,
+        "stage": 9,
+        "position": [
+          6.0,
+          6.0
+        ]
+      }
+    ],
+    "stage_history": [
+      {
+        "stage": 0,
+        "event": "started",
+        "time": 0.0
+      },
+      {
+        "stage": 0,
+        "event": "completed",
+        "time": 0.0
+      },
+      {
+        "stage": 1,
+        "event": "started",
+        "time": 0.0
+      },
+      {
+        "stage": 1,
+        "event": "completed",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 2,
+        "event": "started",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 2,
+        "event": "completed",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 3,
+        "event": "started",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 3,
+        "event": "completed",
+        "time": 8.834522085987723
+      },
+      {
+        "stage": 4,
+        "event": "started",
+        "time": 8.834522085987723
+      },
+      {
+        "stage": 4,
+        "event": "completed",
+        "time": 8.834522085987723
+      },
+      {
+        "stage": 5,
+        "event": "started",
+        "time": 8.834522085987723
+      },
+      {
+        "stage": 5,
+        "event": "completed",
+        "time": 15.251783128981586
+      },
+      {
+        "stage": 6,
+        "event": "started",
+        "time": 15.251783128981586
+      },
+      {
+        "stage": 6,
+        "event": "completed",
+        "time": 15.251783128981586
+      },
+      {
+        "stage": 7,
+        "event": "started",
+        "time": 15.251783128981586
+      },
+      {
+        "stage": 7,
+        "event": "completed",
+        "time": 21.669044171975447
+      },
+      {
+        "stage": 8,
+        "event": "started",
+        "time": 21.669044171975447
+      },
+      {
+        "stage": 8,
+        "event": "completed",
+        "time": 21.669044171975447
+      },
+      {
+        "stage": 9,
+        "event": "started",
+        "time": 21.669044171975447
+      },
+      {
+        "stage": 9,
+        "event": "completed",
+        "time": 28.086305214969308
+      },
+      {
+        "stage": 10,
+        "event": "started",
+        "time": 28.086305214969308
+      },
+      {
+        "stage": 10,
+        "event": "completed",
+        "time": 28.086305214969308
+      }
+    ]
+  },
+  {
+    "example": "03_05_RobotPath_LocalSafe_Deadlock",
+    "status": "completed",
+    "time": 52.17261042993863,
+    "tuple_stages": 20,
+    "commands": 11,
+    "engine_steps": 5268,
+    "collision_samples_enabled": true,
+    "contacts": [],
+    "roadmap_history": [
+      {
+        "event": "approved",
+        "time": 0.0,
+        "robot": "R1",
+        "command_id": 0,
+        "stage": 1
+      },
+      {
+        "event": "issued",
+        "time": 0.0,
+        "robot": "R1",
+        "command_id": 0,
+        "stage": 1
+      },
+      {
+        "event": "leaving",
+        "time": 1.9127301391900149,
+        "robot": "R1",
+        "position": [
+          0.0,
+          5.25
+        ],
+        "stage": 1
+      },
+      {
+        "event": "arrived",
+        "time": 4.417261042993862,
+        "robot": "R1",
+        "command_id": 0,
+        "stage": 1,
+        "position": [
+          0.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 4.417261042993862,
+        "robot": "R1",
+        "command_id": 1,
+        "stage": 3
+      },
+      {
+        "event": "issued",
+        "time": 4.417261042993862,
+        "robot": "R1",
+        "command_id": 1,
+        "stage": 3
+      },
+      {
+        "event": "rotation_started",
+        "time": 4.417261042993862,
+        "robot": "R1",
+        "position": [
+          0.0,
+          4.0
+        ],
+        "stage": 3
+      },
+      {
+        "event": "rotation_finished",
+        "time": 6.417261042993862,
+        "robot": "R1",
+        "position": [
+          0.0,
+          4.0
+        ],
+        "stage": 3
+      },
+      {
+        "event": "leaving",
+        "time": 8.329991182183877,
+        "robot": "R1",
+        "position": [
+          0.75,
+          4.0
+        ],
+        "stage": 3
+      },
+      {
+        "event": "arrived",
+        "time": 10.834522085987723,
+        "robot": "R1",
+        "command_id": 1,
+        "stage": 3,
+        "position": [
+          2.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 10.834522085987723,
+        "robot": "R1",
+        "command_id": 2,
+        "stage": 5
+      },
+      {
+        "event": "issued",
+        "time": 10.834522085987723,
+        "robot": "R1",
+        "command_id": 2,
+        "stage": 5
+      },
+      {
+        "event": "leaving",
+        "time": 12.74725222517774,
+        "robot": "R1",
+        "position": [
+          2.75,
+          4.0
+        ],
+        "stage": 5
+      },
+      {
+        "event": "arrived",
+        "time": 15.251783128981586,
+        "robot": "R1",
+        "command_id": 2,
+        "stage": 5,
+        "position": [
+          4.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 15.251783128981586,
+        "robot": "R1",
+        "command_id": 3,
+        "stage": 7
+      },
+      {
+        "event": "issued",
+        "time": 15.251783128981586,
+        "robot": "R1",
+        "command_id": 3,
+        "stage": 7
+      },
+      {
+        "event": "leaving",
+        "time": 17.1645132681716,
+        "robot": "R1",
+        "position": [
+          4.75,
+          4.0
+        ],
+        "stage": 7
+      },
+      {
+        "event": "arrived",
+        "time": 19.669044171975447,
+        "robot": "R1",
+        "command_id": 3,
+        "stage": 7,
+        "position": [
+          6.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 19.669044171975447,
+        "robot": "R1",
+        "command_id": 4,
+        "stage": 9
+      },
+      {
+        "event": "issued",
+        "time": 19.669044171975447,
+        "robot": "R1",
+        "command_id": 4,
+        "stage": 9
+      },
+      {
+        "event": "rotation_started",
+        "time": 19.669044171975447,
+        "robot": "R1",
+        "position": [
+          6.0,
+          4.0
+        ],
+        "stage": 9
+      },
+      {
+        "event": "rotation_finished",
+        "time": 21.669044171975447,
+        "robot": "R1",
+        "position": [
+          6.0,
+          4.0
+        ],
+        "stage": 9
+      },
+      {
+        "event": "leaving",
+        "time": 23.58177431116546,
+        "robot": "R1",
+        "position": [
+          6.0,
+          4.75
+        ],
+        "stage": 9
+      },
+      {
+        "event": "arrived",
+        "time": 26.086305214969308,
+        "robot": "R1",
+        "command_id": 4,
+        "stage": 9,
+        "position": [
+          6.0,
+          6.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 26.086305214969308,
+        "robot": "R2",
+        "command_id": 5,
+        "stage": 10
+      },
+      {
+        "event": "issued",
+        "time": 26.086305214969308,
+        "robot": "R2",
+        "command_id": 5,
+        "stage": 10
+      },
+      {
+        "event": "leaving",
+        "time": 27.99903535415932,
+        "robot": "R2",
+        "position": [
+          6.0,
+          2.75
+        ],
+        "stage": 10
+      },
+      {
+        "event": "arrived",
+        "time": 30.50356625796317,
+        "robot": "R2",
+        "command_id": 5,
+        "stage": 10,
+        "position": [
+          6.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 30.50356625796317,
+        "robot": "R2",
+        "command_id": 6,
+        "stage": 12
+      },
+      {
+        "event": "issued",
+        "time": 30.50356625796317,
+        "robot": "R2",
+        "command_id": 6,
+        "stage": 12
+      },
+      {
+        "event": "rotation_started",
+        "time": 30.50356625796317,
+        "robot": "R2",
+        "position": [
+          6.0,
+          4.0
+        ],
+        "stage": 12
+      },
+      {
+        "event": "rotation_finished",
+        "time": 32.50356625796317,
+        "robot": "R2",
+        "position": [
+          6.0,
+          4.0
+        ],
+        "stage": 12
+      },
+      {
+        "event": "leaving",
+        "time": 34.41629639715319,
+        "robot": "R2",
+        "position": [
+          5.25,
+          4.0
+        ],
+        "stage": 12
+      },
+      {
+        "event": "arrived",
+        "time": 36.920827300957036,
+        "robot": "R2",
+        "command_id": 6,
+        "stage": 12,
+        "position": [
+          4.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 36.920827300957036,
+        "robot": "R2",
+        "command_id": 7,
+        "stage": 14
+      },
+      {
+        "event": "issued",
+        "time": 36.920827300957036,
+        "robot": "R2",
+        "command_id": 7,
+        "stage": 14
+      },
+      {
+        "event": "leaving",
+        "time": 38.833557440147054,
+        "robot": "R2",
+        "position": [
+          3.25,
+          4.0
+        ],
+        "stage": 14
+      },
+      {
+        "event": "arrived",
+        "time": 41.3380883439509,
+        "robot": "R2",
+        "command_id": 7,
+        "stage": 14,
+        "position": [
+          2.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 41.3380883439509,
+        "robot": "R2",
+        "command_id": 8,
+        "stage": 16
+      },
+      {
+        "event": "issued",
+        "time": 41.3380883439509,
+        "robot": "R2",
+        "command_id": 8,
+        "stage": 16
+      },
+      {
+        "event": "leaving",
+        "time": 43.25081848314092,
+        "robot": "R2",
+        "position": [
+          1.25,
+          4.0
+        ],
+        "stage": 16
+      },
+      {
+        "event": "arrived",
+        "time": 45.755349386944765,
+        "robot": "R2",
+        "command_id": 8,
+        "stage": 16,
+        "position": [
+          0.0,
+          4.0
+        ]
+      },
+      {
+        "event": "approved",
+        "time": 45.755349386944765,
+        "robot": "R2",
+        "command_id": 9,
+        "stage": 18
+      },
+      {
+        "event": "approved",
+        "time": 45.755349386944765,
+        "robot": "R3",
+        "command_id": 10,
+        "stage": 18
+      },
+      {
+        "event": "issued",
+        "time": 45.755349386944765,
+        "robot": "R2",
+        "command_id": 9,
+        "stage": 18
+      },
+      {
+        "event": "issued",
+        "time": 45.755349386944765,
+        "robot": "R3",
+        "command_id": 10,
+        "stage": 18
+      },
+      {
+        "event": "rotation_started",
+        "time": 45.755349386944765,
+        "robot": "R2",
+        "position": [
+          0.0,
+          4.0
+        ],
+        "stage": 18
+      },
+      {
+        "event": "leaving",
+        "time": 47.66807952613478,
+        "robot": "R3",
+        "position": [
+          2.75,
+          0.0
+        ],
+        "stage": 18
+      },
+      {
+        "event": "rotation_finished",
+        "time": 47.755349386944765,
+        "robot": "R2",
+        "position": [
+          0.0,
+          4.0
+        ],
+        "stage": 18
+      },
+      {
+        "event": "leaving",
+        "time": 49.66807952613478,
+        "robot": "R2",
+        "position": [
+          0.0,
+          3.25
+        ],
+        "stage": 18
+      },
+      {
+        "event": "arrived",
+        "time": 50.17261042993863,
+        "robot": "R3",
+        "command_id": 10,
+        "stage": 18,
+        "position": [
+          4.0,
+          0.0
+        ]
+      },
+      {
+        "event": "arrived",
+        "time": 52.17261042993863,
+        "robot": "R2",
+        "command_id": 9,
+        "stage": 18,
+        "position": [
+          0.0,
+          2.0
+        ]
+      }
+    ],
+    "stage_history": [
+      {
+        "stage": 0,
+        "event": "started",
+        "time": 0.0
+      },
+      {
+        "stage": 0,
+        "event": "completed",
+        "time": 0.0
+      },
+      {
+        "stage": 1,
+        "event": "started",
+        "time": 0.0
+      },
+      {
+        "stage": 1,
+        "event": "completed",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 2,
+        "event": "started",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 2,
+        "event": "completed",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 3,
+        "event": "started",
+        "time": 4.417261042993862
+      },
+      {
+        "stage": 3,
+        "event": "completed",
+        "time": 10.834522085987723
+      },
+      {
+        "stage": 4,
+        "event": "started",
+        "time": 10.834522085987723
+      },
+      {
+        "stage": 4,
+        "event": "completed",
+        "time": 10.834522085987723
+      },
+      {
+        "stage": 5,
+        "event": "started",
+        "time": 10.834522085987723
+      },
+      {
+        "stage": 5,
+        "event": "completed",
+        "time": 15.251783128981586
+      },
+      {
+        "stage": 6,
+        "event": "started",
+        "time": 15.251783128981586
+      },
+      {
+        "stage": 6,
+        "event": "completed",
+        "time": 15.251783128981586
+      },
+      {
+        "stage": 7,
+        "event": "started",
+        "time": 15.251783128981586
+      },
+      {
+        "stage": 7,
+        "event": "completed",
+        "time": 19.669044171975447
+      },
+      {
+        "stage": 8,
+        "event": "started",
+        "time": 19.669044171975447
+      },
+      {
+        "stage": 8,
+        "event": "completed",
+        "time": 19.669044171975447
+      },
+      {
+        "stage": 9,
+        "event": "started",
+        "time": 19.669044171975447
+      },
+      {
+        "stage": 9,
+        "event": "completed",
+        "time": 26.086305214969308
+      },
+      {
+        "stage": 10,
+        "event": "started",
+        "time": 26.086305214969308
+      },
+      {
+        "stage": 10,
+        "event": "completed",
+        "time": 30.50356625796317
+      },
+      {
+        "stage": 11,
+        "event": "started",
+        "time": 30.50356625796317
+      },
+      {
+        "stage": 11,
+        "event": "completed",
+        "time": 30.50356625796317
+      },
+      {
+        "stage": 12,
+        "event": "started",
+        "time": 30.50356625796317
+      },
+      {
+        "stage": 12,
+        "event": "completed",
+        "time": 36.920827300957036
+      },
+      {
+        "stage": 13,
+        "event": "started",
+        "time": 36.920827300957036
+      },
+      {
+        "stage": 13,
+        "event": "completed",
+        "time": 36.920827300957036
+      },
+      {
+        "stage": 14,
+        "event": "started",
+        "time": 36.920827300957036
+      },
+      {
+        "stage": 14,
+        "event": "completed",
+        "time": 41.3380883439509
+      },
+      {
+        "stage": 15,
+        "event": "started",
+        "time": 41.3380883439509
+      },
+      {
+        "stage": 15,
+        "event": "completed",
+        "time": 41.3380883439509
+      },
+      {
+        "stage": 16,
+        "event": "started",
+        "time": 41.3380883439509
+      },
+      {
+        "stage": 16,
+        "event": "completed",
+        "time": 45.755349386944765
+      },
+      {
+        "stage": 17,
+        "event": "started",
+        "time": 45.755349386944765
+      },
+      {
+        "stage": 17,
+        "event": "completed",
+        "time": 45.755349386944765
+      },
+      {
+        "stage": 18,
+        "event": "started",
+        "time": 45.755349386944765
+      },
+      {
+        "stage": 18,
+        "event": "completed",
+        "time": 52.17261042993863
+      },
+      {
+        "stage": 19,
+        "event": "started",
+        "time": 52.17261042993863
+      },
+      {
+        "stage": 19,
+        "event": "completed",
+        "time": 52.17261042993863
+      }
+    ]
+  },
+  {
+    "example": "03_06_RobotPath_ThreeWay_CyclicWait",
+    "status": "no_plan",
+    "reason": "No wait-duplication tuple path exists for these fixed routes."
+  }
+]

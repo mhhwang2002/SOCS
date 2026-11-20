@@ -11,10 +11,14 @@ from .motion import EMPTY, LOADED, StraightProfile
 
 class MRobot(DEVSph):
     def __init__(self, name, initial_point, *, lift_up=True, rack_size=(1.5, 1.5),
-                 stop_on_collision=True, initial_heading_deg=None):
+                 stop_on_collision=True, initial_heading_deg=None,
+                 command_coordinates="grid", control_points=None):
+        if command_coordinates not in ("grid", "metres"):
+            raise ValueError("command_coordinates must be 'grid' or 'metres'.")
         if initial_heading_deg is not None and not isfinite(initial_heading_deg):
             raise ValueError("initial_heading_deg must be finite or None.")
         angle = radians(initial_heading_deg or 0.0)
+        self.control_points = CONTROL_POINTS if control_points is None else control_points
         rack_size = tuple(rack_size)
         if len(rack_size) != 2 or any(
             not isfinite(side) or side <= 0 for side in rack_size
@@ -23,7 +27,7 @@ class MRobot(DEVSph):
         super().__init__(name, variables={
             "lift_up": lift_up, "rack": "Rack1" if lift_up else None,
             "path": (), "current_segment_index": 0,
-            "current_position": CONTROL_POINTS[initial_point],
+            "current_position": self.control_points[initial_point],
             "current_dir": (cos(angle), sin(angle)), "profile": None, "start_time": 0.0,
             "direction_initialized": initial_heading_deg is not None,
             "path_entry_turn": False,
@@ -33,6 +37,7 @@ class MRobot(DEVSph):
             "collision_partners": (), "collision_active": False,
         })
         self.rack_size = rack_size
+        self.command_coordinates = command_coordinates
         self.stop_on_collision = stop_on_collision
         self.add_input_ports("?command", "?collision")
         self.add_output_ports(
@@ -79,7 +84,11 @@ class MRobot(DEVSph):
             )
 
     def prepare_path(self, event):
-        points = tuple(CONTROL_POINTS[point] for point in event.value)
+        points = (tuple(self.control_points[point] for point in event.value)
+                  if self.command_coordinates == "grid" else
+                  tuple(tuple(float(x) for x in point) for point in event.value))
+        if any(len(p) != 2 or not all(isfinite(x) for x in p) for p in points):
+            raise ValueError("Command coordinates must be finite 2D positions.")
         if len(points) < 2 or points[0] != self._variable.current_position:
             raise ValueError("The path must start at the robot and contain a segment.")
         for start, end in zip(points, points[1:]):
