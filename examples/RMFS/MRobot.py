@@ -13,7 +13,8 @@ class MRobot(DEVSph):
     def __init__(self, name, initial_point, *, lift_up=True, rack_size=(1.5, 1.5),
                  stop_on_collision=True, initial_heading_deg=None,
                  command_coordinates="grid", control_points=None,
-                 lift_duration=1.4, lower_duration=1.4, passage_push=False, clearance_points=()):
+                 lift_duration=1.4, lower_duration=1.4, passage_push=False, clearance_points=(),
+                 motion_limits=None):
         if command_coordinates not in ("grid", "metres"):
             raise ValueError("command_coordinates must be 'grid' or 'metres'.")
         if initial_heading_deg is not None and not isfinite(initial_heading_deg):
@@ -50,6 +51,7 @@ class MRobot(DEVSph):
         self.command_coordinates = command_coordinates
         self.stop_on_collision = stop_on_collision
         self.passage_push = passage_push
+        self.motion_limits_override = motion_limits
         self.clearance_points = tuple(clearance_points)
         self.add_input_ports("?command", "?collision", "?lift", "?lower", "?orient",
                              "?extend_motion")
@@ -294,7 +296,7 @@ class MRobot(DEVSph):
 
     @property
     def motion_limits(self):
-        return LOADED if self._variable.lift_up else EMPTY
+        return self.motion_limits_override or (LOADED if self._variable.lift_up else EMPTY)
 
     def motion_plan(self):
         v = self._variable

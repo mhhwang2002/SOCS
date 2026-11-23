@@ -22,3 +22,8 @@
 - Do not use local collision-prediction lookahead to authorize passage before a conflicting sweep is actually released. A predicted timing gap is not an operating admission condition.
 - Keep FIFO, safe-prefix approach, per-point PSensor releases, and residual-sweep updates. Dispatch eligible waiters on actual release reports.
 - Historical predictive passage results may remain, but obsolete request/report lookahead code has been removed. The 03_08 example uses the ordinary DEVS engine without a motion-status port.
+
+# Energy and makespan experiment register
+
+- When adding or rerunning an example for the energy and makespan paper, update the `ExperimentResults` table in `docs/RMFS/Papers/2026_11_MobileRobotTrafficControl_EnergyAndMakespan/Experiment_Results.xlsx` with its module name, run conditions, and measured outcomes.
+- Preserve prior records. Leave values blank when they have not been evaluated and associate energy estimates with their model assumptions. The user opens this workbook read-only so Codex can update it.

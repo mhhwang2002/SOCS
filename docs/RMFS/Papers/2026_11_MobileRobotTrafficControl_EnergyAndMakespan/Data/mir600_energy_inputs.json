@@ -1,0 +1,11 @@
+{
+  "model_id": "E2",
+  "robot_mass_kg": 240,
+  "rack_mass_kg": 300,
+  "auxiliary_power_w": 40,
+  "rolling_coefficient": 0.025,
+  "gravity_m_s2": 9.81,
+  "drive_efficiency": 0.75,
+  "unloaded": {"acceleration": 0.41, "deceleration": 0.41, "yaw_rate": 45, "speed": 2},
+  "with_rack": {"acceleration": 0.37, "deceleration": 0.37, "yaw_rate": 30, "speed": 2}
+}

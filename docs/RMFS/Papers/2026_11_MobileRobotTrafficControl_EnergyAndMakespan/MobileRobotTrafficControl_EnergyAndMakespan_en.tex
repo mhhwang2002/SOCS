@@ -1,0 +1,410 @@
+% !TeX program = xelatex
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=25mm]{geometry}
+\usepackage{amsmath,booktabs,graphicx,float}
+\graphicspath{{Figures/}{docs/RMFS/Papers/2026_11_MobileRobotTrafficControl_EnergyAndMakespan/Figures/}}
+\usepackage[hidelinks]{hyperref}
+
+\title{Mobile Robot Traffic Control at Admissible Stopping Points\protect\\
+to Minimize Energy Consumption and Makespan}
+\author{Moon Ho Hwang}
+\date{November 23, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We study traffic control for mobile robots on prescribed paths with two
+objectives: reducing fleet battery energy consumption and makespan. Swept
+regions identify spatial interference and determine which parts of a route
+can be approved together. A Discrete Event System Specification (DEVS)
+model executes the resulting traffic decisions with continuous motion
+profiles and event-based clearance reports. We compare requiring a stop
+before further movement with allowing rolling passage. We separately vary whether selected intersections
+may serve as temporary stopping points. Preliminary simulations show two
+effects of parking inside an intersection: it can delay crossing traffic,
+and it can free an upstream intersection and let a queue pass. We estimate
+battery energy from executed motion histories for rack-carrying robots under
+explicit mass, power, and drive assumptions. In both layouts,
+allowing rolling passage reduces estimated energy and makespan relative to
+requiring a stop under the same policy for stopping in the intersection. The preferred stopping policy depends
+on the layout.
+\end{abstract}
+
+\section{Related work}
+
+\subsection{Sweep-based coordination and execution}
+O'Donnell and Lozano-P\'erez~\cite{odonnell1989} used intersections of segment
+sweeps to construct collision-free, deadlock-free executions of two prescribed
+manipulator paths. Their coordination diagram represents one or both robots
+advancing and handles endpoint blocking. This is the geometric precedent for
+our sweep checks and admissible waits. Our comparison concerns the timed
+execution of mobile-robot traffic, including whether a shared intersection is
+available as temporary storage and how that choice affects fleet energy and
+makespan.
+
+H\"onig et al.~\cite{hoenig2019} use an Action Dependency Graph to preserve
+precedence from a warehouse multi-agent pathfinding plan. Their controller
+can execute consecutive forward actions continuously and overlap replanning
+with execution. Warehouse simulations and a mixed-reality robot experiment
+demonstrate the execution framework. SOCS shares the goal of avoiding
+unnecessary stops. Its experiment varies the permitted stopping endpoints and
+the timing of admission independently, and extends a movement using a
+pre-braking request or a verified clearance report.
+
+\subsection{Energy-aware intersection control and downstream blocking}
+Malikopoulos et al.~\cite{malikopoulos2018} determine intersection timing
+under safety and throughput constraints, then optimize the acceleration of
+each connected vehicle. Their simulation reports reduced fuel use and shorter
+travel time as vehicles preserve momentum through the intersection. Their
+formulation optimizes a continuous control input for the planned crossing.
+SOCS instead compares discrete movement permissions and profile extensions
+on prescribed paths, with actual footprint clearance as the release event.
+
+Pan et al.~\cite{pan2021} optimize speed profiles for battery-electric
+vehicles under a fixed FIFO crossing order using decentralized model predictive
+control. Their numerical comparison with centralized optimization shows the
+energy--travel-time trade-off for different prediction horizons. This is a
+close comparison for our matched-order experiments. Their decision variable
+is the predicted speed trajectory. Our current experiments vary whether a
+robot may stop inside a shared region and whether permission can extend an
+already executing profile.
+
+Verbeke et al.~\cite{verbeke2008} model an intersection as interacting
+queues and use Monte Carlo simulation to study stochastic arrivals and service.
+Their model accounts for vehicles stranded in the conflict area by downstream
+spillback. In saturated and oversaturated cases, accounting for these
+interactions yields lower estimated capacity and higher delay than the models
+they compare against. SOCS examines individual robot footprints and tests
+both effects on a fixed layout: occupying one intersection can block its
+cross traffic while releasing a queue at the adjacent upstream intersection.
+
+\subsection{Fleet energy optimization and measurement}
+Riazi et al.~\cite{riazi2021} use optimization to improve scheduling and
+routing for an industrial AGV system, including adjustment of cruise speed.
+Using plant data, they report about 38\% lower energy consumption relative to
+their existing controller, with better makespan, lateness, and tardiness.
+Their result involves changes in travel distance and cruise speed. Our matched
+fixed-route comparisons isolate changes in when and where robots wait and
+resume motion.
+
+Ma\l{}opolski et al.~\cite{malopolski2025} compare Chain of Reservations
+and Structural On-line Control Policy with shortest- and fastest-path
+selection on a square-topology multi-AGV system. They parameterize simulation
+with electrical measurements from a real AGV and construct Pareto fronts for
+total energy and makespan across fleet sizes. This is a direct precedent for
+evaluating fleet traffic rules using both outcomes. SOCS studies a different
+decision: whether to reserve an admissible intermediate stop through a
+geometric sweep check and whether verified release justifies continuing
+without completing the planned stop.
+
+Mei\ss ner and Massalski~\cite{meissner2020} measure battery voltage and
+current on a rack-lifting Robotnik RB1 Base and model translation, rotation,
+and lift/lower operation. Measured translation and rotation energy increase
+with payload in their tests. Some braking runs exhibit negative electrical
+power. Their measured movement modules inform the power terms required for
+our motion histories. SOCS uses those histories to compare traffic decisions;
+its own battery parameters still require calibration.
+
+Sperling and Furmans~\cite{sperling2024} integrate state-dependent power
+in an AGV energy model validated against measurements from two industrial
+mobile robots over 461 operating hours. Their study demonstrates a way to
+estimate energy with speed, load and utilization represented explicitly.
+Our implementation integrates over DEVS motion intervals and profile
+changes. A state model that groups all driving into one value would
+require further calibration before it could quantify the benefit of removing
+individual braking and restart cycles.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Potential contributions relative to the reviewed literature and
+the evidence needed to support each claim.}
+\label{tab:conditional-contributions}
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}p{.15\linewidth}p{.24\linewidth}p{.25\linewidth}p{.30\linewidth}@{}}
+\toprule
+Decision & Results in prior work & Potential contribution of SOCS & Success condition \\
+\midrule
+Geometric execution & Segment sweeps support feasible path coordination;
+action dependencies support continuous execution of forward moves
+\cite{odonnell1989,hoenig2019}. & Isolate the effects of admissible command
+endpoints and event-triggered continuation. & Complete the same routes under
+matched safety constraints. Report intermediate stops and makespan for
+each cell of the $2\times2$ comparison. \\[3pt]
+Intersection approach & Optimal control and predictive control shape vehicle
+speed and report travel-time and energy or fuel benefits
+\cite{malikopoulos2018,pan2021}. & Measure the benefit of pre-braking requests
+and verified release with fixed routes and crossing orders. & Show fewer
+stops and lower net battery energy than requiring a stop under the same
+motion and occupancy constraints. Compare directly with a predictive
+baseline before claiming an advantage over predictive control. \\[3pt]
+Intersection storage & Queue spillback simulations capture capacity loss
+and cross-traffic delays from blocked intersections \cite{verbeke2008}. &
+Identify when using an intersection as a buffer releases upstream traffic
+at the cost of delaying cross traffic. & Reproduce cases with opposite
+outcomes. Measure upstream queue clearance, cross-traffic delay, and
+makespan. For a conditional policy, compare with both fixed policies on
+additional congestion cases. \\[3pt]
+Fleet objectives & Industrial AGV studies evaluate energy and completion
+time under routing, scheduling, speed or deadlock-policy changes
+\cite{riazi2021,malopolski2025}. & Evaluate energy and makespan trade-offs
+for stopping and admission policies on identical routes and workloads. &
+For a joint improvement, show lower energy at the same or lower makespan,
+or lower makespan at the same or lower energy. Report the trade-off when
+one objective improves and the other worsens. \\[3pt]
+Energy evaluation & AGV measurements support physical and state-dependent
+power models \cite{meissner2020,sperling2024}. & Attribute differences in net
+battery energy to realized waits, braking and restart cycles. & Check Wh
+against measured power traces or disclose calibration uncertainty. Verify
+that identical physical histories and observation horizons give the same
+energy across headless runs and animation intervals. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Control problem}
+Each robot has a fixed path and a set of admissible stopping points. At an
+admissible point it may wait or continue to a subsequent point. A traffic
+policy selects the points at which waiting is permitted and governs when
+the next part of the path is approved. An intersection may act as a
+temporary buffer if a stationary robot there clears an upstream constraint.
+Its occupancy may meanwhile block traffic on the crossing route.
+
+For a common start time of zero, let $C_i$ denote the time at which robot $i$
+completes its assigned path, and let $E_i$ be its net battery energy over a
+specified observation horizon. The objectives are
+\[
+ C_{\max}=\max_i C_i,\qquad E_{\mathrm{fleet}}=\sum_i E_i.
+\]
+We report both objectives for each policy. The energy estimates apply to the
+assumed power model and the executed profiles.
+
+\section{Swept paths and DEVS execution}
+The sweep of a path portion is the union of the occupied footprints along
+that portion. Geometric intersections identify potential interference.
+Admission checks account for the remaining approved sweeps, stationary
+footprints, and required precedence. Actual clearance reports release
+passed regions. A DEVS controller issues approvals, the robot model executes
+acceleration, cruise and braking profiles, and a sensor model schedules
+clearance reports from those profiles.
+
+In \emph{Stop required} mode, the robot stops at its currently approved
+endpoint before receiving its next movement. In \emph{Rolling passage
+allowed} mode, the robot can continue without stopping if a movement
+extension is approved in time. We implement reconsideration during motion
+with a pre-braking request (Push event) or a verified clearance report
+(Pull event). An admissible straight continuation can extend the active
+motion profile. The \emph{Stopping in intersection} policy independently determines whether an approved movement can end there.
+
+\section{Experimental evaluation of makespan and energy}
+\subsection{Experimental design and energy model}
+For each layout we vary \emph{Rolling passage} and \emph{Stopping in intersection} in a $2\times2$ comparison. The initial configuration and routes stay
+fixed within each comparison. Each stopping policy uses a validated reference
+execution, which can change the passage order. The blocker departs at 16~s
+in the three-robot single-crossing case and at 32~s in the five-robot
+two-crossing case. Its release is determined by sensor feedback.
+
+In the reported experiments every robot carries a rack. The MiR600 chassis
+mass is 240~kg and the rated maximum
+payload is 600~kg~\cite{mir600}. We set the rack mass to 300~kg, half that
+rating, giving a total moving mass of 540~kg per robot. The manufacturer
+specifies maximum accelerations of 0.41~$\mathrm{m/s^2}$ at zero payload and
+0.37~$\mathrm{m/s^2}$ at maximum payload, and a maximum speed of
+2~$\mathrm{m/s}$~\cite{mir600datasheet}. We use the full-load acceleration
+limit for the 300~kg rack. The cited specifications give no separate normal
+braking values, so we set each braking magnitude equal to its acceleration
+limit as a model assumption. The masses, speed limits, acceleration and
+braking values, and power-model parameters are supplied through
+\nolinkurl{Data/mir600_energy_inputs.json}. All alternatives use the same
+collision envelope. The routes include no lifting, lowering, or rotation.
+
+Following the physical decomposition of AGV power in~\cite{meissner2020},
+we estimate electrical draw on a level floor using
+\[
+ P_i(t)=P_{\mathrm{aux}}+
+ \frac{\max\{0,m_i[a_i(t)+c_r g]v_i(t)\}}{\eta},\qquad
+ E_i=\frac{1}{3600}\int_0^{C_i}P_i(t)\,dt\quad\text{(Wh)}.
+\]
+We use $P_{\mathrm{aux}}=40$~W, $c_r=0.025$, $g=9.81$~$\mathrm{m/s^2}$, and
+$\eta=0.75$. We assume no regenerative recovery. Auxiliary power is charged
+from time zero through each robot's own final arrival. This accounts for all
+waiting, including the prescribed blocker hold. Post-completion idle time is
+outside the observation interval.
+On each executed constant-acceleration interval, traction energy is the
+constant nonnegative drive force times distance divided by efficiency.
+Profile extensions preserve the executed prefix and replace the remaining
+intervals. No rendering-frame values enter the integral.
+
+\subsection{Results}
+
+Each alternative is followed by the executed speed profiles and cumulative
+battery energy. The energy plot includes every robot and the fleet sum.
+Axes are shared across the four alternatives within each layout. Each robot's
+energy stays constant after final arrival.
+
+\newcommand{\ProfilePair}[2]{%
+  \begin{minipage}[t]{.49\linewidth}%
+  \noindent{\small\textbf{#1}}\par\smallskip
+  \begin{center}
+    \includegraphics[width=\linewidth]{Profiles/#2_speed.pdf}\par\medskip
+    \includegraphics[width=\linewidth]{Profiles/#2_energy.pdf}
+  \end{center}%
+  \end{minipage}%
+}
+
+\subsubsection{One crossing}
+\begin{table}[H]
+\centering
+\small
+\caption{One crossing. The initial top view shows the three robots and
+their swept paths. The table reports makespan and estimated fleet battery energy.}
+\label{tab:one-crossing-results}
+\begin{minipage}[c]{.34\linewidth}
+\centering\includegraphics[width=\linewidth]{one_crossing_initial_top.png}
+\end{minipage}\hfill
+\begin{minipage}[c]{.62\linewidth}
+\centering
+\begin{tabular}{@{}llrr@{}}
+\toprule
+\shortstack[l]{Rolling\\passage} & \shortstack[l]{Stopping in\\intersection} & \shortstack[r]{Makespan\\(s)} & \shortstack[r]{Energy\\(Wh)}\\
+\midrule
+Forbidden & Allowed   & 33.881 & 2.869\\
+Forbidden & Forbidden & 32.009 & 2.714\\
+Allowed & Allowed   & 30.413 & 2.795\\
+Allowed & Forbidden & 28.157 & 2.562\\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{table}
+
+\clearpage
+\noindent\ProfilePair{Rolling passage: Forbidden\newline Stopping in intersection: Allowed}{one_crossing_stop_first_allow}\hfill%
+\ProfilePair{Rolling passage: Forbidden\newline Stopping in intersection: Forbidden}{one_crossing_stop_first_forbid}\par\medskip
+\noindent\ProfilePair{Rolling passage: Allowed\newline Stopping in intersection: Allowed}{one_crossing_push_pull_allow}\hfill%
+\ProfilePair{Rolling passage: Allowed\newline Stopping in intersection: Forbidden}{one_crossing_push_pull_forbid}\par\medskip
+
+\clearpage
+\subsubsection{Two crossings}
+\begin{table}[H]
+\centering
+\small
+\caption{Two crossings. The initial top view shows five robots, including
+the two robots waiting to cross behind R1. Energy is the fleet total.}
+\label{tab:two-crossings-results}
+\begin{minipage}[c]{.34\linewidth}
+\centering\includegraphics[width=\linewidth]{two_crossings_initial_top.png}
+\end{minipage}\hfill
+\begin{minipage}[c]{.62\linewidth}
+\centering
+\begin{tabular}{@{}llrr@{}}
+\toprule
+\shortstack[l]{Rolling\\passage} & \shortstack[l]{Stopping in\\intersection} & \shortstack[r]{Makespan\\(s)} & \shortstack[r]{Energy\\(Wh)}\\
+\midrule
+Forbidden & Allowed   & 49.881 & 4.683\\
+Forbidden & Forbidden & 62.763 & 5.090\\
+Allowed & Allowed   & 46.413 & 4.437\\
+Allowed & Forbidden & 54.563 & 4.824\\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{table}
+
+\clearpage
+\noindent\ProfilePair{Rolling passage: Forbidden\newline Stopping in intersection: Allowed}{two_crossings_stop_first_allow}\hfill%
+\ProfilePair{Rolling passage: Forbidden\newline Stopping in intersection: Forbidden}{two_crossings_stop_first_forbid}\par\medskip
+\noindent\ProfilePair{Rolling passage: Allowed\newline Stopping in intersection: Allowed}{two_crossings_push_pull_allow}\hfill%
+\ProfilePair{Rolling passage: Allowed\newline Stopping in intersection: Forbidden}{two_crossings_push_pull_forbid}\par\medskip
+
+\subsubsection{Comparison across layouts}
+In the single-crossing layout, the robot that stops in the intersection
+blocks the cross route while waiting for its exit. In the two-crossing
+layout, using the forward intersection as a buffer frees the rear crossing.
+With rolling passage allowed, the last robot in the rear queue clears it at $15.485$~s
+with the buffer and $50.177$~s without it. The robot crossing the forward
+intersection clears at $42.070$~s with the buffer and $6.562$~s without it.
+Forbidding the stop gives the lowest observed makespan and estimated energy
+for one crossing (Table~\ref{tab:one-crossing-results}). Allowing the buffer
+gives the lowest values for two crossings (Table~\ref{tab:two-crossings-results}).
+
+All eight combinations completed. We replayed the DEVS-only runs with
+collision checks at 0.01 and 0.1~s intervals. No contacts were detected in the
+replays, and makespan and energy agreed to a relative and absolute tolerance
+of $10^{-10}$ in the reported units. These are model estimates. Physical
+battery measurements would be needed to calibrate the numerical energy
+savings. The experiments compare four policies and do not establish global
+optimality. The reproducer is
+\begin{quote}\small\ttfamily
+python -m examples.RMFS.Tests.run\_crossing\_energy\_comparison --load rack
+\end{quote}
+
+\begin{thebibliography}{99}
+\bibitem{odonnell1989}
+P. A. O'Donnell and T. Lozano-P\'erez.
+Deadlock-free and collision-free coordination of two robot manipulators.
+\emph{IEEE ICRA}, pp. 484--489, 1989.
+\href{https://lis.csail.mit.edu/pubs/tlp/coordination-o-donnell.pdf}{Author-hosted PDF}.
+
+\bibitem{hoenig2019}
+W. H\"onig, S. Kiesel, A. Tinka, J. W. Durham, and N. Ayanian.
+Persistent and robust execution of MAPF schedules in warehouses.
+\emph{IEEE Robotics and Automation Letters}, 4(2):1125--1131, 2019.
+\href{https://whoenig.github.io/publications/2019_RA-L_Hoenig.pdf}{Author manuscript}.
+
+\bibitem{malikopoulos2018}
+A. A. Malikopoulos, C. G. Cassandras, and Y. J. Zhang.
+A decentralized energy-optimal control framework for connected automated
+vehicles at signal-free intersections.
+\emph{Automatica}, 93:244--256, 2018.
+\href{https://doi.org/10.1016/j.automatica.2018.03.056}{DOI}.
+
+\bibitem{pan2021}
+X. Pan, B. Chen, L. Dai, S. Timotheou, and S. A. Evangelou.
+Decentralized model predictive control for automated and connected electric
+vehicles at signal-free intersections. \emph{IEEE CDC}, 2021.
+\href{https://discovery.ucl.ac.uk/id/eprint/10131957/}{Accepted manuscript}.
+
+\bibitem{verbeke2008}
+W. Verbeke, C. M. J. Tamp\`ere, N. Van Paesschen, and B. Immers.
+Modeling traffic operations on intersections using Monte-Carlo simulation
+techniques. \emph{TRB 87th Annual Meeting}, paper 08-1585, 2008.
+\href{https://www.mech.kuleuven.be/cib/verkeer/dwn/pub/PC2008B.pdf}{Institutional PDF}.
+
+\bibitem{riazi2021}
+S. Riazi, K. Bengtsson, and B. Lennartson.
+Energy optimization of large-scale AGV systems.
+\emph{IEEE Transactions on Automation Science and Engineering}, 18(2):638--649, 2021.
+\href{https://doi.org/10.1109/TASE.2019.2963285}{DOI} and
+\href{https://research.chalmers.se/en/publication/523467}{institutional record}.
+
+\bibitem{malopolski2025}
+W. Ma\l{}opolski, J. Zaj\k{a}c, W. Klein, and R. Cupek.
+Impact of the deadlock handling method on the energy efficiency of a system
+of multiple automated guided vehicles in a production environment described
+as a square topology. \emph{Energies}, 18(23):6321, 2025.
+\href{https://doi.org/10.3390/en18236321}{DOI}.
+
+\bibitem{meissner2020}
+M. Mei\ss ner and L. Massalski.
+Modeling the electrical power and energy consumption of automated guided
+vehicles to improve the energy efficiency of production systems.
+\emph{International Journal of Advanced Manufacturing Technology}, 110:481--498, 2020.
+\href{https://doi.org/10.1007/s00170-020-05796-8}{DOI}.
+
+\bibitem{sperling2024}
+M. Sperling and K. Furmans.
+Energy requirement modeling for automated guided vehicles considering material
+flow and layout data. \emph{Designs}, 8(3):48, 2024.
+\href{https://doi.org/10.3390/designs8030048}{DOI}.
+
+\bibitem{mir600}
+Mobile Industrial Robots A/S.
+\href{https://mobile-industrial-robots.com/it/prodotti/robot/mir600/specifiche}{MiR600 specifications}.
+Manufacturer specification page, accessed November 23, 2026.
+
+\bibitem{mir600datasheet}
+Mobile Industrial Robots A/S.
+\href{https://www.spie-escad.de/wp-content/uploads/MiR600-Specifications-2.96.pdf}{MiR600 Specifications}, p.~2, 2025.
+Manufacturer data sheet hosted by SPIE ESCAD.
+\end{thebibliography}
+
+\end{document}

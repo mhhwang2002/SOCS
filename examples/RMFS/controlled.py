@@ -15,7 +15,7 @@ def create_controlled_model(robot_paths, *, name="RMFS_WaitDuplication", lift_up
                             grid=None, allow_no_plan=False, plan_builder=None,
                             merge_sweeps=False, event_release=False,
                             safe_prefix=False, motion_extension=True, passage_push=False,
-                            flexible_crossing=False, crossing_policy='fifo'):
+                            flexible_crossing=False, crossing_policy='fifo', motion_limits=None):
     points_map = CONTROL_POINTS if grid is None else grid["control_points"]
     paths = {name: Path(name, tuple(points_map[p] for p in points))
              for name, points in robot_paths.items()}
@@ -52,6 +52,7 @@ def create_controlled_model(robot_paths, *, name="RMFS_WaitDuplication", lift_up
     robots = tuple(MRobot(name, route[0], lift_up=lift_up, rack_size=rack_size,
                           stop_on_collision=stop_on_collision,
                           passage_push=passage_push,
+                          motion_limits=motion_limits,
                           clearance_points=(grid or {}).get('clearance_points', {}).get(name, ()),
                           initial_heading_deg=(initial_headings or {}).get(name),
                           command_coordinates="metres", control_points=points_map)

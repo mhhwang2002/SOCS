@@ -154,7 +154,7 @@ def main(path=PATH, *, name="01_01_RobotPath_Straight", no_rack=False,
          model_factory=None, robot_paths=None, collision_check=False,
          stop_on_collision=True, initial_headings=None, grid=None, hide_robot_names=False,
          hide_motion_labels=False, render_fps=30, hide_point_labels=False,
-         engine_factory=TESEnginBase, argv=None, toggle_passage=None):
+         engine_factory=TESEnginBase, argv=None, toggle_passage=None, toggle_crossing_stops=None):
     control_points = CONTROL_POINTS if grid is None else grid["control_points"]
     segments = SEGMENTS if grid is None else grid["segments"]
     extent = EXTENT if grid is None else grid["extent"]
@@ -551,7 +551,9 @@ def main(path=PATH, *, name="01_01_RobotPath_Straight", no_rack=False,
             self.accept("v",self.toggle_model_style)
             self.accept("r",self.reset)
             if toggle_passage is not None:
-                self.accept('m', self.toggle_passage_mode)
+                self.accept('m', self.restart_with_toggle, [toggle_passage])
+            if toggle_crossing_stops is not None:
+                self.accept('c', self.restart_with_toggle, [toggle_crossing_stops])
             self.accept("u",self.change_speed,[True])
             self.accept("d",self.change_speed,[False])
             self.accept("t",self.camera_view,["top"])
@@ -667,8 +669,8 @@ def main(path=PATH, *, name="01_01_RobotPath_Straight", no_rack=False,
             self.clock_origin = None
             self.draw(0.0)
 
-        def toggle_passage_mode(self):
-            toggle_passage()
+        def restart_with_toggle(self, toggle):
+            toggle()
             self.model, self.robots, self.sensors = create_scene(
                 path, name, not args.no_rack, model_factory,
                 collision_check=args.collision_check,
@@ -720,6 +722,7 @@ def main(path=PATH, *, name="01_01_RobotPath_Straight", no_rack=False,
                     self.route_lines[name] = self.render.attachNewNode(line.create())
             positions = {}
             robot_lines = []
+            departure_holds = getattr(self.model, 'departure_holds', {})
             for robot, sensor in zip(self.robots, self.sensors):
                 position = robot.position_at(time)
                 positions[robot.name] = position
@@ -743,8 +746,12 @@ def main(path=PATH, *, name="01_01_RobotPath_Straight", no_rack=False,
                 else:
                     self.racks[robot.name].hide()
                 if robot.name in self.motion_labels:
-                    self.motion_labels[robot.name].setText(
-                        "W" if robot.phase == "Wait" else "R" if robot.phase == "RotateTo" else "")
+                    hold = departure_holds.get(robot.name)
+                    if hold is not None and hold.phase == 'Holding':
+                        label = f'{max(0., hold.tNext - time):.1f} s'
+                    else:
+                        label = 'W' if robot.phase == 'Wait' else 'R' if robot.phase == 'RotateTo' else ''
+                    self.motion_labels[robot.name].setText(label)
                 robot_lines.append(
                     f"{robot.name} {robot.phase} | {sensor.name} {sensor.phase} | "
                     f"({position[0]:.3f}, {position[1]:.3f}) m | {heading:.1f} deg"
@@ -802,6 +809,9 @@ def main(path=PATH, *, name="01_01_RobotPath_Straight", no_rack=False,
             if toggle_passage is not None:
                 enabled = self.model.controller.traffic_manager.motion_extension
                 passage = f"M = Push/Pull {'YES' if enabled else 'NO'} (restart)\n"
+            if toggle_crossing_stops is not None:
+                allowed = self.model.allow_crossing_stops
+                passage += f"C = Crossing stops {'ALLOWED' if allowed else 'FORBIDDEN'} (restart)\n"
             self.status.setText(
                 f"{mode} | Speed {speed} | View {args.fps} fps\n"
                 "Space = Next event | A = Manual/Auto | R = Reset\n"
