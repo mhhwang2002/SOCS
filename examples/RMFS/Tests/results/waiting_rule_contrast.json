@@ -1,0 +1,638 @@
+[
+  {
+    "case": "waiting_three_rule_contrast",
+    "baseline": {
+      "completed": true,
+      "makespan": 46.49293630524781,
+      "stopped_at": 46.49293630524781,
+      "contacts": 0,
+      "steps": 55,
+      "reason": null,
+      "commands": 10,
+      "wall_seconds": 0.0032150999995792517,
+      "decisions": [],
+      "lookahead_calls": 0,
+      "rollouts": 0,
+      "decision_seconds": 0,
+      "max_decision_seconds": 0,
+      "choice_history": [
+        {
+          "time": 6.246950475544242,
+          "candidates": [
+            "R2",
+            "R3"
+          ],
+          "selected": "R2",
+          "policy": "fifo"
+        }
+      ],
+      "nested_lookahead": false,
+      "rollout_horizon": "system_completion",
+      "rollout_policy": "same_fixed_rule_for_current_and_all_future_contentions",
+      "rollout_rules": [
+        "fifo",
+        "longest_remaining_distance"
+      ]
+    },
+    "lookahead": {
+      "completed": true,
+      "makespan": 34.333255690513546,
+      "stopped_at": 34.333255690513546,
+      "contacts": 0,
+      "steps": 54,
+      "reason": null,
+      "commands": 10,
+      "wall_seconds": 0.009675799999968149,
+      "decisions": [
+        {
+          "time": 6.246950475544242,
+          "candidates": [
+            "R2",
+            "R3"
+          ],
+          "waiting_since": {
+            "R2": 0.0,
+            "R3": 4.417261042993862
+          },
+          "fifo": "R2",
+          "selected": "R3",
+          "selected_rule": "longest_remaining_distance",
+          "differs_from_fifo": true,
+          "capture_seconds": 0.00044499999967229087,
+          "wall_seconds": 0.006580000001122244,
+          "branches": [
+            {
+              "task": 6,
+              "robot": "R2",
+              "rule": "fifo",
+              "subsequent_choices": [],
+              "wall_seconds": 0.0028579999998328276,
+              "completed": true,
+              "makespan": 46.49293630524781,
+              "stopped_at": 46.49293630524781,
+              "contacts": 0,
+              "steps": 46,
+              "reason": null,
+              "commands": 10
+            },
+            {
+              "task": 3,
+              "robot": "R3",
+              "rule": "longest_remaining_distance",
+              "subsequent_choices": [],
+              "wall_seconds": 0.0028359000007185386,
+              "completed": true,
+              "makespan": 34.333255690513546,
+              "stopped_at": 34.333255690513546,
+              "contacts": 0,
+              "steps": 45,
+              "reason": null,
+              "commands": 10
+            }
+          ]
+        }
+      ],
+      "lookahead_calls": 1,
+      "rollouts": 2,
+      "decision_seconds": 0.006580000001122244,
+      "max_decision_seconds": 0.006580000001122244,
+      "choice_history": [
+        {
+          "time": 6.246950475544242,
+          "candidates": [
+            "R2",
+            "R3"
+          ],
+          "selected": "R3",
+          "policy": "lookahead_choice"
+        }
+      ],
+      "nested_lookahead": false,
+      "rollout_horizon": "system_completion",
+      "rollout_policy": "same_fixed_rule_for_current_and_all_future_contentions",
+      "rollout_rules": [
+        "fifo",
+        "longest_remaining_distance"
+      ]
+    },
+    "validation": {
+      "completed": true,
+      "makespan": 34.333255690513546,
+      "stopped_at": 34.333255690513546,
+      "contacts": 0,
+      "steps": 3487,
+      "reason": null,
+      "commands": 10,
+      "wall_seconds": 0.046634500000436674,
+      "decisions": [
+        {
+          "time": 6.246950475544242,
+          "candidates": [
+            "R2",
+            "R3"
+          ],
+          "waiting_since": {
+            "R2": 0.0,
+            "R3": 4.417261042993862
+          },
+          "fifo": "R2",
+          "selected": "R3",
+          "selected_rule": "longest_remaining_distance",
+          "differs_from_fifo": true,
+          "capture_seconds": 0.0004299000011087628,
+          "wall_seconds": 0.006533599998874706,
+          "branches": [
+            {
+              "task": 6,
+              "robot": "R2",
+              "rule": "fifo",
+              "subsequent_choices": [],
+              "wall_seconds": 0.0028032000009261537,
+              "completed": true,
+              "makespan": 46.49293630524781,
+              "stopped_at": 46.49293630524781,
+              "contacts": 0,
+              "steps": 46,
+              "reason": null,
+              "commands": 10
+            },
+            {
+              "task": 3,
+              "robot": "R3",
+              "rule": "longest_remaining_distance",
+              "subsequent_choices": [],
+              "wall_seconds": 0.0028578000001289183,
+              "completed": true,
+              "makespan": 34.333255690513546,
+              "stopped_at": 34.333255690513546,
+              "contacts": 0,
+              "steps": 45,
+              "reason": null,
+              "commands": 10
+            }
+          ]
+        }
+      ],
+      "lookahead_calls": 1,
+      "rollouts": 2,
+      "decision_seconds": 0.006533599998874706,
+      "max_decision_seconds": 0.006533599998874706,
+      "choice_history": [
+        {
+          "time": 6.246950475544242,
+          "candidates": [
+            "R2",
+            "R3"
+          ],
+          "selected": "R3",
+          "policy": "lookahead_choice"
+        }
+      ],
+      "nested_lookahead": false,
+      "rollout_horizon": "system_completion",
+      "rollout_policy": "same_fixed_rule_for_current_and_all_future_contentions",
+      "rollout_rules": [
+        "fifo",
+        "longest_remaining_distance"
+      ]
+    },
+    "baseline_validation": {
+      "completed": true,
+      "makespan": 46.49293630524781,
+      "stopped_at": 46.49293630524781,
+      "contacts": 0,
+      "steps": 4704,
+      "reason": null,
+      "commands": 10,
+      "wall_seconds": 0.0478093000001536,
+      "decisions": [],
+      "lookahead_calls": 0,
+      "rollouts": 0,
+      "decision_seconds": 0,
+      "max_decision_seconds": 0,
+      "choice_history": [
+        {
+          "time": 6.246950475544242,
+          "candidates": [
+            "R2",
+            "R3"
+          ],
+          "selected": "R2",
+          "policy": "fifo"
+        }
+      ],
+      "nested_lookahead": false,
+      "rollout_horizon": "system_completion",
+      "rollout_policy": "same_fixed_rule_for_current_and_all_future_contentions",
+      "rollout_rules": [
+        "fifo",
+        "longest_remaining_distance"
+      ]
+    },
+    "scope": "experimental_uncommitted_priorities_not_production_reference_order",
+    "improvement_percent": 26.15382374410661
+  },
+  {
+    "case": "waiting_six_two_groups",
+    "baseline": {
+      "completed": true,
+      "makespan": 48.49293630524781,
+      "stopped_at": 48.49293630524781,
+      "contacts": 0,
+      "steps": 111,
+      "reason": null,
+      "commands": 20,
+      "wall_seconds": 0.01160859999981767,
+      "decisions": [],
+      "lookahead_calls": 0,
+      "rollouts": 0,
+      "decision_seconds": 0,
+      "max_decision_seconds": 0,
+      "choice_history": [
+        {
+          "time": 6.246950475544242,
+          "candidates": [
+            "R2",
+            "R3"
+          ],
+          "selected": "R2",
+          "policy": "fifo"
+        },
+        {
+          "time": 8.246950475544242,
+          "candidates": [
+            "R5",
+            "R6"
+          ],
+          "selected": "R5",
+          "policy": "fifo"
+        }
+      ],
+      "nested_lookahead": false,
+      "rollout_horizon": "system_completion",
+      "rollout_policy": "same_fixed_rule_for_current_and_all_future_contentions",
+      "rollout_rules": [
+        "fifo",
+        "longest_remaining_distance"
+      ]
+    },
+    "lookahead": {
+      "completed": true,
+      "makespan": 36.333255690513546,
+      "stopped_at": 36.333255690513546,
+      "contacts": 0,
+      "steps": 108,
+      "reason": null,
+      "commands": 20,
+      "wall_seconds": 0.057277899999462534,
+      "decisions": [
+        {
+          "time": 6.246950475544242,
+          "candidates": [
+            "R2",
+            "R3"
+          ],
+          "waiting_since": {
+            "R2": 0.0,
+            "R3": 4.417261042993862
+          },
+          "fifo": "R2",
+          "selected": "R3",
+          "selected_rule": "longest_remaining_distance",
+          "differs_from_fifo": true,
+          "capture_seconds": 0.0008044000005611451,
+          "wall_seconds": 0.02260510000087379,
+          "branches": [
+            {
+              "task": 12,
+              "robot": "R2",
+              "rule": "fifo",
+              "subsequent_choices": [
+                {
+                  "time": 8.246950475544242,
+                  "candidates": [
+                    "R5",
+                    "R6"
+                  ],
+                  "selected": "R5",
+                  "policy": "fifo"
+                }
+              ],
+              "wall_seconds": 0.01014729999951669,
+              "completed": true,
+              "makespan": 48.49293630524781,
+              "stopped_at": 48.49293630524781,
+              "contacts": 0,
+              "steps": 93,
+              "reason": null,
+              "commands": 20
+            },
+            {
+              "task": 6,
+              "robot": "R3",
+              "rule": "longest_remaining_distance",
+              "subsequent_choices": [
+                {
+                  "time": 8.246950475544242,
+                  "candidates": [
+                    "R5",
+                    "R6"
+                  ],
+                  "selected": "R6",
+                  "policy": "longest_remaining_distance"
+                }
+              ],
+              "wall_seconds": 0.010709899999710615,
+              "completed": true,
+              "makespan": 36.333255690513546,
+              "stopped_at": 36.333255690513546,
+              "contacts": 0,
+              "steps": 90,
+              "reason": null,
+              "commands": 20
+            }
+          ]
+        },
+        {
+          "time": 8.246950475544242,
+          "candidates": [
+            "R5",
+            "R6"
+          ],
+          "waiting_since": {
+            "R5": 0.0,
+            "R6": 4.417261042993862
+          },
+          "fifo": "R5",
+          "selected": "R6",
+          "selected_rule": "longest_remaining_distance",
+          "differs_from_fifo": true,
+          "capture_seconds": 0.0009957000002032146,
+          "wall_seconds": 0.022161999999298132,
+          "branches": [
+            {
+              "task": 14,
+              "robot": "R5",
+              "rule": "fifo",
+              "subsequent_choices": [],
+              "wall_seconds": 0.009701099999801954,
+              "completed": true,
+              "makespan": 48.49293630524781,
+              "stopped_at": 48.49293630524781,
+              "contacts": 0,
+              "steps": 86,
+              "reason": null,
+              "commands": 20
+            },
+            {
+              "task": 7,
+              "robot": "R6",
+              "rule": "longest_remaining_distance",
+              "subsequent_choices": [],
+              "wall_seconds": 0.010349100000894396,
+              "completed": true,
+              "makespan": 36.333255690513546,
+              "stopped_at": 36.333255690513546,
+              "contacts": 0,
+              "steps": 84,
+              "reason": null,
+              "commands": 20
+            }
+          ]
+        }
+      ],
+      "lookahead_calls": 2,
+      "rollouts": 4,
+      "decision_seconds": 0.04476710000017192,
+      "max_decision_seconds": 0.02260510000087379,
+      "choice_history": [
+        {
+          "time": 6.246950475544242,
+          "candidates": [
+            "R2",
+            "R3"
+          ],
+          "selected": "R3",
+          "policy": "lookahead_choice"
+        },
+        {
+          "time": 8.246950475544242,
+          "candidates": [
+            "R5",
+            "R6"
+          ],
+          "selected": "R6",
+          "policy": "lookahead_choice"
+        }
+      ],
+      "nested_lookahead": false,
+      "rollout_horizon": "system_completion",
+      "rollout_policy": "same_fixed_rule_for_current_and_all_future_contentions",
+      "rollout_rules": [
+        "fifo",
+        "longest_remaining_distance"
+      ]
+    },
+    "validation": {
+      "completed": true,
+      "makespan": 36.333255690513546,
+      "stopped_at": 36.333255690513546,
+      "contacts": 0,
+      "steps": 3741,
+      "reason": null,
+      "commands": 20,
+      "wall_seconds": 0.12232810000023164,
+      "decisions": [
+        {
+          "time": 6.246950475544242,
+          "candidates": [
+            "R2",
+            "R3"
+          ],
+          "waiting_since": {
+            "R2": 0.0,
+            "R3": 4.417261042993862
+          },
+          "fifo": "R2",
+          "selected": "R3",
+          "selected_rule": "longest_remaining_distance",
+          "differs_from_fifo": true,
+          "capture_seconds": 0.0009415000004082685,
+          "wall_seconds": 0.022688200000629877,
+          "branches": [
+            {
+              "task": 12,
+              "robot": "R2",
+              "rule": "fifo",
+              "subsequent_choices": [
+                {
+                  "time": 8.246950475544242,
+                  "candidates": [
+                    "R5",
+                    "R6"
+                  ],
+                  "selected": "R5",
+                  "policy": "fifo"
+                }
+              ],
+              "wall_seconds": 0.01067979999970703,
+              "completed": true,
+              "makespan": 48.49293630524781,
+              "stopped_at": 48.49293630524781,
+              "contacts": 0,
+              "steps": 93,
+              "reason": null,
+              "commands": 20
+            },
+            {
+              "task": 6,
+              "robot": "R3",
+              "rule": "longest_remaining_distance",
+              "subsequent_choices": [
+                {
+                  "time": 8.246950475544242,
+                  "candidates": [
+                    "R5",
+                    "R6"
+                  ],
+                  "selected": "R6",
+                  "policy": "longest_remaining_distance"
+                }
+              ],
+              "wall_seconds": 0.010233899998638663,
+              "completed": true,
+              "makespan": 36.333255690513546,
+              "stopped_at": 36.333255690513546,
+              "contacts": 0,
+              "steps": 90,
+              "reason": null,
+              "commands": 20
+            }
+          ]
+        },
+        {
+          "time": 8.246950475544242,
+          "candidates": [
+            "R5",
+            "R6"
+          ],
+          "waiting_since": {
+            "R5": 0.0,
+            "R6": 4.417261042993862
+          },
+          "fifo": "R5",
+          "selected": "R6",
+          "selected_rule": "longest_remaining_distance",
+          "differs_from_fifo": true,
+          "capture_seconds": 0.000950100000409293,
+          "wall_seconds": 0.021307200000592275,
+          "branches": [
+            {
+              "task": 14,
+              "robot": "R5",
+              "rule": "fifo",
+              "subsequent_choices": [],
+              "wall_seconds": 0.0092860999993718,
+              "completed": true,
+              "makespan": 48.49293630524781,
+              "stopped_at": 48.49293630524781,
+              "contacts": 0,
+              "steps": 86,
+              "reason": null,
+              "commands": 20
+            },
+            {
+              "task": 7,
+              "robot": "R6",
+              "rule": "longest_remaining_distance",
+              "subsequent_choices": [],
+              "wall_seconds": 0.009957700000086334,
+              "completed": true,
+              "makespan": 36.333255690513546,
+              "stopped_at": 36.333255690513546,
+              "contacts": 0,
+              "steps": 84,
+              "reason": null,
+              "commands": 20
+            }
+          ]
+        }
+      ],
+      "lookahead_calls": 2,
+      "rollouts": 4,
+      "decision_seconds": 0.04399540000122215,
+      "max_decision_seconds": 0.022688200000629877,
+      "choice_history": [
+        {
+          "time": 6.246950475544242,
+          "candidates": [
+            "R2",
+            "R3"
+          ],
+          "selected": "R3",
+          "policy": "lookahead_choice"
+        },
+        {
+          "time": 8.246950475544242,
+          "candidates": [
+            "R5",
+            "R6"
+          ],
+          "selected": "R6",
+          "policy": "lookahead_choice"
+        }
+      ],
+      "nested_lookahead": false,
+      "rollout_horizon": "system_completion",
+      "rollout_policy": "same_fixed_rule_for_current_and_all_future_contentions",
+      "rollout_rules": [
+        "fifo",
+        "longest_remaining_distance"
+      ]
+    },
+    "baseline_validation": {
+      "completed": true,
+      "makespan": 48.49293630524781,
+      "stopped_at": 48.49293630524781,
+      "contacts": 0,
+      "steps": 4960,
+      "reason": null,
+      "commands": 20,
+      "wall_seconds": 0.09503450000011071,
+      "decisions": [],
+      "lookahead_calls": 0,
+      "rollouts": 0,
+      "decision_seconds": 0,
+      "max_decision_seconds": 0,
+      "choice_history": [
+        {
+          "time": 6.246950475544242,
+          "candidates": [
+            "R2",
+            "R3"
+          ],
+          "selected": "R2",
+          "policy": "fifo"
+        },
+        {
+          "time": 8.246950475544242,
+          "candidates": [
+            "R5",
+            "R6"
+          ],
+          "selected": "R5",
+          "policy": "fifo"
+        }
+      ],
+      "nested_lookahead": false,
+      "rollout_horizon": "system_completion",
+      "rollout_policy": "same_fixed_rule_for_current_and_all_future_contentions",
+      "rollout_rules": [
+        "fifo",
+        "longest_remaining_distance"
+      ]
+    },
+    "scope": "experimental_uncommitted_priorities_not_production_reference_order",
+    "improvement_percent": 25.075158448217884
+  }
+]

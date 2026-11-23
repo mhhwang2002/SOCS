@@ -9,8 +9,8 @@ from socs.devs.TESBase import PortValue
 class OrderGenerator(DEVS):
     def __init__(self, order_count=100):
         super().__init__("OrderGenerator")
-        if order_count < 0:
-            raise ValueError("order_count must be nonnegative")
+        if not isinstance(order_count, int) or isinstance(order_count, bool) or order_count < 0:
+            raise ValueError("order_count must be a nonnegative integer")
         self.order_count = order_count
         self.add_output_ports("!orders")
 

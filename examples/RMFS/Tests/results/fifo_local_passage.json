@@ -1,0 +1,1324 @@
+{
+  "triangular_clearance": {
+    "fifo": {
+      "makespan": 15.301841113520119,
+      "wall_seconds": 0.0021613999851979315,
+      "intermediate_stops": 1,
+      "contacts": 0,
+      "checks": [],
+      "branch_wall_seconds": 0,
+      "history": [
+        {
+          "event": "approved",
+          "time": 0.0,
+          "robot": "R1",
+          "command_id": 0,
+          "stage": 2
+        },
+        {
+          "event": "approved",
+          "time": 0.0,
+          "robot": "R2",
+          "command_id": 1,
+          "stage": 1
+        },
+        {
+          "event": "issued",
+          "time": 0.0,
+          "robot": "R1",
+          "command_id": 0,
+          "stage": 2
+        },
+        {
+          "event": "issued",
+          "time": 0.0,
+          "robot": "R2",
+          "command_id": 1,
+          "stage": 1
+        },
+        {
+          "event": "released",
+          "time": 1.9127301391900149,
+          "robot": "R1",
+          "before": "PathPosition(segment=0, ratio=0.0)",
+          "after": "PathPosition(segment=0, ratio=0.125)",
+          "position": [
+            8.0,
+            -2.25
+          ]
+        },
+        {
+          "event": "leaving",
+          "time": 1.9127301391900149,
+          "robot": "R1",
+          "position": [
+            8.0,
+            -2.25
+          ],
+          "stage": 2
+        },
+        {
+          "event": "released",
+          "time": 1.9127301391900149,
+          "robot": "R2",
+          "before": "PathPosition(segment=0, ratio=0.0)",
+          "after": "PathPosition(segment=0, ratio=0.1875)",
+          "position": [
+            0.75,
+            0.0
+          ]
+        },
+        {
+          "event": "leaving",
+          "time": 1.9127301391900149,
+          "robot": "R2",
+          "position": [
+            0.75,
+            0.0
+          ],
+          "stage": 1
+        },
+        {
+          "event": "arrived",
+          "time": 6.246950475544242,
+          "robot": "R2",
+          "command_id": 1,
+          "stage": 1,
+          "position": [
+            4.0,
+            0.0
+          ]
+        },
+        {
+          "event": "arrived",
+          "time": 7.6509205567600596,
+          "robot": "R1",
+          "command_id": 0,
+          "stage": 2,
+          "position": [
+            8.0,
+            3.0
+          ]
+        },
+        {
+          "event": "groups_updated",
+          "time": 7.6509205567600596,
+          "robot": null,
+          "edges": [],
+          "components": [
+            [
+              "R1"
+            ],
+            [
+              "R2"
+            ]
+          ]
+        },
+        {
+          "event": "approved",
+          "time": 7.6509205567600596,
+          "robot": "R2",
+          "command_id": 2,
+          "stage": 3
+        },
+        {
+          "event": "issued",
+          "time": 7.6509205567600596,
+          "robot": "R2",
+          "command_id": 2,
+          "stage": 3
+        },
+        {
+          "event": "released",
+          "time": 9.563650695950074,
+          "robot": "R2",
+          "before": "PathPosition(segment=1, ratio=0.0)",
+          "after": "PathPosition(segment=1, ratio=0.1875)",
+          "position": [
+            4.75,
+            0.0
+          ]
+        },
+        {
+          "event": "leaving",
+          "time": 9.563650695950074,
+          "robot": "R2",
+          "position": [
+            4.75,
+            0.0
+          ],
+          "stage": 3
+        },
+        {
+          "event": "released",
+          "time": 12.832517121896146,
+          "robot": "R2",
+          "before": "PathPosition(segment=1, ratio=0.1875)",
+          "after": "PathPosition(segment=2, ratio=0.375)",
+          "position": [
+            8.75,
+            0.0
+          ]
+        },
+        {
+          "event": "leaving",
+          "time": 12.832517121896146,
+          "robot": "R2",
+          "position": [
+            8.75,
+            0.0
+          ],
+          "stage": 3
+        },
+        {
+          "event": "arrived",
+          "time": 15.301841113520119,
+          "robot": "R2",
+          "command_id": 2,
+          "stage": 3,
+          "position": [
+            10.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    "fifo_local_passage": {
+      "makespan": 9.878048780487804,
+      "wall_seconds": 0.005624600016744807,
+      "intermediate_stops": 0,
+      "contacts": 0,
+      "checks": [
+        {
+          "robot": "R2",
+          "time": 3.0234752377721206,
+          "approved": true,
+          "reason": "target_reached",
+          "events": 78,
+          "wall_seconds": 0.0032349000102840364
+        },
+        {
+          "robot": "R1",
+          "time": 3.7254602783800292,
+          "approved": false,
+          "reason": "no_candidate",
+          "events": 0,
+          "wall_seconds": 6.00004568696022e-07
+        },
+        {
+          "robot": "R2",
+          "time": 4.9,
+          "approved": false,
+          "reason": "no_candidate",
+          "events": 0,
+          "wall_seconds": 4.00003045797348e-07
+        }
+      ],
+      "branch_wall_seconds": 0.0032359000178985298,
+      "history": [
+        {
+          "event": "approved",
+          "time": 0.0,
+          "robot": "R1",
+          "command_id": 0,
+          "stage": 2
+        },
+        {
+          "event": "approved",
+          "time": 0.0,
+          "robot": "R2",
+          "command_id": 1,
+          "stage": 1
+        },
+        {
+          "event": "issued",
+          "time": 0.0,
+          "robot": "R1",
+          "command_id": 0,
+          "stage": 2
+        },
+        {
+          "event": "issued",
+          "time": 0.0,
+          "robot": "R2",
+          "command_id": 1,
+          "stage": 1
+        },
+        {
+          "event": "released",
+          "time": 1.9127301391900149,
+          "robot": "R1",
+          "before": "PathPosition(segment=0, ratio=0.0)",
+          "after": "PathPosition(segment=0, ratio=0.125)",
+          "position": [
+            8.0,
+            -2.25
+          ]
+        },
+        {
+          "event": "leaving",
+          "time": 1.9127301391900149,
+          "robot": "R1",
+          "position": [
+            8.0,
+            -2.25
+          ],
+          "stage": 2
+        },
+        {
+          "event": "released",
+          "time": 1.9127301391900149,
+          "robot": "R2",
+          "before": "PathPosition(segment=0, ratio=0.0)",
+          "after": "PathPosition(segment=0, ratio=0.1875)",
+          "position": [
+            0.75,
+            0.0
+          ]
+        },
+        {
+          "event": "leaving",
+          "time": 1.9127301391900149,
+          "robot": "R2",
+          "position": [
+            0.75,
+            0.0
+          ],
+          "stage": 1
+        },
+        {
+          "event": "passage_requested",
+          "time": 3.0234752377721206,
+          "robot": "R2",
+          "motion_id": 1,
+          "position": [
+            1.8739875152513419,
+            0.0
+          ],
+          "destination": [
+            4.0,
+            0.0
+          ],
+          "effective_at": 3.1234752377721207,
+          "velocity": 1.2396248474865694
+        },
+        {
+          "event": "extension_reserved",
+          "time": 3.0234752377721206,
+          "robot": "R2",
+          "before": "PathPosition(segment=1, ratio=0.0)",
+          "after": "PathPosition(segment=3, ratio=0.0)"
+        },
+        {
+          "event": "passage_requested",
+          "time": 3.7254602783800292,
+          "robot": "R1",
+          "motion_id": 1,
+          "position": [
+            8.0,
+            -0.15479387141358236
+          ],
+          "destination": [
+            8.0,
+            3.0
+          ],
+          "effective_at": 3.8254602783800293,
+          "velocity": 1.527438714135812
+        },
+        {
+          "event": "passage_denied",
+          "time": 3.7254602783800292,
+          "robot": "R1"
+        },
+        {
+          "event": "released",
+          "time": 4.81359862341233,
+          "robot": "R2",
+          "before": "PathPosition(segment=0, ratio=0.1875)",
+          "after": "PathPosition(segment=1, ratio=0.1875)",
+          "position": [
+            4.75,
+            0.0
+          ]
+        },
+        {
+          "event": "leaving",
+          "time": 4.81359862341233,
+          "robot": "R2",
+          "position": [
+            4.75,
+            0.0
+          ],
+          "stage": 1
+        },
+        {
+          "event": "passage_requested",
+          "time": 4.9,
+          "robot": "R2",
+          "motion_id": 2,
+          "position": [
+            4.921951219512196,
+            0.0
+          ],
+          "destination": [
+            10.0,
+            0.0
+          ],
+          "effective_at": 5.0,
+          "velocity": 2.0
+        },
+        {
+          "event": "passage_denied",
+          "time": 4.9,
+          "robot": "R2"
+        },
+        {
+          "event": "released",
+          "time": 7.408724788863831,
+          "robot": "R2",
+          "before": "PathPosition(segment=1, ratio=0.1875)",
+          "after": "PathPosition(segment=2, ratio=0.375)",
+          "position": [
+            8.75,
+            0.0
+          ]
+        },
+        {
+          "event": "leaving",
+          "time": 7.408724788863831,
+          "robot": "R2",
+          "position": [
+            8.75,
+            0.0
+          ],
+          "stage": 1
+        },
+        {
+          "event": "arrived",
+          "time": 7.6509205567600596,
+          "robot": "R1",
+          "command_id": 0,
+          "stage": 2,
+          "position": [
+            8.0,
+            3.0
+          ]
+        },
+        {
+          "event": "groups_updated",
+          "time": 7.6509205567600596,
+          "robot": null,
+          "edges": [],
+          "components": [
+            [
+              "R1"
+            ],
+            [
+              "R2"
+            ]
+          ]
+        },
+        {
+          "event": "arrived",
+          "time": 9.878048780487804,
+          "robot": "R2",
+          "command_id": 1,
+          "stage": 1,
+          "position": [
+            10.0,
+            0.0
+          ]
+        }
+      ]
+    }
+  },
+  "cruise_clearance": {
+    "fifo": {
+      "makespan": 21.71257086647553,
+      "wall_seconds": 0.002776700013782829,
+      "intermediate_stops": 1,
+      "contacts": 0,
+      "checks": [],
+      "branch_wall_seconds": 0,
+      "history": [
+        {
+          "event": "approved",
+          "time": 0.0,
+          "robot": "R1",
+          "command_id": 0,
+          "stage": 2
+        },
+        {
+          "event": "approved",
+          "time": 0.0,
+          "robot": "R2",
+          "command_id": 1,
+          "stage": 1
+        },
+        {
+          "event": "issued",
+          "time": 0.0,
+          "robot": "R1",
+          "command_id": 0,
+          "stage": 2
+        },
+        {
+          "event": "issued",
+          "time": 0.0,
+          "robot": "R2",
+          "command_id": 1,
+          "stage": 1
+        },
+        {
+          "event": "released",
+          "time": 1.9127301391900149,
+          "robot": "R2",
+          "before": "PathPosition(segment=0, ratio=0.0)",
+          "after": "PathPosition(segment=0, ratio=0.046875)",
+          "position": [
+            0.75,
+            0.0
+          ]
+        },
+        {
+          "event": "leaving",
+          "time": 1.9127301391900149,
+          "robot": "R2",
+          "position": [
+            0.75,
+            0.0
+          ],
+          "stage": 1
+        },
+        {
+          "event": "released",
+          "time": 1.9127301391900149,
+          "robot": "R1",
+          "before": "PathPosition(segment=0, ratio=0.0)",
+          "after": "PathPosition(segment=0, ratio=0.0625)",
+          "position": [
+            20.0,
+            -5.25
+          ]
+        },
+        {
+          "event": "leaving",
+          "time": 1.9127301391900149,
+          "robot": "R1",
+          "position": [
+            20.0,
+            -5.25
+          ],
+          "stage": 2
+        },
+        {
+          "event": "arrived",
+          "time": 10.878048780487806,
+          "robot": "R1",
+          "command_id": 0,
+          "stage": 2,
+          "position": [
+            20.0,
+            6.0
+          ]
+        },
+        {
+          "event": "groups_updated",
+          "time": 10.878048780487806,
+          "robot": null,
+          "edges": [],
+          "components": [
+            [
+              "R1"
+            ],
+            [
+              "R2"
+            ]
+          ]
+        },
+        {
+          "event": "arrived",
+          "time": 12.878048780487806,
+          "robot": "R2",
+          "command_id": 1,
+          "stage": 1,
+          "position": [
+            16.0,
+            0.0
+          ]
+        },
+        {
+          "event": "approved",
+          "time": 12.878048780487806,
+          "robot": "R2",
+          "command_id": 2,
+          "stage": 3
+        },
+        {
+          "event": "issued",
+          "time": 12.878048780487806,
+          "robot": "R2",
+          "command_id": 2,
+          "stage": 3
+        },
+        {
+          "event": "released",
+          "time": 14.79077891967782,
+          "robot": "R2",
+          "before": "PathPosition(segment=1, ratio=0.0)",
+          "after": "PathPosition(segment=1, ratio=0.1875)",
+          "position": [
+            16.75,
+            0.0
+          ]
+        },
+        {
+          "event": "leaving",
+          "time": 14.79077891967782,
+          "robot": "R2",
+          "position": [
+            16.75,
+            0.0
+          ],
+          "stage": 3
+        },
+        {
+          "event": "released",
+          "time": 17.73090556956955,
+          "robot": "R2",
+          "before": "PathPosition(segment=1, ratio=0.1875)",
+          "after": "PathPosition(segment=2, ratio=0.1875)",
+          "position": [
+            20.75,
+            0.0
+          ]
+        },
+        {
+          "event": "leaving",
+          "time": 17.73090556956955,
+          "robot": "R2",
+          "position": [
+            20.75,
+            0.0
+          ],
+          "stage": 3
+        },
+        {
+          "event": "arrived",
+          "time": 21.71257086647553,
+          "robot": "R2",
+          "command_id": 2,
+          "stage": 3,
+          "position": [
+            24.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    "fifo_local_passage": {
+      "makespan": 16.878048780487806,
+      "wall_seconds": 0.007154999999329448,
+      "intermediate_stops": 0,
+      "contacts": 0,
+      "checks": [
+        {
+          "robot": "R1",
+          "time": 5.900000000000001,
+          "approved": false,
+          "reason": "no_candidate",
+          "events": 0,
+          "wall_seconds": 3.00002284348011e-07
+        },
+        {
+          "robot": "R2",
+          "time": 7.9,
+          "approved": true,
+          "reason": "target_reached",
+          "events": 98,
+          "wall_seconds": 0.0036211999831721187
+        },
+        {
+          "robot": "R2",
+          "time": 11.9,
+          "approved": false,
+          "reason": "no_candidate",
+          "events": 0,
+          "wall_seconds": 3.00002284348011e-07
+        }
+      ],
+      "branch_wall_seconds": 0.0036217999877408147,
+      "history": [
+        {
+          "event": "approved",
+          "time": 0.0,
+          "robot": "R1",
+          "command_id": 0,
+          "stage": 2
+        },
+        {
+          "event": "approved",
+          "time": 0.0,
+          "robot": "R2",
+          "command_id": 1,
+          "stage": 1
+        },
+        {
+          "event": "issued",
+          "time": 0.0,
+          "robot": "R1",
+          "command_id": 0,
+          "stage": 2
+        },
+        {
+          "event": "issued",
+          "time": 0.0,
+          "robot": "R2",
+          "command_id": 1,
+          "stage": 1
+        },
+        {
+          "event": "released",
+          "time": 1.9127301391900149,
+          "robot": "R1",
+          "before": "PathPosition(segment=0, ratio=0.0)",
+          "after": "PathPosition(segment=0, ratio=0.0625)",
+          "position": [
+            20.0,
+            -5.25
+          ]
+        },
+        {
+          "event": "leaving",
+          "time": 1.9127301391900149,
+          "robot": "R1",
+          "position": [
+            20.0,
+            -5.25
+          ],
+          "stage": 2
+        },
+        {
+          "event": "released",
+          "time": 1.9127301391900149,
+          "robot": "R2",
+          "before": "PathPosition(segment=0, ratio=0.0)",
+          "after": "PathPosition(segment=0, ratio=0.046875)",
+          "position": [
+            0.75,
+            0.0
+          ]
+        },
+        {
+          "event": "leaving",
+          "time": 1.9127301391900149,
+          "robot": "R2",
+          "position": [
+            0.75,
+            0.0
+          ],
+          "stage": 1
+        },
+        {
+          "event": "passage_requested",
+          "time": 5.900000000000001,
+          "robot": "R1",
+          "motion_id": 1,
+          "position": [
+            20.0,
+            0.9219512195121977
+          ],
+          "destination": [
+            20.0,
+            6.0
+          ],
+          "effective_at": 6.000000000000001,
+          "velocity": 2.0
+        },
+        {
+          "event": "passage_denied",
+          "time": 5.900000000000001,
+          "robot": "R1"
+        },
+        {
+          "event": "passage_requested",
+          "time": 7.9,
+          "robot": "R2",
+          "motion_id": 1,
+          "position": [
+            10.921951219512195,
+            0.0
+          ],
+          "destination": [
+            16.0,
+            0.0
+          ],
+          "effective_at": 8.0,
+          "velocity": 2.0
+        },
+        {
+          "event": "extension_reserved",
+          "time": 7.9,
+          "robot": "R2",
+          "before": "PathPosition(segment=1, ratio=0.0)",
+          "after": "PathPosition(segment=3, ratio=0.0)"
+        },
+        {
+          "event": "released",
+          "time": 10.814024390243903,
+          "robot": "R2",
+          "before": "PathPosition(segment=0, ratio=0.046875)",
+          "after": "PathPosition(segment=1, ratio=0.1875)",
+          "position": [
+            16.75,
+            0.0
+          ]
+        },
+        {
+          "event": "leaving",
+          "time": 10.814024390243903,
+          "robot": "R2",
+          "position": [
+            16.75,
+            0.0
+          ],
+          "stage": 1
+        },
+        {
+          "event": "arrived",
+          "time": 10.878048780487806,
+          "robot": "R1",
+          "command_id": 0,
+          "stage": 2,
+          "position": [
+            20.0,
+            6.0
+          ]
+        },
+        {
+          "event": "groups_updated",
+          "time": 10.878048780487806,
+          "robot": null,
+          "edges": [],
+          "components": [
+            [
+              "R1"
+            ],
+            [
+              "R2"
+            ]
+          ]
+        },
+        {
+          "event": "passage_requested",
+          "time": 11.9,
+          "robot": "R2",
+          "motion_id": 2,
+          "position": [
+            18.921951219512195,
+            0.0
+          ],
+          "destination": [
+            24.0,
+            0.0
+          ],
+          "effective_at": 12.0,
+          "velocity": 2.0
+        },
+        {
+          "event": "passage_denied",
+          "time": 11.9,
+          "robot": "R2"
+        },
+        {
+          "event": "released",
+          "time": 12.896383483581829,
+          "robot": "R2",
+          "before": "PathPosition(segment=1, ratio=0.1875)",
+          "after": "PathPosition(segment=2, ratio=0.1875)",
+          "position": [
+            20.75,
+            0.0
+          ]
+        },
+        {
+          "event": "leaving",
+          "time": 12.896383483581829,
+          "robot": "R2",
+          "position": [
+            20.75,
+            0.0
+          ],
+          "stage": 1
+        },
+        {
+          "event": "arrived",
+          "time": 16.878048780487806,
+          "robot": "R2",
+          "command_id": 1,
+          "stage": 1,
+          "position": [
+            24.0,
+            0.0
+          ]
+        }
+      ]
+    }
+  },
+  "must_brake": {
+    "fifo": {
+      "makespan": 20.528969337247865,
+      "wall_seconds": 0.002739299990935251,
+      "intermediate_stops": 1,
+      "contacts": 0,
+      "checks": [],
+      "branch_wall_seconds": 0,
+      "history": [
+        {
+          "event": "approved",
+          "time": 0.0,
+          "robot": "R1",
+          "command_id": 0,
+          "stage": 2
+        },
+        {
+          "event": "approved",
+          "time": 0.0,
+          "robot": "R2",
+          "command_id": 1,
+          "stage": 1
+        },
+        {
+          "event": "issued",
+          "time": 0.0,
+          "robot": "R1",
+          "command_id": 0,
+          "stage": 2
+        },
+        {
+          "event": "issued",
+          "time": 0.0,
+          "robot": "R2",
+          "command_id": 1,
+          "stage": 1
+        },
+        {
+          "event": "released",
+          "time": 1.9127301391900149,
+          "robot": "R2",
+          "before": "PathPosition(segment=0, ratio=0.0)",
+          "after": "PathPosition(segment=0, ratio=0.1875)",
+          "position": [
+            0.75,
+            0.0
+          ]
+        },
+        {
+          "event": "leaving",
+          "time": 1.9127301391900149,
+          "robot": "R2",
+          "position": [
+            0.75,
+            0.0
+          ],
+          "stage": 1
+        },
+        {
+          "event": "released",
+          "time": 1.9127301391900149,
+          "robot": "R1",
+          "before": "PathPosition(segment=0, ratio=0.0)",
+          "after": "PathPosition(segment=0, ratio=0.046875)",
+          "position": [
+            8.0,
+            -7.25
+          ]
+        },
+        {
+          "event": "leaving",
+          "time": 1.9127301391900149,
+          "robot": "R1",
+          "position": [
+            8.0,
+            -7.25
+          ],
+          "stage": 2
+        },
+        {
+          "event": "arrived",
+          "time": 6.246950475544242,
+          "robot": "R2",
+          "command_id": 1,
+          "stage": 1,
+          "position": [
+            4.0,
+            0.0
+          ]
+        },
+        {
+          "event": "arrived",
+          "time": 12.878048780487806,
+          "robot": "R1",
+          "command_id": 0,
+          "stage": 2,
+          "position": [
+            8.0,
+            8.0
+          ]
+        },
+        {
+          "event": "groups_updated",
+          "time": 12.878048780487806,
+          "robot": null,
+          "edges": [],
+          "components": [
+            [
+              "R1"
+            ],
+            [
+              "R2"
+            ]
+          ]
+        },
+        {
+          "event": "approved",
+          "time": 12.878048780487806,
+          "robot": "R2",
+          "command_id": 2,
+          "stage": 3
+        },
+        {
+          "event": "issued",
+          "time": 12.878048780487806,
+          "robot": "R2",
+          "command_id": 2,
+          "stage": 3
+        },
+        {
+          "event": "released",
+          "time": 14.79077891967782,
+          "robot": "R2",
+          "before": "PathPosition(segment=1, ratio=0.0)",
+          "after": "PathPosition(segment=1, ratio=0.1875)",
+          "position": [
+            4.75,
+            0.0
+          ]
+        },
+        {
+          "event": "leaving",
+          "time": 14.79077891967782,
+          "robot": "R2",
+          "position": [
+            4.75,
+            0.0
+          ],
+          "stage": 3
+        },
+        {
+          "event": "released",
+          "time": 18.059645345623892,
+          "robot": "R2",
+          "before": "PathPosition(segment=1, ratio=0.1875)",
+          "after": "PathPosition(segment=2, ratio=0.375)",
+          "position": [
+            8.75,
+            0.0
+          ]
+        },
+        {
+          "event": "leaving",
+          "time": 18.059645345623892,
+          "robot": "R2",
+          "position": [
+            8.75,
+            0.0
+          ],
+          "stage": 3
+        },
+        {
+          "event": "arrived",
+          "time": 20.528969337247865,
+          "robot": "R2",
+          "command_id": 2,
+          "stage": 3,
+          "position": [
+            10.0,
+            0.0
+          ]
+        }
+      ]
+    },
+    "fifo_local_passage": {
+      "makespan": 20.528969337247865,
+      "wall_seconds": 0.0050885999808087945,
+      "intermediate_stops": 1,
+      "contacts": 0,
+      "checks": [
+        {
+          "robot": "R2",
+          "time": 3.0234752377721206,
+          "approved": false,
+          "reason": "collision",
+          "events": 33,
+          "wall_seconds": 0.002311500022187829
+        },
+        {
+          "robot": "R1",
+          "time": 7.9,
+          "approved": false,
+          "reason": "no_candidate",
+          "events": 0,
+          "wall_seconds": 3.00002284348011e-07
+        },
+        {
+          "robot": "R2",
+          "time": 16.603509058867832,
+          "approved": false,
+          "reason": "no_candidate",
+          "events": 0,
+          "wall_seconds": 3.00002284348011e-07
+        }
+      ],
+      "branch_wall_seconds": 0.002312100026756525,
+      "history": [
+        {
+          "event": "approved",
+          "time": 0.0,
+          "robot": "R1",
+          "command_id": 0,
+          "stage": 2
+        },
+        {
+          "event": "approved",
+          "time": 0.0,
+          "robot": "R2",
+          "command_id": 1,
+          "stage": 1
+        },
+        {
+          "event": "issued",
+          "time": 0.0,
+          "robot": "R1",
+          "command_id": 0,
+          "stage": 2
+        },
+        {
+          "event": "issued",
+          "time": 0.0,
+          "robot": "R2",
+          "command_id": 1,
+          "stage": 1
+        },
+        {
+          "event": "released",
+          "time": 1.9127301391900149,
+          "robot": "R1",
+          "before": "PathPosition(segment=0, ratio=0.0)",
+          "after": "PathPosition(segment=0, ratio=0.046875)",
+          "position": [
+            8.0,
+            -7.25
+          ]
+        },
+        {
+          "event": "leaving",
+          "time": 1.9127301391900149,
+          "robot": "R1",
+          "position": [
+            8.0,
+            -7.25
+          ],
+          "stage": 2
+        },
+        {
+          "event": "released",
+          "time": 1.9127301391900149,
+          "robot": "R2",
+          "before": "PathPosition(segment=0, ratio=0.0)",
+          "after": "PathPosition(segment=0, ratio=0.1875)",
+          "position": [
+            0.75,
+            0.0
+          ]
+        },
+        {
+          "event": "leaving",
+          "time": 1.9127301391900149,
+          "robot": "R2",
+          "position": [
+            0.75,
+            0.0
+          ],
+          "stage": 1
+        },
+        {
+          "event": "passage_requested",
+          "time": 3.0234752377721206,
+          "robot": "R2",
+          "motion_id": 1,
+          "position": [
+            1.8739875152513419,
+            0.0
+          ],
+          "destination": [
+            4.0,
+            0.0
+          ],
+          "effective_at": 3.1234752377721207,
+          "velocity": 1.2396248474865694
+        },
+        {
+          "event": "passage_denied",
+          "time": 3.0234752377721206,
+          "robot": "R2"
+        },
+        {
+          "event": "arrived",
+          "time": 6.246950475544242,
+          "robot": "R2",
+          "command_id": 1,
+          "stage": 1,
+          "position": [
+            4.0,
+            0.0
+          ]
+        },
+        {
+          "event": "passage_requested",
+          "time": 7.9,
+          "robot": "R1",
+          "motion_id": 1,
+          "position": [
+            8.0,
+            2.921951219512195
+          ],
+          "destination": [
+            8.0,
+            8.0
+          ],
+          "effective_at": 8.0,
+          "velocity": 2.0
+        },
+        {
+          "event": "passage_denied",
+          "time": 7.9,
+          "robot": "R1"
+        },
+        {
+          "event": "arrived",
+          "time": 12.878048780487806,
+          "robot": "R1",
+          "command_id": 0,
+          "stage": 2,
+          "position": [
+            8.0,
+            8.0
+          ]
+        },
+        {
+          "event": "groups_updated",
+          "time": 12.878048780487806,
+          "robot": null,
+          "edges": [],
+          "components": [
+            [
+              "R1"
+            ],
+            [
+              "R2"
+            ]
+          ]
+        },
+        {
+          "event": "approved",
+          "time": 12.878048780487806,
+          "robot": "R2",
+          "command_id": 2,
+          "stage": 3
+        },
+        {
+          "event": "issued",
+          "time": 12.878048780487806,
+          "robot": "R2",
+          "command_id": 2,
+          "stage": 3
+        },
+        {
+          "event": "released",
+          "time": 14.79077891967782,
+          "robot": "R2",
+          "before": "PathPosition(segment=1, ratio=0.0)",
+          "after": "PathPosition(segment=1, ratio=0.1875)",
+          "position": [
+            4.75,
+            0.0
+          ]
+        },
+        {
+          "event": "leaving",
+          "time": 14.79077891967782,
+          "robot": "R2",
+          "position": [
+            4.75,
+            0.0
+          ],
+          "stage": 3
+        },
+        {
+          "event": "passage_requested",
+          "time": 16.603509058867832,
+          "robot": "R2",
+          "motion_id": 2,
+          "position": [
+            6.845206128586414,
+            0.0
+          ],
+          "destination": [
+            10.0,
+            0.0
+          ],
+          "effective_at": 16.703509058867834,
+          "velocity": 1.5274387141358108
+        },
+        {
+          "event": "passage_denied",
+          "time": 16.603509058867832,
+          "robot": "R2"
+        },
+        {
+          "event": "released",
+          "time": 18.059645345623892,
+          "robot": "R2",
+          "before": "PathPosition(segment=1, ratio=0.1875)",
+          "after": "PathPosition(segment=2, ratio=0.375)",
+          "position": [
+            8.75,
+            0.0
+          ]
+        },
+        {
+          "event": "leaving",
+          "time": 18.059645345623892,
+          "robot": "R2",
+          "position": [
+            8.75,
+            0.0
+          ],
+          "stage": 3
+        },
+        {
+          "event": "arrived",
+          "time": 20.528969337247865,
+          "robot": "R2",
+          "command_id": 2,
+          "stage": 3,
+          "position": [
+            10.0,
+            0.0
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "date": "2026-11-21",
+  "downloaded_primary_papers": [
+    {
+      "file": "CCBS_2019.pdf",
+      "url": "https://ijcai.org/proceedings/2019/0006.pdf",
+      "pages": 7,
+      "sha256": "3d3897303877298d3f87c1a8fe0ee56704a9f3ddfbe8ffd0509b4d6a34841835",
+      "reading_scope": "Relevant formulation, algorithm and guarantee sections; not independent proof verification."
+    },
+    {
+      "file": "TP_SIPPwRT_2019.pdf",
+      "url": "https://arxiv.org/pdf/1812.06355",
+      "pages": 9,
+      "sha256": "9dc96a2d72fb6ab609c596b5903646722525a5615bcd99ee0cb5e103f70de451",
+      "reading_scope": "Relevant formulation, algorithm and guarantee sections; not independent proof verification."
+    },
+    {
+      "file": "RHCR_2021.pdf",
+      "url": "https://jiaoyangli.me/files/2021-AAAI-2.pdf",
+      "pages": 10,
+      "sha256": "ecd92f2725a9f7fcaa341f5b46fbbfea8eaa8ff16d235e334a09aa329ff10527",
+      "reading_scope": "Relevant formulation, algorithm and guarantee sections; not independent proof verification."
+    },
+    {
+      "file": "SIPP_IP_2023.pdf",
+      "url": "https://arxiv.org/pdf/2302.00776",
+      "pages": 10,
+      "sha256": "8cf562e88feab9506cf086694330769dd96b071b51fc0ec031e432c8862ddc14",
+      "reading_scope": "Relevant formulation, algorithm and guarantee sections; not independent proof verification."
+    },
+    {
+      "file": "CBS_AA_2026.pdf",
+      "url": "https://arxiv.org/pdf/2603.18866",
+      "pages": 9,
+      "sha256": "4dc0b86da4ac2288c4cbb6b043bf85500c8bd520a599ca478a9f641f0872ea9a",
+      "reading_scope": "Relevant formulation, algorithm and guarantee sections; not independent proof verification."
+    },
+    {
+      "file": "MAPF_POST_2016.pdf",
+      "url": "https://whoenig.github.io/publications/2016_ICAPS_Hoenig.pdf",
+      "pages": 9,
+      "sha256": "20ddad10dcbce7053c4fbaaffbb214273755c44235be4a5829e0533de22b4eaf",
+      "reading_scope": "Relevant formulation, algorithm and guarantee sections; not independent proof verification."
+    },
+    {
+      "file": "OC_CBS_2026.pdf",
+      "url": "https://arxiv.org/pdf/2508.16410v3",
+      "pages": 41,
+      "sha256": "c2fac50a1909e08c8d330a88731a209d92931c1464b925705a49e677a036f53a",
+      "reading_scope": "Relevant formulation, algorithm and guarantee sections; not independent proof verification."
+    },
+    {
+      "file": "Revisiting_CCBS_2026.pdf",
+      "url": "https://arxiv.org/pdf/2501.07744v4",
+      "pages": 19,
+      "sha256": "58b488cf9a4e24b852c78b8abd4fe539cf200cfa86ad67b94dc7bd0afaf9aee0",
+      "reading_scope": "Relevant formulation, algorithm and guarantee sections; not independent proof verification."
+    }
+  ],
+  "partial_sources": [
+    {
+      "title": "PSIPP/CTC",
+      "url": "https://omron-sinicx.github.io/PSIPP-CTC/",
+      "scope": "Author project and publisher metadata; full paper not inspected"
+    }
+  ],
+  "failed_downloads": [
+    {
+      "title": "CBS journal 2015",
+      "url": "https://webdocs.cs.ualberta.ca/~nathanst/papers/sharon2015cbsjournal.pdf",
+      "reason": "404; not counted as read"
+    }
+  ]
+}

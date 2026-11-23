@@ -1,0 +1,24 @@
+[
+  {
+    "example": "02_10_RobotPath_AlternatingProgress",
+    "robots": 2,
+    "makespan": 23.498733604525825,
+    "commands": 4,
+    "source_stages": 11,
+    "contacts": 0,
+    "completed": true,
+    "collision_interval": 0.01,
+    "stop_on_collision": true
+  },
+  {
+    "example": "03_04_RobotPath_SweepInterference",
+    "robots": 3,
+    "makespan": 25.498733604525825,
+    "commands": 6,
+    "source_stages": 11,
+    "contacts": 0,
+    "completed": true,
+    "collision_interval": 0.01,
+    "stop_on_collision": true
+  }
+]

@@ -1,0 +1,1622 @@
+{
+  "baseline": "first_valid_tuple_without_makespan_comparison",
+  "treatment": "best_evaluated_tuple_including_baseline",
+  "results": [
+    {
+      "example": "02_01_RobotPath_Crossing_NoControl",
+      "robots": 2,
+      "status": "completed",
+      "candidate_budget": 12,
+      "branches": 4,
+      "candidates_audit": {
+        "attempted": 6,
+        "rejected": 0,
+        "duplicates": 3
+      },
+      "generation_seconds": 0.003403000000616885,
+      "baseline_makespan": 13.897871032304302,
+      "lookahead_makespan": 12.832517121896146,
+      "improvement_percent": 7.66559070761155,
+      "selected": "dag_ready_order:R1,R2",
+      "selected_index": 1,
+      "evaluation_seconds": 0.006109699996159179,
+      "baseline_evaluation_seconds": 0.0015365999988716794,
+      "baseline_construction_seconds": 0.0003616999983933056,
+      "total_seconds": 0.039586000000781496,
+      "results": [
+        {
+          "candidate": "first_valid",
+          "plan_hash": "ebd163692a60864be9226ddbf39383fa82e08ff1032bd9a7e938a26ac3ab29b9",
+          "evaluation_seconds": 0.0015365999988716794,
+          "completed": true,
+          "reason": null,
+          "makespan": 13.897871032304302,
+          "steps": 17,
+          "commands": 3,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R1,R2",
+          "plan_hash": "af941b68af3b3579fde036bb887fc14d2c83a1d3c9f5451389f9d5ef5067d4d8",
+          "evaluation_seconds": 0.0014777999986108625,
+          "completed": true,
+          "reason": null,
+          "makespan": 12.832517121896146,
+          "steps": 16,
+          "commands": 2,
+          "contacts": 0
+        },
+        {
+          "candidate": "bfs_tie_order:R2,R1",
+          "plan_hash": "03de4869eb66809cf12556fa6c784ddf9543cc0a00e35ceb4258e32c6bb9c15c",
+          "evaluation_seconds": 0.0016244999987975461,
+          "completed": true,
+          "reason": null,
+          "makespan": 13.897871032304302,
+          "steps": 17,
+          "commands": 3,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R2,R1",
+          "plan_hash": "b98d1974f750fc2cc7fe28e1b195cb353a17cc8a6a65be7dab5df6f3fb8e0b37",
+          "evaluation_seconds": 0.001470799999879091,
+          "completed": true,
+          "reason": null,
+          "makespan": 12.832517121896146,
+          "steps": 16,
+          "commands": 2,
+          "contacts": 0
+        }
+      ],
+      "validations": {
+        "0": {
+          "completed": true,
+          "reason": null,
+          "makespan": 13.897871032304302,
+          "steps": 1406,
+          "commands": 3,
+          "contacts": 0
+        },
+        "1": {
+          "completed": true,
+          "reason": null,
+          "makespan": 12.832517121896146,
+          "steps": 1299,
+          "commands": 2,
+          "contacts": 0
+        }
+      },
+      "merge_sweeps": true,
+      "event_release": true,
+      "collision_interval": 0.01,
+      "stop_on_collision": true,
+      "initial_snapshot_time": 0,
+      "paths_changed": false,
+      "scope": "initial_snapshot_best_of_generated_validated_tuples"
+    },
+    {
+      "example": "02_02_RobotPath_LeftEdge_NoControl",
+      "robots": 2,
+      "status": "completed",
+      "candidate_budget": 12,
+      "branches": 2,
+      "candidates_audit": {
+        "attempted": 6,
+        "rejected": 1,
+        "duplicates": 4
+      },
+      "generation_seconds": 0.0035658000015246216,
+      "baseline_makespan": 10.664211518538103,
+      "lookahead_makespan": 10.664211518538103,
+      "improvement_percent": 0.0,
+      "selected": "first_valid",
+      "selected_index": 0,
+      "evaluation_seconds": 0.003942299999835086,
+      "baseline_evaluation_seconds": 0.0017296000005444512,
+      "baseline_construction_seconds": 0.0003560999994078884,
+      "total_seconds": 0.025410099999135127,
+      "results": [
+        {
+          "candidate": "first_valid",
+          "plan_hash": "d284b38e4c96d8f06d216a988ddffdadfbb675f955d0de4029be753ac5984a52",
+          "evaluation_seconds": 0.0017296000005444512,
+          "completed": true,
+          "reason": null,
+          "makespan": 10.664211518538103,
+          "steps": 18,
+          "commands": 4,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R1,R2",
+          "plan_hash": "bdba45df487d187db22db691f39c1905d1725bc4b32f9516972049898c2b45a7",
+          "evaluation_seconds": 0.002212699999290635,
+          "completed": true,
+          "reason": null,
+          "makespan": 10.664211518538103,
+          "steps": 17,
+          "commands": 3,
+          "contacts": 0
+        }
+      ],
+      "validations": {
+        "0": {
+          "completed": true,
+          "reason": null,
+          "makespan": 10.664211518538103,
+          "steps": 1085,
+          "commands": 4,
+          "contacts": 0
+        }
+      },
+      "merge_sweeps": true,
+      "event_release": true,
+      "collision_interval": 0.01,
+      "stop_on_collision": true,
+      "initial_snapshot_time": 0,
+      "paths_changed": false,
+      "scope": "initial_snapshot_best_of_generated_validated_tuples"
+    },
+    {
+      "example": "02_03_RobotPath_SameDirection_Collision",
+      "robots": 2,
+      "status": "completed",
+      "candidate_budget": 12,
+      "branches": 3,
+      "candidates_audit": {
+        "attempted": 6,
+        "rejected": 0,
+        "duplicates": 4
+      },
+      "generation_seconds": 0.004778900000019348,
+      "baseline_makespan": 23.498733604525828,
+      "lookahead_makespan": 23.498733604525828,
+      "improvement_percent": 0.0,
+      "selected": "first_valid",
+      "selected_index": 0,
+      "evaluation_seconds": 0.007122400000298512,
+      "baseline_evaluation_seconds": 0.002452400000038324,
+      "baseline_construction_seconds": 0.0005008999996789498,
+      "total_seconds": 0.03846519999933662,
+      "results": [
+        {
+          "candidate": "first_valid",
+          "plan_hash": "3e7e50224c160668a7a677e2bae09c268e51f1d4006f1663f8d80ad659e27b8e",
+          "evaluation_seconds": 0.002452400000038324,
+          "completed": true,
+          "reason": null,
+          "makespan": 23.498733604525828,
+          "steps": 30,
+          "commands": 5,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R1,R2",
+          "plan_hash": "b8a994df270c875ad9c13605f6783d6f22058c0a378120dda681b03ee3ab8ac8",
+          "evaluation_seconds": 0.002384100000199396,
+          "completed": true,
+          "reason": null,
+          "makespan": 30.68033016966191,
+          "steps": 28,
+          "commands": 3,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R2,R1",
+          "plan_hash": "8e3ef0ad91d2e55925701537e8098042a3e4e7eaa4a245f7e57ee2d019009467",
+          "evaluation_seconds": 0.002285900000060792,
+          "completed": true,
+          "reason": null,
+          "makespan": 27.411463743715842,
+          "steps": 29,
+          "commands": 4,
+          "contacts": 0
+        }
+      ],
+      "validations": {
+        "0": {
+          "completed": true,
+          "reason": null,
+          "makespan": 23.498733604525828,
+          "steps": 2379,
+          "commands": 5,
+          "contacts": 0
+        }
+      },
+      "merge_sweeps": true,
+      "event_release": true,
+      "collision_interval": 0.01,
+      "stop_on_collision": true,
+      "initial_snapshot_time": 0,
+      "paths_changed": false,
+      "scope": "initial_snapshot_best_of_generated_validated_tuples"
+    },
+    {
+      "example": "02_04_RobotPath_SameDirection_Clear",
+      "robots": 2,
+      "status": "completed",
+      "candidate_budget": 12,
+      "branches": 2,
+      "candidates_audit": {
+        "attempted": 6,
+        "rejected": 1,
+        "duplicates": 4
+      },
+      "generation_seconds": 0.0031517999996140134,
+      "baseline_makespan": 23.498733604525828,
+      "lookahead_makespan": 23.498733604525828,
+      "improvement_percent": 0.0,
+      "selected": "first_valid",
+      "selected_index": 0,
+      "evaluation_seconds": 0.0038352999999915482,
+      "baseline_evaluation_seconds": 0.0019126000006508548,
+      "baseline_construction_seconds": 0.0002623999989737058,
+      "total_seconds": 0.0314288999998098,
+      "results": [
+        {
+          "candidate": "first_valid",
+          "plan_hash": "669d328ce5dff7b476c291180f7d46aa4f2ff300d7c5f6d741d7ce607165d291",
+          "evaluation_seconds": 0.0019126000006508548,
+          "completed": true,
+          "reason": null,
+          "makespan": 23.498733604525828,
+          "steps": 26,
+          "commands": 5,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R1,R2",
+          "plan_hash": "1960f7604cea2166c50000a2fb7271f7b35bb6c5471585900b71ac3edc65fa1e",
+          "evaluation_seconds": 0.0019226999993406935,
+          "completed": true,
+          "reason": null,
+          "makespan": 23.498733604525828,
+          "steps": 25,
+          "commands": 4,
+          "contacts": 0
+        }
+      ],
+      "validations": {
+        "0": {
+          "completed": true,
+          "reason": null,
+          "makespan": 23.498733604525828,
+          "steps": 2376,
+          "commands": 5,
+          "contacts": 0
+        }
+      },
+      "merge_sweeps": true,
+      "event_release": true,
+      "collision_interval": 0.01,
+      "stop_on_collision": true,
+      "initial_snapshot_time": 0,
+      "paths_changed": false,
+      "scope": "initial_snapshot_best_of_generated_validated_tuples"
+    },
+    {
+      "example": "02_05_RobotPath_OppositeDirection_Collision",
+      "robots": 2,
+      "status": "no_plan_in_finite_model",
+      "baseline_makespan": null,
+      "lookahead_makespan": null,
+      "reason": "No wait-duplication tuple path exists for these fixed routes."
+    },
+    {
+      "example": "02_06_RobotPath_OppositeDirection_Clear",
+      "robots": 2,
+      "status": "completed",
+      "candidate_budget": 12,
+      "branches": 2,
+      "candidates_audit": {
+        "attempted": 6,
+        "rejected": 1,
+        "duplicates": 4
+      },
+      "generation_seconds": 0.0033712000004015863,
+      "baseline_makespan": 20.485442642747785,
+      "lookahead_makespan": 20.485442642747785,
+      "improvement_percent": 0.0,
+      "selected": "first_valid",
+      "selected_index": 0,
+      "evaluation_seconds": 0.0036077999993722187,
+      "baseline_evaluation_seconds": 0.001762899999448564,
+      "baseline_construction_seconds": 0.00029409999842755497,
+      "total_seconds": 0.029390199999397737,
+      "results": [
+        {
+          "candidate": "first_valid",
+          "plan_hash": "69e4a3823f6f936e757fdfa876a89ac152b7e04cc645b512dfd739565f583be0",
+          "evaluation_seconds": 0.001762899999448564,
+          "completed": true,
+          "reason": null,
+          "makespan": 20.485442642747785,
+          "steps": 23,
+          "commands": 3,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R1,R2",
+          "plan_hash": "e59c426e6ea729a92c09d8181eeab83bf85678ca841bf33049e439a7cae6d7db",
+          "evaluation_seconds": 0.0018448999999236548,
+          "completed": true,
+          "reason": null,
+          "makespan": 20.485442642747785,
+          "steps": 23,
+          "commands": 3,
+          "contacts": 0
+        }
+      ],
+      "validations": {
+        "0": {
+          "completed": true,
+          "reason": null,
+          "makespan": 20.485442642747785,
+          "steps": 2071,
+          "commands": 3,
+          "contacts": 0
+        }
+      },
+      "merge_sweeps": true,
+      "event_release": true,
+      "collision_interval": 0.01,
+      "stop_on_collision": true,
+      "initial_snapshot_time": 0,
+      "paths_changed": false,
+      "scope": "initial_snapshot_best_of_generated_validated_tuples"
+    },
+    {
+      "example": "02_07_RobotPath_OppositeDirection_EntryWait",
+      "robots": 2,
+      "status": "completed",
+      "candidate_budget": 12,
+      "branches": 4,
+      "candidates_audit": {
+        "attempted": 6,
+        "rejected": 0,
+        "duplicates": 3
+      },
+      "generation_seconds": 0.005691500000466476,
+      "baseline_makespan": 40.97088528549556,
+      "lookahead_makespan": 40.97088528549556,
+      "improvement_percent": 0.0,
+      "selected": "first_valid",
+      "selected_index": 0,
+      "evaluation_seconds": 0.010013899998739362,
+      "baseline_evaluation_seconds": 0.002463700000589597,
+      "baseline_construction_seconds": 0.0005419999997684499,
+      "total_seconds": 0.05372470000111207,
+      "results": [
+        {
+          "candidate": "first_valid",
+          "plan_hash": "ef5e40e20ea778a18b5686338f41510f306307d20f21010f86706e3ea9b747f5",
+          "evaluation_seconds": 0.002463700000589597,
+          "completed": true,
+          "reason": null,
+          "makespan": 40.97088528549556,
+          "steps": 32,
+          "commands": 2,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R1,R2",
+          "plan_hash": "9151afb60d1b5b4b19f93dc4579f480c62749d7ab6f981ad206e618c228400ad",
+          "evaluation_seconds": 0.002575099999376107,
+          "completed": true,
+          "reason": null,
+          "makespan": 40.97088528549556,
+          "steps": 32,
+          "commands": 2,
+          "contacts": 0
+        },
+        {
+          "candidate": "bfs_tie_order:R2,R1",
+          "plan_hash": "aa338583e0eccd76b7d9184b077ccfd4d69c8f821108f30d642044ce9338897e",
+          "evaluation_seconds": 0.0023855999988882104,
+          "completed": true,
+          "reason": null,
+          "makespan": 40.97088528549556,
+          "steps": 32,
+          "commands": 2,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R2,R1",
+          "plan_hash": "ddd8c5231fe20eb43d400088e1c2babed33be2dc1a7f9bfcfb17d67e6b7c64bc",
+          "evaluation_seconds": 0.0025894999998854473,
+          "completed": true,
+          "reason": null,
+          "makespan": 40.97088528549556,
+          "steps": 32,
+          "commands": 2,
+          "contacts": 0
+        }
+      ],
+      "validations": {
+        "0": {
+          "completed": true,
+          "reason": null,
+          "makespan": 40.97088528549556,
+          "steps": 4129,
+          "commands": 2,
+          "contacts": 0
+        }
+      },
+      "merge_sweeps": true,
+      "event_release": true,
+      "collision_interval": 0.01,
+      "stop_on_collision": true,
+      "initial_snapshot_time": 0,
+      "paths_changed": false,
+      "scope": "initial_snapshot_best_of_generated_validated_tuples"
+    },
+    {
+      "example": "02_08_RobotPath_DisjointSweeps",
+      "robots": 2,
+      "status": "completed",
+      "candidate_budget": 12,
+      "branches": 3,
+      "candidates_audit": {
+        "attempted": 6,
+        "rejected": 0,
+        "duplicates": 4
+      },
+      "generation_seconds": 0.002888199998778873,
+      "baseline_makespan": 7.6509205567600596,
+      "lookahead_makespan": 7.6509205567600596,
+      "improvement_percent": 0.0,
+      "selected": "first_valid",
+      "selected_index": 0,
+      "evaluation_seconds": 0.00451710000015737,
+      "baseline_evaluation_seconds": 0.0013366000002861256,
+      "baseline_construction_seconds": 0.0004108000011910917,
+      "total_seconds": 0.01972349999959988,
+      "results": [
+        {
+          "candidate": "first_valid",
+          "plan_hash": "14ece5ed1ac95f1b1cbb2db31efa3a74240d9723281869e57da6a619c7404664",
+          "evaluation_seconds": 0.0013366000002861256,
+          "completed": true,
+          "reason": null,
+          "makespan": 7.6509205567600596,
+          "steps": 15,
+          "commands": 2,
+          "contacts": 0
+        },
+        {
+          "candidate": "serial_priority:R1,R2",
+          "plan_hash": "6a32ef67c0e1530208a033598ccc1dbd139653742bd80779cbb97f19e69c5eda",
+          "evaluation_seconds": 0.0015277999991667457,
+          "completed": true,
+          "reason": null,
+          "makespan": 7.6509205567600596,
+          "steps": 15,
+          "commands": 2,
+          "contacts": 0
+        },
+        {
+          "candidate": "serial_priority:R2,R1",
+          "plan_hash": "1c815039dd30f23584ed51ceeee7d8eec714bbd252ef9aa26e236da5c867668c",
+          "evaluation_seconds": 0.001652700000704499,
+          "completed": true,
+          "reason": null,
+          "makespan": 7.6509205567600596,
+          "steps": 15,
+          "commands": 2,
+          "contacts": 0
+        }
+      ],
+      "validations": {
+        "0": {
+          "completed": true,
+          "reason": null,
+          "makespan": 7.6509205567600596,
+          "steps": 780,
+          "commands": 2,
+          "contacts": 0
+        }
+      },
+      "merge_sweeps": true,
+      "event_release": true,
+      "collision_interval": 0.01,
+      "stop_on_collision": true,
+      "initial_snapshot_time": 0,
+      "paths_changed": false,
+      "scope": "initial_snapshot_best_of_generated_validated_tuples"
+    },
+    {
+      "example": "02_09_RobotPath_FirstMoverMatters",
+      "robots": 2,
+      "status": "completed",
+      "candidate_budget": 12,
+      "branches": 2,
+      "candidates_audit": {
+        "attempted": 6,
+        "rejected": 1,
+        "duplicates": 4
+      },
+      "generation_seconds": 0.00242430000071181,
+      "baseline_makespan": 12.06818159975392,
+      "lookahead_makespan": 11.428547040680328,
+      "improvement_percent": 5.300173466785042,
+      "selected": "dag_ready_order:R1,R2",
+      "selected_index": 1,
+      "evaluation_seconds": 0.0024530999980925117,
+      "baseline_evaluation_seconds": 0.0012222999994264683,
+      "baseline_construction_seconds": 0.00021920000108366366,
+      "total_seconds": 0.030523499999617343,
+      "results": [
+        {
+          "candidate": "first_valid",
+          "plan_hash": "586e792b01ddacef666577df1649d31ec443e4ace47b16ab03ddbcf39a14a1ca",
+          "evaluation_seconds": 0.0012222999994264683,
+          "completed": true,
+          "reason": null,
+          "makespan": 12.06818159975392,
+          "steps": 15,
+          "commands": 3,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R1,R2",
+          "plan_hash": "78bc5890c4d0dafbfa01ea0c9e4bdb994a28329e6bff398d7af66a8b489797c1",
+          "evaluation_seconds": 0.0012307999986660434,
+          "completed": true,
+          "reason": null,
+          "makespan": 11.428547040680328,
+          "steps": 14,
+          "commands": 2,
+          "contacts": 0
+        }
+      ],
+      "validations": {
+        "0": {
+          "completed": true,
+          "reason": null,
+          "makespan": 12.06818159975392,
+          "steps": 1221,
+          "commands": 3,
+          "contacts": 0
+        },
+        "1": {
+          "completed": true,
+          "reason": null,
+          "makespan": 11.428547040680328,
+          "steps": 1156,
+          "commands": 2,
+          "contacts": 0
+        }
+      },
+      "merge_sweeps": true,
+      "event_release": true,
+      "collision_interval": 0.01,
+      "stop_on_collision": true,
+      "initial_snapshot_time": 0,
+      "paths_changed": false,
+      "scope": "initial_snapshot_best_of_generated_validated_tuples"
+    },
+    {
+      "example": "02_10_RobotPath_AlternatingProgress",
+      "robots": 2,
+      "status": "completed",
+      "candidate_budget": 12,
+      "branches": 1,
+      "candidates_audit": {
+        "attempted": 4,
+        "rejected": 2,
+        "duplicates": 2
+      },
+      "generation_seconds": 0.0027592000005824957,
+      "baseline_makespan": 23.498733604525825,
+      "lookahead_makespan": 23.498733604525825,
+      "improvement_percent": 0.0,
+      "selected": "first_valid",
+      "selected_index": 0,
+      "evaluation_seconds": 0.0022582000001420965,
+      "baseline_evaluation_seconds": 0.0022582000001420965,
+      "baseline_construction_seconds": 0.0010428999994473998,
+      "total_seconds": 0.03295100000104867,
+      "results": [
+        {
+          "candidate": "first_valid",
+          "plan_hash": "017822d13632d4180fc5b7c9ca47ecce9d6057b559ce2e9c16eb5ee327f9612f",
+          "evaluation_seconds": 0.0022582000001420965,
+          "completed": true,
+          "reason": null,
+          "makespan": 23.498733604525825,
+          "steps": 33,
+          "commands": 4,
+          "contacts": 0
+        }
+      ],
+      "validations": {
+        "0": {
+          "completed": true,
+          "reason": null,
+          "makespan": 23.498733604525825,
+          "steps": 2382,
+          "commands": 4,
+          "contacts": 0
+        }
+      },
+      "merge_sweeps": true,
+      "event_release": true,
+      "collision_interval": 0.01,
+      "stop_on_collision": true,
+      "initial_snapshot_time": 0,
+      "paths_changed": false,
+      "scope": "initial_snapshot_best_of_generated_validated_tuples"
+    },
+    {
+      "example": "02_11_RobotPath_SharedCorner",
+      "robots": 2,
+      "status": "completed",
+      "candidate_budget": 12,
+      "branches": 4,
+      "candidates_audit": {
+        "attempted": 6,
+        "rejected": 0,
+        "duplicates": 3
+      },
+      "generation_seconds": 0.008217900000090594,
+      "baseline_makespan": 53.04752519359019,
+      "lookahead_makespan": 53.04752519359019,
+      "improvement_percent": 0.0,
+      "selected": "first_valid",
+      "selected_index": 0,
+      "evaluation_seconds": 0.015334099998653983,
+      "baseline_evaluation_seconds": 0.00382519999948272,
+      "baseline_construction_seconds": 0.0010987999994540587,
+      "total_seconds": 0.07426610000038636,
+      "results": [
+        {
+          "candidate": "first_valid",
+          "plan_hash": "9fb4efe25469788dc236539292eafbe851f2c0dd6615b1bb7397968997f11a28",
+          "evaluation_seconds": 0.00382519999948272,
+          "completed": true,
+          "reason": null,
+          "makespan": 53.04752519359019,
+          "steps": 45,
+          "commands": 3,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R1,R2",
+          "plan_hash": "39098a3e9e927d07370fd3c21b2d425574dbfa2a053c88911a7777f18a37dc02",
+          "evaluation_seconds": 0.003865500000756583,
+          "completed": true,
+          "reason": null,
+          "makespan": 53.04752519359019,
+          "steps": 45,
+          "commands": 3,
+          "contacts": 0
+        },
+        {
+          "candidate": "bfs_tie_order:R2,R1",
+          "plan_hash": "3b0119d561a3ac0eace7d77575eebce5fbdd4e12cc4bc14fc85d728c4491b9e3",
+          "evaluation_seconds": 0.003669699999591103,
+          "completed": true,
+          "reason": null,
+          "makespan": 53.04752519359019,
+          "steps": 45,
+          "commands": 3,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R2,R1",
+          "plan_hash": "8def035fbcf3b629dd5f6b8bb6313a3238ecbdc4b2475846c622fa476afee17a",
+          "evaluation_seconds": 0.003973699998823577,
+          "completed": true,
+          "reason": null,
+          "makespan": 53.04752519359019,
+          "steps": 45,
+          "commands": 3,
+          "contacts": 0
+        }
+      ],
+      "validations": {
+        "0": {
+          "completed": true,
+          "reason": null,
+          "makespan": 53.04752519359019,
+          "steps": 5349,
+          "commands": 3,
+          "contacts": 0
+        }
+      },
+      "merge_sweeps": true,
+      "event_release": true,
+      "collision_interval": 0.01,
+      "stop_on_collision": true,
+      "initial_snapshot_time": 0,
+      "paths_changed": false,
+      "scope": "initial_snapshot_best_of_generated_validated_tuples"
+    },
+    {
+      "example": "03_01_RobotPath_ThreeWay_Collision",
+      "robots": 3,
+      "status": "no_plan_in_finite_model",
+      "baseline_makespan": null,
+      "lookahead_makespan": null,
+      "reason": "No wait-duplication tuple path exists for these fixed routes."
+    },
+    {
+      "example": "03_02_RobotPath_ThreeFollowing_Collision",
+      "robots": 3,
+      "status": "completed",
+      "candidate_budget": 12,
+      "branches": 7,
+      "candidates_audit": {
+        "attempted": 18,
+        "rejected": 0,
+        "duplicates": 12
+      },
+      "generation_seconds": 0.19401810000090336,
+      "baseline_makespan": 43.3380883439509,
+      "lookahead_makespan": 43.3380883439509,
+      "improvement_percent": 0.0,
+      "selected": "first_valid",
+      "selected_index": 0,
+      "evaluation_seconds": 0.03729369999928167,
+      "baseline_evaluation_seconds": 0.0048349000007874565,
+      "baseline_construction_seconds": 0.029012700000748737,
+      "total_seconds": 0.31705979999969713,
+      "results": [
+        {
+          "candidate": "first_valid",
+          "plan_hash": "7dadd71cd782f3e77849dd97e42fa5ca724c9e777c004663e3ca1c581a3d370f",
+          "evaluation_seconds": 0.0048349000007874565,
+          "completed": true,
+          "reason": null,
+          "makespan": 43.3380883439509,
+          "steps": 63,
+          "commands": 13,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R1,R2,R3",
+          "plan_hash": "06380221c6051148d2cb8737b6a46b85ca51611066a5513691559cef62387fde",
+          "evaluation_seconds": 0.00539789999857021,
+          "completed": true,
+          "reason": null,
+          "makespan": 47.25081848314091,
+          "steps": 56,
+          "commands": 8,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R3,R2,R1",
+          "plan_hash": "92313e01f890cbe1561462dd31cecee067bf322228d74e45bc69288d33441279",
+          "evaluation_seconds": 0.005255500000203028,
+          "completed": true,
+          "reason": null,
+          "makespan": 45.7382746324201,
+          "steps": 54,
+          "commands": 6,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R2,R3,R1",
+          "plan_hash": "ad5976dc7ccd25c760f419447ce13285b772266fb6320de3bcbc9d2791cd0f99",
+          "evaluation_seconds": 0.005423299999165465,
+          "completed": true,
+          "reason": null,
+          "makespan": 45.7382746324201,
+          "steps": 54,
+          "commands": 6,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R1,R3,R2",
+          "plan_hash": "bbcb8e38e8fb28fe5f858727756803e417aa8c69cc3b768f75bd6ae3d914d280",
+          "evaluation_seconds": 0.005797900001198286,
+          "completed": true,
+          "reason": null,
+          "makespan": 49.080507915691285,
+          "steps": 56,
+          "commands": 8,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R2,R1,R3",
+          "plan_hash": "2242acbe2a4cc54adad219d40c726385e2ebe2a24c6284b2a9f045f53b6a3348",
+          "evaluation_seconds": 0.005247099999905913,
+          "completed": true,
+          "reason": null,
+          "makespan": 47.39237548265978,
+          "steps": 54,
+          "commands": 6,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R3,R1,R2",
+          "plan_hash": "b61dd8a384da88437ddd35bf62212e7d36cd1328128150db412275dc0421d0fd",
+          "evaluation_seconds": 0.005337099999451311,
+          "completed": true,
+          "reason": null,
+          "makespan": 49.222064915210154,
+          "steps": 54,
+          "commands": 6,
+          "contacts": 0
+        }
+      ],
+      "validations": {
+        "0": {
+          "completed": true,
+          "reason": null,
+          "makespan": 43.3380883439509,
+          "steps": 4398,
+          "commands": 13,
+          "contacts": 0
+        }
+      },
+      "merge_sweeps": true,
+      "event_release": true,
+      "collision_interval": 0.01,
+      "stop_on_collision": true,
+      "initial_snapshot_time": 0,
+      "paths_changed": false,
+      "scope": "initial_snapshot_best_of_generated_validated_tuples"
+    },
+    {
+      "example": "03_03_RobotPath_MixedDirection_Collision",
+      "robots": 3,
+      "status": "no_plan_in_finite_model",
+      "baseline_makespan": null,
+      "lookahead_makespan": null,
+      "reason": "No wait-duplication tuple path exists for these fixed routes."
+    },
+    {
+      "example": "03_04_RobotPath_SweepInterference",
+      "robots": 3,
+      "status": "completed",
+      "candidate_budget": 12,
+      "branches": 1,
+      "candidates_audit": {
+        "attempted": 12,
+        "rejected": 6,
+        "duplicates": 6
+      },
+      "generation_seconds": 0.1343639999995503,
+      "baseline_makespan": 25.498733604525825,
+      "lookahead_makespan": 25.498733604525825,
+      "improvement_percent": 0.0,
+      "selected": "first_valid",
+      "selected_index": 0,
+      "evaluation_seconds": 0.0036344999989523785,
+      "baseline_evaluation_seconds": 0.0036344999989523785,
+      "baseline_construction_seconds": 0.02098669999941194,
+      "total_seconds": 0.19673250000050757,
+      "results": [
+        {
+          "candidate": "first_valid",
+          "plan_hash": "8962d4fc7067f51d935dd48fcf4edff76998031b13e970c4cbb1c3bada608dad",
+          "evaluation_seconds": 0.0036344999989523785,
+          "completed": true,
+          "reason": null,
+          "makespan": 25.498733604525825,
+          "steps": 45,
+          "commands": 6,
+          "contacts": 0
+        }
+      ],
+      "validations": {
+        "0": {
+          "completed": true,
+          "reason": null,
+          "makespan": 25.498733604525825,
+          "steps": 2594,
+          "commands": 6,
+          "contacts": 0
+        }
+      },
+      "merge_sweeps": true,
+      "event_release": true,
+      "collision_interval": 0.01,
+      "stop_on_collision": true,
+      "initial_snapshot_time": 0,
+      "paths_changed": false,
+      "scope": "initial_snapshot_best_of_generated_validated_tuples"
+    },
+    {
+      "example": "03_05_RobotPath_LocalSafe_Deadlock",
+      "robots": 3,
+      "status": "completed",
+      "candidate_budget": 12,
+      "branches": 10,
+      "candidates_audit": {
+        "attempted": 18,
+        "rejected": 0,
+        "duplicates": 9
+      },
+      "generation_seconds": 0.06994050000139396,
+      "baseline_makespan": 40.97088528549556,
+      "lookahead_makespan": 40.97088528549556,
+      "improvement_percent": 0.0,
+      "selected": "first_valid",
+      "selected_index": 0,
+      "evaluation_seconds": 0.03892880000239529,
+      "baseline_evaluation_seconds": 0.003827399999863701,
+      "baseline_construction_seconds": 0.00804969999990135,
+      "total_seconds": 0.16579840000122203,
+      "results": [
+        {
+          "candidate": "first_valid",
+          "plan_hash": "fb87a6349adcf1cbacc58b60d3e3430440dc3777f00965c80c260de34a8adc04",
+          "evaluation_seconds": 0.003827399999863701,
+          "completed": true,
+          "reason": null,
+          "makespan": 40.97088528549556,
+          "steps": 35,
+          "commands": 3,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R1,R2,R3",
+          "plan_hash": "9dc5d57827df4e7e190a0beb9222122f85e39bf7162fd0dd36d197b23b0dfa51",
+          "evaluation_seconds": 0.003885100000843522,
+          "completed": true,
+          "reason": null,
+          "makespan": 40.97088528549556,
+          "steps": 35,
+          "commands": 3,
+          "contacts": 0
+        },
+        {
+          "candidate": "serial_priority:R1,R2,R3",
+          "plan_hash": "cc9f5b795fee5a2dc828f7d0a027b1a39a54ee7bbb19656a2272d5ec115601aa",
+          "evaluation_seconds": 0.003992899999502697,
+          "completed": true,
+          "reason": null,
+          "makespan": 40.97088528549556,
+          "steps": 35,
+          "commands": 3,
+          "contacts": 0
+        },
+        {
+          "candidate": "bfs_tie_order:R3,R2,R1",
+          "plan_hash": "91f3e60a9939d4c19cf0155178c5d06a935f00c9c2212b0bc37cb5bd65144a5b",
+          "evaluation_seconds": 0.0035306999998283572,
+          "completed": true,
+          "reason": null,
+          "makespan": 40.97088528549556,
+          "steps": 35,
+          "commands": 3,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R3,R2,R1",
+          "plan_hash": "0f63b664c9b72877b404d751a545d5269532afe8247e297d66c7f9338fb17697",
+          "evaluation_seconds": 0.0035596000016084872,
+          "completed": true,
+          "reason": null,
+          "makespan": 40.97088528549556,
+          "steps": 35,
+          "commands": 3,
+          "contacts": 0
+        },
+        {
+          "candidate": "serial_priority:R3,R2,R1",
+          "plan_hash": "3780920ded9dab14b18d3cd77fef4b28ecd6169059202145b9de18d15c8261e7",
+          "evaluation_seconds": 0.003759699999136501,
+          "completed": true,
+          "reason": null,
+          "makespan": 40.97088528549556,
+          "steps": 35,
+          "commands": 3,
+          "contacts": 0
+        },
+        {
+          "candidate": "serial_priority:R3,R1,R2",
+          "plan_hash": "1bd2f7eb576566cb4526f03c0dc9017d0fbb7f1c4965fdf0a10e135fc3c1b506",
+          "evaluation_seconds": 0.004184200000963756,
+          "completed": true,
+          "reason": null,
+          "makespan": 40.97088528549556,
+          "steps": 35,
+          "commands": 3,
+          "contacts": 0
+        },
+        {
+          "candidate": "serial_priority:R1,R3,R2",
+          "plan_hash": "af8d295dca7098eadeba29cf2939638988ca491329d68f81b3717bcce999090c",
+          "evaluation_seconds": 0.004216999999698601,
+          "completed": true,
+          "reason": null,
+          "makespan": 40.97088528549556,
+          "steps": 35,
+          "commands": 3,
+          "contacts": 0
+        },
+        {
+          "candidate": "serial_priority:R2,R1,R3",
+          "plan_hash": "3829ff66a4f3eeb2732b17db204a97d37623391a670024b709f8acf99f1d978d",
+          "evaluation_seconds": 0.00422190000062983,
+          "completed": true,
+          "reason": null,
+          "makespan": 40.97088528549556,
+          "steps": 35,
+          "commands": 3,
+          "contacts": 0
+        },
+        {
+          "candidate": "serial_priority:R2,R3,R1",
+          "plan_hash": "ecde823f27276b165d64c4b3a8be6a3a8827022f60ff1e176dc32b8600ff3984",
+          "evaluation_seconds": 0.0037503000003198395,
+          "completed": true,
+          "reason": null,
+          "makespan": 40.97088528549556,
+          "steps": 35,
+          "commands": 3,
+          "contacts": 0
+        }
+      ],
+      "validations": {
+        "0": {
+          "completed": true,
+          "reason": null,
+          "makespan": 40.97088528549556,
+          "steps": 4132,
+          "commands": 3,
+          "contacts": 0
+        }
+      },
+      "merge_sweeps": true,
+      "event_release": true,
+      "collision_interval": 0.01,
+      "stop_on_collision": true,
+      "initial_snapshot_time": 0,
+      "paths_changed": false,
+      "scope": "initial_snapshot_best_of_generated_validated_tuples"
+    },
+    {
+      "example": "03_06_RobotPath_ThreeWay_CyclicWait",
+      "robots": 3,
+      "status": "no_plan_in_finite_model",
+      "baseline_makespan": null,
+      "lookahead_makespan": null,
+      "reason": "No wait-duplication tuple path exists for these fixed routes."
+    },
+    {
+      "example": "05_01_RobotPath_TheoremSafeEndpoints",
+      "robots": 5,
+      "status": "completed",
+      "candidate_budget": 12,
+      "branches": 12,
+      "candidates_audit": {
+        "attempted": 13,
+        "rejected": 0,
+        "duplicates": 2
+      },
+      "generation_seconds": 0.04314850000082515,
+      "baseline_makespan": 43.3380883439509,
+      "lookahead_makespan": 43.3380883439509,
+      "improvement_percent": 0.0,
+      "selected": "first_valid",
+      "selected_index": 0,
+      "evaluation_seconds": 0.11444640000263462,
+      "baseline_evaluation_seconds": 0.008269199999631383,
+      "baseline_construction_seconds": 9.354665200000454,
+      "total_seconds": 9.59155070000088,
+      "results": [
+        {
+          "candidate": "first_valid",
+          "plan_hash": "016e09fbb5feb2dcad16f9c1fd5d432bc921de2d7b2a0da9b309205deb9ba8f7",
+          "evaluation_seconds": 0.008269199999631383,
+          "completed": true,
+          "reason": null,
+          "makespan": 43.3380883439509,
+          "steps": 82,
+          "commands": 16,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R1,R2,R3,R4,R5",
+          "plan_hash": "2fe2d2d7fa0aa6e7b0f97761f57afb986515fdce74699372add0a243664edbdf",
+          "evaluation_seconds": 0.008929999999963911,
+          "completed": true,
+          "reason": null,
+          "makespan": 47.39237548265978,
+          "steps": 71,
+          "commands": 9,
+          "contacts": 0
+        },
+        {
+          "candidate": "serial_priority:R1,R2,R3,R4,R5",
+          "plan_hash": "524595d64b9184f0ac5b3b16021cab7fb6a5bf614238e897d3876026f54eb8cf",
+          "evaluation_seconds": 0.009800199999517645,
+          "completed": true,
+          "reason": null,
+          "makespan": 47.39237548265978,
+          "steps": 71,
+          "commands": 9,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R5,R4,R3,R2,R1",
+          "plan_hash": "480e784dcf4403233647dbc1b598f775aaab0fa212606116b55b4853dc27906c",
+          "evaluation_seconds": 0.008859700001266901,
+          "completed": true,
+          "reason": null,
+          "makespan": 47.39237548265978,
+          "steps": 71,
+          "commands": 9,
+          "contacts": 0
+        },
+        {
+          "candidate": "serial_priority:R5,R4,R3,R2,R1",
+          "plan_hash": "8b44e638d1e97f702f7084c60125f083619b5d9fa25efde829c77849106742d5",
+          "evaluation_seconds": 0.01019079999969108,
+          "completed": true,
+          "reason": null,
+          "makespan": 47.39237548265978,
+          "steps": 71,
+          "commands": 9,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R1,R3,R2,R4,R5",
+          "plan_hash": "7c98d40b78a274a1592de710a29dd7199b6490faf2e40e2581db53abb3b5a34b",
+          "evaluation_seconds": 0.009087800000997959,
+          "completed": true,
+          "reason": null,
+          "makespan": 43.90858519986972,
+          "steps": 71,
+          "commands": 9,
+          "contacts": 0
+        },
+        {
+          "candidate": "serial_priority:R1,R3,R2,R4,R5",
+          "plan_hash": "72d47ddf903d49e35590e7f9c6c6560b21e3e20ddc4a3605444fa9d534ae9eda",
+          "evaluation_seconds": 0.009916500001054374,
+          "completed": true,
+          "reason": null,
+          "makespan": 43.90858519986972,
+          "steps": 71,
+          "commands": 9,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R2,R4,R5,R1,R3",
+          "plan_hash": "4fc84ab595c39168ca5bf5b64b08ea9601e8a18317f7d6702c2b1a0c390d0c20",
+          "evaluation_seconds": 0.009249900000213529,
+          "completed": true,
+          "reason": null,
+          "makespan": 47.25081848314091,
+          "steps": 73,
+          "commands": 11,
+          "contacts": 0
+        },
+        {
+          "candidate": "serial_priority:R2,R4,R5,R1,R3",
+          "plan_hash": "bf06ac1cdaa59a6da992d0b7f7ecce42426730d8c4385c1b7e14a8e1052b4aaa",
+          "evaluation_seconds": 0.010736900001575123,
+          "completed": true,
+          "reason": null,
+          "makespan": 47.25081848314091,
+          "steps": 73,
+          "commands": 11,
+          "contacts": 0
+        },
+        {
+          "candidate": "serial_priority:R4,R5,R2,R1,R3",
+          "plan_hash": "9cc520c46b14e683e8643f2d67080256d521c4119c8737214a3068ccedee4508",
+          "evaluation_seconds": 0.01046449999921606,
+          "completed": true,
+          "reason": null,
+          "makespan": 47.25081848314091,
+          "steps": 73,
+          "commands": 11,
+          "contacts": 0
+        },
+        {
+          "candidate": "serial_priority:R4,R1,R2,R5,R3",
+          "plan_hash": "33e5118e08569e6d41f026cd6639328b0d65328fe1e67a78722ce10aad83102a",
+          "evaluation_seconds": 0.01017370000045048,
+          "completed": true,
+          "reason": null,
+          "makespan": 47.39237548265978,
+          "steps": 71,
+          "commands": 9,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R3,R2,R4,R5,R1",
+          "plan_hash": "f4cad7c80925ed9acc31184110e260a260034c7d0db8a473a05e791391f49683",
+          "evaluation_seconds": 0.008767199999056174,
+          "completed": true,
+          "reason": null,
+          "makespan": 47.39237548265978,
+          "steps": 71,
+          "commands": 9,
+          "contacts": 0
+        }
+      ],
+      "validations": {
+        "0": {
+          "completed": true,
+          "reason": null,
+          "makespan": 43.3380883439509,
+          "steps": 4415,
+          "commands": 16,
+          "contacts": 0
+        }
+      },
+      "merge_sweeps": true,
+      "event_release": true,
+      "collision_interval": 0.01,
+      "stop_on_collision": true,
+      "initial_snapshot_time": 0,
+      "paths_changed": false,
+      "scope": "initial_snapshot_best_of_generated_validated_tuples"
+    },
+    {
+      "example": "06_01_RobotPath_Convoy",
+      "robots": 6,
+      "status": "completed",
+      "candidate_budget": 12,
+      "branches": 1,
+      "candidates_audit": {
+        "attempted": 10,
+        "rejected": 10,
+        "duplicates": 0
+      },
+      "generation_seconds": 0.013944099999207538,
+      "baseline_makespan": 26.086305214969308,
+      "lookahead_makespan": 26.086305214969308,
+      "improvement_percent": 0.0,
+      "selected": "first_valid",
+      "selected_index": 0,
+      "evaluation_seconds": 0.015230299999529961,
+      "baseline_evaluation_seconds": 0.015230299999529961,
+      "baseline_construction_seconds": 0.0,
+      "total_seconds": 0.11071110000011686,
+      "results": [
+        {
+          "candidate": "first_valid",
+          "plan_hash": "2324f8fdc5da3c18919e7bd09e6529cd09bf5458d359b8313975c5a98281ac77",
+          "evaluation_seconds": 0.015230299999529961,
+          "completed": true,
+          "reason": null,
+          "makespan": 26.086305214969308,
+          "steps": 113,
+          "commands": 30,
+          "contacts": 0
+        }
+      ],
+      "validations": {
+        "0": {
+          "completed": true,
+          "reason": null,
+          "makespan": 26.086305214969308,
+          "steps": 2727,
+          "commands": 30,
+          "contacts": 0
+        }
+      },
+      "merge_sweeps": true,
+      "event_release": true,
+      "collision_interval": 0.01,
+      "stop_on_collision": true,
+      "initial_snapshot_time": 0,
+      "paths_changed": false,
+      "scope": "initial_snapshot_best_of_generated_validated_tuples"
+    },
+    {
+      "example": "08_02_RobotPath_InteriorTraffic",
+      "robots": 8,
+      "status": "completed",
+      "candidate_budget": 12,
+      "branches": 1,
+      "candidates_audit": {
+        "attempted": 10,
+        "rejected": 10,
+        "duplicates": 0
+      },
+      "generation_seconds": 0.02470999999968626,
+      "baseline_makespan": 42.920827300957036,
+      "lookahead_makespan": 42.920827300957036,
+      "improvement_percent": 0.0,
+      "selected": "first_valid",
+      "selected_index": 0,
+      "evaluation_seconds": 0.05256379999991623,
+      "baseline_evaluation_seconds": 0.05256379999991623,
+      "baseline_construction_seconds": 0.0,
+      "total_seconds": 0.2600503000012395,
+      "results": [
+        {
+          "candidate": "first_valid",
+          "plan_hash": "f5e0c7cd29cbf493676b3b3a8aeeafdc777b1d72db262a64cbb8727c0781f857",
+          "evaluation_seconds": 0.05256379999991623,
+          "completed": true,
+          "reason": null,
+          "makespan": 42.920827300957036,
+          "steps": 241,
+          "commands": 56,
+          "contacts": 0
+        }
+      ],
+      "validations": {
+        "0": {
+          "completed": true,
+          "reason": null,
+          "makespan": 42.920827300957036,
+          "steps": 4515,
+          "commands": 56,
+          "contacts": 0
+        }
+      },
+      "merge_sweeps": true,
+      "event_release": true,
+      "collision_interval": 0.01,
+      "stop_on_collision": true,
+      "initial_snapshot_time": 0,
+      "paths_changed": false,
+      "scope": "initial_snapshot_best_of_generated_validated_tuples"
+    },
+    {
+      "example": "10_03_RobotPath_EventRelease",
+      "robots": 10,
+      "status": "completed",
+      "candidate_budget": 12,
+      "branches": 3,
+      "candidates_audit": {
+        "attempted": 24,
+        "rejected": 12,
+        "duplicates": 10
+      },
+      "generation_seconds": 0.5458464000003005,
+      "baseline_makespan": 112.19421777947085,
+      "lookahead_makespan": 110.75504078607516,
+      "improvement_percent": 1.282755049127879,
+      "selected": "dag_ready_order:R10,R9,R8,R7,R6,R5,R4,R3,R2,R1",
+      "selected_index": 1,
+      "evaluation_seconds": 0.718645099999776,
+      "baseline_evaluation_seconds": 0.259245600000213,
+      "baseline_construction_seconds": 0.001717500001177541,
+      "total_seconds": 2.462014499998986,
+      "results": [
+        {
+          "candidate": "first_valid",
+          "plan_hash": "a128c3fa7d07835184d561c168e972ea0f3ad809ee3295538031d99f489c112f",
+          "evaluation_seconds": 0.259245600000213,
+          "completed": true,
+          "reason": null,
+          "makespan": 112.19421777947085,
+          "steps": 311,
+          "commands": 34,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R10,R9,R8,R7,R6,R5,R4,R3,R2,R1",
+          "plan_hash": "a4942f3c0606f18c45716593793b11d405d46c160094a7ea5cf226adfc6cf937",
+          "evaluation_seconds": 0.23928290000003472,
+          "completed": true,
+          "reason": null,
+          "makespan": 110.75504078607516,
+          "steps": 308,
+          "commands": 32,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R7,R8,R3,R5,R1,R4,R6,R9,R10,R2",
+          "plan_hash": "2d1c7e473a7c68a819261d41a827b736a3fa77260f4d9caaa2f64f0b97579b76",
+          "evaluation_seconds": 0.22011659999952826,
+          "completed": true,
+          "reason": null,
+          "makespan": 117.8015336959415,
+          "steps": 310,
+          "commands": 33,
+          "contacts": 0
+        }
+      ],
+      "validations": {
+        "0": {
+          "completed": true,
+          "reason": null,
+          "makespan": 112.19421777947085,
+          "steps": 11530,
+          "commands": 34,
+          "contacts": 0
+        },
+        "1": {
+          "completed": true,
+          "reason": null,
+          "makespan": 110.75504078607516,
+          "steps": 11383,
+          "commands": 32,
+          "contacts": 0
+        }
+      },
+      "merge_sweeps": true,
+      "event_release": true,
+      "collision_interval": 0.01,
+      "stop_on_collision": true,
+      "initial_snapshot_time": 0,
+      "paths_changed": false,
+      "scope": "initial_snapshot_best_of_generated_validated_tuples"
+    },
+    {
+      "example": "20_03_RobotPath_EventRelease",
+      "robots": 20,
+      "status": "completed",
+      "candidate_budget": 12,
+      "branches": 12,
+      "candidates_audit": {
+        "attempted": 23,
+        "rejected": 11,
+        "duplicates": 1
+      },
+      "generation_seconds": 2.260216799999398,
+      "baseline_makespan": 164.41606272472364,
+      "lookahead_makespan": 164.41606272472364,
+      "improvement_percent": 0.0,
+      "selected": "first_valid",
+      "selected_index": 0,
+      "evaluation_seconds": 13.202542999995785,
+      "baseline_evaluation_seconds": 1.1253127999989374,
+      "baseline_construction_seconds": 0.00601000000096974,
+      "total_seconds": 17.683713499998703,
+      "results": [
+        {
+          "candidate": "first_valid",
+          "plan_hash": "a145b223c9aa2b10821c4ca135259e01abde1b7630628b4300ac3c05534e5df5",
+          "evaluation_seconds": 1.1253127999989374,
+          "completed": true,
+          "reason": null,
+          "makespan": 164.41606272472364,
+          "steps": 591,
+          "commands": 74,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R20,R19,R18,R17,R16,R15,R14,R13,R12,R11,R10,R9,R8,R7,R6,R5,R4,R3,R2,R1",
+          "plan_hash": "4f405fc56531be190de66de0300b471ae09ed5e5a87382a36f3ae91f046db137",
+          "evaluation_seconds": 1.1016074999988632,
+          "completed": true,
+          "reason": null,
+          "makespan": 218.28441972915212,
+          "steps": 585,
+          "commands": 71,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R11,R10,R2,R16,R12,R6,R9,R4,R1,R14,R15,R17,R19,R5,R20,R3,R7,R8,R13,R18",
+          "plan_hash": "eea71f70392e0798f78e4dfce1ded899a72cdffedba6a4c8f87e05586cdf9085",
+          "evaluation_seconds": 1.0713998999999603,
+          "completed": true,
+          "reason": null,
+          "makespan": 183.70519171961772,
+          "steps": 585,
+          "commands": 72,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R13,R18,R7,R8,R20,R3,R14,R15,R17,R19,R5,R1,R4,R12,R6,R9,R16,R10,R2,R11",
+          "plan_hash": "687e5d803de181b237bfee71b795cdd8777060130f132b53fdde33e3bc5a62af",
+          "evaluation_seconds": 1.1112963999985368,
+          "completed": true,
+          "reason": null,
+          "makespan": 177.1555439230835,
+          "steps": 591,
+          "commands": 74,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R15,R19,R17,R13,R10,R12,R4,R20,R3,R7,R2,R11,R18,R9,R16,R8,R6,R14,R5,R1",
+          "plan_hash": "5d51d6f65f96f3152496d008b79e6aff89f1bd5fc4926cb1ab68af8c42af0d93",
+          "evaluation_seconds": 1.0922374000001582,
+          "completed": true,
+          "reason": null,
+          "makespan": 180.6952458625545,
+          "steps": 588,
+          "commands": 73,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R6,R19,R18,R10,R3,R5,R1,R2,R12,R20,R17,R7,R11,R16,R4,R9,R15,R14,R8,R13",
+          "plan_hash": "da7864e7f88e9712e1f44327ab13036f36d586cfd8881eb7abe86c707992dad6",
+          "evaluation_seconds": 1.0945280999985698,
+          "completed": true,
+          "reason": null,
+          "makespan": 197.73602745345914,
+          "steps": 590,
+          "commands": 74,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R8,R14,R16,R2,R19,R6,R1,R10,R9,R12,R15,R20,R11,R4,R7,R3,R13,R5,R17,R18",
+          "plan_hash": "cd3cafeb593e2f97273e832d7a0d84f179e6bbfdc0dc45f57db62c2016a605b8",
+          "evaluation_seconds": 1.0866179000004195,
+          "completed": true,
+          "reason": null,
+          "makespan": 197.30090251708432,
+          "steps": 597,
+          "commands": 77,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R19,R15,R2,R17,R10,R11,R18,R4,R16,R3,R14,R20,R6,R9,R8,R7,R13,R1,R5,R12",
+          "plan_hash": "c33f09616031dc07864ffe6954bdb66f8672c98b64bc5d387572fc102bf9fcdd",
+          "evaluation_seconds": 1.099011899999823,
+          "completed": true,
+          "reason": null,
+          "makespan": 199.50091173110374,
+          "steps": 586,
+          "commands": 71,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R16,R9,R1,R19,R3,R20,R12,R18,R2,R13,R5,R7,R4,R6,R10,R15,R11,R14,R8,R17",
+          "plan_hash": "478d5924d8cfec5f21d23eab78ebd3cf295ab54200dda355887b75b9a0ec700a",
+          "evaluation_seconds": 1.0727401999993162,
+          "completed": true,
+          "reason": null,
+          "makespan": 185.47845855787412,
+          "steps": 592,
+          "commands": 74,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R4,R2,R12,R1,R7,R3,R9,R17,R8,R14,R16,R5,R10,R11,R6,R15,R18,R20,R19,R13",
+          "plan_hash": "d84683ec1acf1debcd7bfd8696225665a0e25467a8ad84268be4b2f8c70799bd",
+          "evaluation_seconds": 1.0957570999999007,
+          "completed": true,
+          "reason": null,
+          "makespan": 173.40834993981798,
+          "steps": 589,
+          "commands": 72,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R4,R18,R20,R3,R12,R7,R8,R19,R11,R6,R17,R1,R16,R13,R14,R15,R10,R5,R2,R9",
+          "plan_hash": "66c9a07e35c429e4a8cffd166c53f41d19647088ca835601d607e4c4111c28ff",
+          "evaluation_seconds": 1.1527244000008068,
+          "completed": true,
+          "reason": null,
+          "makespan": 177.1555439230835,
+          "steps": 590,
+          "commands": 73,
+          "contacts": 0
+        },
+        {
+          "candidate": "dag_ready_order:R15,R2,R18,R14,R17,R5,R13,R16,R11,R7,R3,R4,R20,R6,R1,R8,R10,R9,R12,R19",
+          "plan_hash": "a646087fb1a5564b2956fe555173de1308eab2496e95b9ac04c4ce81ac22f6be",
+          "evaluation_seconds": 1.099309400000493,
+          "completed": true,
+          "reason": null,
+          "makespan": 190.72277586634144,
+          "steps": 589,
+          "commands": 72,
+          "contacts": 0
+        }
+      ],
+      "validations": {
+        "0": {
+          "completed": true,
+          "reason": null,
+          "makespan": 164.41606272472364,
+          "steps": 17035,
+          "commands": 74,
+          "contacts": 0
+        }
+      },
+      "merge_sweeps": true,
+      "event_release": true,
+      "collision_interval": 0.01,
+      "stop_on_collision": true,
+      "initial_snapshot_time": 0,
+      "paths_changed": false,
+      "scope": "initial_snapshot_best_of_generated_validated_tuples"
+    }
+  ],
+  "summary": {
+    "cases": 22,
+    "completed": 18,
+    "no_plan": 4,
+    "improved": 3,
+    "equal": 15,
+    "worse": 0
+  }
+}

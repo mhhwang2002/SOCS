@@ -72,6 +72,36 @@ class AABB:
                                          other.lower, other.upper))
 
 
+def include_path_points(coordinates, points, tolerance=1e-9):
+    """Expand a movement command with supplied points on its existing segments.
+
+    This changes neither route geometry nor stop locations. The controller uses
+    it so long/macro commands retain every sensor reporting location. No graph
+    knowledge is required in the physical robot or sensor.
+    """
+    coordinates = tuple(tuple(p) for p in coordinates)
+    points = tuple({tuple(p) for p in points})
+    if len(coordinates) < 2:
+        return coordinates
+    result = [coordinates[0]]
+    for a,b in zip(coordinates,coordinates[1:]):
+        delta = tuple(y-x for x,y in zip(a,b))
+        length2 = sum(d*d for d in delta)
+        if not length2:
+            continue
+        interior = []
+        for point in points:
+            if len(point) != len(a):
+                continue
+            ratio = sum((p-x)*d for p,x,d in zip(point,a,delta))/length2
+            if tolerance < ratio < 1-tolerance and all(
+                    abs(p-(x+ratio*d)) <= tolerance for p,x,d in zip(point,a,delta)):
+                interior.append((ratio,point))
+        result.extend(point for _,point in sorted(interior))
+        result.append(b)
+    return tuple(result)
+
+
 @dataclass(frozen=True, order=True)
 class PathPosition:
     """Canonical progress: vertex k is (k, 0); interior is (k, ratio)."""

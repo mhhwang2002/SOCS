@@ -1,0 +1,208 @@
+[
+  {
+    "case": "long_horizontal",
+    "scope": "best_of_evaluated_initial_reference_orders",
+    "routes": {
+      "R1": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          1
+        ]
+      ],
+      "R2": [
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          2
+        ]
+      ]
+    },
+    "initial_headings": {
+      "R1": 0.0,
+      "R2": 90.0
+    },
+    "distance_m": {
+      "R1": 6.0,
+      "R2": 4.0
+    },
+    "snapshot_time": 0.0,
+    "same_plant_ids": true,
+    "merge_sweeps": true,
+    "event_release": true,
+    "evaluation_animation_interval": "infinity",
+    "evaluation_continuous_interval": "infinity",
+    "evaluation_collision_check": false,
+    "branches": [
+      {
+        "order": [
+          "R1",
+          "R2"
+        ],
+        "policies": [
+          "id_fifo_tie",
+          "longest_remaining_first"
+        ],
+        "wall_seconds": 0.0015567000009468757,
+        "completed": true,
+        "reason": null,
+        "makespan": 11.428547040680328,
+        "steps": 14,
+        "commands": 2,
+        "contacts": 0
+      },
+      {
+        "order": [
+          "R2",
+          "R1"
+        ],
+        "policies": [
+          "opposite_order"
+        ],
+        "wall_seconds": 0.0014857999995001592,
+        "completed": true,
+        "reason": null,
+        "makespan": 13.897871032304302,
+        "steps": 14,
+        "commands": 2,
+        "contacts": 0
+      }
+    ],
+    "selected": [
+      "R1",
+      "R2"
+    ],
+    "selected_makespan": 11.428547040680328,
+    "validation_interval": 0.01,
+    "stop_on_collision": true,
+    "validation": {
+      "completed": true,
+      "reason": null,
+      "makespan": 11.428547040680328,
+      "steps": 1156,
+      "commands": 2,
+      "contacts": 0
+    }
+  },
+  {
+    "case": "long_vertical",
+    "scope": "best_of_evaluated_initial_reference_orders",
+    "routes": {
+      "R1": [
+        [
+          0,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          1
+        ]
+      ],
+      "R2": [
+        [
+          1,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          2
+        ],
+        [
+          1,
+          3
+        ]
+      ]
+    },
+    "initial_headings": {
+      "R1": 0.0,
+      "R2": 90.0
+    },
+    "distance_m": {
+      "R1": 4.0,
+      "R2": 6.0
+    },
+    "snapshot_time": 0.0,
+    "same_plant_ids": true,
+    "merge_sweeps": true,
+    "event_release": true,
+    "evaluation_animation_interval": "infinity",
+    "evaluation_continuous_interval": "infinity",
+    "evaluation_collision_check": false,
+    "branches": [
+      {
+        "order": [
+          "R1",
+          "R2"
+        ],
+        "policies": [
+          "id_fifo_tie"
+        ],
+        "wall_seconds": 0.001489199999923585,
+        "completed": true,
+        "reason": null,
+        "makespan": 13.897871032304302,
+        "steps": 14,
+        "commands": 2,
+        "contacts": 0
+      },
+      {
+        "order": [
+          "R2",
+          "R1"
+        ],
+        "policies": [
+          "longest_remaining_first",
+          "opposite_order"
+        ],
+        "wall_seconds": 0.0014093999998294748,
+        "completed": true,
+        "reason": null,
+        "makespan": 11.428547040680328,
+        "steps": 14,
+        "commands": 2,
+        "contacts": 0
+      }
+    ],
+    "selected": [
+      "R2",
+      "R1"
+    ],
+    "selected_makespan": 11.428547040680328,
+    "validation_interval": 0.01,
+    "stop_on_collision": true,
+    "validation": {
+      "completed": true,
+      "reason": null,
+      "makespan": 11.428547040680328,
+      "steps": 1156,
+      "commands": 2,
+      "contacts": 0
+    }
+  }
+]

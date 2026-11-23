@@ -1,0 +1,2520 @@
+{
+  "status": "running",
+  "date": "2026-11-21",
+  "python": "3.13.14",
+  "repeats": 3,
+  "policies": [
+    "FIFO",
+    "LP"
+  ],
+  "safe_prefix": true,
+  "merge_sweeps": true,
+  "continuous_interval": "infinity",
+  "timed_run_collision_check": false,
+  "collision_validation_interval_s": 0.1,
+  "stop_on_collision": true,
+  "variation": "only motion_extension OFF versus ON",
+  "runtime_scope": "engine execution excluding model construction, with RoadMap/event logging; median of repeated runs",
+  "interference_definition": "directed pairwise intervals, counted on both participating paths; lengths in metres",
+  "priority_scope": "FIFO/LP at optional approach waits and multiple-waiter arbitration; committed orders and certificates remain mandatory",
+  "same_time_order": "zero-time controller Command first, remaining simultaneous models by name",
+  "source_sha256": {
+    "MRobot.py": "d681e1745f08d5f6501c8b2f08abb291a41cba28ce6d35e6c22bd5cb0b12adba",
+    "PSensor.py": "0a1f6a25120865eb5051245dd612c2fd1eed0bcc5fe59e2645da5fea16e61d69",
+    "TrafficManager.py": "b18a467ae6945585d5e09c22889f6d858e332fb54620307a7e027655e4de77b8",
+    "RoadMap.py": "d98bdd9b55acc3e2f07bc72a895378d1bd9a5d2bb0fd22f9b685887bbdb0d1d6",
+    "RMFSController.py": "cf1a59cd779e6e31def47ffcd0449fc485b868c5131ec57a8df8d44880a5b58b",
+    "controlled.py": "8ed3842a91550107441b82aef61b5bc3d0ed90e14588b05d36f3881b5b96ce44",
+    "motion.py": "d1e74e99d4e1708092d1b719db2482053069f4afb8636ead85cbdff88ce11dd1",
+    "model.py": "14782c69c0a20984c65b3a3229bc03b1fa9adbe8c5b4d8f5bdd4dc743b91a8c3"
+  },
+  "results": [
+    {
+      "case": "optional_short_A",
+      "kind": "optional_approach",
+      "seed": null,
+      "policy": "fifo",
+      "grid": "12x12",
+      "robots": 2,
+      "paths_m": {
+        "R1": [
+          [
+            2.0,
+            16.0
+          ],
+          [
+            4.0,
+            16.0
+          ],
+          [
+            6.0,
+            16.0
+          ]
+        ],
+        "R2": [
+          [
+            4.0,
+            20.0
+          ],
+          [
+            4.0,
+            18.0
+          ],
+          [
+            4.0,
+            16.0
+          ],
+          [
+            4.0,
+            14.0
+          ],
+          [
+            4.0,
+            12.0
+          ],
+          [
+            4.0,
+            10.0
+          ],
+          [
+            4.0,
+            8.0
+          ],
+          [
+            4.0,
+            6.0
+          ],
+          [
+            4.0,
+            4.0
+          ],
+          [
+            4.0,
+            2.0
+          ],
+          [
+            4.0,
+            0.0
+          ]
+        ]
+      },
+      "geometry": {
+        "directed_pairwise_interval_count": 2,
+        "min_pairwise_interval_m": 3.000000002,
+        "mean_pairwise_interval_m": 3.000000002,
+        "max_pairwise_interval_m": 3.000000002,
+        "total_pairwise_interval_m": 6.000000004,
+        "per_path_union_interval_count": 2,
+        "mean_union_interference_ratio": 0.45000000030000004,
+        "interfering_pairs": 1,
+        "interference_edges": [
+          [
+            "R1",
+            "R2"
+          ]
+        ],
+        "components": [
+          [
+            "R1",
+            "R2"
+          ]
+        ],
+        "max_interference_degree": 1,
+        "connected": true,
+        "pairs": [
+          {
+            "i": "R1",
+            "j": "R2",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [
+              {
+                "start": [
+                  0,
+                  0.24999999949999996
+                ],
+                "end": [
+                  1,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ],
+            "j_intervals": [
+              {
+                "start": [
+                  1,
+                  0.24999999949999996
+                ],
+                "end": [
+                  2,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ]
+          }
+        ],
+        "per_path": {
+          "R1": {
+            "length_m": 4.0,
+            "union_intervals": [
+              {
+                "start": [
+                  0,
+                  0.24999999949999996
+                ],
+                "end": [
+                  1,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ],
+            "union_interval_count": 1,
+            "union_interference_m": 3.000000002,
+            "interference_ratio": 0.7500000005
+          },
+          "R2": {
+            "length_m": 20.0,
+            "union_intervals": [
+              {
+                "start": [
+                  1,
+                  0.24999999949999996
+                ],
+                "end": [
+                  2,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ],
+            "union_interval_count": 1,
+            "union_interference_m": 3.000000002,
+            "interference_ratio": 0.1500000001
+          }
+        }
+      },
+      "off": {
+        "complete": true,
+        "contacts": 0,
+        "makespan_s": 20.124999256032048,
+        "mean_completion_s": 13.185974865788145,
+        "completion_std_s": 6.939024390243903,
+        "completion_by_robot": {
+          "R1": 6.246950475544242,
+          "R2": 20.124999256032048
+        },
+        "extension_counts": {
+          "accelerating": 0,
+          "cruising": 0,
+          "braking": 0,
+          "deferred_moving": 0,
+          "rotating": 0,
+          "starting": 0
+        },
+        "extension_commands": 0,
+        "intermediate_stops": 1,
+        "wall_s": 0.00223419998656027,
+        "setup_s": 0.03256110000074841,
+        "steps": 29,
+        "input_sha256": "8a704a09c7632aa93f387fbb5cd29943294be7cff4e1c9f6bcf110191333d297",
+        "portfolio_size": 2,
+        "optional_waits": 0,
+        "optional_holds": 0,
+        "arbitration_decisions": 0,
+        "median_wall_s": 0.00211719999788329,
+        "repeated_wall_s": [
+          0.00223419998656027,
+          0.00211719999788329,
+          0.0020597999973688275
+        ],
+        "collision_replay": {
+          "complete": true,
+          "contacts": 0,
+          "makespan_s": 20.124999256032048,
+          "mean_completion_s": 13.185974865788145,
+          "completion_std_s": 6.939024390243903,
+          "completion_by_robot": {
+            "R1": 6.246950475544242,
+            "R2": 20.124999256032048
+          },
+          "extension_counts": {
+            "accelerating": 0,
+            "cruising": 0,
+            "braking": 0,
+            "deferred_moving": 0,
+            "rotating": 0,
+            "starting": 0
+          },
+          "extension_commands": 0,
+          "intermediate_stops": 1,
+          "wall_s": 0.004189300001598895,
+          "setup_s": 0.008061900007305667,
+          "steps": 230,
+          "input_sha256": "8a704a09c7632aa93f387fbb5cd29943294be7cff4e1c9f6bcf110191333d297",
+          "portfolio_size": 2,
+          "optional_waits": 0,
+          "optional_holds": 0,
+          "arbitration_decisions": 0
+        }
+      },
+      "on": {
+        "complete": true,
+        "contacts": 0,
+        "makespan_s": 20.124999256032048,
+        "mean_completion_s": 13.185974865788145,
+        "completion_std_s": 6.939024390243903,
+        "completion_by_robot": {
+          "R1": 6.246950475544242,
+          "R2": 20.124999256032048
+        },
+        "extension_counts": {
+          "accelerating": 0,
+          "cruising": 0,
+          "braking": 0,
+          "deferred_moving": 0,
+          "rotating": 0,
+          "starting": 0
+        },
+        "extension_commands": 0,
+        "intermediate_stops": 1,
+        "wall_s": 0.002350399998249486,
+        "setup_s": 0.0077560000063385814,
+        "steps": 29,
+        "input_sha256": "8a704a09c7632aa93f387fbb5cd29943294be7cff4e1c9f6bcf110191333d297",
+        "portfolio_size": 2,
+        "optional_waits": 0,
+        "optional_holds": 0,
+        "arbitration_decisions": 0,
+        "median_wall_s": 0.0021707999985665083,
+        "repeated_wall_s": [
+          0.002350399998249486,
+          0.0021481000003404915,
+          0.0021707999985665083
+        ],
+        "collision_replay": {
+          "complete": true,
+          "contacts": 0,
+          "makespan_s": 20.124999256032048,
+          "mean_completion_s": 13.185974865788145,
+          "completion_std_s": 6.939024390243903,
+          "completion_by_robot": {
+            "R1": 6.246950475544242,
+            "R2": 20.124999256032048
+          },
+          "extension_counts": {
+            "accelerating": 0,
+            "cruising": 0,
+            "braking": 0,
+            "deferred_moving": 0,
+            "rotating": 0,
+            "starting": 0
+          },
+          "extension_commands": 0,
+          "intermediate_stops": 1,
+          "wall_s": 0.004312599980039522,
+          "setup_s": 0.008604500006185845,
+          "steps": 230,
+          "input_sha256": "8a704a09c7632aa93f387fbb5cd29943294be7cff4e1c9f6bcf110191333d297",
+          "portfolio_size": 2,
+          "optional_waits": 0,
+          "optional_holds": 0,
+          "arbitration_decisions": 0
+        }
+      },
+      "validated": true,
+      "makespan_reduction_pct": 0.0,
+      "mean_reduction_pct": 0.0
+    },
+    {
+      "case": "optional_short_A",
+      "kind": "optional_approach",
+      "seed": null,
+      "policy": "lp",
+      "grid": "12x12",
+      "robots": 2,
+      "paths_m": {
+        "R1": [
+          [
+            2.0,
+            16.0
+          ],
+          [
+            4.0,
+            16.0
+          ],
+          [
+            6.0,
+            16.0
+          ]
+        ],
+        "R2": [
+          [
+            4.0,
+            20.0
+          ],
+          [
+            4.0,
+            18.0
+          ],
+          [
+            4.0,
+            16.0
+          ],
+          [
+            4.0,
+            14.0
+          ],
+          [
+            4.0,
+            12.0
+          ],
+          [
+            4.0,
+            10.0
+          ],
+          [
+            4.0,
+            8.0
+          ],
+          [
+            4.0,
+            6.0
+          ],
+          [
+            4.0,
+            4.0
+          ],
+          [
+            4.0,
+            2.0
+          ],
+          [
+            4.0,
+            0.0
+          ]
+        ]
+      },
+      "geometry": {
+        "directed_pairwise_interval_count": 2,
+        "min_pairwise_interval_m": 3.000000002,
+        "mean_pairwise_interval_m": 3.000000002,
+        "max_pairwise_interval_m": 3.000000002,
+        "total_pairwise_interval_m": 6.000000004,
+        "per_path_union_interval_count": 2,
+        "mean_union_interference_ratio": 0.45000000030000004,
+        "interfering_pairs": 1,
+        "interference_edges": [
+          [
+            "R1",
+            "R2"
+          ]
+        ],
+        "components": [
+          [
+            "R1",
+            "R2"
+          ]
+        ],
+        "max_interference_degree": 1,
+        "connected": true,
+        "pairs": [
+          {
+            "i": "R1",
+            "j": "R2",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [
+              {
+                "start": [
+                  0,
+                  0.24999999949999996
+                ],
+                "end": [
+                  1,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ],
+            "j_intervals": [
+              {
+                "start": [
+                  1,
+                  0.24999999949999996
+                ],
+                "end": [
+                  2,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ]
+          }
+        ],
+        "per_path": {
+          "R1": {
+            "length_m": 4.0,
+            "union_intervals": [
+              {
+                "start": [
+                  0,
+                  0.24999999949999996
+                ],
+                "end": [
+                  1,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ],
+            "union_interval_count": 1,
+            "union_interference_m": 3.000000002,
+            "interference_ratio": 0.7500000005
+          },
+          "R2": {
+            "length_m": 20.0,
+            "union_intervals": [
+              {
+                "start": [
+                  1,
+                  0.24999999949999996
+                ],
+                "end": [
+                  2,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ],
+            "union_interval_count": 1,
+            "union_interference_m": 3.000000002,
+            "interference_ratio": 0.1500000001
+          }
+        }
+      },
+      "off": {
+        "complete": true,
+        "contacts": 0,
+        "makespan_s": 20.124999256032048,
+        "mean_completion_s": 13.185974865788145,
+        "completion_std_s": 6.939024390243903,
+        "completion_by_robot": {
+          "R1": 6.246950475544242,
+          "R2": 20.124999256032048
+        },
+        "extension_counts": {
+          "accelerating": 0,
+          "cruising": 0,
+          "braking": 0,
+          "deferred_moving": 0,
+          "rotating": 0,
+          "starting": 0
+        },
+        "extension_commands": 0,
+        "intermediate_stops": 1,
+        "wall_s": 0.002059099992038682,
+        "setup_s": 0.008094200020423159,
+        "steps": 29,
+        "input_sha256": "8a704a09c7632aa93f387fbb5cd29943294be7cff4e1c9f6bcf110191333d297",
+        "portfolio_size": 2,
+        "optional_waits": 0,
+        "optional_holds": 0,
+        "arbitration_decisions": 0,
+        "median_wall_s": 0.002062799991108477,
+        "repeated_wall_s": [
+          0.002059099992038682,
+          0.002062799991108477,
+          0.0020918000082019717
+        ],
+        "collision_replay": {
+          "complete": true,
+          "contacts": 0,
+          "makespan_s": 20.124999256032048,
+          "mean_completion_s": 13.185974865788145,
+          "completion_std_s": 6.939024390243903,
+          "completion_by_robot": {
+            "R1": 6.246950475544242,
+            "R2": 20.124999256032048
+          },
+          "extension_counts": {
+            "accelerating": 0,
+            "cruising": 0,
+            "braking": 0,
+            "deferred_moving": 0,
+            "rotating": 0,
+            "starting": 0
+          },
+          "extension_commands": 0,
+          "intermediate_stops": 1,
+          "wall_s": 0.0043465999769978225,
+          "setup_s": 0.007690599974012002,
+          "steps": 230,
+          "input_sha256": "8a704a09c7632aa93f387fbb5cd29943294be7cff4e1c9f6bcf110191333d297",
+          "portfolio_size": 2,
+          "optional_waits": 0,
+          "optional_holds": 0,
+          "arbitration_decisions": 0
+        }
+      },
+      "on": {
+        "complete": true,
+        "contacts": 0,
+        "makespan_s": 20.124999256032048,
+        "mean_completion_s": 13.185974865788145,
+        "completion_std_s": 6.939024390243903,
+        "completion_by_robot": {
+          "R1": 6.246950475544242,
+          "R2": 20.124999256032048
+        },
+        "extension_counts": {
+          "accelerating": 0,
+          "cruising": 0,
+          "braking": 0,
+          "deferred_moving": 0,
+          "rotating": 0,
+          "starting": 0
+        },
+        "extension_commands": 0,
+        "intermediate_stops": 1,
+        "wall_s": 0.002299699990544468,
+        "setup_s": 0.007784499990520999,
+        "steps": 29,
+        "input_sha256": "8a704a09c7632aa93f387fbb5cd29943294be7cff4e1c9f6bcf110191333d297",
+        "portfolio_size": 2,
+        "optional_waits": 0,
+        "optional_holds": 0,
+        "arbitration_decisions": 0,
+        "median_wall_s": 0.002303999994182959,
+        "repeated_wall_s": [
+          0.002299699990544468,
+          0.002303999994182959,
+          0.002331100025912747
+        ],
+        "collision_replay": {
+          "complete": true,
+          "contacts": 0,
+          "makespan_s": 20.124999256032048,
+          "mean_completion_s": 13.185974865788145,
+          "completion_std_s": 6.939024390243903,
+          "completion_by_robot": {
+            "R1": 6.246950475544242,
+            "R2": 20.124999256032048
+          },
+          "extension_counts": {
+            "accelerating": 0,
+            "cruising": 0,
+            "braking": 0,
+            "deferred_moving": 0,
+            "rotating": 0,
+            "starting": 0
+          },
+          "extension_commands": 0,
+          "intermediate_stops": 1,
+          "wall_s": 0.004517699999269098,
+          "setup_s": 0.007837200013455003,
+          "steps": 230,
+          "input_sha256": "8a704a09c7632aa93f387fbb5cd29943294be7cff4e1c9f6bcf110191333d297",
+          "portfolio_size": 2,
+          "optional_waits": 0,
+          "optional_holds": 0,
+          "arbitration_decisions": 0
+        }
+      },
+      "validated": true,
+      "makespan_reduction_pct": 0.0,
+      "mean_reduction_pct": 0.0
+    },
+    {
+      "case": "optional_medium_A",
+      "kind": "optional_approach",
+      "seed": null,
+      "policy": "fifo",
+      "grid": "12x12",
+      "robots": 2,
+      "paths_m": {
+        "R1": [
+          [
+            2.0,
+            16.0
+          ],
+          [
+            4.0,
+            16.0
+          ],
+          [
+            6.0,
+            16.0
+          ],
+          [
+            8.0,
+            16.0
+          ],
+          [
+            10.0,
+            16.0
+          ],
+          [
+            12.0,
+            16.0
+          ],
+          [
+            14.0,
+            16.0
+          ],
+          [
+            16.0,
+            16.0
+          ]
+        ],
+        "R2": [
+          [
+            4.0,
+            20.0
+          ],
+          [
+            4.0,
+            18.0
+          ],
+          [
+            4.0,
+            16.0
+          ],
+          [
+            4.0,
+            14.0
+          ],
+          [
+            4.0,
+            12.0
+          ],
+          [
+            4.0,
+            10.0
+          ],
+          [
+            4.0,
+            8.0
+          ],
+          [
+            4.0,
+            6.0
+          ],
+          [
+            4.0,
+            4.0
+          ],
+          [
+            4.0,
+            2.0
+          ],
+          [
+            4.0,
+            0.0
+          ]
+        ]
+      },
+      "geometry": {
+        "directed_pairwise_interval_count": 2,
+        "min_pairwise_interval_m": 3.000000002,
+        "mean_pairwise_interval_m": 3.000000002,
+        "max_pairwise_interval_m": 3.000000002,
+        "total_pairwise_interval_m": 6.000000004,
+        "per_path_union_interval_count": 2,
+        "mean_union_interference_ratio": 0.18214285726428572,
+        "interfering_pairs": 1,
+        "interference_edges": [
+          [
+            "R1",
+            "R2"
+          ]
+        ],
+        "components": [
+          [
+            "R1",
+            "R2"
+          ]
+        ],
+        "max_interference_degree": 1,
+        "connected": true,
+        "pairs": [
+          {
+            "i": "R1",
+            "j": "R2",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [
+              {
+                "start": [
+                  0,
+                  0.24999999949999996
+                ],
+                "end": [
+                  1,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ],
+            "j_intervals": [
+              {
+                "start": [
+                  1,
+                  0.24999999949999996
+                ],
+                "end": [
+                  2,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ]
+          }
+        ],
+        "per_path": {
+          "R1": {
+            "length_m": 14.0,
+            "union_intervals": [
+              {
+                "start": [
+                  0,
+                  0.24999999949999996
+                ],
+                "end": [
+                  1,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ],
+            "union_interval_count": 1,
+            "union_interference_m": 3.000000002,
+            "interference_ratio": 0.21428571442857144
+          },
+          "R2": {
+            "length_m": 20.0,
+            "union_intervals": [
+              {
+                "start": [
+                  1,
+                  0.24999999949999996
+                ],
+                "end": [
+                  2,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ],
+            "union_interval_count": 1,
+            "union_interference_m": 3.000000002,
+            "interference_ratio": 0.1500000001
+          }
+        }
+      },
+      "off": {
+        "complete": true,
+        "contacts": 0,
+        "makespan_s": 18.691647403900134,
+        "mean_completion_s": 15.28484809219397,
+        "completion_std_s": 3.4067993117061643,
+        "completion_by_robot": {
+          "R1": 11.878048780487806,
+          "R2": 18.691647403900134
+        },
+        "extension_counts": {
+          "accelerating": 0,
+          "cruising": 0,
+          "braking": 0,
+          "deferred_moving": 0,
+          "rotating": 0,
+          "starting": 0
+        },
+        "extension_commands": 0,
+        "intermediate_stops": 1,
+        "wall_s": 0.003004099999088794,
+        "setup_s": 0.043607200001133606,
+        "steps": 39,
+        "input_sha256": "575093c91970c829255148a6aa6d136b5d9e5611b54d89e14f9812c1d95e63df",
+        "portfolio_size": 2,
+        "optional_waits": 0,
+        "optional_holds": 0,
+        "arbitration_decisions": 0,
+        "median_wall_s": 0.003004099999088794,
+        "repeated_wall_s": [
+          0.003004099999088794,
+          0.0029996999946888536,
+          0.0030771000019740313
+        ],
+        "collision_replay": {
+          "complete": true,
+          "contacts": 0,
+          "makespan_s": 18.691647403900134,
+          "mean_completion_s": 15.28484809219397,
+          "completion_std_s": 3.4067993117061643,
+          "completion_by_robot": {
+            "R1": 11.878048780487806,
+            "R2": 18.691647403900134
+          },
+          "extension_counts": {
+            "accelerating": 0,
+            "cruising": 0,
+            "braking": 0,
+            "deferred_moving": 0,
+            "rotating": 0,
+            "starting": 0
+          },
+          "extension_commands": 0,
+          "intermediate_stops": 1,
+          "wall_s": 0.005505899986019358,
+          "setup_s": 0.010752200003480539,
+          "steps": 225,
+          "input_sha256": "575093c91970c829255148a6aa6d136b5d9e5611b54d89e14f9812c1d95e63df",
+          "portfolio_size": 2,
+          "optional_waits": 0,
+          "optional_holds": 0,
+          "arbitration_decisions": 0
+        }
+      },
+      "on": {
+        "complete": true,
+        "contacts": 0,
+        "makespan_s": 18.691647403900134,
+        "mean_completion_s": 15.28484809219397,
+        "completion_std_s": 3.4067993117061643,
+        "completion_by_robot": {
+          "R1": 11.878048780487806,
+          "R2": 18.691647403900134
+        },
+        "extension_counts": {
+          "accelerating": 0,
+          "cruising": 0,
+          "braking": 0,
+          "deferred_moving": 0,
+          "rotating": 0,
+          "starting": 0
+        },
+        "extension_commands": 0,
+        "intermediate_stops": 1,
+        "wall_s": 0.0032623000151943415,
+        "setup_s": 0.010909900011029094,
+        "steps": 39,
+        "input_sha256": "575093c91970c829255148a6aa6d136b5d9e5611b54d89e14f9812c1d95e63df",
+        "portfolio_size": 2,
+        "optional_waits": 0,
+        "optional_holds": 0,
+        "arbitration_decisions": 0,
+        "median_wall_s": 0.003156000020680949,
+        "repeated_wall_s": [
+          0.0032623000151943415,
+          0.003110299992840737,
+          0.003156000020680949
+        ],
+        "collision_replay": {
+          "complete": true,
+          "contacts": 0,
+          "makespan_s": 18.691647403900134,
+          "mean_completion_s": 15.28484809219397,
+          "completion_std_s": 3.4067993117061643,
+          "completion_by_robot": {
+            "R1": 11.878048780487806,
+            "R2": 18.691647403900134
+          },
+          "extension_counts": {
+            "accelerating": 0,
+            "cruising": 0,
+            "braking": 0,
+            "deferred_moving": 0,
+            "rotating": 0,
+            "starting": 0
+          },
+          "extension_commands": 0,
+          "intermediate_stops": 1,
+          "wall_s": 0.005547500011743978,
+          "setup_s": 0.011013300012564287,
+          "steps": 225,
+          "input_sha256": "575093c91970c829255148a6aa6d136b5d9e5611b54d89e14f9812c1d95e63df",
+          "portfolio_size": 2,
+          "optional_waits": 0,
+          "optional_holds": 0,
+          "arbitration_decisions": 0
+        }
+      },
+      "validated": true,
+      "makespan_reduction_pct": 0.0,
+      "mean_reduction_pct": 0.0
+    },
+    {
+      "case": "optional_medium_A",
+      "kind": "optional_approach",
+      "seed": null,
+      "policy": "lp",
+      "grid": "12x12",
+      "robots": 2,
+      "paths_m": {
+        "R1": [
+          [
+            2.0,
+            16.0
+          ],
+          [
+            4.0,
+            16.0
+          ],
+          [
+            6.0,
+            16.0
+          ],
+          [
+            8.0,
+            16.0
+          ],
+          [
+            10.0,
+            16.0
+          ],
+          [
+            12.0,
+            16.0
+          ],
+          [
+            14.0,
+            16.0
+          ],
+          [
+            16.0,
+            16.0
+          ]
+        ],
+        "R2": [
+          [
+            4.0,
+            20.0
+          ],
+          [
+            4.0,
+            18.0
+          ],
+          [
+            4.0,
+            16.0
+          ],
+          [
+            4.0,
+            14.0
+          ],
+          [
+            4.0,
+            12.0
+          ],
+          [
+            4.0,
+            10.0
+          ],
+          [
+            4.0,
+            8.0
+          ],
+          [
+            4.0,
+            6.0
+          ],
+          [
+            4.0,
+            4.0
+          ],
+          [
+            4.0,
+            2.0
+          ],
+          [
+            4.0,
+            0.0
+          ]
+        ]
+      },
+      "geometry": {
+        "directed_pairwise_interval_count": 2,
+        "min_pairwise_interval_m": 3.000000002,
+        "mean_pairwise_interval_m": 3.000000002,
+        "max_pairwise_interval_m": 3.000000002,
+        "total_pairwise_interval_m": 6.000000004,
+        "per_path_union_interval_count": 2,
+        "mean_union_interference_ratio": 0.18214285726428572,
+        "interfering_pairs": 1,
+        "interference_edges": [
+          [
+            "R1",
+            "R2"
+          ]
+        ],
+        "components": [
+          [
+            "R1",
+            "R2"
+          ]
+        ],
+        "max_interference_degree": 1,
+        "connected": true,
+        "pairs": [
+          {
+            "i": "R1",
+            "j": "R2",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [
+              {
+                "start": [
+                  0,
+                  0.24999999949999996
+                ],
+                "end": [
+                  1,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ],
+            "j_intervals": [
+              {
+                "start": [
+                  1,
+                  0.24999999949999996
+                ],
+                "end": [
+                  2,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ]
+          }
+        ],
+        "per_path": {
+          "R1": {
+            "length_m": 14.0,
+            "union_intervals": [
+              {
+                "start": [
+                  0,
+                  0.24999999949999996
+                ],
+                "end": [
+                  1,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ],
+            "union_interval_count": 1,
+            "union_interference_m": 3.000000002,
+            "interference_ratio": 0.21428571442857144
+          },
+          "R2": {
+            "length_m": 20.0,
+            "union_intervals": [
+              {
+                "start": [
+                  1,
+                  0.24999999949999996
+                ],
+                "end": [
+                  2,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ],
+            "union_interval_count": 1,
+            "union_interference_m": 3.000000002,
+            "interference_ratio": 0.1500000001
+          }
+        }
+      },
+      "off": {
+        "complete": true,
+        "contacts": 0,
+        "makespan_s": 18.691647403900134,
+        "mean_completion_s": 15.28484809219397,
+        "completion_std_s": 3.4067993117061643,
+        "completion_by_robot": {
+          "R1": 11.878048780487806,
+          "R2": 18.691647403900134
+        },
+        "extension_counts": {
+          "accelerating": 0,
+          "cruising": 0,
+          "braking": 0,
+          "deferred_moving": 0,
+          "rotating": 0,
+          "starting": 0
+        },
+        "extension_commands": 0,
+        "intermediate_stops": 1,
+        "wall_s": 0.0030171999824233353,
+        "setup_s": 0.011027900007320568,
+        "steps": 39,
+        "input_sha256": "575093c91970c829255148a6aa6d136b5d9e5611b54d89e14f9812c1d95e63df",
+        "portfolio_size": 2,
+        "optional_waits": 0,
+        "optional_holds": 0,
+        "arbitration_decisions": 0,
+        "median_wall_s": 0.0030055999814067036,
+        "repeated_wall_s": [
+          0.0030171999824233353,
+          0.0030055999814067036,
+          0.0029180000128690153
+        ],
+        "collision_replay": {
+          "complete": true,
+          "contacts": 0,
+          "makespan_s": 18.691647403900134,
+          "mean_completion_s": 15.28484809219397,
+          "completion_std_s": 3.4067993117061643,
+          "completion_by_robot": {
+            "R1": 11.878048780487806,
+            "R2": 18.691647403900134
+          },
+          "extension_counts": {
+            "accelerating": 0,
+            "cruising": 0,
+            "braking": 0,
+            "deferred_moving": 0,
+            "rotating": 0,
+            "starting": 0
+          },
+          "extension_commands": 0,
+          "intermediate_stops": 1,
+          "wall_s": 0.00518710000324063,
+          "setup_s": 0.012462400016374886,
+          "steps": 225,
+          "input_sha256": "575093c91970c829255148a6aa6d136b5d9e5611b54d89e14f9812c1d95e63df",
+          "portfolio_size": 2,
+          "optional_waits": 0,
+          "optional_holds": 0,
+          "arbitration_decisions": 0
+        }
+      },
+      "on": {
+        "complete": true,
+        "contacts": 0,
+        "makespan_s": 18.691647403900134,
+        "mean_completion_s": 15.28484809219397,
+        "completion_std_s": 3.4067993117061643,
+        "completion_by_robot": {
+          "R1": 11.878048780487806,
+          "R2": 18.691647403900134
+        },
+        "extension_counts": {
+          "accelerating": 0,
+          "cruising": 0,
+          "braking": 0,
+          "deferred_moving": 0,
+          "rotating": 0,
+          "starting": 0
+        },
+        "extension_commands": 0,
+        "intermediate_stops": 1,
+        "wall_s": 0.0032658999843988568,
+        "setup_s": 0.010772499983431771,
+        "steps": 39,
+        "input_sha256": "575093c91970c829255148a6aa6d136b5d9e5611b54d89e14f9812c1d95e63df",
+        "portfolio_size": 2,
+        "optional_waits": 0,
+        "optional_holds": 0,
+        "arbitration_decisions": 0,
+        "median_wall_s": 0.0034167999983765185,
+        "repeated_wall_s": [
+          0.0032658999843988568,
+          0.0034303000138606876,
+          0.0034167999983765185
+        ],
+        "collision_replay": {
+          "complete": true,
+          "contacts": 0,
+          "makespan_s": 18.691647403900134,
+          "mean_completion_s": 15.28484809219397,
+          "completion_std_s": 3.4067993117061643,
+          "completion_by_robot": {
+            "R1": 11.878048780487806,
+            "R2": 18.691647403900134
+          },
+          "extension_counts": {
+            "accelerating": 0,
+            "cruising": 0,
+            "braking": 0,
+            "deferred_moving": 0,
+            "rotating": 0,
+            "starting": 0
+          },
+          "extension_commands": 0,
+          "intermediate_stops": 1,
+          "wall_s": 0.005636499990941957,
+          "setup_s": 0.010894000006373972,
+          "steps": 225,
+          "input_sha256": "575093c91970c829255148a6aa6d136b5d9e5611b54d89e14f9812c1d95e63df",
+          "portfolio_size": 2,
+          "optional_waits": 0,
+          "optional_holds": 0,
+          "arbitration_decisions": 0
+        }
+      },
+      "validated": true,
+      "makespan_reduction_pct": 0.0,
+      "mean_reduction_pct": 0.0
+    },
+    {
+      "case": "optional_long_A",
+      "kind": "optional_approach",
+      "seed": null,
+      "policy": "fifo",
+      "grid": "12x12",
+      "robots": 2,
+      "paths_m": {
+        "R1": [
+          [
+            2.0,
+            16.0
+          ],
+          [
+            4.0,
+            16.0
+          ],
+          [
+            6.0,
+            16.0
+          ],
+          [
+            8.0,
+            16.0
+          ],
+          [
+            10.0,
+            16.0
+          ],
+          [
+            12.0,
+            16.0
+          ],
+          [
+            14.0,
+            16.0
+          ],
+          [
+            16.0,
+            16.0
+          ],
+          [
+            18.0,
+            16.0
+          ]
+        ],
+        "R2": [
+          [
+            4.0,
+            20.0
+          ],
+          [
+            4.0,
+            18.0
+          ],
+          [
+            4.0,
+            16.0
+          ],
+          [
+            4.0,
+            14.0
+          ],
+          [
+            4.0,
+            12.0
+          ],
+          [
+            4.0,
+            10.0
+          ],
+          [
+            4.0,
+            8.0
+          ],
+          [
+            4.0,
+            6.0
+          ],
+          [
+            4.0,
+            4.0
+          ],
+          [
+            4.0,
+            2.0
+          ],
+          [
+            4.0,
+            0.0
+          ]
+        ]
+      },
+      "geometry": {
+        "directed_pairwise_interval_count": 2,
+        "min_pairwise_interval_m": 3.000000002,
+        "mean_pairwise_interval_m": 3.000000002,
+        "max_pairwise_interval_m": 3.000000002,
+        "total_pairwise_interval_m": 6.000000004,
+        "per_path_union_interval_count": 2,
+        "mean_union_interference_ratio": 0.16875000011250002,
+        "interfering_pairs": 1,
+        "interference_edges": [
+          [
+            "R1",
+            "R2"
+          ]
+        ],
+        "components": [
+          [
+            "R1",
+            "R2"
+          ]
+        ],
+        "max_interference_degree": 1,
+        "connected": true,
+        "pairs": [
+          {
+            "i": "R1",
+            "j": "R2",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [
+              {
+                "start": [
+                  0,
+                  0.24999999949999996
+                ],
+                "end": [
+                  1,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ],
+            "j_intervals": [
+              {
+                "start": [
+                  1,
+                  0.24999999949999996
+                ],
+                "end": [
+                  2,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ]
+          }
+        ],
+        "per_path": {
+          "R1": {
+            "length_m": 16.0,
+            "union_intervals": [
+              {
+                "start": [
+                  0,
+                  0.24999999949999996
+                ],
+                "end": [
+                  1,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ],
+            "union_interval_count": 1,
+            "union_interference_m": 3.000000002,
+            "interference_ratio": 0.187500000125
+          },
+          "R2": {
+            "length_m": 20.0,
+            "union_intervals": [
+              {
+                "start": [
+                  1,
+                  0.24999999949999996
+                ],
+                "end": [
+                  2,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ],
+            "union_interval_count": 1,
+            "union_interference_m": 3.000000002,
+            "interference_ratio": 0.1500000001
+          }
+        }
+      },
+      "off": {
+        "complete": true,
+        "contacts": 0,
+        "makespan_s": 18.691647403900134,
+        "mean_completion_s": 15.78484809219397,
+        "completion_std_s": 2.9067993117061643,
+        "completion_by_robot": {
+          "R1": 12.878048780487806,
+          "R2": 18.691647403900134
+        },
+        "extension_counts": {
+          "accelerating": 0,
+          "cruising": 0,
+          "braking": 0,
+          "deferred_moving": 0,
+          "rotating": 0,
+          "starting": 0
+        },
+        "extension_commands": 0,
+        "intermediate_stops": 1,
+        "wall_s": 0.0031848999788053334,
+        "setup_s": 0.046454900002572685,
+        "steps": 41,
+        "input_sha256": "33ac8994070607788d10aec18977a92b66805f2fceb9e3b35b4ffb60f0646664",
+        "portfolio_size": 2,
+        "optional_waits": 0,
+        "optional_holds": 0,
+        "arbitration_decisions": 0,
+        "median_wall_s": 0.0031601999944541603,
+        "repeated_wall_s": [
+          0.0031848999788053334,
+          0.0031442000181414187,
+          0.0031601999944541603
+        ],
+        "collision_replay": {
+          "complete": true,
+          "contacts": 0,
+          "makespan_s": 18.691647403900134,
+          "mean_completion_s": 15.78484809219397,
+          "completion_std_s": 2.9067993117061643,
+          "completion_by_robot": {
+            "R1": 12.878048780487806,
+            "R2": 18.691647403900134
+          },
+          "extension_counts": {
+            "accelerating": 0,
+            "cruising": 0,
+            "braking": 0,
+            "deferred_moving": 0,
+            "rotating": 0,
+            "starting": 0
+          },
+          "extension_commands": 0,
+          "intermediate_stops": 1,
+          "wall_s": 0.005321200005710125,
+          "setup_s": 0.011453799990704283,
+          "steps": 227,
+          "input_sha256": "33ac8994070607788d10aec18977a92b66805f2fceb9e3b35b4ffb60f0646664",
+          "portfolio_size": 2,
+          "optional_waits": 0,
+          "optional_holds": 0,
+          "arbitration_decisions": 0
+        }
+      },
+      "on": {
+        "complete": true,
+        "contacts": 0,
+        "makespan_s": 18.691647403900134,
+        "mean_completion_s": 15.78484809219397,
+        "completion_std_s": 2.9067993117061643,
+        "completion_by_robot": {
+          "R1": 12.878048780487806,
+          "R2": 18.691647403900134
+        },
+        "extension_counts": {
+          "accelerating": 0,
+          "cruising": 0,
+          "braking": 0,
+          "deferred_moving": 0,
+          "rotating": 0,
+          "starting": 0
+        },
+        "extension_commands": 0,
+        "intermediate_stops": 1,
+        "wall_s": 0.003404500021133572,
+        "setup_s": 0.01158910000231117,
+        "steps": 41,
+        "input_sha256": "33ac8994070607788d10aec18977a92b66805f2fceb9e3b35b4ffb60f0646664",
+        "portfolio_size": 2,
+        "optional_waits": 0,
+        "optional_holds": 0,
+        "arbitration_decisions": 0,
+        "median_wall_s": 0.003404500021133572,
+        "repeated_wall_s": [
+          0.003404500021133572,
+          0.0034354999952483922,
+          0.0032953000045381486
+        ],
+        "collision_replay": {
+          "complete": true,
+          "contacts": 0,
+          "makespan_s": 18.691647403900134,
+          "mean_completion_s": 15.78484809219397,
+          "completion_std_s": 2.9067993117061643,
+          "completion_by_robot": {
+            "R1": 12.878048780487806,
+            "R2": 18.691647403900134
+          },
+          "extension_counts": {
+            "accelerating": 0,
+            "cruising": 0,
+            "braking": 0,
+            "deferred_moving": 0,
+            "rotating": 0,
+            "starting": 0
+          },
+          "extension_commands": 0,
+          "intermediate_stops": 1,
+          "wall_s": 0.005591699999058619,
+          "setup_s": 0.011329300003126264,
+          "steps": 227,
+          "input_sha256": "33ac8994070607788d10aec18977a92b66805f2fceb9e3b35b4ffb60f0646664",
+          "portfolio_size": 2,
+          "optional_waits": 0,
+          "optional_holds": 0,
+          "arbitration_decisions": 0
+        }
+      },
+      "validated": true,
+      "makespan_reduction_pct": 0.0,
+      "mean_reduction_pct": 0.0
+    },
+    {
+      "case": "optional_long_A",
+      "kind": "optional_approach",
+      "seed": null,
+      "policy": "lp",
+      "grid": "12x12",
+      "robots": 2,
+      "paths_m": {
+        "R1": [
+          [
+            2.0,
+            16.0
+          ],
+          [
+            4.0,
+            16.0
+          ],
+          [
+            6.0,
+            16.0
+          ],
+          [
+            8.0,
+            16.0
+          ],
+          [
+            10.0,
+            16.0
+          ],
+          [
+            12.0,
+            16.0
+          ],
+          [
+            14.0,
+            16.0
+          ],
+          [
+            16.0,
+            16.0
+          ],
+          [
+            18.0,
+            16.0
+          ]
+        ],
+        "R2": [
+          [
+            4.0,
+            20.0
+          ],
+          [
+            4.0,
+            18.0
+          ],
+          [
+            4.0,
+            16.0
+          ],
+          [
+            4.0,
+            14.0
+          ],
+          [
+            4.0,
+            12.0
+          ],
+          [
+            4.0,
+            10.0
+          ],
+          [
+            4.0,
+            8.0
+          ],
+          [
+            4.0,
+            6.0
+          ],
+          [
+            4.0,
+            4.0
+          ],
+          [
+            4.0,
+            2.0
+          ],
+          [
+            4.0,
+            0.0
+          ]
+        ]
+      },
+      "geometry": {
+        "directed_pairwise_interval_count": 2,
+        "min_pairwise_interval_m": 3.000000002,
+        "mean_pairwise_interval_m": 3.000000002,
+        "max_pairwise_interval_m": 3.000000002,
+        "total_pairwise_interval_m": 6.000000004,
+        "per_path_union_interval_count": 2,
+        "mean_union_interference_ratio": 0.16875000011250002,
+        "interfering_pairs": 1,
+        "interference_edges": [
+          [
+            "R1",
+            "R2"
+          ]
+        ],
+        "components": [
+          [
+            "R1",
+            "R2"
+          ]
+        ],
+        "max_interference_degree": 1,
+        "connected": true,
+        "pairs": [
+          {
+            "i": "R1",
+            "j": "R2",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [
+              {
+                "start": [
+                  0,
+                  0.24999999949999996
+                ],
+                "end": [
+                  1,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ],
+            "j_intervals": [
+              {
+                "start": [
+                  1,
+                  0.24999999949999996
+                ],
+                "end": [
+                  2,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ]
+          }
+        ],
+        "per_path": {
+          "R1": {
+            "length_m": 16.0,
+            "union_intervals": [
+              {
+                "start": [
+                  0,
+                  0.24999999949999996
+                ],
+                "end": [
+                  1,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ],
+            "union_interval_count": 1,
+            "union_interference_m": 3.000000002,
+            "interference_ratio": 0.187500000125
+          },
+          "R2": {
+            "length_m": 20.0,
+            "union_intervals": [
+              {
+                "start": [
+                  1,
+                  0.24999999949999996
+                ],
+                "end": [
+                  2,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ],
+            "union_interval_count": 1,
+            "union_interference_m": 3.000000002,
+            "interference_ratio": 0.1500000001
+          }
+        }
+      },
+      "off": {
+        "complete": true,
+        "contacts": 0,
+        "makespan_s": 18.691647403900134,
+        "mean_completion_s": 15.78484809219397,
+        "completion_std_s": 2.9067993117061643,
+        "completion_by_robot": {
+          "R1": 12.878048780487806,
+          "R2": 18.691647403900134
+        },
+        "extension_counts": {
+          "accelerating": 0,
+          "cruising": 0,
+          "braking": 0,
+          "deferred_moving": 0,
+          "rotating": 0,
+          "starting": 0
+        },
+        "extension_commands": 0,
+        "intermediate_stops": 1,
+        "wall_s": 0.0031558999908156693,
+        "setup_s": 0.01157279999461025,
+        "steps": 41,
+        "input_sha256": "33ac8994070607788d10aec18977a92b66805f2fceb9e3b35b4ffb60f0646664",
+        "portfolio_size": 2,
+        "optional_waits": 0,
+        "optional_holds": 0,
+        "arbitration_decisions": 0,
+        "median_wall_s": 0.003227199980756268,
+        "repeated_wall_s": [
+          0.0031558999908156693,
+          0.003227199980756268,
+          0.0033318000205326825
+        ],
+        "collision_replay": {
+          "complete": true,
+          "contacts": 0,
+          "makespan_s": 18.691647403900134,
+          "mean_completion_s": 15.78484809219397,
+          "completion_std_s": 2.9067993117061643,
+          "completion_by_robot": {
+            "R1": 12.878048780487806,
+            "R2": 18.691647403900134
+          },
+          "extension_counts": {
+            "accelerating": 0,
+            "cruising": 0,
+            "braking": 0,
+            "deferred_moving": 0,
+            "rotating": 0,
+            "starting": 0
+          },
+          "extension_commands": 0,
+          "intermediate_stops": 1,
+          "wall_s": 0.005485500005306676,
+          "setup_s": 0.011487499985378236,
+          "steps": 227,
+          "input_sha256": "33ac8994070607788d10aec18977a92b66805f2fceb9e3b35b4ffb60f0646664",
+          "portfolio_size": 2,
+          "optional_waits": 0,
+          "optional_holds": 0,
+          "arbitration_decisions": 0
+        }
+      },
+      "on": {
+        "complete": true,
+        "contacts": 0,
+        "makespan_s": 18.691647403900134,
+        "mean_completion_s": 15.78484809219397,
+        "completion_std_s": 2.9067993117061643,
+        "completion_by_robot": {
+          "R1": 12.878048780487806,
+          "R2": 18.691647403900134
+        },
+        "extension_counts": {
+          "accelerating": 0,
+          "cruising": 0,
+          "braking": 0,
+          "deferred_moving": 0,
+          "rotating": 0,
+          "starting": 0
+        },
+        "extension_commands": 0,
+        "intermediate_stops": 1,
+        "wall_s": 0.0036001999978907406,
+        "setup_s": 0.01129570000921376,
+        "steps": 41,
+        "input_sha256": "33ac8994070607788d10aec18977a92b66805f2fceb9e3b35b4ffb60f0646664",
+        "portfolio_size": 2,
+        "optional_waits": 0,
+        "optional_holds": 0,
+        "arbitration_decisions": 0,
+        "median_wall_s": 0.003640800016000867,
+        "repeated_wall_s": [
+          0.0036001999978907406,
+          0.003640800016000867,
+          0.003649799997219816
+        ],
+        "collision_replay": {
+          "complete": true,
+          "contacts": 0,
+          "makespan_s": 18.691647403900134,
+          "mean_completion_s": 15.78484809219397,
+          "completion_std_s": 2.9067993117061643,
+          "completion_by_robot": {
+            "R1": 12.878048780487806,
+            "R2": 18.691647403900134
+          },
+          "extension_counts": {
+            "accelerating": 0,
+            "cruising": 0,
+            "braking": 0,
+            "deferred_moving": 0,
+            "rotating": 0,
+            "starting": 0
+          },
+          "extension_commands": 0,
+          "intermediate_stops": 1,
+          "wall_s": 0.005794299999251962,
+          "setup_s": 0.012892300001112744,
+          "steps": 227,
+          "input_sha256": "33ac8994070607788d10aec18977a92b66805f2fceb9e3b35b4ffb60f0646664",
+          "portfolio_size": 2,
+          "optional_waits": 0,
+          "optional_holds": 0,
+          "arbitration_decisions": 0
+        }
+      },
+      "validated": true,
+      "makespan_reduction_pct": 0.0,
+      "mean_reduction_pct": 0.0
+    },
+    {
+      "case": "optional_mixed_four",
+      "kind": "optional_approach",
+      "seed": null,
+      "policy": "fifo",
+      "grid": "24x24",
+      "robots": 4,
+      "paths_m": {
+        "R1": [
+          [
+            0.0,
+            28.0
+          ],
+          [
+            2.0,
+            28.0
+          ],
+          [
+            4.0,
+            28.0
+          ],
+          [
+            6.0,
+            28.0
+          ]
+        ],
+        "R2": [
+          [
+            4.0,
+            34.0
+          ],
+          [
+            4.0,
+            32.0
+          ],
+          [
+            4.0,
+            30.0
+          ],
+          [
+            4.0,
+            28.0
+          ],
+          [
+            4.0,
+            26.0
+          ],
+          [
+            4.0,
+            24.0
+          ],
+          [
+            4.0,
+            22.0
+          ],
+          [
+            4.0,
+            20.0
+          ],
+          [
+            4.0,
+            18.0
+          ],
+          [
+            4.0,
+            16.0
+          ],
+          [
+            4.0,
+            14.0
+          ],
+          [
+            4.0,
+            12.0
+          ],
+          [
+            4.0,
+            10.0
+          ],
+          [
+            4.0,
+            8.0
+          ],
+          [
+            4.0,
+            6.0
+          ],
+          [
+            4.0,
+            4.0
+          ],
+          [
+            4.0,
+            2.0
+          ],
+          [
+            4.0,
+            0.0
+          ]
+        ],
+        "R3": [
+          [
+            26.0,
+            14.0
+          ],
+          [
+            26.0,
+            16.0
+          ],
+          [
+            28.0,
+            16.0
+          ],
+          [
+            30.0,
+            16.0
+          ],
+          [
+            32.0,
+            16.0
+          ],
+          [
+            34.0,
+            16.0
+          ],
+          [
+            36.0,
+            16.0
+          ],
+          [
+            38.0,
+            16.0
+          ],
+          [
+            40.0,
+            16.0
+          ],
+          [
+            42.0,
+            16.0
+          ],
+          [
+            44.0,
+            16.0
+          ]
+        ],
+        "R4": [
+          [
+            28.0,
+            22.0
+          ],
+          [
+            28.0,
+            20.0
+          ],
+          [
+            28.0,
+            18.0
+          ],
+          [
+            28.0,
+            16.0
+          ],
+          [
+            28.0,
+            14.0
+          ],
+          [
+            28.0,
+            12.0
+          ],
+          [
+            28.0,
+            10.0
+          ],
+          [
+            28.0,
+            8.0
+          ],
+          [
+            28.0,
+            6.0
+          ],
+          [
+            28.0,
+            4.0
+          ],
+          [
+            28.0,
+            2.0
+          ],
+          [
+            28.0,
+            0.0
+          ]
+        ]
+      },
+      "geometry": {
+        "directed_pairwise_interval_count": 4,
+        "min_pairwise_interval_m": 3.000000002,
+        "mean_pairwise_interval_m": 3.000000002,
+        "max_pairwise_interval_m": 3.000000002,
+        "total_pairwise_interval_m": 12.000000008,
+        "per_path_union_interval_count": 4,
+        "mean_union_interference_ratio": 0.21864973276608735,
+        "interfering_pairs": 2,
+        "interference_edges": [
+          [
+            "R1",
+            "R2"
+          ],
+          [
+            "R3",
+            "R4"
+          ]
+        ],
+        "components": [
+          [
+            "R1",
+            "R2"
+          ],
+          [
+            "R3",
+            "R4"
+          ]
+        ],
+        "max_interference_degree": 1,
+        "connected": false,
+        "pairs": [
+          {
+            "i": "R1",
+            "j": "R2",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [
+              {
+                "start": [
+                  1,
+                  0.24999999949999996
+                ],
+                "end": [
+                  2,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ],
+            "j_intervals": [
+              {
+                "start": [
+                  2,
+                  0.24999999949999996
+                ],
+                "end": [
+                  3,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ]
+          },
+          {
+            "i": "R1",
+            "j": "R3",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [],
+            "j_intervals": []
+          },
+          {
+            "i": "R1",
+            "j": "R4",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [],
+            "j_intervals": []
+          },
+          {
+            "i": "R2",
+            "j": "R3",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [],
+            "j_intervals": []
+          },
+          {
+            "i": "R2",
+            "j": "R4",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [],
+            "j_intervals": []
+          },
+          {
+            "i": "R3",
+            "j": "R4",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [
+              {
+                "start": [
+                  1,
+                  0.24999999949999996
+                ],
+                "end": [
+                  2,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ],
+            "j_intervals": [
+              {
+                "start": [
+                  2,
+                  0.24999999949999996
+                ],
+                "end": [
+                  3,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ]
+          }
+        ],
+        "per_path": {
+          "R1": {
+            "length_m": 6.0,
+            "union_intervals": [
+              {
+                "start": [
+                  1,
+                  0.24999999949999996
+                ],
+                "end": [
+                  2,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ],
+            "union_interval_count": 1,
+            "union_interference_m": 3.000000002,
+            "interference_ratio": 0.5000000003333334
+          },
+          "R2": {
+            "length_m": 34.0,
+            "union_intervals": [
+              {
+                "start": [
+                  2,
+                  0.24999999949999996
+                ],
+                "end": [
+                  3,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ],
+            "union_interval_count": 1,
+            "union_interference_m": 3.000000002,
+            "interference_ratio": 0.0882352941764706
+          },
+          "R3": {
+            "length_m": 20.0,
+            "union_intervals": [
+              {
+                "start": [
+                  1,
+                  0.24999999949999996
+                ],
+                "end": [
+                  2,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ],
+            "union_interval_count": 1,
+            "union_interference_m": 3.000000002,
+            "interference_ratio": 0.1500000001
+          },
+          "R4": {
+            "length_m": 22.0,
+            "union_intervals": [
+              {
+                "start": [
+                  2,
+                  0.24999999949999996
+                ],
+                "end": [
+                  3,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ],
+            "union_interval_count": 1,
+            "union_interference_m": 3.000000002,
+            "interference_ratio": 0.13636363645454547
+          }
+        }
+      },
+      "off": {
+        "complete": true,
+        "contacts": 0,
+        "makespan_s": 30.54226029902591,
+        "mean_completion_s": 22.86130304348185,
+        "completion_std_s": 7.381803629442734,
+        "completion_by_robot": {
+          "R1": 10.664211518538103,
+          "R2": 30.54226029902591,
+          "R3": 25.129831909469388,
+          "R4": 25.108908446894
+        },
+        "extension_counts": {
+          "accelerating": 0,
+          "cruising": 0,
+          "braking": 0,
+          "deferred_moving": 0,
+          "rotating": 0,
+          "starting": 0
+        },
+        "extension_commands": 0,
+        "intermediate_stops": 5,
+        "wall_s": 0.020014399982756004,
+        "setup_s": 0.2716581000131555,
+        "steps": 99,
+        "input_sha256": "857c8d1b6801ae8c654ea86ede54f22bd123805b1625b32f53599e75c9de56e3",
+        "portfolio_size": 12,
+        "optional_waits": 2,
+        "optional_holds": 0,
+        "arbitration_decisions": 0,
+        "median_wall_s": 0.020014399982756004,
+        "repeated_wall_s": [
+          0.020014399982756004,
+          0.020023000019136816,
+          0.01893170000403188
+        ],
+        "collision_replay": {
+          "complete": true,
+          "contacts": 0,
+          "makespan_s": 30.54226029902591,
+          "mean_completion_s": 22.86130304348185,
+          "completion_std_s": 7.381803629442734,
+          "completion_by_robot": {
+            "R1": 10.664211518538103,
+            "R2": 30.54226029902591,
+            "R3": 25.129831909469388,
+            "R4": 25.108908446894
+          },
+          "extension_counts": {
+            "accelerating": 0,
+            "cruising": 0,
+            "braking": 0,
+            "deferred_moving": 0,
+            "rotating": 0,
+            "starting": 0
+          },
+          "extension_commands": 0,
+          "intermediate_stops": 5,
+          "wall_s": 0.026647099992260337,
+          "setup_s": 0.1733654999989085,
+          "steps": 404,
+          "input_sha256": "857c8d1b6801ae8c654ea86ede54f22bd123805b1625b32f53599e75c9de56e3",
+          "portfolio_size": 12,
+          "optional_waits": 2,
+          "optional_holds": 0,
+          "arbitration_decisions": 0
+        }
+      },
+      "on": {
+        "complete": true,
+        "contacts": 0,
+        "makespan_s": 27.528969337247865,
+        "mean_completion_s": 18.437502961306862,
+        "completion_std_s": 7.477588083827265,
+        "completion_by_robot": {
+          "R1": 7.65092055676006,
+          "R2": 27.528969337247865,
+          "R3": 22.69207317073171,
+          "R4": 15.878048780487806
+        },
+        "extension_counts": {
+          "accelerating": 10,
+          "cruising": 0,
+          "braking": 0,
+          "deferred_moving": 0,
+          "rotating": 3,
+          "starting": 0
+        },
+        "extension_commands": 13,
+        "intermediate_stops": 2,
+        "wall_s": 0.20567930000834167,
+        "setup_s": 0.1796864999923855,
+        "steps": 114,
+        "input_sha256": "857c8d1b6801ae8c654ea86ede54f22bd123805b1625b32f53599e75c9de56e3",
+        "portfolio_size": 12,
+        "optional_waits": 0,
+        "optional_holds": 0,
+        "arbitration_decisions": 0,
+        "median_wall_s": 0.20055840001441538,
+        "repeated_wall_s": [
+          0.20567930000834167,
+          0.20055840001441538,
+          0.19542530001490377
+        ],
+        "collision_replay": {
+          "complete": true,
+          "contacts": 0,
+          "makespan_s": 27.528969337247865,
+          "mean_completion_s": 18.437502961306862,
+          "completion_std_s": 7.477588083827265,
+          "completion_by_robot": {
+            "R1": 7.65092055676006,
+            "R2": 27.528969337247865,
+            "R3": 22.69207317073171,
+            "R4": 15.878048780487806
+          },
+          "extension_counts": {
+            "accelerating": 10,
+            "cruising": 0,
+            "braking": 0,
+            "deferred_moving": 0,
+            "rotating": 3,
+            "starting": 0
+          },
+          "extension_commands": 13,
+          "intermediate_stops": 2,
+          "wall_s": 1.0331306000007316,
+          "setup_s": 0.1808119000052102,
+          "steps": 389,
+          "input_sha256": "857c8d1b6801ae8c654ea86ede54f22bd123805b1625b32f53599e75c9de56e3",
+          "portfolio_size": 12,
+          "optional_waits": 0,
+          "optional_holds": 0,
+          "arbitration_decisions": 0
+        }
+      },
+      "validated": true,
+      "makespan_reduction_pct": 9.86597236837166,
+      "mean_reduction_pct": 19.350603391945718
+    }
+  ]
+}

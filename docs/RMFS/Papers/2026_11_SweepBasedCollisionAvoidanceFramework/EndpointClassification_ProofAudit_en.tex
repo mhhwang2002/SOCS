@@ -1,0 +1,242 @@
+% !TeX program = xelatex
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=24mm]{geometry}
+\usepackage{amsmath,amssymb,booktabs,array,tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage[hidelinks]{hyperref}
+\title{The Sixteen Endpoint Classes:\\Definitions, Restricted Proof, and Open Scope}
+\author{Internal proof audit}
+\date{November 21, 2026}
+\begin{document}\maketitle
+\noindent\textbf{Status.} A mathematical argument for the specific unit-pair
+domain tested by our code, not a theorem for arbitrary connected swept-region
+intersections. The main manuscript and implementation are unchanged. Novelty
+relative to the literature is not established by this audit.
+
+\section{The actual domain of the classifier}
+Let $P_i,P_j$ be nontrivial, simple, oriented paths on an embedded square grid
+with $2$ m edge length. Edges join adjacent vertices and are horizontal or
+vertical. Each robot has a fixed, axis-aligned $1.5\times1.5$ m square footprint.
+Paths may not be left, reversed, or jumped over. Waiting is permitted at path
+vertices, and robots remain physically present after reaching their goals.
+Motion is continuous between vertices. Rotation leaves the envelope unchanged.
+
+Write $s_i,e_i,s_j,e_j$ for the endpoints. Let
+\begin{equation}
+K=|P_i|\cap|P_j|,
+\end{equation}
+where $|P|$ is the geometric centerline image. The tested \emph{unit-pair}
+condition is that the common vertex/edge subgraph is connected or empty.
+For these simple embedded paths, a nonempty $K$ is a common arc or a singleton.
+The code uses the test $|E_K|=|V_K|-1$ when $V_K\ne\varnothing$.
+
+\textbf{Important distinction.} This is not the definition that the two
+\emph{swept volumes} have a connected intersection. It is a centerline condition.
+The endpoint table's code-level domain must not silently be replaced by an
+arbitrary-body geometric domain.
+
+The four bits, in their actual order in \texttt{safe\_order}, are
+\begin{equation}
+(s_i^K,e_i^K,s_j^K,e_j^K)
+=\bigl(\mathbf1_{s_i\in|P_j|},\mathbf1_{e_i\in|P_j|},
+\mathbf1_{s_j\in|P_i|},\mathbf1_{e_j\in|P_i|}\bigr).
+\label{eq:bits}
+\end{equation}
+Superscript $K$ distinguishes a Boolean from a position. The code variables
+are \texttt{si, ei, sj, ej}; bits refer to membership in the \emph{other full
+centerline}, not intersection with an independently chosen local segment.
+
+\section{Why centerline bits also test endpoint sweep interference here}
+For a selected grid vertex $q$ not on the other path, the minimum $L_\infty$
+distance to that path is at least $2$ m. Two footprints require at most $1.5$ m
+of center separation along each coordinate to overlap. Hence
+\begin{equation}
+q\notin|P_j|\quad\Longleftrightarrow\quad
+B_i(q)\cap S_j(P_j)=\varnothing.\label{eq:separation}
+\end{equation}
+If $q\in|P_j|$, the other robot visits that center, so its full sweep intersects
+$B_i(q)$. This proves both directions for the stated grid and envelope.
+For denser layouts, wider or rotating bodies, or arbitrary curves,
+Equation~\eqref{eq:separation} need not hold. The manuscript's geometric endpoint
+flags must then be computed from footprints, not vertex membership alone.
+
+\clearpage
+\section{The Boolean formula and all sixteen cases}
+The implemented predicate is
+\begin{equation}
+F_{ij}=(\neg s_j^K\land\neg e_i^K)
+\lor(\neg s_i^K\land\neg e_j^K).\label{eq:F}
+\end{equation}
+The first term certifies $i$ completes before $j$ starts; the second certifies
+the reverse. If both hold, the code returns $i$ first, a tie convention only.
+Its negation has a useful exact expansion:
+\begin{equation}
+\neg F_{ij}=
+\underbrace{s_i^Ks_j^K}_{A}\ \lor\
+\underbrace{e_i^Ke_j^K}_{B}\ \lor\
+\underbrace{s_i^Ke_i^K}_{C}\ \lor\
+\underbrace{s_j^Ke_j^K}_{D}.\label{eq:blocks}
+\end{equation}
+Products denote logical AND. The nine negative bit patterns reduce to three
+types: start interference (A), terminal interference (B), and blocking by a
+contained whole route (C or D). There are four Boolean clauses because the
+last type has two symmetric cases, not because there are four distinct types.
+
+\begin{center}
+\begin{tabular}{cclll}\toprule
+Bits & $F_{ij}$ & Constructive order & Proof category & Saved test count\\\midrule
+0000 & 1 & $i$ then $j$ (either) & S & 654,464\\
+0001 & 1 & $i$ then $j$ & S & 176,144\\
+0010 & 1 & $j$ then $i$ & S & 176,144\\
+0011 & 0 & --- & D & 12,656\\
+0100 & 1 & $j$ then $i$ & S & 176,144\\
+0101 & 0 & --- & B & 113,488\\
+0110 & 1 & $j$ then $i$ & S & 113,488\\
+0111 & 0 & --- & B, D & 10,128\\
+1000 & 1 & $i$ then $j$ & S & 176,144\\
+1001 & 1 & $i$ then $j$ & S & 113,488\\
+1010 & 0 & --- & A & 42,280\\
+1011 & 0 & --- & A, D & 5,064\\
+1100 & 0 & --- & C & 12,656\\
+1101 & 0 & --- & B, C & 10,128\\
+1110 & 0 & --- & A, C & 5,064\\
+1111 & 0 & --- & A, B, C, D & 1,616\\\bottomrule
+\end{tabular}
+\end{center}
+S is the serial-execution construction below. A and B are the two-entrance and
+two-terminal obstructions. C and D mean one whole route is the common arc.
+The counts are from the saved \texttt{max\_edges=5} result, not newly measured.
+They total 1,799,096 ordered pairs; 320 representative pairs were cross-checked
+with the production solver in that run. Coincident initial positions and
+disconnected common paths were excluded by the experiment filters.
+
+\paragraph{Two different statements.}
+Algebra alone proves that this table matches Equation~\eqref{eq:F}. It does
+\emph{not} prove that the formula matches physical feasibility. The next page
+supplies the restricted geometric argument for that additional claim.
+
+\clearpage
+\section{Restricted proposition and its proof}
+\textbf{Proposition.} Under the assumptions on page 1, the fixed pair admits
+a collision-free forward/wait execution with persistent endpoints if and only
+if $F_{ij}=1$. When feasible, a whole-route serial execution suffices.
+This proposition does not require the grid to be $4\times4$ or the paths to
+have at most five edges; those are experimental limits, not proof assumptions.
+
+\subsection*{S: Sufficiency}
+If $\neg s_j^K\land\neg e_i^K$, robot $j$ can stay at $s_j$ throughout
+robot $i$'s route by Equation~\eqref{eq:separation}. Robot $i$ can then remain
+at $e_i$ throughout robot $j$'s route by the same equation. This gives a valid
+execution. The other term in Equation~\eqref{eq:F} reverses the two robots.
+Any permitted finite segment durations can be used. No precise synchronization
+is necessary; vertex point-sweep duplication represents the waiting.
+
+\subsection*{Preliminary facts for necessity}
+For a nonempty connected intersection of two simple paths, $K$ is a common
+subpath. Each robot visits all of $K$ exactly once. If an endpoint of either
+full path belongs to $K$, it must be an endpoint of $K$: it cannot be an interior
+point of the common arc, since an interior point has path continuation on both
+sides. If both endpoints of $P_i$ are in $K$, then $|P_i|=K$; similarly for $j$.
+
+\textbf{No-passing fact.} Two distinct robot centers constrained to the same
+arc cannot exchange their order on that arc without coinciding at some time.
+Parameterize the arc by $x\in[0,1]$. If the continuous difference $x_i-x_j$
+changes sign while both are on it, it vanishes by the intermediate value
+theorem. Coincident centers imply footprint collision. The simple-path
+assumption prevents leaving the arc and later re-entering it through a detour.
+
+\subsection*{A: Both starts are in $K$}
+If the starts coincide, the initial configuration already collides. Otherwise
+they are the two ends of $K$, and each robot is directed into $K$ toward the
+other end. Neither can leave $K$ before traversing it. Reaching the opposite
+ends would exchange their order. Waiting cannot remove this obstruction, by
+the no-passing fact.
+
+\subsection*{B: Both goals are in $K$}
+Coincident goals violate persistent final occupancy. If distinct, they are the
+two ends of $K$, and each robot enters at the end opposite its goal. If both
+enter before either finishes, they must pass on the arc. If one finishes
+before the other enters, its permanent footprint blocks that other's entrance.
+Neither alternative permits completion.
+
+\subsection*{C and D: One whole route is $K$}
+Suppose $|P_i|=K$. If robot $j$ also starts or ends in $K$, case A or B
+already applies. Otherwise $j$ must enter one end and leave the other, while
+$i$ always remains on $K$. At entry $j$ is behind $i$ in its traversal
+direction; to leave the other end it must get ahead. Robot $i$ cannot leave
+the arc to let $j$ pass, even after finishing. The no-passing fact rules out
+completion. The argument is symmetric for $|P_j|=K$.
+
+Equation~\eqref{eq:blocks} exhausts the negative patterns, proving necessity.
+The empty-intersection case has all bits zero and is covered by S. A singleton
+intersection in any applicable obstruction gives coincident relevant endpoints;
+a nontrivial whole path cannot equal that singleton. $\square$
+
+\clearpage
+\small
+\section{What this establishes, and what remains open}
+\begin{center}\small
+\begin{tabular}{p{73mm}p{68mm}}\toprule
+Statement & Audit status\\\midrule
+The four bits and Boolean table match the code & Direct code/algebra check.\\
+Positive rows give a serial completion & Proved by endpoint separation; also
+valid with geometric sweep flags for more general bodies.\\
+Negative rows rule out completion in the stated grid unit-pair domain &
+Restricted proof above, using a single common arc and persistent occupancy.\\
+The same necessity result for arbitrary connected sweep intersections &
+Not proved; not what the classification code tests.\\
+Endpoint table decides multiple common subpaths & False as a general inference;
+partial-progress witnesses can violate whole-route serialization.\\
+The restricted proposition is new to the literature & Not established.\\
+Pair feasibility alone decides an arbitrary multi-robot set & Not established;
+this note is a two-robot result.\\\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{How it relates to existing work}
+Fixed-path coordination through progress-space obstacles is established.
+Leroy, Laumond and Sim\'eon [1] construct a resolution-complete geometric
+coordination method using obstacle bounding boxes; its discussion also permits
+backward progress, so its admissible-motion model is not identical to our
+forward-only model. Ghrist, O'Kane and LaValle
+[2] study coordination spaces and Pareto-optimal coordinations on roadmaps.
+These are substantially broader settings than a Boolean table for one shared
+arc. They are not evidence that this exact endpoint proposition appears
+verbatim, but they prevent treating the table as a newly discovered general
+coordination framework.
+
+The Segment Graph paper [3, Definition 4] requires paths to avoid other robots'
+starts and goals for its deadlock-to-cycle theorem. Its Figure 4 explicitly
+shows endpoint blocking. Our table distinguishes several endpoint cases, but
+being outside that particular assumption is not proof of novelty: other
+coordination methods may already handle them.
+
+\subsection*{Recommended use in our paper}
+Keep the general geometric endpoint predicate as a \emph{sufficient} serial
+certificate. If the restricted equivalence is useful, state the common-arc and
+geometric-separation assumptions next to it and give this short proof. Do not
+present finite testing as the proof, or the restricted equivalence as a theorem
+about arbitrary mobile-robot sweeps. Assess prior-art equivalence before
+advertising the result as a contribution.
+
+\subsection*{Verification record}
+This audit reads the classifier's bit order, connected-common-subgraph filter,
+independent reachability rules and saved result. The saved counts are reproduced
+without launching the 1.8-million-pair experiment again. The Boolean expansion
+and all table entries can be checked over 16 assignments; saved representative
+routes are rechecked separately. No simulation, viewer or controller change is
+part of this note. The proof is an internal argument, not an independent
+peer-reviewed validation.
+
+\begin{thebibliography}{9}\small
+\bibitem{leroy} S. Leroy, J.-P. Laumond, and T. Sim\'eon, ``Multiple Path
+Coordination for Mobile Robots: A Geometric Algorithm,'' IJCAI, 1118--1122,
+1999. \url{https://ijcai.org/proceedings/1999/159}.
+\bibitem{ghrist} R. Ghrist, J. M. O'Kane, and S. M. LaValle, ``Computing
+Pareto Optimal Coordinations on Roadmaps,'' author-hosted manuscript.
+\url{https://msl.cs.illinois.edu/~lavalle/papers/GhrOkaLav05.pdf}.
+\bibitem{segment} A. Coskun, J. M. O'Kane, and M. Valtorta, ``Deadlock-Free
+Online Plan Repair in Multi-robot Coordination with Disturbances,'' FLAIRS,
+2021. \url{https://jokane.net/pubs/CosOKaVal21.pdf}.
+\end{thebibliography}
+\end{document}

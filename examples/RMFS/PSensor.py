@@ -10,6 +10,7 @@ class PSensor(DEVSph):
         super().__init__(name, variables={
             "motion_plan": None, "pending_events": [],
             "collision_partners": (),
+            "run_key": None, "reported_clearances": set(),
         })
         self.stop_on_collision = stop_on_collision
         self.add_input_ports("?motion_plan", "?collision")
@@ -55,6 +56,10 @@ class PSensor(DEVSph):
         plan = event.value
         origin, direction = plan["origin"], plan["direction"]
         profile, half = plan["profile"], plan["half_size"]
+        run_key = (plan['start_time'],tuple(origin),tuple(direction))
+        if run_key != self._variable.run_key:
+            self._variable.run_key = run_key
+            self._variable.reported_clearances = set()
         events = []
         for point in plan["points"]:
             delta = tuple(p-o for p, o in zip(point, origin))
@@ -77,8 +82,11 @@ class PSensor(DEVSph):
                         coordinate + leave*axis
                         for coordinate, axis in zip(origin, direction)
                     )
+                    time = plan["start_time"]+profile.time_at_distance(leave)
+                    if time < self.tNow-1e-9 or position in self._variable.reported_clearances:
+                        continue  # Replacement plans must not replay released points.
                     events.append((
-                        plan["start_time"]+profile.time_at_distance(leave),
+                        max(time,self.tNow),
                         position, "leaving",
                     ))
         self._variable.motion_plan = plan
@@ -100,6 +108,8 @@ class PSensor(DEVSph):
         for time, point, kind in self._variable.pending_events:
             if abs(time-self.tNow) >= 1e-9:
                 pending.append((time, point, kind))
+            else:
+                self._variable.reported_clearances.add(point)
         self._variable.pending_events = pending
 
     def cancel(self, event):

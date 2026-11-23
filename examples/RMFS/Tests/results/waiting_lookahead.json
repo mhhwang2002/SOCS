@@ -1,0 +1,497 @@
+[
+  {
+    "case": "waiting_three",
+    "baseline": {
+      "completed": true,
+      "makespan": 34.333255690513546,
+      "stopped_at": 34.333255690513546,
+      "contacts": 0,
+      "steps": 45,
+      "reason": null,
+      "commands": 8,
+      "wall_seconds": 0.0026359999992564553,
+      "decisions": [],
+      "lookahead_calls": 0,
+      "rollouts": 0,
+      "decision_seconds": 0,
+      "max_decision_seconds": 0,
+      "choice_history": [
+        {
+          "time": 6.246950475544242,
+          "candidates": [
+            "R2",
+            "R3"
+          ],
+          "selected": "R2",
+          "policy": "fifo"
+        }
+      ],
+      "nested_lookahead": false,
+      "rollout_horizon": "system_completion",
+      "rollout_policy": "fifo"
+    },
+    "lookahead": {
+      "completed": true,
+      "makespan": 34.333255690513546,
+      "stopped_at": 34.333255690513546,
+      "contacts": 0,
+      "steps": 45,
+      "reason": null,
+      "commands": 8,
+      "wall_seconds": 0.0078680999995413,
+      "decisions": [
+        {
+          "time": 6.246950475544242,
+          "candidates": [
+            "R2",
+            "R3"
+          ],
+          "waiting_since": {
+            "R2": 0.0,
+            "R3": 4.417261042993862
+          },
+          "fifo": "R2",
+          "selected": "R2",
+          "differs_from_fifo": false,
+          "capture_seconds": 0.00043680000089807436,
+          "wall_seconds": 0.00539299999945797,
+          "branches": [
+            {
+              "task": 2,
+              "robot": "R2",
+              "wall_seconds": 0.0022576000010303687,
+              "completed": true,
+              "makespan": 34.333255690513546,
+              "stopped_at": 34.333255690513546,
+              "contacts": 0,
+              "steps": 36,
+              "reason": null,
+              "commands": 8
+            },
+            {
+              "task": 5,
+              "robot": "R3",
+              "wall_seconds": 0.0022504000007756986,
+              "completed": true,
+              "makespan": 38.245985829703564,
+              "stopped_at": 38.245985829703564,
+              "contacts": 0,
+              "steps": 36,
+              "reason": null,
+              "commands": 8
+            }
+          ]
+        }
+      ],
+      "lookahead_calls": 1,
+      "rollouts": 2,
+      "decision_seconds": 0.00539299999945797,
+      "max_decision_seconds": 0.00539299999945797,
+      "choice_history": [
+        {
+          "time": 6.246950475544242,
+          "candidates": [
+            "R2",
+            "R3"
+          ],
+          "selected": "R2",
+          "policy": "lookahead_choice"
+        }
+      ],
+      "nested_lookahead": false,
+      "rollout_horizon": "system_completion",
+      "rollout_policy": "fifo"
+    },
+    "validation": {
+      "completed": true,
+      "makespan": 34.333255690513546,
+      "stopped_at": 34.333255690513546,
+      "contacts": 0,
+      "steps": 3478,
+      "reason": null,
+      "commands": 8,
+      "wall_seconds": 0.04255940000075498,
+      "decisions": [
+        {
+          "time": 6.246950475544242,
+          "candidates": [
+            "R2",
+            "R3"
+          ],
+          "waiting_since": {
+            "R2": 0.0,
+            "R3": 4.417261042993862
+          },
+          "fifo": "R2",
+          "selected": "R2",
+          "differs_from_fifo": false,
+          "capture_seconds": 0.00041930000043066684,
+          "wall_seconds": 0.005260800000542076,
+          "branches": [
+            {
+              "task": 2,
+              "robot": "R2",
+              "wall_seconds": 0.002182899999752408,
+              "completed": true,
+              "makespan": 34.333255690513546,
+              "stopped_at": 34.333255690513546,
+              "contacts": 0,
+              "steps": 36,
+              "reason": null,
+              "commands": 8
+            },
+            {
+              "task": 5,
+              "robot": "R3",
+              "wall_seconds": 0.002216900000348687,
+              "completed": true,
+              "makespan": 38.245985829703564,
+              "stopped_at": 38.245985829703564,
+              "contacts": 0,
+              "steps": 36,
+              "reason": null,
+              "commands": 8
+            }
+          ]
+        }
+      ],
+      "lookahead_calls": 1,
+      "rollouts": 2,
+      "decision_seconds": 0.005260800000542076,
+      "max_decision_seconds": 0.005260800000542076,
+      "choice_history": [
+        {
+          "time": 6.246950475544242,
+          "candidates": [
+            "R2",
+            "R3"
+          ],
+          "selected": "R2",
+          "policy": "lookahead_choice"
+        }
+      ],
+      "nested_lookahead": false,
+      "rollout_horizon": "system_completion",
+      "rollout_policy": "fifo"
+    },
+    "baseline_validation": {
+      "completed": true,
+      "makespan": 34.333255690513546,
+      "stopped_at": 34.333255690513546,
+      "contacts": 0,
+      "steps": 3478,
+      "reason": null,
+      "commands": 8,
+      "wall_seconds": 0.03803689999949711,
+      "decisions": [],
+      "lookahead_calls": 0,
+      "rollouts": 0,
+      "decision_seconds": 0,
+      "max_decision_seconds": 0,
+      "choice_history": [
+        {
+          "time": 6.246950475544242,
+          "candidates": [
+            "R2",
+            "R3"
+          ],
+          "selected": "R2",
+          "policy": "fifo"
+        }
+      ],
+      "nested_lookahead": false,
+      "rollout_horizon": "system_completion",
+      "rollout_policy": "fifo"
+    },
+    "scope": "experimental_uncommitted_priorities_not_production_reference_order",
+    "improvement_percent": 0.0
+  },
+  {
+    "case": "10_03_RobotPath_EventRelease",
+    "baseline": {
+      "completed": true,
+      "makespan": 112.19421777947085,
+      "stopped_at": 112.19421777947085,
+      "contacts": 0,
+      "steps": 311,
+      "reason": null,
+      "commands": 34,
+      "wall_seconds": 0.13116400000035355,
+      "decisions": [],
+      "lookahead_calls": 0,
+      "rollouts": 0,
+      "decision_seconds": 0,
+      "max_decision_seconds": 0,
+      "choice_history": [
+        {
+          "time": 85.29151409372922,
+          "candidates": [
+            "R1",
+            "R3"
+          ],
+          "selected": "R1",
+          "policy": "fifo"
+        }
+      ],
+      "nested_lookahead": false,
+      "rollout_horizon": "system_completion",
+      "rollout_policy": "fifo"
+    },
+    "lookahead": {
+      "completed": true,
+      "makespan": 112.19421777947085,
+      "stopped_at": 112.19421777947085,
+      "contacts": 0,
+      "steps": 311,
+      "reason": null,
+      "commands": 34,
+      "wall_seconds": 0.1667528999987553,
+      "decisions": [
+        {
+          "time": 85.29151409372922,
+          "candidates": [
+            "R1",
+            "R3"
+          ],
+          "waiting_since": {
+            "R1": 59.446012845458284,
+            "R3": 75.00935670600511
+          },
+          "fifo": "R1",
+          "selected": "R1",
+          "differs_from_fifo": false,
+          "capture_seconds": 0.005031600001530023,
+          "wall_seconds": 0.03799080000135291,
+          "branches": [
+            {
+              "task": 71,
+              "robot": "R1",
+              "wall_seconds": 0.01350550000097428,
+              "completed": true,
+              "makespan": 112.19421777947085,
+              "stopped_at": 112.19421777947085,
+              "contacts": 0,
+              "steps": 65,
+              "reason": null,
+              "commands": 34
+            },
+            {
+              "task": 77,
+              "robot": "R3",
+              "wall_seconds": 0.014409900000828202,
+              "completed": true,
+              "makespan": 117.8015336959415,
+              "stopped_at": 117.8015336959415,
+              "contacts": 0,
+              "steps": 64,
+              "reason": null,
+              "commands": 33
+            }
+          ]
+        }
+      ],
+      "lookahead_calls": 1,
+      "rollouts": 2,
+      "decision_seconds": 0.03799080000135291,
+      "max_decision_seconds": 0.03799080000135291,
+      "choice_history": [
+        {
+          "time": 85.29151409372922,
+          "candidates": [
+            "R1",
+            "R3"
+          ],
+          "selected": "R1",
+          "policy": "lookahead_choice"
+        }
+      ],
+      "nested_lookahead": false,
+      "rollout_horizon": "system_completion",
+      "rollout_policy": "fifo"
+    },
+    "validation": {
+      "completed": true,
+      "makespan": 112.19421777947085,
+      "stopped_at": 112.19421777947085,
+      "contacts": 0,
+      "steps": 11530,
+      "reason": null,
+      "commands": 34,
+      "wall_seconds": 0.4238769000003231,
+      "decisions": [
+        {
+          "time": 85.29151409372922,
+          "candidates": [
+            "R1",
+            "R3"
+          ],
+          "waiting_since": {
+            "R1": 59.446012845458284,
+            "R3": 75.00935670600511
+          },
+          "fifo": "R1",
+          "selected": "R1",
+          "differs_from_fifo": false,
+          "capture_seconds": 0.004872399998930632,
+          "wall_seconds": 0.03782109999883687,
+          "branches": [
+            {
+              "task": 71,
+              "robot": "R1",
+              "wall_seconds": 0.014316700000563287,
+              "completed": true,
+              "makespan": 112.19421777947085,
+              "stopped_at": 112.19421777947085,
+              "contacts": 0,
+              "steps": 65,
+              "reason": null,
+              "commands": 34
+            },
+            {
+              "task": 77,
+              "robot": "R3",
+              "wall_seconds": 0.013533199999073986,
+              "completed": true,
+              "makespan": 117.8015336959415,
+              "stopped_at": 117.8015336959415,
+              "contacts": 0,
+              "steps": 64,
+              "reason": null,
+              "commands": 33
+            }
+          ]
+        }
+      ],
+      "lookahead_calls": 1,
+      "rollouts": 2,
+      "decision_seconds": 0.03782109999883687,
+      "max_decision_seconds": 0.03782109999883687,
+      "choice_history": [
+        {
+          "time": 85.29151409372922,
+          "candidates": [
+            "R1",
+            "R3"
+          ],
+          "selected": "R1",
+          "policy": "lookahead_choice"
+        }
+      ],
+      "nested_lookahead": false,
+      "rollout_horizon": "system_completion",
+      "rollout_policy": "fifo"
+    },
+    "baseline_validation": {
+      "completed": true,
+      "makespan": 112.19421777947085,
+      "stopped_at": 112.19421777947085,
+      "contacts": 0,
+      "steps": 11530,
+      "reason": null,
+      "commands": 34,
+      "wall_seconds": 0.382364700000835,
+      "decisions": [],
+      "lookahead_calls": 0,
+      "rollouts": 0,
+      "decision_seconds": 0,
+      "max_decision_seconds": 0,
+      "choice_history": [
+        {
+          "time": 85.29151409372922,
+          "candidates": [
+            "R1",
+            "R3"
+          ],
+          "selected": "R1",
+          "policy": "fifo"
+        }
+      ],
+      "nested_lookahead": false,
+      "rollout_horizon": "system_completion",
+      "rollout_policy": "fifo"
+    },
+    "scope": "experimental_uncommitted_priorities_not_production_reference_order",
+    "improvement_percent": 0.0
+  },
+  {
+    "case": "20_03_RobotPath_EventRelease",
+    "baseline": {
+      "completed": true,
+      "makespan": 183.63991575499887,
+      "stopped_at": 183.63991575499887,
+      "contacts": 0,
+      "steps": 585,
+      "reason": null,
+      "commands": 71,
+      "wall_seconds": 0.792775600000823,
+      "decisions": [],
+      "lookahead_calls": 0,
+      "rollouts": 0,
+      "decision_seconds": 0,
+      "max_decision_seconds": 0,
+      "choice_history": [],
+      "nested_lookahead": false,
+      "rollout_horizon": "system_completion",
+      "rollout_policy": "fifo"
+    },
+    "lookahead": {
+      "completed": true,
+      "makespan": 183.63991575499887,
+      "stopped_at": 183.63991575499887,
+      "contacts": 0,
+      "steps": 585,
+      "reason": null,
+      "commands": 71,
+      "wall_seconds": 0.7966277000014088,
+      "decisions": [],
+      "lookahead_calls": 0,
+      "rollouts": 0,
+      "decision_seconds": 0,
+      "max_decision_seconds": 0,
+      "choice_history": [],
+      "nested_lookahead": false,
+      "rollout_horizon": "system_completion",
+      "rollout_policy": "fifo"
+    },
+    "validation": {
+      "completed": true,
+      "makespan": 183.63991575499887,
+      "stopped_at": 183.63991575499887,
+      "contacts": 0,
+      "steps": 18948,
+      "reason": null,
+      "commands": 71,
+      "wall_seconds": 1.4866849000009097,
+      "decisions": [],
+      "lookahead_calls": 0,
+      "rollouts": 0,
+      "decision_seconds": 0,
+      "max_decision_seconds": 0,
+      "choice_history": [],
+      "nested_lookahead": false,
+      "rollout_horizon": "system_completion",
+      "rollout_policy": "fifo"
+    },
+    "baseline_validation": {
+      "completed": true,
+      "makespan": 183.63991575499887,
+      "stopped_at": 183.63991575499887,
+      "contacts": 0,
+      "steps": 18948,
+      "reason": null,
+      "commands": 71,
+      "wall_seconds": 1.4907831000000442,
+      "decisions": [],
+      "lookahead_calls": 0,
+      "rollouts": 0,
+      "decision_seconds": 0,
+      "max_decision_seconds": 0,
+      "choice_history": [],
+      "nested_lookahead": false,
+      "rollout_horizon": "system_completion",
+      "rollout_policy": "fifo"
+    },
+    "scope": "experimental_uncommitted_priorities_not_production_reference_order",
+    "improvement_percent": 0.0
+  }
+]

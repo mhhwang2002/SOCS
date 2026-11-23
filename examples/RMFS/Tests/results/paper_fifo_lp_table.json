@@ -1,0 +1,398 @@
+{
+  "cases": 81,
+  "policy_runs": 162,
+  "replays": 162,
+  "table": [
+    {
+      "row": 1,
+      "type": "Single crossing",
+      "grid": 4,
+      "objects": 2,
+      "cases": 1,
+      "interference_count": [
+        2,
+        2
+      ],
+      "interference_length_m": [
+        6.000000004,
+        6.000000004
+      ],
+      "fifo": {
+        "makespan": 13.897871032304302,
+        "mean_completion": 12.281041275421202
+      },
+      "lp": {
+        "makespan": 13.897871032304302,
+        "mean_completion": 12.281041275421202
+      }
+    },
+    {
+      "row": 2,
+      "type": "Alternating progress",
+      "grid": 4,
+      "objects": 2,
+      "cases": 1,
+      "interference_count": [
+        4,
+        4
+      ],
+      "interference_length_m": [
+        9.000000006,
+        9.000000006
+      ],
+      "fifo": {
+        "makespan": 23.498733604525825,
+        "mean_completion": 21.204947799304087
+      },
+      "lp": {
+        "makespan": 23.498733604525825,
+        "mean_completion": 21.204947799304087
+      }
+    },
+    {
+      "row": 3,
+      "type": "Three-object chain",
+      "grid": 4,
+      "objects": 3,
+      "cases": 1,
+      "interference_count": [
+        6,
+        6
+      ],
+      "interference_length_m": [
+        15.00000001,
+        15.00000001
+      ],
+      "fifo": {
+        "makespan": 28.086305214969308,
+        "mean_completion": 24.361257474673653
+      },
+      "lp": {
+        "makespan": 28.086305214969308,
+        "mean_completion": 24.361257474673653
+      }
+    },
+    {
+      "row": 4,
+      "type": "Multiple interference groups",
+      "grid": 4,
+      "objects": 5,
+      "cases": 1,
+      "interference_count": [
+        8,
+        8
+      ],
+      "interference_length_m": [
+        48.000000016,
+        48.000000016
+      ],
+      "fifo": {
+        "makespan": 43.3380883439509,
+        "mean_completion": 29.13666184076563
+      },
+      "lp": {
+        "makespan": 43.3380883439509,
+        "mean_completion": 29.13666184076563
+      }
+    },
+    {
+      "row": 5,
+      "type": "Perimeter convoy",
+      "grid": 4,
+      "objects": 6,
+      "cases": 1,
+      "interference_count": [
+        24,
+        24
+      ],
+      "interference_length_m": [
+        132.000000024,
+        132.000000024
+      ],
+      "fifo": {
+        "makespan": 26.086305214969308,
+        "mean_completion": 26.086305214969304
+      },
+      "lp": {
+        "makespan": 26.086305214969308,
+        "mean_completion": 26.086305214969304
+      }
+    },
+    {
+      "row": 6,
+      "type": "Interior mixed traffic",
+      "grid": 4,
+      "objects": 8,
+      "cases": 1,
+      "interference_count": [
+        24,
+        24
+      ],
+      "interference_length_m": [
+        336.0,
+        336.0
+      ],
+      "fifo": {
+        "makespan": 42.920827300957036,
+        "mean_completion": 41.920827300957036
+      },
+      "lp": {
+        "makespan": 42.920827300957036,
+        "mean_completion": 41.920827300957036
+      }
+    },
+    {
+      "row": 7,
+      "type": "Short paths (10 cases)",
+      "grid": 12,
+      "objects": 4,
+      "cases": 10,
+      "interference_count": [
+        2,
+        12
+      ],
+      "interference_length_m": [
+        4.500000003,
+        60.500000011
+      ],
+      "fifo": {
+        "makespan": 53.63373219054112,
+        "mean_completion": 36.740238999502
+      },
+      "lp": {
+        "makespan": 53.30709859970344,
+        "mean_completion": 36.788605179771466
+      }
+    },
+    {
+      "row": 8,
+      "type": "Short paths (10 cases)",
+      "grid": 12,
+      "objects": 8,
+      "cases": 10,
+      "interference_count": [
+        10,
+        38
+      ],
+      "interference_length_m": [
+        41.500000017000005,
+        166.00000006800002
+      ],
+      "fifo": {
+        "makespan": 80.63332120271943,
+        "mean_completion": 47.52883270789092
+      },
+      "lp": {
+        "makespan": 79.75604787769424,
+        "mean_completion": 48.55954580874503
+      }
+    },
+    {
+      "row": 9,
+      "type": "Short paths (10 cases)",
+      "grid": 12,
+      "objects": 12,
+      "cases": 10,
+      "interference_count": [
+        42,
+        70
+      ],
+      "interference_length_m": [
+        144.500000075,
+        284.50000009900003
+      ],
+      "fifo": {
+        "makespan": 107.29231615147023,
+        "mean_completion": 62.18731065419229
+      },
+      "lp": {
+        "makespan": 108.83347919387013,
+        "mean_completion": 62.56832650469106
+      }
+    },
+    {
+      "row": 10,
+      "type": "Short paths (10 cases)",
+      "grid": 12,
+      "objects": 16,
+      "cases": 10,
+      "interference_count": [
+        66,
+        130
+      ],
+      "interference_length_m": [
+        231.00000011400002,
+        580.0000002400001
+      ],
+      "fifo": {
+        "makespan": 123.51923119940446,
+        "mean_completion": 68.9218772015674
+      },
+      "lp": {
+        "makespan": 124.54187383203849,
+        "mean_completion": 69.10423032613402
+      }
+    },
+    {
+      "row": 11,
+      "type": "Waypoint detours (10 cases)",
+      "grid": 16,
+      "objects": 6,
+      "cases": 10,
+      "interference_count": [
+        35,
+        83
+      ],
+      "interference_length_m": [
+        175.5000000650001,
+        417.0000001620003
+      ],
+      "fifo": {
+        "makespan": 262.6130850965881,
+        "mean_completion": 163.66014832701762
+      },
+      "lp": {
+        "makespan": 257.1007491799617,
+        "mean_completion": 163.1571905974228
+      }
+    },
+    {
+      "row": 12,
+      "type": "Random paths (10 cases)",
+      "grid": 20,
+      "objects": 8,
+      "cases": 10,
+      "interference_count": [
+        27,
+        65
+      ],
+      "interference_length_m": [
+        148.00000005200008,
+        399.5000001210002
+      ],
+      "fifo": {
+        "makespan": 229.83008432820102,
+        "mean_completion": 154.10414307684937
+      },
+      "lp": {
+        "makespan": 219.85299470740628,
+        "mean_completion": 153.3172964820935
+      }
+    },
+    {
+      "row": 13,
+      "type": "Generated traffic",
+      "grid": 10,
+      "objects": 10,
+      "cases": 1,
+      "interference_count": [
+        70,
+        70
+      ],
+      "interference_length_m": [
+        253.000000126,
+        253.000000126
+      ],
+      "fifo": {
+        "makespan": 115.84714330032247,
+        "mean_completion": 86.3014295318608
+      },
+      "lp": {
+        "makespan": 115.84714330032247,
+        "mean_completion": 86.3014295318608
+      }
+    },
+    {
+      "row": 14,
+      "type": "Perimeter convoy",
+      "grid": 10,
+      "objects": 18,
+      "cases": 1,
+      "interference_count": [
+        72,
+        72
+      ],
+      "interference_length_m": [
+        396.00000007200003,
+        396.00000007200003
+      ],
+      "fifo": {
+        "makespan": 26.086305214969308,
+        "mean_completion": 24.30852743719153
+      },
+      "lp": {
+        "makespan": 26.086305214969308,
+        "mean_completion": 24.30852743719153
+      }
+    },
+    {
+      "row": 15,
+      "type": "Generated traffic",
+      "grid": 10,
+      "objects": 20,
+      "cases": 1,
+      "interference_count": [
+        238,
+        238
+      ],
+      "interference_length_m": [
+        993.5000004330001,
+        993.5000004330001
+      ],
+      "fifo": {
+        "makespan": 200.5563954676152,
+        "mean_completion": 121.15993180792393
+      },
+      "lp": {
+        "makespan": 200.5563954676152,
+        "mean_completion": 121.15993180792393
+      }
+    },
+    {
+      "row": 16,
+      "type": "Perimeter convoy",
+      "grid": 20,
+      "objects": 38,
+      "cases": 1,
+      "interference_count": [
+        152,
+        152
+      ],
+      "interference_length_m": [
+        836.000000152,
+        836.000000152
+      ],
+      "fifo": {
+        "makespan": 26.086305214969308,
+        "mean_completion": 23.138936793916674
+      },
+      "lp": {
+        "makespan": 26.086305214969308,
+        "mean_completion": 23.138936793916674
+      }
+    },
+    {
+      "row": 17,
+      "type": "Interior mixed traffic",
+      "grid": 10,
+      "objects": 50,
+      "cases": 1,
+      "interference_count": [
+        631,
+        631
+      ],
+      "interference_length_m": [
+        2581.0000009620003,
+        2581.0000009620003
+      ],
+      "fifo": {
+        "makespan": 42.920827300957036,
+        "mean_completion": 41.56082730095704
+      },
+      "lp": {
+        "makespan": 42.920827300957036,
+        "mean_completion": 41.56082730095704
+      }
+    }
+  ]
+}

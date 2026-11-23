@@ -1,0 +1,79 @@
+% Generated from the post-fix stop-only measurements. Do not hand-edit numbers.
+\begin{table}[htbp]
+\centering\small
+\setlength{\tabcolsep}{4pt}
+\caption{Post-fix stop-only baseline: geometry and makespan in seconds. Both policies use safe-prefix approach and sweep merging; motion extension is OFF.}
+\label{tab:stop-baseline-makespan}
+\begin{tabular}{rlcrrrrr}
+\toprule
+ID & Case & Grid & $n$ & $K_I$ & $L_I$ (m) & FIFO $C_{\max}$ & LP $C_{\max}$\\
+\midrule
+1 & Approach A & $5\times5$ & 3 & 4 & 12.0 & 18.394 & 18.394\\
+2 & Braking B & $5\times5$ & 3 & 4 & 12.0 & 25.372 & 25.372\\
+3 & D10-19 & $10\times10$ & 10 & 70 & 253.0 & 115.847 & 115.847\\
+4 & D10-20 & $10\times10$ & 10 & 42 & 170.5 & 83.082 & 83.082\\
+5 & D10-21 & $10\times10$ & 10 & 66 & 262.5 & 117.809 & 117.809\\
+6 & D20-19 & $10\times10$ & 20 & 238 & 993.5 & 245.375 & 251.998\\
+7 & D20-20 & $10\times10$ & 20 & 226 & 1002.5 & 241.505 & 241.505\\
+8 & D20-21 & $10\times10$ & 20 & 220 & 872.5 & 170.859 & 170.859\\
+9 & D30-19 & $12\times12$ & 30 & 398 & 1703.5 & 293.672 & 275.788\\
+10 & D30-20 & $12\times12$ & 30 & 326 & 1423.0 & 217.765 & 217.765\\
+11 & D30-21 & $12\times12$ & 30 & 278 & 1230.5 & 142.185 & 142.185\\
+12 & Interior & $4\times4$ & 8 & 24 & 336.0 & 42.921 & 42.921\\
+13 & Interior & $10\times10$ & 50 & 631 & 2581.0 & 42.921 & 42.921\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering\small
+\setlength{\tabcolsep}{4pt}
+\caption{Post-fix stop-only baseline: mean and population standard deviation of final path-completion times, in seconds. IDs match Table~\ref{tab:stop-baseline-makespan}.}
+\label{tab:stop-baseline-mean}
+\begin{tabular}{rrrrr}
+\toprule
+ID & FIFO $\overline C$ & FIFO $\sigma_C$ & LP $\overline C$ & LP $\sigma_C$\\
+\midrule
+1 & 11.627 & 4.810 & 11.627 & 4.810\\
+2 & 16.043 & 6.710 & 16.043 & 6.710\\
+3 & 86.301 & 28.341 & 86.301 & 28.341\\
+4 & 57.574 & 19.788 & 57.574 & 19.788\\
+5 & 71.034 & 34.241 & 71.034 & 34.241\\
+6 & 132.145 & 60.320 & 139.351 & 69.031\\
+7 & 121.958 & 69.365 & 121.958 & 69.365\\
+8 & 92.432 & 50.350 & 92.432 & 50.350\\
+9 & 155.324 & 79.931 & 149.002 & 73.794\\
+10 & 148.591 & 43.899 & 148.591 & 43.899\\
+11 & 75.321 & 34.863 & 75.321 & 34.863\\
+12 & 41.921 & 1.000 & 41.921 & 1.000\\
+13 & 41.561 & 1.411 & 41.561 & 1.411\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering\small
+\setlength{\tabcolsep}{4pt}
+\caption{Stop-only execution cost and decisions. Wall time is the median of three DEVS-only runs, excluding model/certificate construction. Stops exclude final arrivals; LP holds and waiter arbitrations are counted per execution.}
+\label{tab:stop-baseline-runtime}
+\begin{tabular}{rrrrrrr}
+\toprule
+ID & FIFO (ms) & LP (ms) & FIFO stops & LP stops & LP holds & LP selections\\
+\midrule
+1 & 1.32 & 1.32 & 2 & 2 & 0 & 0\\
+2 & 1.27 & 1.35 & 2 & 2 & 0 & 0\\
+3 & 80.03 & 79.61 & 36 & 36 & 0 & 1\\
+4 & 61.21 & 62.54 & 19 & 19 & 0 & 0\\
+5 & 77.34 & 74.03 & 30 & 30 & 0 & 0\\
+6 & 548.64 & 557.13 & 95 & 96 & 1 & 1\\
+7 & 473.45 & 475.14 & 75 & 75 & 0 & 0\\
+8 & 425.76 & 426.27 & 86 & 86 & 0 & 0\\
+9 & 1925.18 & 1916.71 & 154 & 154 & 1 & 1\\
+10 & 1741.28 & 1715.11 & 143 & 143 & 0 & 0\\
+11 & 1286.06 & 1292.60 & 126 & 126 & 0 & 0\\
+12 & 25.17 & 24.91 & 48 & 48 & 0 & 0\\
+13 & 1511.99 & 1471.15 & 300 & 300 & 0 & 0\\
+\bottomrule
+\end{tabular}
+\end{table}
+

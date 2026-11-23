@@ -1,0 +1,93 @@
+{
+  "papers": [
+    {
+      "file": "01_ODonnell_LozanoPerez_1989_Coordination.pdf",
+      "title": "Deadlock-free and collision-free coordination of two robot manipulators",
+      "source_url": "https://lis.csail.mit.edu/pubs/tlp/coordination-o-donnell.pdf",
+      "pages": 6,
+      "bytes": 511232,
+      "first_page_text_sample": ""
+    },
+    {
+      "file": "02_Leroy_Laumond_Simeon_1999_PathCoordination.pdf",
+      "title": "Multiple path coordination for mobile robots: A geometric algorithm",
+      "source_url": "https://ijcai.org/proceedings/1999/0159.pdf",
+      "pages": 6,
+      "bytes": 3665546,
+      "first_page_text_sample": "Multiple path coordination for mobile robots: a geometric algorithm \nS. Leroy, J.P. Laumond, T. Simeon \nLAAS-CNRS \n7, avenue du Colonel Roche \n31077 Toulous e Cedex 4- France \n{ sleroy,jpl,nic }@laas.fr \nAbstract \nThis paper presents a geometric based ap­\nproa ch for multiple mobile robot motion coo"
+    },
+    {
+      "file": "03_Standley_Korf_2011_CooperativePathfinding.pdf",
+      "title": "Complete algorithms for cooperative pathfinding problems",
+      "source_url": "https://ijcai.org/proceedings/2011/0118.pdf",
+      "pages": 6,
+      "bytes": 778860,
+      "first_page_text_sample": "Complete Algorithms for Cooperative Pathﬁnding Problems\nTrevor Standley1 and Richard Korf\nComputer Science Department\nUniversity of California, Los Angeles\nLos Angeles, CA 90095\n{tstand, korf}@cs.ucla.edu\nAbstract\nProblems that require multiple agents to follow\nnon-interfering paths from their curre"
+    },
+    {
+      "file": "04_Gregoire_et_al_2015_PriorityCoordination.pdf",
+      "title": "Robust multirobot coordination using priority encoded homotopic constraints",
+      "source_url": "https://arxiv.org/pdf/1306.0785v3",
+      "pages": 21,
+      "bytes": 799864,
+      "first_page_text_sample": "Robust multirobot coordination using\npriority encoded homotopic constraints\nJean Gregoirea,∗, Silvère Bonnabela, Arnaud de La Fortellea,b\naMINES ParisTech, Center for Robotics\n60, boulevard Saint Michel\n75272 PARIS Cedex 06, FRANCE\nPhone number: +33(0)140519408\nbInria Paris - Rocquencourt, RITS team"
+    },
+    {
+      "file": "05_Cap_et_al_2016_DelayingDisturbances.pdf",
+      "title": "Provably safe and deadlock-free execution of multi-robot plans under delaying disturbances",
+      "source_url": "https://arxiv.org/pdf/1603.08582",
+      "pages": 8,
+      "bytes": 1063673,
+      "first_page_text_sample": "Provably Safe and Deadlock-Free Execution of Multi-Robot Plans\nunder Delaying Disturbances\nMichal Cap∗,1,2 and Jean Gregoire∗,1 and Emilio Frazzoli 1\nAbstract— One of the standing challenges in multi-robot\nsystems is the ability to reliably coordinate motions of mul-\ntiple robots in environments whe"
+    },
+    {
+      "file": "06_Hoenig_et_al_2019_WarehouseExecution.pdf",
+      "title": "Persistent and robust execution of MAPF schedules in warehouses",
+      "source_url": "https://whoenig.github.io/publications/2019_RA-L_Hoenig.pdf",
+      "pages": 7,
+      "bytes": 1188912,
+      "first_page_text_sample": "IEEE ROBOTICS AND AUTOMATION LETTERS. PREPRINT VERSION. ACCEPTED DECEMBER, 2018 1\nPersistent and Robust Execution of MAPF\nSchedules in Warehouses\nWolfgang H¨onig1, Scott Kiesel 2, Andrew Tinka 2, Joseph W. Durham 2, and Nora Ayanian 1\nAbstract—Multi-Agent Path Finding (MAPF) is a well-studied\nproble"
+    },
+    {
+      "file": "07_Coskun_OKane_2019_OnlinePlanRepair.pdf",
+      "title": "Online plan repair in multi-robot coordination with disturbances",
+      "source_url": "https://jokane.net/pubs/CosOKa19.pdf",
+      "pages": 7,
+      "bytes": 406032,
+      "reviewed_on": "2026-11-21"
+    },
+    {
+      "file": "08_Coskun_OKane_Valtorta_2021_DeadlockFreeRepair.pdf",
+      "title": "Deadlock-free online plan repair in multi-robot coordination with disturbances",
+      "source_url": "https://jokane.net/pubs/CosOKaVal21.pdf",
+      "pages": 6,
+      "bytes": 359727,
+      "reviewed_on": "2026-11-21"
+    },
+    {
+      "file": "09_Dresner_Stone_2008_IntersectionManagement.pdf",
+      "title": "A Multiagent Approach to Autonomous Intersection Management",
+      "source_url": "https://www.cs.utexas.edu/~pstone/Papers/bib2html-links/JAIR08-dresner.pdf",
+      "pages": 66,
+      "bytes": 1338004,
+      "reviewed_on": "2026-11-21"
+    },
+    {
+      "file": "10_Quesel_et_al_2016_EventTriggeredBraking.pdf",
+      "title": "How to model and prove hybrid systems with KeYmaera: a tutorial on safety",
+      "source_url": "https://logic.kastel.kit.edu/pub/KeYmaera-tutorial.pdf",
+      "pages": 26,
+      "bytes": 647620,
+      "reviewed_on": "2026-11-21"
+    },
+    {
+      "file": "11_Kalose_et_al_2024_IntersectionBrakelines.pdf",
+      "title": "Human Centric Intersection Crossing Control Using C-ITS Information",
+      "source_url": "https://www.scitepress.org/Papers/2024/126235/126235.pdf",
+      "pages": 9,
+      "bytes": 15225864,
+      "reviewed_on": "2026-11-21"
+    }
+  ],
+  "errors": []
+}

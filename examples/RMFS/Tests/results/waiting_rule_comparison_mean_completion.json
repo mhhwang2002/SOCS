@@ -1,0 +1,1000 @@
+[
+  {
+    "case": "waiting_three_rule_contrast",
+    "objective": "mean_completion",
+    "baseline": {
+      "completed": true,
+      "makespan": 46.49293630524781,
+      "mean_completion": 29.024380823768535,
+      "completion_times": {
+        "R1": 17.081472561531964,
+        "R2": 23.498733604525825,
+        "R3": 46.49293630524781
+      },
+      "stopped_at": 46.49293630524781,
+      "contacts": 0,
+      "steps": 55,
+      "reason": null,
+      "commands": 10,
+      "wall_seconds": 0.0031548999995720806,
+      "decisions": [],
+      "lookahead_calls": 0,
+      "rollouts": 0,
+      "decision_seconds": 0,
+      "max_decision_seconds": 0,
+      "choice_history": [
+        {
+          "time": 6.246950475544242,
+          "candidates": [
+            "R2",
+            "R3"
+          ],
+          "selected": "R2",
+          "policy": "fifo"
+        }
+      ],
+      "nested_lookahead": false,
+      "rollout_horizon": "system_completion",
+      "rollout_policy": "same_fixed_rule_for_current_and_all_future_contentions",
+      "rollout_rules": [
+        "fifo",
+        "longest_remaining_distance"
+      ],
+      "fixed_rule": "fifo",
+      "objective": "makespan"
+    },
+    "lookahead": {
+      "completed": true,
+      "makespan": 34.333255690513546,
+      "mean_completion": 27.720137444038528,
+      "completion_times": {
+        "R1": 17.081472561531964,
+        "R2": 34.333255690513546,
+        "R3": 31.745684080070067
+      },
+      "stopped_at": 34.333255690513546,
+      "contacts": 0,
+      "steps": 54,
+      "reason": null,
+      "commands": 10,
+      "wall_seconds": 0.00997319999987667,
+      "decisions": [
+        {
+          "time": 6.246950475544242,
+          "candidates": [
+            "R2",
+            "R3"
+          ],
+          "waiting_since": {
+            "R2": 0.0,
+            "R3": 4.417261042993862
+          },
+          "fifo": "R2",
+          "selected": "R3",
+          "selected_rule": "longest_remaining_distance",
+          "differs_from_fifo": true,
+          "capture_seconds": 0.0004671000006055692,
+          "wall_seconds": 0.006826299999374896,
+          "branches": [
+            {
+              "task": 6,
+              "robot": "R2",
+              "rule": "fifo",
+              "subsequent_choices": [],
+              "wall_seconds": 0.0028598999997484498,
+              "completed": true,
+              "makespan": 46.49293630524781,
+              "mean_completion": 29.024380823768535,
+              "completion_times": {
+                "R1": 17.081472561531964,
+                "R2": 23.498733604525825,
+                "R3": 46.49293630524781
+              },
+              "stopped_at": 46.49293630524781,
+              "contacts": 0,
+              "steps": 46,
+              "reason": null,
+              "commands": 10
+            },
+            {
+              "task": 3,
+              "robot": "R3",
+              "rule": "longest_remaining_distance",
+              "subsequent_choices": [],
+              "wall_seconds": 0.002990900000440888,
+              "completed": true,
+              "makespan": 34.333255690513546,
+              "mean_completion": 27.720137444038528,
+              "completion_times": {
+                "R1": 17.081472561531964,
+                "R2": 34.333255690513546,
+                "R3": 31.745684080070067
+              },
+              "stopped_at": 34.333255690513546,
+              "contacts": 0,
+              "steps": 45,
+              "reason": null,
+              "commands": 10
+            }
+          ]
+        }
+      ],
+      "lookahead_calls": 1,
+      "rollouts": 2,
+      "decision_seconds": 0.006826299999374896,
+      "max_decision_seconds": 0.006826299999374896,
+      "choice_history": [
+        {
+          "time": 6.246950475544242,
+          "candidates": [
+            "R2",
+            "R3"
+          ],
+          "selected": "R3",
+          "policy": "lookahead_choice"
+        }
+      ],
+      "nested_lookahead": false,
+      "rollout_horizon": "system_completion",
+      "rollout_policy": "same_fixed_rule_for_current_and_all_future_contentions",
+      "rollout_rules": [
+        "fifo",
+        "longest_remaining_distance"
+      ],
+      "fixed_rule": "fifo",
+      "objective": "mean_completion"
+    },
+    "validation": {
+      "completed": true,
+      "makespan": 34.333255690513546,
+      "mean_completion": 27.720137444038528,
+      "completion_times": {
+        "R1": 17.081472561531964,
+        "R2": 34.333255690513546,
+        "R3": 31.745684080070067
+      },
+      "stopped_at": 34.333255690513546,
+      "contacts": 0,
+      "steps": 3487,
+      "reason": null,
+      "commands": 10,
+      "wall_seconds": 0.04628880000018398,
+      "decisions": [
+        {
+          "time": 6.246950475544242,
+          "candidates": [
+            "R2",
+            "R3"
+          ],
+          "waiting_since": {
+            "R2": 0.0,
+            "R3": 4.417261042993862
+          },
+          "fifo": "R2",
+          "selected": "R3",
+          "selected_rule": "longest_remaining_distance",
+          "differs_from_fifo": true,
+          "capture_seconds": 0.00046440000005532056,
+          "wall_seconds": 0.006517899999380461,
+          "branches": [
+            {
+              "task": 6,
+              "robot": "R2",
+              "rule": "fifo",
+              "subsequent_choices": [],
+              "wall_seconds": 0.0028114000015193596,
+              "completed": true,
+              "makespan": 46.49293630524781,
+              "mean_completion": 29.024380823768535,
+              "completion_times": {
+                "R1": 17.081472561531964,
+                "R2": 23.498733604525825,
+                "R3": 46.49293630524781
+              },
+              "stopped_at": 46.49293630524781,
+              "contacts": 0,
+              "steps": 46,
+              "reason": null,
+              "commands": 10
+            },
+            {
+              "task": 3,
+              "robot": "R3",
+              "rule": "longest_remaining_distance",
+              "subsequent_choices": [],
+              "wall_seconds": 0.0027914999991480727,
+              "completed": true,
+              "makespan": 34.333255690513546,
+              "mean_completion": 27.720137444038528,
+              "completion_times": {
+                "R1": 17.081472561531964,
+                "R2": 34.333255690513546,
+                "R3": 31.745684080070067
+              },
+              "stopped_at": 34.333255690513546,
+              "contacts": 0,
+              "steps": 45,
+              "reason": null,
+              "commands": 10
+            }
+          ]
+        }
+      ],
+      "lookahead_calls": 1,
+      "rollouts": 2,
+      "decision_seconds": 0.006517899999380461,
+      "max_decision_seconds": 0.006517899999380461,
+      "choice_history": [
+        {
+          "time": 6.246950475544242,
+          "candidates": [
+            "R2",
+            "R3"
+          ],
+          "selected": "R3",
+          "policy": "lookahead_choice"
+        }
+      ],
+      "nested_lookahead": false,
+      "rollout_horizon": "system_completion",
+      "rollout_policy": "same_fixed_rule_for_current_and_all_future_contentions",
+      "rollout_rules": [
+        "fifo",
+        "longest_remaining_distance"
+      ],
+      "fixed_rule": "fifo",
+      "objective": "mean_completion"
+    },
+    "baseline_validation": {
+      "completed": true,
+      "makespan": 46.49293630524781,
+      "mean_completion": 29.024380823768535,
+      "completion_times": {
+        "R1": 17.081472561531964,
+        "R2": 23.498733604525825,
+        "R3": 46.49293630524781
+      },
+      "stopped_at": 46.49293630524781,
+      "contacts": 0,
+      "steps": 4704,
+      "reason": null,
+      "commands": 10,
+      "wall_seconds": 0.048552899999776855,
+      "decisions": [],
+      "lookahead_calls": 0,
+      "rollouts": 0,
+      "decision_seconds": 0,
+      "max_decision_seconds": 0,
+      "choice_history": [
+        {
+          "time": 6.246950475544242,
+          "candidates": [
+            "R2",
+            "R3"
+          ],
+          "selected": "R2",
+          "policy": "fifo"
+        }
+      ],
+      "nested_lookahead": false,
+      "rollout_horizon": "system_completion",
+      "rollout_policy": "same_fixed_rule_for_current_and_all_future_contentions",
+      "rollout_rules": [
+        "fifo",
+        "longest_remaining_distance"
+      ],
+      "fixed_rule": "fifo",
+      "objective": "makespan"
+    },
+    "lrpf": {
+      "completed": true,
+      "makespan": 34.333255690513546,
+      "mean_completion": 27.720137444038528,
+      "completion_times": {
+        "R1": 17.081472561531964,
+        "R2": 34.333255690513546,
+        "R3": 31.745684080070067
+      },
+      "stopped_at": 34.333255690513546,
+      "contacts": 0,
+      "steps": 54,
+      "reason": null,
+      "commands": 10,
+      "wall_seconds": 0.003022900000360096,
+      "decisions": [],
+      "lookahead_calls": 0,
+      "rollouts": 0,
+      "decision_seconds": 0,
+      "max_decision_seconds": 0,
+      "choice_history": [
+        {
+          "time": 6.246950475544242,
+          "candidates": [
+            "R2",
+            "R3"
+          ],
+          "selected": "R3",
+          "policy": "longest_remaining_distance"
+        }
+      ],
+      "nested_lookahead": false,
+      "rollout_horizon": "system_completion",
+      "rollout_policy": "same_fixed_rule_for_current_and_all_future_contentions",
+      "rollout_rules": [
+        "fifo",
+        "longest_remaining_distance"
+      ],
+      "fixed_rule": "longest_remaining_distance",
+      "objective": "makespan"
+    },
+    "lrpf_validation": {
+      "completed": true,
+      "makespan": 34.333255690513546,
+      "mean_completion": 27.720137444038528,
+      "completion_times": {
+        "R1": 17.081472561531964,
+        "R2": 34.333255690513546,
+        "R3": 31.745684080070067
+      },
+      "stopped_at": 34.333255690513546,
+      "contacts": 0,
+      "steps": 3487,
+      "reason": null,
+      "commands": 10,
+      "wall_seconds": 0.0386899999994057,
+      "decisions": [],
+      "lookahead_calls": 0,
+      "rollouts": 0,
+      "decision_seconds": 0,
+      "max_decision_seconds": 0,
+      "choice_history": [
+        {
+          "time": 6.246950475544242,
+          "candidates": [
+            "R2",
+            "R3"
+          ],
+          "selected": "R3",
+          "policy": "longest_remaining_distance"
+        }
+      ],
+      "nested_lookahead": false,
+      "rollout_horizon": "system_completion",
+      "rollout_policy": "same_fixed_rule_for_current_and_all_future_contentions",
+      "rollout_rules": [
+        "fifo",
+        "longest_remaining_distance"
+      ],
+      "fixed_rule": "longest_remaining_distance",
+      "objective": "makespan"
+    },
+    "scope": "experimental_uncommitted_priorities_not_production_reference_order",
+    "improvement_percent": 26.15382374410661
+  },
+  {
+    "case": "waiting_six_two_groups",
+    "objective": "mean_completion",
+    "baseline": {
+      "completed": true,
+      "makespan": 48.49293630524781,
+      "mean_completion": 30.024380823768535,
+      "completion_times": {
+        "R1": 17.081472561531964,
+        "R2": 23.498733604525825,
+        "R3": 46.49293630524781,
+        "R4": 19.081472561531964,
+        "R5": 25.498733604525825,
+        "R6": 48.49293630524781
+      },
+      "stopped_at": 48.49293630524781,
+      "contacts": 0,
+      "steps": 111,
+      "reason": null,
+      "commands": 20,
+      "wall_seconds": 0.012113999999201042,
+      "decisions": [],
+      "lookahead_calls": 0,
+      "rollouts": 0,
+      "decision_seconds": 0,
+      "max_decision_seconds": 0,
+      "choice_history": [
+        {
+          "time": 6.246950475544242,
+          "candidates": [
+            "R2",
+            "R3"
+          ],
+          "selected": "R2",
+          "policy": "fifo"
+        },
+        {
+          "time": 8.246950475544242,
+          "candidates": [
+            "R5",
+            "R6"
+          ],
+          "selected": "R5",
+          "policy": "fifo"
+        }
+      ],
+      "nested_lookahead": false,
+      "rollout_horizon": "system_completion",
+      "rollout_policy": "same_fixed_rule_for_current_and_all_future_contentions",
+      "rollout_rules": [
+        "fifo",
+        "longest_remaining_distance"
+      ],
+      "fixed_rule": "fifo",
+      "objective": "makespan"
+    },
+    "lookahead": {
+      "completed": true,
+      "makespan": 36.333255690513546,
+      "mean_completion": 28.720137444038524,
+      "completion_times": {
+        "R1": 17.081472561531964,
+        "R2": 34.333255690513546,
+        "R3": 31.745684080070067,
+        "R4": 19.081472561531964,
+        "R5": 36.333255690513546,
+        "R6": 33.74568408007006
+      },
+      "stopped_at": 36.333255690513546,
+      "contacts": 0,
+      "steps": 108,
+      "reason": null,
+      "commands": 20,
+      "wall_seconds": 0.05560719999994035,
+      "decisions": [
+        {
+          "time": 6.246950475544242,
+          "candidates": [
+            "R2",
+            "R3"
+          ],
+          "waiting_since": {
+            "R2": 0.0,
+            "R3": 4.417261042993862
+          },
+          "fifo": "R2",
+          "selected": "R3",
+          "selected_rule": "longest_remaining_distance",
+          "differs_from_fifo": true,
+          "capture_seconds": 0.0008772000001044944,
+          "wall_seconds": 0.023070400000506197,
+          "branches": [
+            {
+              "task": 12,
+              "robot": "R2",
+              "rule": "fifo",
+              "subsequent_choices": [
+                {
+                  "time": 8.246950475544242,
+                  "candidates": [
+                    "R5",
+                    "R6"
+                  ],
+                  "selected": "R5",
+                  "policy": "fifo"
+                }
+              ],
+              "wall_seconds": 0.010920400000031805,
+              "completed": true,
+              "makespan": 48.49293630524781,
+              "mean_completion": 30.024380823768535,
+              "completion_times": {
+                "R1": 17.081472561531964,
+                "R2": 23.498733604525825,
+                "R3": 46.49293630524781,
+                "R4": 19.081472561531964,
+                "R5": 25.498733604525825,
+                "R6": 48.49293630524781
+              },
+              "stopped_at": 48.49293630524781,
+              "contacts": 0,
+              "steps": 93,
+              "reason": null,
+              "commands": 20
+            },
+            {
+              "task": 6,
+              "robot": "R3",
+              "rule": "longest_remaining_distance",
+              "subsequent_choices": [
+                {
+                  "time": 8.246950475544242,
+                  "candidates": [
+                    "R5",
+                    "R6"
+                  ],
+                  "selected": "R6",
+                  "policy": "longest_remaining_distance"
+                }
+              ],
+              "wall_seconds": 0.010317399999621557,
+              "completed": true,
+              "makespan": 36.333255690513546,
+              "mean_completion": 28.720137444038524,
+              "completion_times": {
+                "R1": 17.081472561531964,
+                "R2": 34.333255690513546,
+                "R3": 31.745684080070067,
+                "R4": 19.081472561531964,
+                "R5": 36.333255690513546,
+                "R6": 33.74568408007006
+              },
+              "stopped_at": 36.333255690513546,
+              "contacts": 0,
+              "steps": 90,
+              "reason": null,
+              "commands": 20
+            }
+          ]
+        },
+        {
+          "time": 8.246950475544242,
+          "candidates": [
+            "R5",
+            "R6"
+          ],
+          "waiting_since": {
+            "R5": 0.0,
+            "R6": 4.417261042993862
+          },
+          "fifo": "R5",
+          "selected": "R6",
+          "selected_rule": "longest_remaining_distance",
+          "differs_from_fifo": true,
+          "capture_seconds": 0.0009848999998212093,
+          "wall_seconds": 0.020307299999331008,
+          "branches": [
+            {
+              "task": 14,
+              "robot": "R5",
+              "rule": "fifo",
+              "subsequent_choices": [],
+              "wall_seconds": 0.009250400000382797,
+              "completed": true,
+              "makespan": 48.49293630524781,
+              "mean_completion": 29.37225913390353,
+              "completion_times": {
+                "R1": 17.081472561531964,
+                "R2": 34.333255690513546,
+                "R3": 31.745684080070067,
+                "R4": 19.081472561531964,
+                "R5": 25.498733604525825,
+                "R6": 48.49293630524781
+              },
+              "stopped_at": 48.49293630524781,
+              "contacts": 0,
+              "steps": 86,
+              "reason": null,
+              "commands": 20
+            },
+            {
+              "task": 7,
+              "robot": "R6",
+              "rule": "longest_remaining_distance",
+              "subsequent_choices": [],
+              "wall_seconds": 0.00904160000027332,
+              "completed": true,
+              "makespan": 36.333255690513546,
+              "mean_completion": 28.720137444038524,
+              "completion_times": {
+                "R1": 17.081472561531964,
+                "R2": 34.333255690513546,
+                "R3": 31.745684080070067,
+                "R4": 19.081472561531964,
+                "R5": 36.333255690513546,
+                "R6": 33.74568408007006
+              },
+              "stopped_at": 36.333255690513546,
+              "contacts": 0,
+              "steps": 84,
+              "reason": null,
+              "commands": 20
+            }
+          ]
+        }
+      ],
+      "lookahead_calls": 2,
+      "rollouts": 4,
+      "decision_seconds": 0.043377699999837205,
+      "max_decision_seconds": 0.023070400000506197,
+      "choice_history": [
+        {
+          "time": 6.246950475544242,
+          "candidates": [
+            "R2",
+            "R3"
+          ],
+          "selected": "R3",
+          "policy": "lookahead_choice"
+        },
+        {
+          "time": 8.246950475544242,
+          "candidates": [
+            "R5",
+            "R6"
+          ],
+          "selected": "R6",
+          "policy": "lookahead_choice"
+        }
+      ],
+      "nested_lookahead": false,
+      "rollout_horizon": "system_completion",
+      "rollout_policy": "same_fixed_rule_for_current_and_all_future_contentions",
+      "rollout_rules": [
+        "fifo",
+        "longest_remaining_distance"
+      ],
+      "fixed_rule": "fifo",
+      "objective": "mean_completion"
+    },
+    "validation": {
+      "completed": true,
+      "makespan": 36.333255690513546,
+      "mean_completion": 28.720137444038524,
+      "completion_times": {
+        "R1": 17.081472561531964,
+        "R2": 34.333255690513546,
+        "R3": 31.745684080070067,
+        "R4": 19.081472561531964,
+        "R5": 36.333255690513546,
+        "R6": 33.74568408007006
+      },
+      "stopped_at": 36.333255690513546,
+      "contacts": 0,
+      "steps": 3741,
+      "reason": null,
+      "commands": 20,
+      "wall_seconds": 0.12473289999979897,
+      "decisions": [
+        {
+          "time": 6.246950475544242,
+          "candidates": [
+            "R2",
+            "R3"
+          ],
+          "waiting_since": {
+            "R2": 0.0,
+            "R3": 4.417261042993862
+          },
+          "fifo": "R2",
+          "selected": "R3",
+          "selected_rule": "longest_remaining_distance",
+          "differs_from_fifo": true,
+          "capture_seconds": 0.0009349000010843156,
+          "wall_seconds": 0.022501700001157587,
+          "branches": [
+            {
+              "task": 12,
+              "robot": "R2",
+              "rule": "fifo",
+              "subsequent_choices": [
+                {
+                  "time": 8.246950475544242,
+                  "candidates": [
+                    "R5",
+                    "R6"
+                  ],
+                  "selected": "R5",
+                  "policy": "fifo"
+                }
+              ],
+              "wall_seconds": 0.010417800000141142,
+              "completed": true,
+              "makespan": 48.49293630524781,
+              "mean_completion": 30.024380823768535,
+              "completion_times": {
+                "R1": 17.081472561531964,
+                "R2": 23.498733604525825,
+                "R3": 46.49293630524781,
+                "R4": 19.081472561531964,
+                "R5": 25.498733604525825,
+                "R6": 48.49293630524781
+              },
+              "stopped_at": 48.49293630524781,
+              "contacts": 0,
+              "steps": 93,
+              "reason": null,
+              "commands": 20
+            },
+            {
+              "task": 6,
+              "robot": "R3",
+              "rule": "longest_remaining_distance",
+              "subsequent_choices": [
+                {
+                  "time": 8.246950475544242,
+                  "candidates": [
+                    "R5",
+                    "R6"
+                  ],
+                  "selected": "R6",
+                  "policy": "longest_remaining_distance"
+                }
+              ],
+              "wall_seconds": 0.010254799999529496,
+              "completed": true,
+              "makespan": 36.333255690513546,
+              "mean_completion": 28.720137444038524,
+              "completion_times": {
+                "R1": 17.081472561531964,
+                "R2": 34.333255690513546,
+                "R3": 31.745684080070067,
+                "R4": 19.081472561531964,
+                "R5": 36.333255690513546,
+                "R6": 33.74568408007006
+              },
+              "stopped_at": 36.333255690513546,
+              "contacts": 0,
+              "steps": 90,
+              "reason": null,
+              "commands": 20
+            }
+          ]
+        },
+        {
+          "time": 8.246950475544242,
+          "candidates": [
+            "R5",
+            "R6"
+          ],
+          "waiting_since": {
+            "R5": 0.0,
+            "R6": 4.417261042993862
+          },
+          "fifo": "R5",
+          "selected": "R6",
+          "selected_rule": "longest_remaining_distance",
+          "differs_from_fifo": true,
+          "capture_seconds": 0.0010485999991942663,
+          "wall_seconds": 0.02111960000002,
+          "branches": [
+            {
+              "task": 14,
+              "robot": "R5",
+              "rule": "fifo",
+              "subsequent_choices": [],
+              "wall_seconds": 0.009342899998955545,
+              "completed": true,
+              "makespan": 48.49293630524781,
+              "mean_completion": 29.37225913390353,
+              "completion_times": {
+                "R1": 17.081472561531964,
+                "R2": 34.333255690513546,
+                "R3": 31.745684080070067,
+                "R4": 19.081472561531964,
+                "R5": 25.498733604525825,
+                "R6": 48.49293630524781
+              },
+              "stopped_at": 48.49293630524781,
+              "contacts": 0,
+              "steps": 86,
+              "reason": null,
+              "commands": 20
+            },
+            {
+              "task": 7,
+              "robot": "R6",
+              "rule": "longest_remaining_distance",
+              "subsequent_choices": [],
+              "wall_seconds": 0.009666100000686129,
+              "completed": true,
+              "makespan": 36.333255690513546,
+              "mean_completion": 28.720137444038524,
+              "completion_times": {
+                "R1": 17.081472561531964,
+                "R2": 34.333255690513546,
+                "R3": 31.745684080070067,
+                "R4": 19.081472561531964,
+                "R5": 36.333255690513546,
+                "R6": 33.74568408007006
+              },
+              "stopped_at": 36.333255690513546,
+              "contacts": 0,
+              "steps": 84,
+              "reason": null,
+              "commands": 20
+            }
+          ]
+        }
+      ],
+      "lookahead_calls": 2,
+      "rollouts": 4,
+      "decision_seconds": 0.04362130000117759,
+      "max_decision_seconds": 0.022501700001157587,
+      "choice_history": [
+        {
+          "time": 6.246950475544242,
+          "candidates": [
+            "R2",
+            "R3"
+          ],
+          "selected": "R3",
+          "policy": "lookahead_choice"
+        },
+        {
+          "time": 8.246950475544242,
+          "candidates": [
+            "R5",
+            "R6"
+          ],
+          "selected": "R6",
+          "policy": "lookahead_choice"
+        }
+      ],
+      "nested_lookahead": false,
+      "rollout_horizon": "system_completion",
+      "rollout_policy": "same_fixed_rule_for_current_and_all_future_contentions",
+      "rollout_rules": [
+        "fifo",
+        "longest_remaining_distance"
+      ],
+      "fixed_rule": "fifo",
+      "objective": "mean_completion"
+    },
+    "baseline_validation": {
+      "completed": true,
+      "makespan": 48.49293630524781,
+      "mean_completion": 30.024380823768535,
+      "completion_times": {
+        "R1": 17.081472561531964,
+        "R2": 23.498733604525825,
+        "R3": 46.49293630524781,
+        "R4": 19.081472561531964,
+        "R5": 25.498733604525825,
+        "R6": 48.49293630524781
+      },
+      "stopped_at": 48.49293630524781,
+      "contacts": 0,
+      "steps": 4960,
+      "reason": null,
+      "commands": 20,
+      "wall_seconds": 0.09525899999971443,
+      "decisions": [],
+      "lookahead_calls": 0,
+      "rollouts": 0,
+      "decision_seconds": 0,
+      "max_decision_seconds": 0,
+      "choice_history": [
+        {
+          "time": 6.246950475544242,
+          "candidates": [
+            "R2",
+            "R3"
+          ],
+          "selected": "R2",
+          "policy": "fifo"
+        },
+        {
+          "time": 8.246950475544242,
+          "candidates": [
+            "R5",
+            "R6"
+          ],
+          "selected": "R5",
+          "policy": "fifo"
+        }
+      ],
+      "nested_lookahead": false,
+      "rollout_horizon": "system_completion",
+      "rollout_policy": "same_fixed_rule_for_current_and_all_future_contentions",
+      "rollout_rules": [
+        "fifo",
+        "longest_remaining_distance"
+      ],
+      "fixed_rule": "fifo",
+      "objective": "makespan"
+    },
+    "lrpf": {
+      "completed": true,
+      "makespan": 36.333255690513546,
+      "mean_completion": 28.720137444038524,
+      "completion_times": {
+        "R1": 17.081472561531964,
+        "R2": 34.333255690513546,
+        "R3": 31.745684080070067,
+        "R4": 19.081472561531964,
+        "R5": 36.333255690513546,
+        "R6": 33.74568408007006
+      },
+      "stopped_at": 36.333255690513546,
+      "contacts": 0,
+      "steps": 108,
+      "reason": null,
+      "commands": 20,
+      "wall_seconds": 0.01327339999988908,
+      "decisions": [],
+      "lookahead_calls": 0,
+      "rollouts": 0,
+      "decision_seconds": 0,
+      "max_decision_seconds": 0,
+      "choice_history": [
+        {
+          "time": 6.246950475544242,
+          "candidates": [
+            "R2",
+            "R3"
+          ],
+          "selected": "R3",
+          "policy": "longest_remaining_distance"
+        },
+        {
+          "time": 8.246950475544242,
+          "candidates": [
+            "R5",
+            "R6"
+          ],
+          "selected": "R6",
+          "policy": "longest_remaining_distance"
+        }
+      ],
+      "nested_lookahead": false,
+      "rollout_horizon": "system_completion",
+      "rollout_policy": "same_fixed_rule_for_current_and_all_future_contentions",
+      "rollout_rules": [
+        "fifo",
+        "longest_remaining_distance"
+      ],
+      "fixed_rule": "longest_remaining_distance",
+      "objective": "makespan"
+    },
+    "lrpf_validation": {
+      "completed": true,
+      "makespan": 36.333255690513546,
+      "mean_completion": 28.720137444038524,
+      "completion_times": {
+        "R1": 17.081472561531964,
+        "R2": 34.333255690513546,
+        "R3": 31.745684080070067,
+        "R4": 19.081472561531964,
+        "R5": 36.333255690513546,
+        "R6": 33.74568408007006
+      },
+      "stopped_at": 36.333255690513546,
+      "contacts": 0,
+      "steps": 3741,
+      "reason": null,
+      "commands": 20,
+      "wall_seconds": 0.07599649999974645,
+      "decisions": [],
+      "lookahead_calls": 0,
+      "rollouts": 0,
+      "decision_seconds": 0,
+      "max_decision_seconds": 0,
+      "choice_history": [
+        {
+          "time": 6.246950475544242,
+          "candidates": [
+            "R2",
+            "R3"
+          ],
+          "selected": "R3",
+          "policy": "longest_remaining_distance"
+        },
+        {
+          "time": 8.246950475544242,
+          "candidates": [
+            "R5",
+            "R6"
+          ],
+          "selected": "R6",
+          "policy": "longest_remaining_distance"
+        }
+      ],
+      "nested_lookahead": false,
+      "rollout_horizon": "system_completion",
+      "rollout_policy": "same_fixed_rule_for_current_and_all_future_contentions",
+      "rollout_rules": [
+        "fifo",
+        "longest_remaining_distance"
+      ],
+      "fixed_rule": "longest_remaining_distance",
+      "objective": "makespan"
+    },
+    "scope": "experimental_uncommitted_priorities_not_production_reference_order",
+    "improvement_percent": 25.075158448217884
+  }
+]

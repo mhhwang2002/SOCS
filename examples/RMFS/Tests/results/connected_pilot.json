@@ -1,0 +1,2161 @@
+[
+  {
+    "case": "corridor4",
+    "policies": [
+      {
+        "policy": "fifo",
+        "repetitions": 1,
+        "metrics": {
+          "makespan": {
+            "mean": 64.22742312212517,
+            "across_run_std": 0.0
+          },
+          "mean_completion": {
+            "mean": 52.57549892332906,
+            "across_run_std": 0.0
+          },
+          "completion_std": {
+            "mean": 11.73432236749694,
+            "across_run_std": 0.0
+          },
+          "wall_seconds": {
+            "mean": 0.034246300001541385,
+            "across_run_std": 0.0
+          },
+          "setup_seconds": {
+            "mean": 0.12404500000047847,
+            "across_run_std": 0.0
+          },
+          "total_seconds": {
+            "mean": 0.15829200000007404,
+            "across_run_std": 0.0
+          },
+          "decision_seconds": {
+            "mean": 0,
+            "across_run_std": 0.0
+          }
+        },
+        "trials": [
+          {
+            "completed": true,
+            "makespan": 64.22742312212517,
+            "mean_completion": 52.57549892332906,
+            "completion_times": {
+              "R1": 47.02770294177369,
+              "R2": 64.22742312212517,
+              "R3": 36.00304803651986,
+              "R4": 63.0438215928975
+            },
+            "stopped_at": 64.22742312212517,
+            "contacts": 0,
+            "steps": 197,
+            "reason": null,
+            "commands": 18,
+            "completion_std": 11.73432236749694,
+            "case": "corridor4",
+            "policy": "fifo",
+            "seed": 0,
+            "decisions": [],
+            "execution_trace": {
+              "wait_actions": [
+                {
+                  "time": 6.246950475544242,
+                  "a": "R1",
+                  "b": "R2",
+                  "action": "send_now"
+                },
+                {
+                  "time": 6.246950475544242,
+                  "a": "R3",
+                  "b": "R4",
+                  "action": "send_now"
+                }
+              ],
+              "waiting_choices": []
+            },
+            "nested_lookahead": false,
+            "rollout_horizon": "system_completion",
+            "rollout_policy": "independent_current_action_future_wait_rule_and_waiting_priority",
+            "includes_previous_fixed_LP_continuation": true,
+            "lookahead_calls": 0,
+            "rollouts": 0,
+            "wait_decisions": 0,
+            "priority_decisions": 0,
+            "wall_seconds": 0.034246300001541385,
+            "setup_seconds": 0.12404500000047847,
+            "total_seconds": 0.15829200000007404,
+            "decision_seconds": 0,
+            "validation": {
+              "completed": true,
+              "contacts": 0,
+              "interval": 0.01,
+              "stop_on_collision": true,
+              "signature_matches": true
+            }
+          }
+        ],
+        "distinct_validated_trajectories": 1
+      },
+      {
+        "policy": "length",
+        "repetitions": 1,
+        "metrics": {
+          "makespan": {
+            "mean": 70.75425475752343,
+            "across_run_std": 0.0
+          },
+          "mean_completion": {
+            "mean": 57.27426747168704,
+            "across_run_std": 0.0
+          },
+          "completion_std": {
+            "mean": 10.689329078596957,
+            "across_run_std": 0.0
+          },
+          "wall_seconds": {
+            "mean": 0.035412899997027125,
+            "across_run_std": 0.0
+          },
+          "setup_seconds": {
+            "mean": 0.12190040000132285,
+            "across_run_std": 0.0
+          },
+          "total_seconds": {
+            "mean": 0.15731349999987287,
+            "across_run_std": 0.0
+          },
+          "decision_seconds": {
+            "mean": 0,
+            "across_run_std": 0.0
+          }
+        },
+        "trials": [
+          {
+            "completed": true,
+            "makespan": 70.75425475752343,
+            "mean_completion": 57.27426747168704,
+            "completion_times": {
+              "R1": 62.42426357533954,
+              "R2": 70.75425475752343,
+              "R3": 54.09427239315566,
+              "R4": 41.82427916072953
+            },
+            "stopped_at": 70.75425475752343,
+            "contacts": 0,
+            "steps": 196,
+            "reason": null,
+            "commands": 17,
+            "completion_std": 10.689329078596957,
+            "case": "corridor4",
+            "policy": "length",
+            "seed": 0,
+            "decisions": [],
+            "execution_trace": {
+              "wait_actions": [
+                {
+                  "time": 6.246950475544242,
+                  "a": "R1",
+                  "b": "R2",
+                  "action": "send_now"
+                },
+                {
+                  "time": 6.246950475544242,
+                  "a": "R3",
+                  "b": "R4",
+                  "action": "wait_for_B"
+                }
+              ],
+              "waiting_choices": [
+                {
+                  "time": 7.6509205567600596,
+                  "candidates": [
+                    "R3",
+                    "R4"
+                  ],
+                  "selected": "R4",
+                  "policy": "longest_remaining_distance"
+                }
+              ]
+            },
+            "nested_lookahead": false,
+            "rollout_horizon": "system_completion",
+            "rollout_policy": "independent_current_action_future_wait_rule_and_waiting_priority",
+            "includes_previous_fixed_LP_continuation": true,
+            "lookahead_calls": 0,
+            "rollouts": 0,
+            "wait_decisions": 0,
+            "priority_decisions": 0,
+            "wall_seconds": 0.035412899997027125,
+            "setup_seconds": 0.12190040000132285,
+            "total_seconds": 0.15731349999987287,
+            "decision_seconds": 0,
+            "validation": {
+              "completed": true,
+              "contacts": 0,
+              "interval": 0.01,
+              "stop_on_collision": true,
+              "signature_matches": true
+            }
+          }
+        ],
+        "distinct_validated_trajectories": 1
+      },
+      {
+        "policy": "random",
+        "repetitions": 2,
+        "metrics": {
+          "makespan": {
+            "mean": 67.4908389398243,
+            "across_run_std": 3.2634158176991264
+          },
+          "mean_completion": {
+            "mean": 54.92488319750805,
+            "across_run_std": 2.349384274178991
+          },
+          "completion_std": {
+            "mean": 11.21182572304695,
+            "across_run_std": 0.5224966444499914
+          },
+          "wall_seconds": {
+            "mean": 0.03699695000068459,
+            "across_run_std": 0.00045884999963163864
+          },
+          "setup_seconds": {
+            "mean": 0.12450129999888304,
+            "across_run_std": 0.0026132000002689892
+          },
+          "total_seconds": {
+            "mean": 0.16149849999965227,
+            "across_run_std": 0.002154399999199086
+          },
+          "decision_seconds": {
+            "mean": 0,
+            "across_run_std": 0.0
+          }
+        },
+        "trials": [
+          {
+            "completed": true,
+            "makespan": 70.75425475752343,
+            "mean_completion": 57.27426747168704,
+            "completion_times": {
+              "R1": 62.42426357533954,
+              "R2": 70.75425475752343,
+              "R3": 54.09427239315566,
+              "R4": 41.82427916072953
+            },
+            "stopped_at": 70.75425475752343,
+            "contacts": 0,
+            "steps": 195,
+            "reason": null,
+            "commands": 17,
+            "completion_std": 10.689329078596957,
+            "case": "corridor4",
+            "policy": "random",
+            "seed": 0,
+            "decisions": [],
+            "execution_trace": {
+              "wait_actions": [
+                {
+                  "time": 6.246950475544242,
+                  "a": "R1",
+                  "b": "R2",
+                  "action": "wait_for_B"
+                },
+                {
+                  "time": 6.246950475544242,
+                  "a": "R3",
+                  "b": "R4",
+                  "action": "wait_for_B"
+                }
+              ],
+              "waiting_choices": [
+                {
+                  "time": 7.6509205567600596,
+                  "candidates": [
+                    "R1",
+                    "R2"
+                  ],
+                  "selected": "R1",
+                  "policy": "random"
+                },
+                {
+                  "time": 7.6509205567600596,
+                  "candidates": [
+                    "R3",
+                    "R4"
+                  ],
+                  "selected": "R4",
+                  "policy": "random"
+                }
+              ]
+            },
+            "nested_lookahead": false,
+            "rollout_horizon": "system_completion",
+            "rollout_policy": "independent_current_action_future_wait_rule_and_waiting_priority",
+            "includes_previous_fixed_LP_continuation": true,
+            "lookahead_calls": 0,
+            "rollouts": 0,
+            "wait_decisions": 0,
+            "priority_decisions": 0,
+            "wall_seconds": 0.03745580000031623,
+            "setup_seconds": 0.12188809999861405,
+            "total_seconds": 0.15934410000045318,
+            "decision_seconds": 0,
+            "validation": {
+              "completed": true,
+              "contacts": 0,
+              "interval": 0.01,
+              "stop_on_collision": true,
+              "signature_matches": true
+            }
+          },
+          {
+            "completed": true,
+            "makespan": 64.22742312212517,
+            "mean_completion": 52.57549892332906,
+            "completion_times": {
+              "R1": 47.02770294177369,
+              "R2": 64.22742312212517,
+              "R3": 36.00304803651986,
+              "R4": 63.0438215928975
+            },
+            "stopped_at": 64.22742312212517,
+            "contacts": 0,
+            "steps": 197,
+            "reason": null,
+            "commands": 18,
+            "completion_std": 11.73432236749694,
+            "case": "corridor4",
+            "policy": "random",
+            "seed": 1,
+            "decisions": [],
+            "execution_trace": {
+              "wait_actions": [
+                {
+                  "time": 6.246950475544242,
+                  "a": "R1",
+                  "b": "R2",
+                  "action": "send_now"
+                },
+                {
+                  "time": 6.246950475544242,
+                  "a": "R3",
+                  "b": "R4",
+                  "action": "send_now"
+                }
+              ],
+              "waiting_choices": []
+            },
+            "nested_lookahead": false,
+            "rollout_horizon": "system_completion",
+            "rollout_policy": "independent_current_action_future_wait_rule_and_waiting_priority",
+            "includes_previous_fixed_LP_continuation": true,
+            "lookahead_calls": 0,
+            "rollouts": 0,
+            "wait_decisions": 0,
+            "priority_decisions": 0,
+            "wall_seconds": 0.03653810000105295,
+            "setup_seconds": 0.12711449999915203,
+            "total_seconds": 0.16365289999885135,
+            "decision_seconds": 0,
+            "validation": {
+              "completed": true,
+              "contacts": 0,
+              "interval": 0.01,
+              "stop_on_collision": true,
+              "signature_matches": true
+            }
+          }
+        ],
+        "distinct_validated_trajectories": 2
+      },
+      {
+        "policy": "lookahead_makespan",
+        "repetitions": 1,
+        "metrics": {
+          "makespan": {
+            "mean": 64.22742312212517,
+            "across_run_std": 0.0
+          },
+          "mean_completion": {
+            "mean": 52.57549892332906,
+            "across_run_std": 0.0
+          },
+          "completion_std": {
+            "mean": 11.73432236749694,
+            "across_run_std": 0.0
+          },
+          "wall_seconds": {
+            "mean": 0.5629287000010663,
+            "across_run_std": 0.0
+          },
+          "setup_seconds": {
+            "mean": 0.12759450000157813,
+            "across_run_std": 0.0
+          },
+          "total_seconds": {
+            "mean": 0.6905235000012908,
+            "across_run_std": 0.0
+          },
+          "decision_seconds": {
+            "mean": 0.5278597000033187,
+            "across_run_std": 0.0
+          }
+        },
+        "trials": [
+          {
+            "completed": true,
+            "makespan": 64.22742312212517,
+            "mean_completion": 52.57549892332906,
+            "completion_times": {
+              "R1": 47.02770294177369,
+              "R2": 64.22742312212517,
+              "R3": 36.00304803651986,
+              "R4": 63.0438215928975
+            },
+            "stopped_at": 64.22742312212517,
+            "contacts": 0,
+            "steps": 197,
+            "reason": null,
+            "commands": 18,
+            "completion_std": 11.73432236749694,
+            "case": "corridor4",
+            "policy": "lookahead_makespan",
+            "seed": 0,
+            "decisions": [
+              {
+                "time": 6.246950475544242,
+                "kind": "wait_or_go",
+                "selected_mode": "fifo",
+                "selected_wait_rule": "fifo",
+                "action_name": "send_now",
+                "action": "send_now",
+                "branches": [
+                  {
+                    "mode": "fifo",
+                    "wait_rule": "fifo",
+                    "action": "send_now",
+                    "action_name": "send_now",
+                    "fixed_LP_continuation": false,
+                    "wall_seconds": 0.03265490000194404,
+                    "execution_trace": {
+                      "wait_actions": [
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R1",
+                          "b": "R2",
+                          "action": "send_now"
+                        },
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R3",
+                          "b": "R4",
+                          "action": "send_now"
+                        }
+                      ],
+                      "waiting_choices": []
+                    },
+                    "completed": true,
+                    "makespan": 64.22742312212517,
+                    "mean_completion": 52.57549892332906,
+                    "completion_times": {
+                      "R1": 47.02770294177369,
+                      "R2": 64.22742312212517,
+                      "R3": 36.00304803651986,
+                      "R4": 63.0438215928975
+                    },
+                    "stopped_at": 64.22742312212517,
+                    "contacts": 0,
+                    "steps": 175,
+                    "reason": null,
+                    "commands": 18,
+                    "completion_std": 11.73432236749694
+                  },
+                  {
+                    "mode": "length",
+                    "wait_rule": "fifo",
+                    "action": "send_now",
+                    "action_name": "send_now",
+                    "fixed_LP_continuation": true,
+                    "wall_seconds": 0.032833500001288485,
+                    "execution_trace": {
+                      "wait_actions": [
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R1",
+                          "b": "R2",
+                          "action": "send_now"
+                        },
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R3",
+                          "b": "R4",
+                          "action": "send_now"
+                        }
+                      ],
+                      "waiting_choices": []
+                    },
+                    "completed": true,
+                    "makespan": 64.22742312212517,
+                    "mean_completion": 52.57549892332906,
+                    "completion_times": {
+                      "R1": 47.02770294177369,
+                      "R2": 64.22742312212517,
+                      "R3": 36.00304803651986,
+                      "R4": 63.0438215928975
+                    },
+                    "stopped_at": 64.22742312212517,
+                    "contacts": 0,
+                    "steps": 175,
+                    "reason": null,
+                    "commands": 18,
+                    "completion_std": 11.73432236749694
+                  },
+                  {
+                    "mode": "fifo",
+                    "wait_rule": "length",
+                    "action": "send_now",
+                    "action_name": "send_now",
+                    "fixed_LP_continuation": false,
+                    "wall_seconds": 0.03192809999745805,
+                    "execution_trace": {
+                      "wait_actions": [
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R1",
+                          "b": "R2",
+                          "action": "send_now"
+                        },
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R3",
+                          "b": "R4",
+                          "action": "wait_for_B"
+                        }
+                      ],
+                      "waiting_choices": [
+                        {
+                          "time": 7.6509205567600596,
+                          "candidates": [
+                            "R3",
+                            "R4"
+                          ],
+                          "selected": "R3",
+                          "policy": "fifo"
+                        }
+                      ]
+                    },
+                    "completed": true,
+                    "makespan": 64.87673153051328,
+                    "mean_completion": 53.41347274992409,
+                    "completion_times": {
+                      "R1": 47.67701135016179,
+                      "R2": 64.87673153051328,
+                      "R3": 37.407018117735674,
+                      "R4": 63.69313000128561
+                    },
+                    "stopped_at": 64.87673153051328,
+                    "contacts": 0,
+                    "steps": 176,
+                    "reason": null,
+                    "commands": 18,
+                    "completion_std": 11.469429305326111
+                  },
+                  {
+                    "mode": "length",
+                    "wait_rule": "length",
+                    "action": "send_now",
+                    "action_name": "send_now",
+                    "fixed_LP_continuation": false,
+                    "wall_seconds": 0.0331372000000556,
+                    "execution_trace": {
+                      "wait_actions": [
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R1",
+                          "b": "R2",
+                          "action": "send_now"
+                        },
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R3",
+                          "b": "R4",
+                          "action": "wait_for_B"
+                        }
+                      ],
+                      "waiting_choices": [
+                        {
+                          "time": 7.6509205567600596,
+                          "candidates": [
+                            "R3",
+                            "R4"
+                          ],
+                          "selected": "R4",
+                          "policy": "longest_remaining_distance"
+                        }
+                      ]
+                    },
+                    "completed": true,
+                    "makespan": 70.75425475752343,
+                    "mean_completion": 57.27426747168704,
+                    "completion_times": {
+                      "R1": 62.42426357533954,
+                      "R2": 70.75425475752343,
+                      "R3": 54.09427239315566,
+                      "R4": 41.82427916072953
+                    },
+                    "stopped_at": 70.75425475752343,
+                    "contacts": 0,
+                    "steps": 174,
+                    "reason": null,
+                    "commands": 17,
+                    "completion_std": 10.689329078596957
+                  },
+                  {
+                    "mode": "fifo",
+                    "wait_rule": "fifo",
+                    "action": "wait_for_B",
+                    "action_name": "wait_for_B",
+                    "fixed_LP_continuation": false,
+                    "wall_seconds": 0.03251839999938966,
+                    "execution_trace": {
+                      "wait_actions": [
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R1",
+                          "b": "R2",
+                          "action": "wait_for_B"
+                        },
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R3",
+                          "b": "R4",
+                          "action": "send_now"
+                        }
+                      ],
+                      "waiting_choices": [
+                        {
+                          "time": 7.6509205567600596,
+                          "candidates": [
+                            "R1",
+                            "R2"
+                          ],
+                          "selected": "R1",
+                          "policy": "fifo"
+                        }
+                      ]
+                    },
+                    "completed": true,
+                    "makespan": 66.05711255467556,
+                    "mean_completion": 53.94776599774184,
+                    "completion_times": {
+                      "R1": 48.857392374324064,
+                      "R2": 66.05711255467556,
+                      "R3": 36.00304803651986,
+                      "R4": 64.87351102544788
+                    },
+                    "stopped_at": 66.05711255467556,
+                    "contacts": 0,
+                    "steps": 177,
+                    "reason": null,
+                    "commands": 18,
+                    "completion_std": 12.38883554637154
+                  },
+                  {
+                    "mode": "length",
+                    "wait_rule": "fifo",
+                    "action": "wait_for_B",
+                    "action_name": "wait_for_B",
+                    "fixed_LP_continuation": true,
+                    "wall_seconds": 0.03107340000133263,
+                    "execution_trace": {
+                      "wait_actions": [
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R1",
+                          "b": "R2",
+                          "action": "wait_for_B"
+                        },
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R3",
+                          "b": "R4",
+                          "action": "send_now"
+                        }
+                      ],
+                      "waiting_choices": [
+                        {
+                          "time": 7.6509205567600596,
+                          "candidates": [
+                            "R1",
+                            "R2"
+                          ],
+                          "selected": "R1",
+                          "policy": "longest_remaining_distance"
+                        }
+                      ]
+                    },
+                    "completed": true,
+                    "makespan": 66.05711255467556,
+                    "mean_completion": 53.94776599774184,
+                    "completion_times": {
+                      "R1": 48.857392374324064,
+                      "R2": 66.05711255467556,
+                      "R3": 36.00304803651986,
+                      "R4": 64.87351102544788
+                    },
+                    "stopped_at": 66.05711255467556,
+                    "contacts": 0,
+                    "steps": 177,
+                    "reason": null,
+                    "commands": 18,
+                    "completion_std": 12.38883554637154
+                  },
+                  {
+                    "mode": "fifo",
+                    "wait_rule": "length",
+                    "action": "wait_for_B",
+                    "action_name": "wait_for_B",
+                    "fixed_LP_continuation": false,
+                    "wall_seconds": 0.032741399998485576,
+                    "execution_trace": {
+                      "wait_actions": [
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R1",
+                          "b": "R2",
+                          "action": "wait_for_B"
+                        },
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R3",
+                          "b": "R4",
+                          "action": "wait_for_B"
+                        }
+                      ],
+                      "waiting_choices": [
+                        {
+                          "time": 7.6509205567600596,
+                          "candidates": [
+                            "R1",
+                            "R2"
+                          ],
+                          "selected": "R1",
+                          "policy": "fifo"
+                        },
+                        {
+                          "time": 7.6509205567600596,
+                          "candidates": [
+                            "R3",
+                            "R4"
+                          ],
+                          "selected": "R3",
+                          "policy": "fifo"
+                        }
+                      ]
+                    },
+                    "completed": true,
+                    "makespan": 65.63139320334099,
+                    "mean_completion": 53.97946900454487,
+                    "completion_times": {
+                      "R1": 48.4316730229895,
+                      "R2": 65.63139320334099,
+                      "R3": 37.407018117735674,
+                      "R4": 64.44779167411332
+                    },
+                    "stopped_at": 65.63139320334099,
+                    "contacts": 0,
+                    "steps": 175,
+                    "reason": null,
+                    "commands": 18,
+                    "completion_std": 11.734322367496942
+                  },
+                  {
+                    "mode": "length",
+                    "wait_rule": "length",
+                    "action": "wait_for_B",
+                    "action_name": "wait_for_B",
+                    "fixed_LP_continuation": false,
+                    "wall_seconds": 0.034534100002929335,
+                    "execution_trace": {
+                      "wait_actions": [
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R1",
+                          "b": "R2",
+                          "action": "wait_for_B"
+                        },
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R3",
+                          "b": "R4",
+                          "action": "wait_for_B"
+                        }
+                      ],
+                      "waiting_choices": [
+                        {
+                          "time": 7.6509205567600596,
+                          "candidates": [
+                            "R1",
+                            "R2"
+                          ],
+                          "selected": "R1",
+                          "policy": "longest_remaining_distance"
+                        },
+                        {
+                          "time": 7.6509205567600596,
+                          "candidates": [
+                            "R3",
+                            "R4"
+                          ],
+                          "selected": "R4",
+                          "policy": "longest_remaining_distance"
+                        }
+                      ]
+                    },
+                    "completed": true,
+                    "makespan": 70.75425475752343,
+                    "mean_completion": 57.27426747168704,
+                    "completion_times": {
+                      "R1": 62.42426357533954,
+                      "R2": 70.75425475752343,
+                      "R3": 54.09427239315566,
+                      "R4": 41.82427916072953
+                    },
+                    "stopped_at": 70.75425475752343,
+                    "contacts": 0,
+                    "steps": 173,
+                    "reason": null,
+                    "commands": 17,
+                    "completion_std": 10.689329078596957
+                  }
+                ],
+                "wall_seconds": 0.2645138000007137
+              },
+              {
+                "time": 6.246950475544242,
+                "kind": "wait_or_go",
+                "selected_mode": "fifo",
+                "selected_wait_rule": "fifo",
+                "action_name": "send_now",
+                "action": "send_now",
+                "branches": [
+                  {
+                    "mode": "fifo",
+                    "wait_rule": "fifo",
+                    "action": "send_now",
+                    "action_name": "send_now",
+                    "fixed_LP_continuation": false,
+                    "wall_seconds": 0.032531199998629745,
+                    "execution_trace": {
+                      "wait_actions": [
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R1",
+                          "b": "R2",
+                          "action": "send_now"
+                        },
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R3",
+                          "b": "R4",
+                          "action": "send_now"
+                        }
+                      ],
+                      "waiting_choices": []
+                    },
+                    "completed": true,
+                    "makespan": 64.22742312212517,
+                    "mean_completion": 52.57549892332906,
+                    "completion_times": {
+                      "R1": 47.02770294177369,
+                      "R2": 64.22742312212517,
+                      "R3": 36.00304803651986,
+                      "R4": 63.0438215928975
+                    },
+                    "stopped_at": 64.22742312212517,
+                    "contacts": 0,
+                    "steps": 174,
+                    "reason": null,
+                    "commands": 18,
+                    "completion_std": 11.73432236749694
+                  },
+                  {
+                    "mode": "length",
+                    "wait_rule": "fifo",
+                    "action": "send_now",
+                    "action_name": "send_now",
+                    "fixed_LP_continuation": true,
+                    "wall_seconds": 0.03297540000130539,
+                    "execution_trace": {
+                      "wait_actions": [
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R1",
+                          "b": "R2",
+                          "action": "send_now"
+                        },
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R3",
+                          "b": "R4",
+                          "action": "send_now"
+                        }
+                      ],
+                      "waiting_choices": []
+                    },
+                    "completed": true,
+                    "makespan": 64.22742312212517,
+                    "mean_completion": 52.57549892332906,
+                    "completion_times": {
+                      "R1": 47.02770294177369,
+                      "R2": 64.22742312212517,
+                      "R3": 36.00304803651986,
+                      "R4": 63.0438215928975
+                    },
+                    "stopped_at": 64.22742312212517,
+                    "contacts": 0,
+                    "steps": 174,
+                    "reason": null,
+                    "commands": 18,
+                    "completion_std": 11.73432236749694
+                  },
+                  {
+                    "mode": "fifo",
+                    "wait_rule": "length",
+                    "action": "send_now",
+                    "action_name": "send_now",
+                    "fixed_LP_continuation": false,
+                    "wall_seconds": 0.031810399999812944,
+                    "execution_trace": {
+                      "wait_actions": [
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R1",
+                          "b": "R2",
+                          "action": "send_now"
+                        },
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R3",
+                          "b": "R4",
+                          "action": "send_now"
+                        }
+                      ],
+                      "waiting_choices": []
+                    },
+                    "completed": true,
+                    "makespan": 64.22742312212517,
+                    "mean_completion": 52.57549892332906,
+                    "completion_times": {
+                      "R1": 47.02770294177369,
+                      "R2": 64.22742312212517,
+                      "R3": 36.00304803651986,
+                      "R4": 63.0438215928975
+                    },
+                    "stopped_at": 64.22742312212517,
+                    "contacts": 0,
+                    "steps": 174,
+                    "reason": null,
+                    "commands": 18,
+                    "completion_std": 11.73432236749694
+                  },
+                  {
+                    "mode": "length",
+                    "wait_rule": "length",
+                    "action": "send_now",
+                    "action_name": "send_now",
+                    "fixed_LP_continuation": false,
+                    "wall_seconds": 0.03192329999728827,
+                    "execution_trace": {
+                      "wait_actions": [
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R1",
+                          "b": "R2",
+                          "action": "send_now"
+                        },
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R3",
+                          "b": "R4",
+                          "action": "send_now"
+                        }
+                      ],
+                      "waiting_choices": []
+                    },
+                    "completed": true,
+                    "makespan": 64.22742312212517,
+                    "mean_completion": 52.57549892332906,
+                    "completion_times": {
+                      "R1": 47.02770294177369,
+                      "R2": 64.22742312212517,
+                      "R3": 36.00304803651986,
+                      "R4": 63.0438215928975
+                    },
+                    "stopped_at": 64.22742312212517,
+                    "contacts": 0,
+                    "steps": 174,
+                    "reason": null,
+                    "commands": 18,
+                    "completion_std": 11.73432236749694
+                  },
+                  {
+                    "mode": "fifo",
+                    "wait_rule": "fifo",
+                    "action": "wait_for_B",
+                    "action_name": "wait_for_B",
+                    "fixed_LP_continuation": false,
+                    "wall_seconds": 0.03224449999834178,
+                    "execution_trace": {
+                      "wait_actions": [
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R1",
+                          "b": "R2",
+                          "action": "send_now"
+                        },
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R3",
+                          "b": "R4",
+                          "action": "wait_for_B"
+                        }
+                      ],
+                      "waiting_choices": [
+                        {
+                          "time": 7.6509205567600596,
+                          "candidates": [
+                            "R3",
+                            "R4"
+                          ],
+                          "selected": "R3",
+                          "policy": "fifo"
+                        }
+                      ]
+                    },
+                    "completed": true,
+                    "makespan": 64.87673153051328,
+                    "mean_completion": 53.41347274992409,
+                    "completion_times": {
+                      "R1": 47.67701135016179,
+                      "R2": 64.87673153051328,
+                      "R3": 37.407018117735674,
+                      "R4": 63.69313000128561
+                    },
+                    "stopped_at": 64.87673153051328,
+                    "contacts": 0,
+                    "steps": 175,
+                    "reason": null,
+                    "commands": 18,
+                    "completion_std": 11.469429305326111
+                  },
+                  {
+                    "mode": "length",
+                    "wait_rule": "fifo",
+                    "action": "wait_for_B",
+                    "action_name": "wait_for_B",
+                    "fixed_LP_continuation": true,
+                    "wall_seconds": 0.03332290000253124,
+                    "execution_trace": {
+                      "wait_actions": [
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R1",
+                          "b": "R2",
+                          "action": "send_now"
+                        },
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R3",
+                          "b": "R4",
+                          "action": "wait_for_B"
+                        }
+                      ],
+                      "waiting_choices": [
+                        {
+                          "time": 7.6509205567600596,
+                          "candidates": [
+                            "R3",
+                            "R4"
+                          ],
+                          "selected": "R4",
+                          "policy": "longest_remaining_distance"
+                        }
+                      ]
+                    },
+                    "completed": true,
+                    "makespan": 70.75425475752343,
+                    "mean_completion": 57.27426747168704,
+                    "completion_times": {
+                      "R1": 62.42426357533954,
+                      "R2": 70.75425475752343,
+                      "R3": 54.09427239315566,
+                      "R4": 41.82427916072953
+                    },
+                    "stopped_at": 70.75425475752343,
+                    "contacts": 0,
+                    "steps": 173,
+                    "reason": null,
+                    "commands": 17,
+                    "completion_std": 10.689329078596957
+                  },
+                  {
+                    "mode": "fifo",
+                    "wait_rule": "length",
+                    "action": "wait_for_B",
+                    "action_name": "wait_for_B",
+                    "fixed_LP_continuation": false,
+                    "wall_seconds": 0.03251230000023497,
+                    "execution_trace": {
+                      "wait_actions": [
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R1",
+                          "b": "R2",
+                          "action": "send_now"
+                        },
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R3",
+                          "b": "R4",
+                          "action": "wait_for_B"
+                        }
+                      ],
+                      "waiting_choices": [
+                        {
+                          "time": 7.6509205567600596,
+                          "candidates": [
+                            "R3",
+                            "R4"
+                          ],
+                          "selected": "R3",
+                          "policy": "fifo"
+                        }
+                      ]
+                    },
+                    "completed": true,
+                    "makespan": 64.87673153051328,
+                    "mean_completion": 53.41347274992409,
+                    "completion_times": {
+                      "R1": 47.67701135016179,
+                      "R2": 64.87673153051328,
+                      "R3": 37.407018117735674,
+                      "R4": 63.69313000128561
+                    },
+                    "stopped_at": 64.87673153051328,
+                    "contacts": 0,
+                    "steps": 175,
+                    "reason": null,
+                    "commands": 18,
+                    "completion_std": 11.469429305326111
+                  },
+                  {
+                    "mode": "length",
+                    "wait_rule": "length",
+                    "action": "wait_for_B",
+                    "action_name": "wait_for_B",
+                    "fixed_LP_continuation": false,
+                    "wall_seconds": 0.03297000000020489,
+                    "execution_trace": {
+                      "wait_actions": [
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R1",
+                          "b": "R2",
+                          "action": "send_now"
+                        },
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R3",
+                          "b": "R4",
+                          "action": "wait_for_B"
+                        }
+                      ],
+                      "waiting_choices": [
+                        {
+                          "time": 7.6509205567600596,
+                          "candidates": [
+                            "R3",
+                            "R4"
+                          ],
+                          "selected": "R4",
+                          "policy": "longest_remaining_distance"
+                        }
+                      ]
+                    },
+                    "completed": true,
+                    "makespan": 70.75425475752343,
+                    "mean_completion": 57.27426747168704,
+                    "completion_times": {
+                      "R1": 62.42426357533954,
+                      "R2": 70.75425475752343,
+                      "R3": 54.09427239315566,
+                      "R4": 41.82427916072953
+                    },
+                    "stopped_at": 70.75425475752343,
+                    "contacts": 0,
+                    "steps": 173,
+                    "reason": null,
+                    "commands": 17,
+                    "completion_std": 10.689329078596957
+                  }
+                ],
+                "wall_seconds": 0.26334590000260505
+              }
+            ],
+            "execution_trace": {
+              "wait_actions": [
+                {
+                  "time": 6.246950475544242,
+                  "a": "R1",
+                  "b": "R2",
+                  "action": "send_now"
+                },
+                {
+                  "time": 6.246950475544242,
+                  "a": "R3",
+                  "b": "R4",
+                  "action": "send_now"
+                }
+              ],
+              "waiting_choices": []
+            },
+            "nested_lookahead": false,
+            "rollout_horizon": "system_completion",
+            "rollout_policy": "independent_current_action_future_wait_rule_and_waiting_priority",
+            "includes_previous_fixed_LP_continuation": true,
+            "lookahead_calls": 2,
+            "rollouts": 16,
+            "wait_decisions": 2,
+            "priority_decisions": 0,
+            "wall_seconds": 0.5629287000010663,
+            "setup_seconds": 0.12759450000157813,
+            "total_seconds": 0.6905235000012908,
+            "decision_seconds": 0.5278597000033187,
+            "validation": {
+              "completed": true,
+              "contacts": 0,
+              "interval": 0.01,
+              "stop_on_collision": true,
+              "signature_matches": true
+            }
+          }
+        ],
+        "distinct_validated_trajectories": 1
+      },
+      {
+        "policy": "lookahead_mean",
+        "repetitions": 1,
+        "metrics": {
+          "makespan": {
+            "mean": 64.22742312212517,
+            "across_run_std": 0.0
+          },
+          "mean_completion": {
+            "mean": 52.57549892332906,
+            "across_run_std": 0.0
+          },
+          "completion_std": {
+            "mean": 11.73432236749694,
+            "across_run_std": 0.0
+          },
+          "wall_seconds": {
+            "mean": 0.544294200000877,
+            "across_run_std": 0.0
+          },
+          "setup_seconds": {
+            "mean": 0.12493840000024647,
+            "across_run_std": 0.0
+          },
+          "total_seconds": {
+            "mean": 0.6692330000005313,
+            "across_run_std": 0.0
+          },
+          "decision_seconds": {
+            "mean": 0.5098800999985542,
+            "across_run_std": 0.0
+          }
+        },
+        "trials": [
+          {
+            "completed": true,
+            "makespan": 64.22742312212517,
+            "mean_completion": 52.57549892332906,
+            "completion_times": {
+              "R1": 47.02770294177369,
+              "R2": 64.22742312212517,
+              "R3": 36.00304803651986,
+              "R4": 63.0438215928975
+            },
+            "stopped_at": 64.22742312212517,
+            "contacts": 0,
+            "steps": 197,
+            "reason": null,
+            "commands": 18,
+            "completion_std": 11.73432236749694,
+            "case": "corridor4",
+            "policy": "lookahead_mean",
+            "seed": 0,
+            "decisions": [
+              {
+                "time": 6.246950475544242,
+                "kind": "wait_or_go",
+                "selected_mode": "fifo",
+                "selected_wait_rule": "fifo",
+                "action_name": "send_now",
+                "action": "send_now",
+                "branches": [
+                  {
+                    "mode": "fifo",
+                    "wait_rule": "fifo",
+                    "action": "send_now",
+                    "action_name": "send_now",
+                    "fixed_LP_continuation": false,
+                    "wall_seconds": 0.03150680000180728,
+                    "execution_trace": {
+                      "wait_actions": [
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R1",
+                          "b": "R2",
+                          "action": "send_now"
+                        },
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R3",
+                          "b": "R4",
+                          "action": "send_now"
+                        }
+                      ],
+                      "waiting_choices": []
+                    },
+                    "completed": true,
+                    "makespan": 64.22742312212517,
+                    "mean_completion": 52.57549892332906,
+                    "completion_times": {
+                      "R1": 47.02770294177369,
+                      "R2": 64.22742312212517,
+                      "R3": 36.00304803651986,
+                      "R4": 63.0438215928975
+                    },
+                    "stopped_at": 64.22742312212517,
+                    "contacts": 0,
+                    "steps": 175,
+                    "reason": null,
+                    "commands": 18,
+                    "completion_std": 11.73432236749694
+                  },
+                  {
+                    "mode": "length",
+                    "wait_rule": "fifo",
+                    "action": "send_now",
+                    "action_name": "send_now",
+                    "fixed_LP_continuation": true,
+                    "wall_seconds": 0.031585599997924874,
+                    "execution_trace": {
+                      "wait_actions": [
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R1",
+                          "b": "R2",
+                          "action": "send_now"
+                        },
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R3",
+                          "b": "R4",
+                          "action": "send_now"
+                        }
+                      ],
+                      "waiting_choices": []
+                    },
+                    "completed": true,
+                    "makespan": 64.22742312212517,
+                    "mean_completion": 52.57549892332906,
+                    "completion_times": {
+                      "R1": 47.02770294177369,
+                      "R2": 64.22742312212517,
+                      "R3": 36.00304803651986,
+                      "R4": 63.0438215928975
+                    },
+                    "stopped_at": 64.22742312212517,
+                    "contacts": 0,
+                    "steps": 175,
+                    "reason": null,
+                    "commands": 18,
+                    "completion_std": 11.73432236749694
+                  },
+                  {
+                    "mode": "fifo",
+                    "wait_rule": "length",
+                    "action": "send_now",
+                    "action_name": "send_now",
+                    "fixed_LP_continuation": false,
+                    "wall_seconds": 0.03258649999770569,
+                    "execution_trace": {
+                      "wait_actions": [
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R1",
+                          "b": "R2",
+                          "action": "send_now"
+                        },
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R3",
+                          "b": "R4",
+                          "action": "wait_for_B"
+                        }
+                      ],
+                      "waiting_choices": [
+                        {
+                          "time": 7.6509205567600596,
+                          "candidates": [
+                            "R3",
+                            "R4"
+                          ],
+                          "selected": "R3",
+                          "policy": "fifo"
+                        }
+                      ]
+                    },
+                    "completed": true,
+                    "makespan": 64.87673153051328,
+                    "mean_completion": 53.41347274992409,
+                    "completion_times": {
+                      "R1": 47.67701135016179,
+                      "R2": 64.87673153051328,
+                      "R3": 37.407018117735674,
+                      "R4": 63.69313000128561
+                    },
+                    "stopped_at": 64.87673153051328,
+                    "contacts": 0,
+                    "steps": 176,
+                    "reason": null,
+                    "commands": 18,
+                    "completion_std": 11.469429305326111
+                  },
+                  {
+                    "mode": "length",
+                    "wait_rule": "length",
+                    "action": "send_now",
+                    "action_name": "send_now",
+                    "fixed_LP_continuation": false,
+                    "wall_seconds": 0.03373420000207261,
+                    "execution_trace": {
+                      "wait_actions": [
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R1",
+                          "b": "R2",
+                          "action": "send_now"
+                        },
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R3",
+                          "b": "R4",
+                          "action": "wait_for_B"
+                        }
+                      ],
+                      "waiting_choices": [
+                        {
+                          "time": 7.6509205567600596,
+                          "candidates": [
+                            "R3",
+                            "R4"
+                          ],
+                          "selected": "R4",
+                          "policy": "longest_remaining_distance"
+                        }
+                      ]
+                    },
+                    "completed": true,
+                    "makespan": 70.75425475752343,
+                    "mean_completion": 57.27426747168704,
+                    "completion_times": {
+                      "R1": 62.42426357533954,
+                      "R2": 70.75425475752343,
+                      "R3": 54.09427239315566,
+                      "R4": 41.82427916072953
+                    },
+                    "stopped_at": 70.75425475752343,
+                    "contacts": 0,
+                    "steps": 174,
+                    "reason": null,
+                    "commands": 17,
+                    "completion_std": 10.689329078596957
+                  },
+                  {
+                    "mode": "fifo",
+                    "wait_rule": "fifo",
+                    "action": "wait_for_B",
+                    "action_name": "wait_for_B",
+                    "fixed_LP_continuation": false,
+                    "wall_seconds": 0.030999499998870306,
+                    "execution_trace": {
+                      "wait_actions": [
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R1",
+                          "b": "R2",
+                          "action": "wait_for_B"
+                        },
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R3",
+                          "b": "R4",
+                          "action": "send_now"
+                        }
+                      ],
+                      "waiting_choices": [
+                        {
+                          "time": 7.6509205567600596,
+                          "candidates": [
+                            "R1",
+                            "R2"
+                          ],
+                          "selected": "R1",
+                          "policy": "fifo"
+                        }
+                      ]
+                    },
+                    "completed": true,
+                    "makespan": 66.05711255467556,
+                    "mean_completion": 53.94776599774184,
+                    "completion_times": {
+                      "R1": 48.857392374324064,
+                      "R2": 66.05711255467556,
+                      "R3": 36.00304803651986,
+                      "R4": 64.87351102544788
+                    },
+                    "stopped_at": 66.05711255467556,
+                    "contacts": 0,
+                    "steps": 177,
+                    "reason": null,
+                    "commands": 18,
+                    "completion_std": 12.38883554637154
+                  },
+                  {
+                    "mode": "length",
+                    "wait_rule": "fifo",
+                    "action": "wait_for_B",
+                    "action_name": "wait_for_B",
+                    "fixed_LP_continuation": true,
+                    "wall_seconds": 0.030876999997417443,
+                    "execution_trace": {
+                      "wait_actions": [
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R1",
+                          "b": "R2",
+                          "action": "wait_for_B"
+                        },
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R3",
+                          "b": "R4",
+                          "action": "send_now"
+                        }
+                      ],
+                      "waiting_choices": [
+                        {
+                          "time": 7.6509205567600596,
+                          "candidates": [
+                            "R1",
+                            "R2"
+                          ],
+                          "selected": "R1",
+                          "policy": "longest_remaining_distance"
+                        }
+                      ]
+                    },
+                    "completed": true,
+                    "makespan": 66.05711255467556,
+                    "mean_completion": 53.94776599774184,
+                    "completion_times": {
+                      "R1": 48.857392374324064,
+                      "R2": 66.05711255467556,
+                      "R3": 36.00304803651986,
+                      "R4": 64.87351102544788
+                    },
+                    "stopped_at": 66.05711255467556,
+                    "contacts": 0,
+                    "steps": 177,
+                    "reason": null,
+                    "commands": 18,
+                    "completion_std": 12.38883554637154
+                  },
+                  {
+                    "mode": "fifo",
+                    "wait_rule": "length",
+                    "action": "wait_for_B",
+                    "action_name": "wait_for_B",
+                    "fixed_LP_continuation": false,
+                    "wall_seconds": 0.03188460000092164,
+                    "execution_trace": {
+                      "wait_actions": [
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R1",
+                          "b": "R2",
+                          "action": "wait_for_B"
+                        },
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R3",
+                          "b": "R4",
+                          "action": "wait_for_B"
+                        }
+                      ],
+                      "waiting_choices": [
+                        {
+                          "time": 7.6509205567600596,
+                          "candidates": [
+                            "R1",
+                            "R2"
+                          ],
+                          "selected": "R1",
+                          "policy": "fifo"
+                        },
+                        {
+                          "time": 7.6509205567600596,
+                          "candidates": [
+                            "R3",
+                            "R4"
+                          ],
+                          "selected": "R3",
+                          "policy": "fifo"
+                        }
+                      ]
+                    },
+                    "completed": true,
+                    "makespan": 65.63139320334099,
+                    "mean_completion": 53.97946900454487,
+                    "completion_times": {
+                      "R1": 48.4316730229895,
+                      "R2": 65.63139320334099,
+                      "R3": 37.407018117735674,
+                      "R4": 64.44779167411332
+                    },
+                    "stopped_at": 65.63139320334099,
+                    "contacts": 0,
+                    "steps": 175,
+                    "reason": null,
+                    "commands": 18,
+                    "completion_std": 11.734322367496942
+                  },
+                  {
+                    "mode": "length",
+                    "wait_rule": "length",
+                    "action": "wait_for_B",
+                    "action_name": "wait_for_B",
+                    "fixed_LP_continuation": false,
+                    "wall_seconds": 0.03259930000058375,
+                    "execution_trace": {
+                      "wait_actions": [
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R1",
+                          "b": "R2",
+                          "action": "wait_for_B"
+                        },
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R3",
+                          "b": "R4",
+                          "action": "wait_for_B"
+                        }
+                      ],
+                      "waiting_choices": [
+                        {
+                          "time": 7.6509205567600596,
+                          "candidates": [
+                            "R1",
+                            "R2"
+                          ],
+                          "selected": "R1",
+                          "policy": "longest_remaining_distance"
+                        },
+                        {
+                          "time": 7.6509205567600596,
+                          "candidates": [
+                            "R3",
+                            "R4"
+                          ],
+                          "selected": "R4",
+                          "policy": "longest_remaining_distance"
+                        }
+                      ]
+                    },
+                    "completed": true,
+                    "makespan": 70.75425475752343,
+                    "mean_completion": 57.27426747168704,
+                    "completion_times": {
+                      "R1": 62.42426357533954,
+                      "R2": 70.75425475752343,
+                      "R3": 54.09427239315566,
+                      "R4": 41.82427916072953
+                    },
+                    "stopped_at": 70.75425475752343,
+                    "contacts": 0,
+                    "steps": 173,
+                    "reason": null,
+                    "commands": 17,
+                    "completion_std": 10.689329078596957
+                  }
+                ],
+                "wall_seconds": 0.258532899999409
+              },
+              {
+                "time": 6.246950475544242,
+                "kind": "wait_or_go",
+                "selected_mode": "fifo",
+                "selected_wait_rule": "fifo",
+                "action_name": "send_now",
+                "action": "send_now",
+                "branches": [
+                  {
+                    "mode": "fifo",
+                    "wait_rule": "fifo",
+                    "action": "send_now",
+                    "action_name": "send_now",
+                    "fixed_LP_continuation": false,
+                    "wall_seconds": 0.030590699996537296,
+                    "execution_trace": {
+                      "wait_actions": [
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R1",
+                          "b": "R2",
+                          "action": "send_now"
+                        },
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R3",
+                          "b": "R4",
+                          "action": "send_now"
+                        }
+                      ],
+                      "waiting_choices": []
+                    },
+                    "completed": true,
+                    "makespan": 64.22742312212517,
+                    "mean_completion": 52.57549892332906,
+                    "completion_times": {
+                      "R1": 47.02770294177369,
+                      "R2": 64.22742312212517,
+                      "R3": 36.00304803651986,
+                      "R4": 63.0438215928975
+                    },
+                    "stopped_at": 64.22742312212517,
+                    "contacts": 0,
+                    "steps": 174,
+                    "reason": null,
+                    "commands": 18,
+                    "completion_std": 11.73432236749694
+                  },
+                  {
+                    "mode": "length",
+                    "wait_rule": "fifo",
+                    "action": "send_now",
+                    "action_name": "send_now",
+                    "fixed_LP_continuation": true,
+                    "wall_seconds": 0.030505599999742117,
+                    "execution_trace": {
+                      "wait_actions": [
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R1",
+                          "b": "R2",
+                          "action": "send_now"
+                        },
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R3",
+                          "b": "R4",
+                          "action": "send_now"
+                        }
+                      ],
+                      "waiting_choices": []
+                    },
+                    "completed": true,
+                    "makespan": 64.22742312212517,
+                    "mean_completion": 52.57549892332906,
+                    "completion_times": {
+                      "R1": 47.02770294177369,
+                      "R2": 64.22742312212517,
+                      "R3": 36.00304803651986,
+                      "R4": 63.0438215928975
+                    },
+                    "stopped_at": 64.22742312212517,
+                    "contacts": 0,
+                    "steps": 174,
+                    "reason": null,
+                    "commands": 18,
+                    "completion_std": 11.73432236749694
+                  },
+                  {
+                    "mode": "fifo",
+                    "wait_rule": "length",
+                    "action": "send_now",
+                    "action_name": "send_now",
+                    "fixed_LP_continuation": false,
+                    "wall_seconds": 0.03083909999986645,
+                    "execution_trace": {
+                      "wait_actions": [
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R1",
+                          "b": "R2",
+                          "action": "send_now"
+                        },
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R3",
+                          "b": "R4",
+                          "action": "send_now"
+                        }
+                      ],
+                      "waiting_choices": []
+                    },
+                    "completed": true,
+                    "makespan": 64.22742312212517,
+                    "mean_completion": 52.57549892332906,
+                    "completion_times": {
+                      "R1": 47.02770294177369,
+                      "R2": 64.22742312212517,
+                      "R3": 36.00304803651986,
+                      "R4": 63.0438215928975
+                    },
+                    "stopped_at": 64.22742312212517,
+                    "contacts": 0,
+                    "steps": 174,
+                    "reason": null,
+                    "commands": 18,
+                    "completion_std": 11.73432236749694
+                  },
+                  {
+                    "mode": "length",
+                    "wait_rule": "length",
+                    "action": "send_now",
+                    "action_name": "send_now",
+                    "fixed_LP_continuation": false,
+                    "wall_seconds": 0.03077810000104364,
+                    "execution_trace": {
+                      "wait_actions": [
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R1",
+                          "b": "R2",
+                          "action": "send_now"
+                        },
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R3",
+                          "b": "R4",
+                          "action": "send_now"
+                        }
+                      ],
+                      "waiting_choices": []
+                    },
+                    "completed": true,
+                    "makespan": 64.22742312212517,
+                    "mean_completion": 52.57549892332906,
+                    "completion_times": {
+                      "R1": 47.02770294177369,
+                      "R2": 64.22742312212517,
+                      "R3": 36.00304803651986,
+                      "R4": 63.0438215928975
+                    },
+                    "stopped_at": 64.22742312212517,
+                    "contacts": 0,
+                    "steps": 174,
+                    "reason": null,
+                    "commands": 18,
+                    "completion_std": 11.73432236749694
+                  },
+                  {
+                    "mode": "fifo",
+                    "wait_rule": "fifo",
+                    "action": "wait_for_B",
+                    "action_name": "wait_for_B",
+                    "fixed_LP_continuation": false,
+                    "wall_seconds": 0.030813800000032643,
+                    "execution_trace": {
+                      "wait_actions": [
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R1",
+                          "b": "R2",
+                          "action": "send_now"
+                        },
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R3",
+                          "b": "R4",
+                          "action": "wait_for_B"
+                        }
+                      ],
+                      "waiting_choices": [
+                        {
+                          "time": 7.6509205567600596,
+                          "candidates": [
+                            "R3",
+                            "R4"
+                          ],
+                          "selected": "R3",
+                          "policy": "fifo"
+                        }
+                      ]
+                    },
+                    "completed": true,
+                    "makespan": 64.87673153051328,
+                    "mean_completion": 53.41347274992409,
+                    "completion_times": {
+                      "R1": 47.67701135016179,
+                      "R2": 64.87673153051328,
+                      "R3": 37.407018117735674,
+                      "R4": 63.69313000128561
+                    },
+                    "stopped_at": 64.87673153051328,
+                    "contacts": 0,
+                    "steps": 175,
+                    "reason": null,
+                    "commands": 18,
+                    "completion_std": 11.469429305326111
+                  },
+                  {
+                    "mode": "length",
+                    "wait_rule": "fifo",
+                    "action": "wait_for_B",
+                    "action_name": "wait_for_B",
+                    "fixed_LP_continuation": true,
+                    "wall_seconds": 0.03187389999948209,
+                    "execution_trace": {
+                      "wait_actions": [
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R1",
+                          "b": "R2",
+                          "action": "send_now"
+                        },
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R3",
+                          "b": "R4",
+                          "action": "wait_for_B"
+                        }
+                      ],
+                      "waiting_choices": [
+                        {
+                          "time": 7.6509205567600596,
+                          "candidates": [
+                            "R3",
+                            "R4"
+                          ],
+                          "selected": "R4",
+                          "policy": "longest_remaining_distance"
+                        }
+                      ]
+                    },
+                    "completed": true,
+                    "makespan": 70.75425475752343,
+                    "mean_completion": 57.27426747168704,
+                    "completion_times": {
+                      "R1": 62.42426357533954,
+                      "R2": 70.75425475752343,
+                      "R3": 54.09427239315566,
+                      "R4": 41.82427916072953
+                    },
+                    "stopped_at": 70.75425475752343,
+                    "contacts": 0,
+                    "steps": 173,
+                    "reason": null,
+                    "commands": 17,
+                    "completion_std": 10.689329078596957
+                  },
+                  {
+                    "mode": "fifo",
+                    "wait_rule": "length",
+                    "action": "wait_for_B",
+                    "action_name": "wait_for_B",
+                    "fixed_LP_continuation": false,
+                    "wall_seconds": 0.031210799999826122,
+                    "execution_trace": {
+                      "wait_actions": [
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R1",
+                          "b": "R2",
+                          "action": "send_now"
+                        },
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R3",
+                          "b": "R4",
+                          "action": "wait_for_B"
+                        }
+                      ],
+                      "waiting_choices": [
+                        {
+                          "time": 7.6509205567600596,
+                          "candidates": [
+                            "R3",
+                            "R4"
+                          ],
+                          "selected": "R3",
+                          "policy": "fifo"
+                        }
+                      ]
+                    },
+                    "completed": true,
+                    "makespan": 64.87673153051328,
+                    "mean_completion": 53.41347274992409,
+                    "completion_times": {
+                      "R1": 47.67701135016179,
+                      "R2": 64.87673153051328,
+                      "R3": 37.407018117735674,
+                      "R4": 63.69313000128561
+                    },
+                    "stopped_at": 64.87673153051328,
+                    "contacts": 0,
+                    "steps": 175,
+                    "reason": null,
+                    "commands": 18,
+                    "completion_std": 11.469429305326111
+                  },
+                  {
+                    "mode": "length",
+                    "wait_rule": "length",
+                    "action": "wait_for_B",
+                    "action_name": "wait_for_B",
+                    "fixed_LP_continuation": false,
+                    "wall_seconds": 0.03194620000067516,
+                    "execution_trace": {
+                      "wait_actions": [
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R1",
+                          "b": "R2",
+                          "action": "send_now"
+                        },
+                        {
+                          "time": 6.246950475544242,
+                          "a": "R3",
+                          "b": "R4",
+                          "action": "wait_for_B"
+                        }
+                      ],
+                      "waiting_choices": [
+                        {
+                          "time": 7.6509205567600596,
+                          "candidates": [
+                            "R3",
+                            "R4"
+                          ],
+                          "selected": "R4",
+                          "policy": "longest_remaining_distance"
+                        }
+                      ]
+                    },
+                    "completed": true,
+                    "makespan": 70.75425475752343,
+                    "mean_completion": 57.27426747168704,
+                    "completion_times": {
+                      "R1": 62.42426357533954,
+                      "R2": 70.75425475752343,
+                      "R3": 54.09427239315566,
+                      "R4": 41.82427916072953
+                    },
+                    "stopped_at": 70.75425475752343,
+                    "contacts": 0,
+                    "steps": 173,
+                    "reason": null,
+                    "commands": 17,
+                    "completion_std": 10.689329078596957
+                  }
+                ],
+                "wall_seconds": 0.25134719999914523
+              }
+            ],
+            "execution_trace": {
+              "wait_actions": [
+                {
+                  "time": 6.246950475544242,
+                  "a": "R1",
+                  "b": "R2",
+                  "action": "send_now"
+                },
+                {
+                  "time": 6.246950475544242,
+                  "a": "R3",
+                  "b": "R4",
+                  "action": "send_now"
+                }
+              ],
+              "waiting_choices": []
+            },
+            "nested_lookahead": false,
+            "rollout_horizon": "system_completion",
+            "rollout_policy": "independent_current_action_future_wait_rule_and_waiting_priority",
+            "includes_previous_fixed_LP_continuation": true,
+            "lookahead_calls": 2,
+            "rollouts": 16,
+            "wait_decisions": 2,
+            "priority_decisions": 0,
+            "wall_seconds": 0.544294200000877,
+            "setup_seconds": 0.12493840000024647,
+            "total_seconds": 0.6692330000005313,
+            "decision_seconds": 0.5098800999985542,
+            "validation": {
+              "completed": true,
+              "contacts": 0,
+              "interval": 0.01,
+              "stop_on_collision": true,
+              "signature_matches": true
+            }
+          }
+        ],
+        "distinct_validated_trajectories": 1
+      }
+    ],
+    "scope": "connected_shared_corridor; finite_validated_reference_portfolio",
+    "completion_std_definition": "population std across objects within each run",
+    "across_run_std_definition": "population std across random seeds",
+    "geometry": {
+      "objects": 4,
+      "interference_edges": [
+        [
+          "R1",
+          "R2"
+        ],
+        [
+          "R1",
+          "R3"
+        ],
+        [
+          "R1",
+          "R4"
+        ],
+        [
+          "R2",
+          "R3"
+        ],
+        [
+          "R2",
+          "R4"
+        ],
+        [
+          "R3",
+          "R4"
+        ]
+      ],
+      "connected": true,
+      "simple_paths": true,
+      "reference_candidates": 11,
+      "grid_points": 400
+    }
+  }
+]

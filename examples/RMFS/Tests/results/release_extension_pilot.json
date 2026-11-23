@@ -1,0 +1,746 @@
+{
+  "status": "complete",
+  "date": "2026-11-21",
+  "python": "3.13.14",
+  "repeats": 2,
+  "policies": [
+    "FIFO",
+    "LP"
+  ],
+  "safe_prefix": true,
+  "merge_sweeps": true,
+  "continuous_interval": "infinity",
+  "timed_run_collision_check": false,
+  "collision_validation_interval_s": 0.1,
+  "stop_on_collision": true,
+  "variation": "only motion_extension OFF versus ON",
+  "runtime_scope": "engine execution excluding model construction, with RoadMap/event logging; median of repeated runs",
+  "interference_definition": "directed pairwise intervals, counted on both participating paths; lengths in metres",
+  "source_sha256": {
+    "MRobot.py": "d681e1745f08d5f6501c8b2f08abb291a41cba28ce6d35e6c22bd5cb0b12adba",
+    "PSensor.py": "0a1f6a25120865eb5051245dd612c2fd1eed0bcc5fe59e2645da5fea16e61d69",
+    "TrafficManager.py": "b18a467ae6945585d5e09c22889f6d858e332fb54620307a7e027655e4de77b8",
+    "RoadMap.py": "d98bdd9b55acc3e2f07bc72a895378d1bd9a5d2bb0fd22f9b685887bbdb0d1d6",
+    "RMFSController.py": "cf1a59cd779e6e31def47ffcd0449fc485b868c5131ec57a8df8d44880a5b58b",
+    "controlled.py": "8ed3842a91550107441b82aef61b5bc3d0ed90e14588b05d36f3881b5b96ce44",
+    "motion.py": "d1e74e99d4e1708092d1b719db2482053069f4afb8636ead85cbdff88ce11dd1"
+  },
+  "results": [
+    {
+      "case": "03_09_RobotPath_FIFO_ReleaseExtension",
+      "kind": "handcrafted",
+      "seed": null,
+      "policy": "fifo",
+      "grid": "5x5",
+      "robots": 3,
+      "paths_m": {
+        "R1": [
+          [
+            20.0,
+            -5.0
+          ],
+          [
+            20.0,
+            5.0
+          ]
+        ],
+        "R2": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            16.0,
+            0.0
+          ],
+          [
+            20.0,
+            0.0
+          ],
+          [
+            24.0,
+            0.0
+          ]
+        ],
+        "R3": [
+          [
+            18.0,
+            -8.0
+          ],
+          [
+            18.0,
+            8.0
+          ]
+        ]
+      },
+      "geometry": {
+        "directed_pairwise_interval_count": 4,
+        "min_pairwise_interval_m": 3.000000002,
+        "mean_pairwise_interval_m": 3.000000002,
+        "max_pairwise_interval_m": 3.000000002,
+        "total_pairwise_interval_m": 12.000000008,
+        "per_path_union_interval_count": 3,
+        "mean_union_interference_ratio": 0.23194444458055555,
+        "interfering_pairs": 2,
+        "interference_edges": [
+          [
+            "R1",
+            "R2"
+          ],
+          [
+            "R2",
+            "R3"
+          ]
+        ],
+        "components": [
+          [
+            "R1",
+            "R2",
+            "R3"
+          ]
+        ],
+        "max_interference_degree": 2,
+        "connected": true,
+        "pairs": [
+          {
+            "i": "R1",
+            "j": "R2",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [
+              {
+                "start": [
+                  0,
+                  0.34999999989999997
+                ],
+                "end": [
+                  0,
+                  0.6500000001
+                ],
+                "length_m": 3.000000002
+              }
+            ],
+            "j_intervals": [
+              {
+                "start": [
+                  1,
+                  0.62499999975
+                ],
+                "end": [
+                  2,
+                  0.37500000025
+                ],
+                "length_m": 3.000000002
+              }
+            ]
+          },
+          {
+            "i": "R1",
+            "j": "R3",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [],
+            "j_intervals": []
+          },
+          {
+            "i": "R2",
+            "j": "R3",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [
+              {
+                "start": [
+                  1,
+                  0.12499999974999998
+                ],
+                "end": [
+                  1,
+                  0.87500000025
+                ],
+                "length_m": 3.000000002
+              }
+            ],
+            "j_intervals": [
+              {
+                "start": [
+                  0,
+                  0.4062499999375
+                ],
+                "end": [
+                  0,
+                  0.5937500000625
+                ],
+                "length_m": 3.000000002
+              }
+            ]
+          }
+        ],
+        "per_path": {
+          "R1": {
+            "length_m": 10.0,
+            "union_intervals": [
+              {
+                "start": [
+                  0,
+                  0.34999999989999997
+                ],
+                "end": [
+                  0,
+                  0.6500000001
+                ],
+                "length_m": 3.000000002
+              }
+            ],
+            "union_interval_count": 1,
+            "union_interference_m": 3.000000002,
+            "interference_ratio": 0.3000000002
+          },
+          "R2": {
+            "length_m": 24.0,
+            "union_intervals": [
+              {
+                "start": [
+                  1,
+                  0.12499999974999998
+                ],
+                "end": [
+                  2,
+                  0.37500000025
+                ],
+                "length_m": 5.000000002
+              }
+            ],
+            "union_interval_count": 1,
+            "union_interference_m": 5.000000002,
+            "interference_ratio": 0.20833333341666668
+          },
+          "R3": {
+            "length_m": 16.0,
+            "union_intervals": [
+              {
+                "start": [
+                  0,
+                  0.4062499999375
+                ],
+                "end": [
+                  0,
+                  0.5937500000625
+                ],
+                "length_m": 3.000000002
+              }
+            ],
+            "union_interval_count": 1,
+            "union_interference_m": 3.000000002,
+            "interference_ratio": 0.187500000125
+          }
+        }
+      },
+      "off": {
+        "complete": true,
+        "contacts": 0,
+        "makespan_s": 25.37194973157629,
+        "mean_completion_s": 16.042682430850633,
+        "completion_std_s": 6.709516687824428,
+        "completion_by_robot": {
+          "R1": 9.878048780487806,
+          "R2": 25.37194973157629,
+          "R3": 12.878048780487806
+        },
+        "extension_counts": {
+          "accelerating": 0,
+          "cruising": 0,
+          "braking": 0,
+          "deferred_moving": 0,
+          "rotating": 0,
+          "starting": 0
+        },
+        "extension_commands": 0,
+        "intermediate_stops": 2,
+        "wall_s": 0.001448099996196106,
+        "setup_s": 0.025604399997973815,
+        "steps": 28,
+        "input_sha256": "6e8f8ef4cc1c9730b42f3c0154cf14a278aff59fee707f192aa6569dd74e7a20",
+        "portfolio_size": 7,
+        "optional_waits": 1,
+        "optional_holds": 0,
+        "arbitration_decisions": 0,
+        "median_wall_s": 0.0013379500014707446,
+        "repeated_wall_s": [
+          0.001448099996196106,
+          0.0012278000067453831
+        ],
+        "collision_replay": {
+          "complete": true,
+          "contacts": 0,
+          "makespan_s": 25.37194973157629,
+          "mean_completion_s": 16.042682430850633,
+          "completion_std_s": 6.709516687824428,
+          "completion_by_robot": {
+            "R1": 9.878048780487806,
+            "R2": 25.37194973157629,
+            "R3": 12.878048780487806
+          },
+          "extension_counts": {
+            "accelerating": 0,
+            "cruising": 0,
+            "braking": 0,
+            "deferred_moving": 0,
+            "rotating": 0,
+            "starting": 0
+          },
+          "extension_commands": 0,
+          "intermediate_stops": 2,
+          "wall_s": 0.004408900014823303,
+          "setup_s": 0.005241699982434511,
+          "steps": 281,
+          "input_sha256": "6e8f8ef4cc1c9730b42f3c0154cf14a278aff59fee707f192aa6569dd74e7a20",
+          "portfolio_size": 7,
+          "optional_waits": 1,
+          "optional_holds": 0,
+          "arbitration_decisions": 0
+        }
+      },
+      "on": {
+        "complete": true,
+        "contacts": 0,
+        "makespan_s": 17.523292330767724,
+        "mean_completion_s": 13.426463297247778,
+        "completion_std_s": 3.1451556503527747,
+        "completion_by_robot": {
+          "R1": 9.878048780487806,
+          "R2": 17.523292330767724,
+          "R3": 12.878048780487806
+        },
+        "extension_counts": {
+          "accelerating": 1,
+          "cruising": 0,
+          "braking": 2,
+          "deferred_moving": 0,
+          "rotating": 0,
+          "starting": 0
+        },
+        "extension_commands": 3,
+        "intermediate_stops": 0,
+        "wall_s": 0.002418099989881739,
+        "setup_s": 0.0052970999968238175,
+        "steps": 30,
+        "input_sha256": "6e8f8ef4cc1c9730b42f3c0154cf14a278aff59fee707f192aa6569dd74e7a20",
+        "portfolio_size": 7,
+        "optional_waits": 1,
+        "optional_holds": 0,
+        "arbitration_decisions": 0,
+        "median_wall_s": 0.002397949996520765,
+        "repeated_wall_s": [
+          0.002418099989881739,
+          0.0023778000031597912
+        ],
+        "collision_replay": {
+          "complete": true,
+          "contacts": 0,
+          "makespan_s": 17.523292330767724,
+          "mean_completion_s": 13.426463297247778,
+          "completion_std_s": 3.1451556503527747,
+          "completion_by_robot": {
+            "R1": 9.878048780487806,
+            "R2": 17.523292330767724,
+            "R3": 12.878048780487806
+          },
+          "extension_counts": {
+            "accelerating": 1,
+            "cruising": 0,
+            "braking": 2,
+            "deferred_moving": 0,
+            "rotating": 0,
+            "starting": 0
+          },
+          "extension_commands": 3,
+          "intermediate_stops": 0,
+          "wall_s": 0.010948099981760606,
+          "setup_s": 0.0053536000195890665,
+          "steps": 205,
+          "input_sha256": "6e8f8ef4cc1c9730b42f3c0154cf14a278aff59fee707f192aa6569dd74e7a20",
+          "portfolio_size": 7,
+          "optional_waits": 1,
+          "optional_holds": 0,
+          "arbitration_decisions": 0
+        }
+      },
+      "validated": true,
+      "makespan_reduction_pct": 30.934388109088182,
+      "mean_reduction_pct": 16.30786587517169
+    },
+    {
+      "case": "03_09_RobotPath_FIFO_ReleaseExtension",
+      "kind": "handcrafted",
+      "seed": null,
+      "policy": "lp",
+      "grid": "5x5",
+      "robots": 3,
+      "paths_m": {
+        "R1": [
+          [
+            20.0,
+            -5.0
+          ],
+          [
+            20.0,
+            5.0
+          ]
+        ],
+        "R2": [
+          [
+            0.0,
+            0.0
+          ],
+          [
+            16.0,
+            0.0
+          ],
+          [
+            20.0,
+            0.0
+          ],
+          [
+            24.0,
+            0.0
+          ]
+        ],
+        "R3": [
+          [
+            18.0,
+            -8.0
+          ],
+          [
+            18.0,
+            8.0
+          ]
+        ]
+      },
+      "geometry": {
+        "directed_pairwise_interval_count": 4,
+        "min_pairwise_interval_m": 3.000000002,
+        "mean_pairwise_interval_m": 3.000000002,
+        "max_pairwise_interval_m": 3.000000002,
+        "total_pairwise_interval_m": 12.000000008,
+        "per_path_union_interval_count": 3,
+        "mean_union_interference_ratio": 0.23194444458055555,
+        "interfering_pairs": 2,
+        "interference_edges": [
+          [
+            "R1",
+            "R2"
+          ],
+          [
+            "R2",
+            "R3"
+          ]
+        ],
+        "components": [
+          [
+            "R1",
+            "R2",
+            "R3"
+          ]
+        ],
+        "max_interference_degree": 2,
+        "connected": true,
+        "pairs": [
+          {
+            "i": "R1",
+            "j": "R2",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [
+              {
+                "start": [
+                  0,
+                  0.34999999989999997
+                ],
+                "end": [
+                  0,
+                  0.6500000001
+                ],
+                "length_m": 3.000000002
+              }
+            ],
+            "j_intervals": [
+              {
+                "start": [
+                  1,
+                  0.62499999975
+                ],
+                "end": [
+                  2,
+                  0.37500000025
+                ],
+                "length_m": 3.000000002
+              }
+            ]
+          },
+          {
+            "i": "R1",
+            "j": "R3",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [],
+            "j_intervals": []
+          },
+          {
+            "i": "R2",
+            "j": "R3",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [
+              {
+                "start": [
+                  1,
+                  0.12499999974999998
+                ],
+                "end": [
+                  1,
+                  0.87500000025
+                ],
+                "length_m": 3.000000002
+              }
+            ],
+            "j_intervals": [
+              {
+                "start": [
+                  0,
+                  0.4062499999375
+                ],
+                "end": [
+                  0,
+                  0.5937500000625
+                ],
+                "length_m": 3.000000002
+              }
+            ]
+          }
+        ],
+        "per_path": {
+          "R1": {
+            "length_m": 10.0,
+            "union_intervals": [
+              {
+                "start": [
+                  0,
+                  0.34999999989999997
+                ],
+                "end": [
+                  0,
+                  0.6500000001
+                ],
+                "length_m": 3.000000002
+              }
+            ],
+            "union_interval_count": 1,
+            "union_interference_m": 3.000000002,
+            "interference_ratio": 0.3000000002
+          },
+          "R2": {
+            "length_m": 24.0,
+            "union_intervals": [
+              {
+                "start": [
+                  1,
+                  0.12499999974999998
+                ],
+                "end": [
+                  2,
+                  0.37500000025
+                ],
+                "length_m": 5.000000002
+              }
+            ],
+            "union_interval_count": 1,
+            "union_interference_m": 5.000000002,
+            "interference_ratio": 0.20833333341666668
+          },
+          "R3": {
+            "length_m": 16.0,
+            "union_intervals": [
+              {
+                "start": [
+                  0,
+                  0.4062499999375
+                ],
+                "end": [
+                  0,
+                  0.5937500000625
+                ],
+                "length_m": 3.000000002
+              }
+            ],
+            "union_interval_count": 1,
+            "union_interference_m": 3.000000002,
+            "interference_ratio": 0.187500000125
+          }
+        }
+      },
+      "off": {
+        "complete": true,
+        "contacts": 0,
+        "makespan_s": 25.37194973157629,
+        "mean_completion_s": 16.042682430850633,
+        "completion_std_s": 6.709516687824428,
+        "completion_by_robot": {
+          "R1": 9.878048780487806,
+          "R2": 25.37194973157629,
+          "R3": 12.878048780487806
+        },
+        "extension_counts": {
+          "accelerating": 0,
+          "cruising": 0,
+          "braking": 0,
+          "deferred_moving": 0,
+          "rotating": 0,
+          "starting": 0
+        },
+        "extension_commands": 0,
+        "intermediate_stops": 2,
+        "wall_s": 0.0014137999969534576,
+        "setup_s": 0.005601900018518791,
+        "steps": 28,
+        "input_sha256": "6e8f8ef4cc1c9730b42f3c0154cf14a278aff59fee707f192aa6569dd74e7a20",
+        "portfolio_size": 7,
+        "optional_waits": 1,
+        "optional_holds": 0,
+        "arbitration_decisions": 0,
+        "median_wall_s": 0.001320399998803623,
+        "repeated_wall_s": [
+          0.0014137999969534576,
+          0.0012270000006537884
+        ],
+        "collision_replay": {
+          "complete": true,
+          "contacts": 0,
+          "makespan_s": 25.37194973157629,
+          "mean_completion_s": 16.042682430850633,
+          "completion_std_s": 6.709516687824428,
+          "completion_by_robot": {
+            "R1": 9.878048780487806,
+            "R2": 25.37194973157629,
+            "R3": 12.878048780487806
+          },
+          "extension_counts": {
+            "accelerating": 0,
+            "cruising": 0,
+            "braking": 0,
+            "deferred_moving": 0,
+            "rotating": 0,
+            "starting": 0
+          },
+          "extension_commands": 0,
+          "intermediate_stops": 2,
+          "wall_s": 0.004686900007072836,
+          "setup_s": 0.005275600007735193,
+          "steps": 281,
+          "input_sha256": "6e8f8ef4cc1c9730b42f3c0154cf14a278aff59fee707f192aa6569dd74e7a20",
+          "portfolio_size": 7,
+          "optional_waits": 1,
+          "optional_holds": 0,
+          "arbitration_decisions": 0
+        }
+      },
+      "on": {
+        "complete": true,
+        "contacts": 0,
+        "makespan_s": 17.523292330767724,
+        "mean_completion_s": 13.426463297247778,
+        "completion_std_s": 3.1451556503527747,
+        "completion_by_robot": {
+          "R1": 9.878048780487806,
+          "R2": 17.523292330767724,
+          "R3": 12.878048780487806
+        },
+        "extension_counts": {
+          "accelerating": 1,
+          "cruising": 0,
+          "braking": 2,
+          "deferred_moving": 0,
+          "rotating": 0,
+          "starting": 0
+        },
+        "extension_commands": 3,
+        "intermediate_stops": 0,
+        "wall_s": 0.0025316000101156533,
+        "setup_s": 0.005309400003170595,
+        "steps": 30,
+        "input_sha256": "6e8f8ef4cc1c9730b42f3c0154cf14a278aff59fee707f192aa6569dd74e7a20",
+        "portfolio_size": 7,
+        "optional_waits": 1,
+        "optional_holds": 0,
+        "arbitration_decisions": 0,
+        "median_wall_s": 0.002504350006347522,
+        "repeated_wall_s": [
+          0.0025316000101156533,
+          0.002477100002579391
+        ],
+        "collision_replay": {
+          "complete": true,
+          "contacts": 0,
+          "makespan_s": 17.523292330767724,
+          "mean_completion_s": 13.426463297247778,
+          "completion_std_s": 3.1451556503527747,
+          "completion_by_robot": {
+            "R1": 9.878048780487806,
+            "R2": 17.523292330767724,
+            "R3": 12.878048780487806
+          },
+          "extension_counts": {
+            "accelerating": 1,
+            "cruising": 0,
+            "braking": 2,
+            "deferred_moving": 0,
+            "rotating": 0,
+            "starting": 0
+          },
+          "extension_commands": 3,
+          "intermediate_stops": 0,
+          "wall_s": 0.011140500020701438,
+          "setup_s": 0.0052269999869167805,
+          "steps": 205,
+          "input_sha256": "6e8f8ef4cc1c9730b42f3c0154cf14a278aff59fee707f192aa6569dd74e7a20",
+          "portfolio_size": 7,
+          "optional_waits": 1,
+          "optional_holds": 0,
+          "arbitration_decisions": 0
+        }
+      },
+      "validated": true,
+      "makespan_reduction_pct": 30.934388109088182,
+      "mean_reduction_pct": 16.30786587517169
+    }
+  ]
+}

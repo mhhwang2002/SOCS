@@ -1,0 +1,16 @@
+{
+  "route_sets": 13,
+  "policy_cases": 26,
+  "timed_executions": 78,
+  "collision_replays": 26,
+  "extension_commands": 0,
+  "contacts": 0,
+  "lp_makespan_better": 1,
+  "lp_makespan_worse": 1,
+  "lp_makespan_tied": 11,
+  "lp_mean_better": 1,
+  "lp_mean_worse": 1,
+  "lp_mean_tied": 11,
+  "lp_holds": 2,
+  "lp_arbitrations": 3
+}

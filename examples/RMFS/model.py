@@ -29,6 +29,16 @@ class RMFS(CoupledDEVS):
             return rescheduled
         return self.check_collision(t) or bool(rescheduled)
 
+    def Delta_y(self, t):
+        # A reserved extension must be delivered by the controller's zero-time
+        # Command before a simultaneous old-target arrival/turn is executed.
+        # Other ties follow names, never object identity or set iteration order.
+        if self.IMM:
+            selected = min(self.IMM,key=lambda m:(
+                not (hasattr(m,'traffic_manager') and m.phase=='Command'),m.name))
+            self.IMM = {selected}
+        return super().Delta_y(t)
+
     def check_collision(self, t):
         """Refresh fixed rack footprints and sweep along X to find contact pairs."""
         robots = {model.name: model for model in self.M if isinstance(model, MRobot)}

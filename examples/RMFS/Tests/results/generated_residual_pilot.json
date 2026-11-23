@@ -1,0 +1,3989 @@
+{
+  "dataset_hash": "c0f91d02189b7ac345f6c44a5291e0bce6d6895186627ec7e6e1e918645de009",
+  "results": [
+    {
+      "case": "sample_1",
+      "policies": [
+        {
+          "policy": "fifo",
+          "repetitions": 1,
+          "metrics": {
+            "makespan": {
+              "mean": 305.2982791779717,
+              "across_run_std": 0.0
+            },
+            "mean_completion": {
+              "mean": 180.15953320474918,
+              "across_run_std": 0.0
+            },
+            "completion_std": {
+              "mean": 98.1003202353436,
+              "across_run_std": 0.0
+            },
+            "wall_seconds": {
+              "mean": 0.4906512000015937,
+              "across_run_std": 0.0
+            },
+            "setup_seconds": {
+              "mean": 0.20523710000270512,
+              "across_run_std": 0.0
+            },
+            "total_seconds": {
+              "mean": 0.6958886000029452,
+              "across_run_std": 0.0
+            },
+            "decision_seconds": {
+              "mean": 0,
+              "across_run_std": 0.0
+            }
+          },
+          "trials": [
+            {
+              "completed": true,
+              "makespan": 305.2982791779717,
+              "mean_completion": 180.15953320474918,
+              "completion_times": {
+                "R1": 74.64468416511903,
+                "R2": 33.09759121265577,
+                "R3": 209.57582829827808,
+                "R4": 305.2982791779717,
+                "R5": 84.31743193778716,
+                "R6": 181.64815483735234,
+                "R7": 273.9262515006061,
+                "R8": 278.76804450822334
+              },
+              "stopped_at": 305.2982791779717,
+              "contacts": 0,
+              "steps": 636,
+              "reason": null,
+              "commands": 42,
+              "completion_std": 98.1003202353436,
+              "case": "sample_1",
+              "policy": "fifo",
+              "seed": 0,
+              "decisions": [],
+              "execution_trace": {
+                "wait_actions": [
+                  {
+                    "time": 0.0,
+                    "a": "R3",
+                    "b": "R1",
+                    "action": "send_now",
+                    "gate_a": [
+                      0,
+                      0.0
+                    ],
+                    "gate_b": [
+                      1,
+                      0.0
+                    ]
+                  },
+                  {
+                    "time": 4.417261042993862,
+                    "a": "R3",
+                    "b": "R2",
+                    "action": "send_now",
+                    "gate_a": [
+                      1,
+                      0.0
+                    ],
+                    "gate_b": [
+                      4,
+                      0.0
+                    ]
+                  }
+                ],
+                "waiting_choices": []
+              },
+              "nested_lookahead": false,
+              "rollout_horizon": "system_completion",
+              "rollout_policy": "independent_current_action_future_wait_rule_and_waiting_priority",
+              "includes_previous_fixed_LP_continuation": true,
+              "lookahead_calls": 0,
+              "rollouts": 0,
+              "wait_decisions": 0,
+              "priority_decisions": 0,
+              "wall_seconds": 0.4906512000015937,
+              "setup_seconds": 0.20523710000270512,
+              "total_seconds": 0.6958886000029452,
+              "decision_seconds": 0,
+              "validation": {
+                "completed": true,
+                "contacts": 0,
+                "interval": 0.01,
+                "stop_on_collision": true,
+                "signature_matches": true
+              }
+            }
+          ],
+          "distinct_validated_trajectories": 1
+        },
+        {
+          "policy": "length",
+          "repetitions": 1,
+          "metrics": {
+            "makespan": {
+              "mean": 305.2982791779717,
+              "across_run_std": 0.0
+            },
+            "mean_completion": {
+              "mean": 180.15953320474918,
+              "across_run_std": 0.0
+            },
+            "completion_std": {
+              "mean": 98.1003202353436,
+              "across_run_std": 0.0
+            },
+            "wall_seconds": {
+              "mean": 0.4763474999999744,
+              "across_run_std": 0.0
+            },
+            "setup_seconds": {
+              "mean": 0.20368989999769838,
+              "across_run_std": 0.0
+            },
+            "total_seconds": {
+              "mean": 0.6800375999991957,
+              "across_run_std": 0.0
+            },
+            "decision_seconds": {
+              "mean": 0,
+              "across_run_std": 0.0
+            }
+          },
+          "trials": [
+            {
+              "completed": true,
+              "makespan": 305.2982791779717,
+              "mean_completion": 180.15953320474918,
+              "completion_times": {
+                "R1": 74.64468416511903,
+                "R2": 33.09759121265577,
+                "R3": 209.57582829827808,
+                "R4": 305.2982791779717,
+                "R5": 84.31743193778716,
+                "R6": 181.64815483735234,
+                "R7": 273.9262515006061,
+                "R8": 278.76804450822334
+              },
+              "stopped_at": 305.2982791779717,
+              "contacts": 0,
+              "steps": 636,
+              "reason": null,
+              "commands": 42,
+              "completion_std": 98.1003202353436,
+              "case": "sample_1",
+              "policy": "length",
+              "seed": 0,
+              "decisions": [],
+              "execution_trace": {
+                "wait_actions": [
+                  {
+                    "time": 0.0,
+                    "a": "R3",
+                    "b": "R1",
+                    "action": "send_now",
+                    "gate_a": [
+                      0,
+                      0.0
+                    ],
+                    "gate_b": [
+                      1,
+                      0.0
+                    ]
+                  },
+                  {
+                    "time": 4.417261042993862,
+                    "a": "R3",
+                    "b": "R2",
+                    "action": "send_now",
+                    "gate_a": [
+                      1,
+                      0.0
+                    ],
+                    "gate_b": [
+                      4,
+                      0.0
+                    ]
+                  }
+                ],
+                "waiting_choices": []
+              },
+              "nested_lookahead": false,
+              "rollout_horizon": "system_completion",
+              "rollout_policy": "independent_current_action_future_wait_rule_and_waiting_priority",
+              "includes_previous_fixed_LP_continuation": true,
+              "lookahead_calls": 0,
+              "rollouts": 0,
+              "wait_decisions": 0,
+              "priority_decisions": 0,
+              "wall_seconds": 0.4763474999999744,
+              "setup_seconds": 0.20368989999769838,
+              "total_seconds": 0.6800375999991957,
+              "decision_seconds": 0,
+              "validation": {
+                "completed": true,
+                "contacts": 0,
+                "interval": 0.01,
+                "stop_on_collision": true,
+                "signature_matches": true
+              }
+            }
+          ],
+          "distinct_validated_trajectories": 1
+        },
+        {
+          "policy": "random",
+          "repetitions": 2,
+          "metrics": {
+            "makespan": {
+              "mean": 353.6778247792913,
+              "across_run_std": 48.37954560131962
+            },
+            "mean_completion": {
+              "mean": 188.66068054738741,
+              "across_run_std": 8.501147342638248
+            },
+            "completion_std": {
+              "mean": 110.19126626248462,
+              "across_run_std": 12.090946027141023
+            },
+            "wall_seconds": {
+              "mean": 0.46713705000001937,
+              "across_run_std": 0.004615350000676699
+            },
+            "setup_seconds": {
+              "mean": 0.2072899499999039,
+              "across_run_std": 0.003673149998576264
+            },
+            "total_seconds": {
+              "mean": 0.6744273000003886,
+              "across_run_std": 0.0009422000002814457
+            },
+            "decision_seconds": {
+              "mean": 0,
+              "across_run_std": 0.0
+            }
+          },
+          "trials": [
+            {
+              "completed": true,
+              "makespan": 402.05737038061096,
+              "mean_completion": 197.16182789002568,
+              "completion_times": {
+                "R1": 60.03253559521104,
+                "R2": 42.83355744014705,
+                "R3": 332.86515417066573,
+                "R4": 252.45622321789833,
+                "R5": 84.31743193778716,
+                "R6": 181.64815483735234,
+                "R7": 221.0841955405327,
+                "R8": 402.05737038061096
+              },
+              "stopped_at": 402.05737038061096,
+              "contacts": 0,
+              "steps": 639,
+              "reason": null,
+              "commands": 43,
+              "completion_std": 122.28221228962565,
+              "case": "sample_1",
+              "policy": "random",
+              "seed": 0,
+              "decisions": [],
+              "execution_trace": {
+                "wait_actions": [
+                  {
+                    "time": 0.0,
+                    "a": "R3",
+                    "b": "R1",
+                    "action": "wait_for_B",
+                    "gate_a": [
+                      0,
+                      0.0
+                    ],
+                    "gate_b": [
+                      1,
+                      0.0
+                    ]
+                  }
+                ],
+                "waiting_choices": []
+              },
+              "nested_lookahead": false,
+              "rollout_horizon": "system_completion",
+              "rollout_policy": "independent_current_action_future_wait_rule_and_waiting_priority",
+              "includes_previous_fixed_LP_continuation": true,
+              "lookahead_calls": 0,
+              "rollouts": 0,
+              "wait_decisions": 0,
+              "priority_decisions": 0,
+              "wall_seconds": 0.4625216999993427,
+              "setup_seconds": 0.21096309999848017,
+              "total_seconds": 0.6734851000001072,
+              "decision_seconds": 0,
+              "validation": {
+                "completed": true,
+                "contacts": 0,
+                "interval": 0.01,
+                "stop_on_collision": true,
+                "signature_matches": true
+              }
+            },
+            {
+              "completed": true,
+              "makespan": 305.2982791779717,
+              "mean_completion": 180.15953320474918,
+              "completion_times": {
+                "R1": 74.64468416511903,
+                "R2": 33.09759121265577,
+                "R3": 209.57582829827808,
+                "R4": 305.2982791779717,
+                "R5": 84.31743193778716,
+                "R6": 181.64815483735234,
+                "R7": 273.9262515006061,
+                "R8": 278.76804450822334
+              },
+              "stopped_at": 305.2982791779717,
+              "contacts": 0,
+              "steps": 636,
+              "reason": null,
+              "commands": 42,
+              "completion_std": 98.1003202353436,
+              "case": "sample_1",
+              "policy": "random",
+              "seed": 1,
+              "decisions": [],
+              "execution_trace": {
+                "wait_actions": [
+                  {
+                    "time": 0.0,
+                    "a": "R3",
+                    "b": "R1",
+                    "action": "send_now",
+                    "gate_a": [
+                      0,
+                      0.0
+                    ],
+                    "gate_b": [
+                      1,
+                      0.0
+                    ]
+                  },
+                  {
+                    "time": 4.417261042993862,
+                    "a": "R3",
+                    "b": "R2",
+                    "action": "send_now",
+                    "gate_a": [
+                      1,
+                      0.0
+                    ],
+                    "gate_b": [
+                      4,
+                      0.0
+                    ]
+                  }
+                ],
+                "waiting_choices": []
+              },
+              "nested_lookahead": false,
+              "rollout_horizon": "system_completion",
+              "rollout_policy": "independent_current_action_future_wait_rule_and_waiting_priority",
+              "includes_previous_fixed_LP_continuation": true,
+              "lookahead_calls": 0,
+              "rollouts": 0,
+              "wait_decisions": 0,
+              "priority_decisions": 0,
+              "wall_seconds": 0.47175240000069607,
+              "setup_seconds": 0.20361680000132765,
+              "total_seconds": 0.6753695000006701,
+              "decision_seconds": 0,
+              "validation": {
+                "completed": true,
+                "contacts": 0,
+                "interval": 0.01,
+                "stop_on_collision": true,
+                "signature_matches": true
+              }
+            }
+          ],
+          "distinct_validated_trajectories": 2
+        },
+        {
+          "policy": "lookahead_makespan",
+          "repetitions": 1,
+          "metrics": {
+            "makespan": {
+              "mean": 305.2982791779717,
+              "across_run_std": 0.0
+            },
+            "mean_completion": {
+              "mean": 180.15953320474918,
+              "across_run_std": 0.0
+            },
+            "completion_std": {
+              "mean": 98.1003202353436,
+              "across_run_std": 0.0
+            },
+            "wall_seconds": {
+              "mean": 7.780110899999272,
+              "across_run_std": 0.0
+            },
+            "setup_seconds": {
+              "mean": 0.20386119999966468,
+              "across_run_std": 0.0
+            },
+            "total_seconds": {
+              "mean": 7.983972399997583,
+              "across_run_std": 0.0
+            },
+            "decision_seconds": {
+              "mean": 7.299364299997251,
+              "across_run_std": 0.0
+            }
+          },
+          "trials": [
+            {
+              "completed": true,
+              "makespan": 305.2982791779717,
+              "mean_completion": 180.15953320474918,
+              "completion_times": {
+                "R1": 74.64468416511903,
+                "R2": 33.09759121265577,
+                "R3": 209.57582829827808,
+                "R4": 305.2982791779717,
+                "R5": 84.31743193778716,
+                "R6": 181.64815483735234,
+                "R7": 273.9262515006061,
+                "R8": 278.76804450822334
+              },
+              "stopped_at": 305.2982791779717,
+              "contacts": 0,
+              "steps": 636,
+              "reason": null,
+              "commands": 42,
+              "completion_std": 98.1003202353436,
+              "case": "sample_1",
+              "policy": "lookahead_makespan",
+              "seed": 0,
+              "decisions": [
+                {
+                  "time": 0.0,
+                  "kind": "wait_or_go",
+                  "selected_mode": "fifo",
+                  "selected_wait_rule": "fifo",
+                  "action_name": "send_now",
+                  "action": "send_now",
+                  "branches": [
+                    {
+                      "mode": "fifo",
+                      "wait_rule": "fifo",
+                      "action": "send_now",
+                      "action_name": "send_now",
+                      "fixed_LP_continuation": false,
+                      "wall_seconds": 0.4788635000004433,
+                      "execution_trace": {
+                        "wait_actions": [
+                          {
+                            "time": 0.0,
+                            "a": "R3",
+                            "b": "R1",
+                            "action": "send_now",
+                            "gate_a": [
+                              0,
+                              0.0
+                            ],
+                            "gate_b": [
+                              1,
+                              0.0
+                            ]
+                          },
+                          {
+                            "time": 4.417261042993862,
+                            "a": "R3",
+                            "b": "R2",
+                            "action": "send_now",
+                            "gate_a": [
+                              1,
+                              0.0
+                            ],
+                            "gate_b": [
+                              4,
+                              0.0
+                            ]
+                          }
+                        ],
+                        "waiting_choices": []
+                      },
+                      "completed": true,
+                      "makespan": 305.2982791779717,
+                      "mean_completion": 180.15953320474918,
+                      "completion_times": {
+                        "R1": 74.64468416511903,
+                        "R2": 33.09759121265577,
+                        "R3": 209.57582829827808,
+                        "R4": 305.2982791779717,
+                        "R5": 84.31743193778716,
+                        "R6": 181.64815483735234,
+                        "R7": 273.9262515006061,
+                        "R8": 278.76804450822334
+                      },
+                      "stopped_at": 305.2982791779717,
+                      "contacts": 0,
+                      "steps": 636,
+                      "reason": null,
+                      "commands": 42,
+                      "completion_std": 98.1003202353436
+                    },
+                    {
+                      "mode": "length",
+                      "wait_rule": "fifo",
+                      "action": "send_now",
+                      "action_name": "send_now",
+                      "fixed_LP_continuation": true,
+                      "wall_seconds": 0.4992197000028682,
+                      "execution_trace": {
+                        "wait_actions": [
+                          {
+                            "time": 0.0,
+                            "a": "R3",
+                            "b": "R1",
+                            "action": "send_now",
+                            "gate_a": [
+                              0,
+                              0.0
+                            ],
+                            "gate_b": [
+                              1,
+                              0.0
+                            ]
+                          },
+                          {
+                            "time": 4.417261042993862,
+                            "a": "R3",
+                            "b": "R2",
+                            "action": "send_now",
+                            "gate_a": [
+                              1,
+                              0.0
+                            ],
+                            "gate_b": [
+                              4,
+                              0.0
+                            ]
+                          }
+                        ],
+                        "waiting_choices": []
+                      },
+                      "completed": true,
+                      "makespan": 305.2982791779717,
+                      "mean_completion": 180.15953320474918,
+                      "completion_times": {
+                        "R1": 74.64468416511903,
+                        "R2": 33.09759121265577,
+                        "R3": 209.57582829827808,
+                        "R4": 305.2982791779717,
+                        "R5": 84.31743193778716,
+                        "R6": 181.64815483735234,
+                        "R7": 273.9262515006061,
+                        "R8": 278.76804450822334
+                      },
+                      "stopped_at": 305.2982791779717,
+                      "contacts": 0,
+                      "steps": 636,
+                      "reason": null,
+                      "commands": 42,
+                      "completion_std": 98.1003202353436
+                    },
+                    {
+                      "mode": "fifo",
+                      "wait_rule": "length",
+                      "action": "send_now",
+                      "action_name": "send_now",
+                      "fixed_LP_continuation": false,
+                      "wall_seconds": 0.49071120000007795,
+                      "execution_trace": {
+                        "wait_actions": [
+                          {
+                            "time": 0.0,
+                            "a": "R3",
+                            "b": "R1",
+                            "action": "send_now",
+                            "gate_a": [
+                              0,
+                              0.0
+                            ],
+                            "gate_b": [
+                              1,
+                              0.0
+                            ]
+                          },
+                          {
+                            "time": 4.417261042993862,
+                            "a": "R3",
+                            "b": "R2",
+                            "action": "send_now",
+                            "gate_a": [
+                              1,
+                              0.0
+                            ],
+                            "gate_b": [
+                              4,
+                              0.0
+                            ]
+                          }
+                        ],
+                        "waiting_choices": []
+                      },
+                      "completed": true,
+                      "makespan": 305.2982791779717,
+                      "mean_completion": 180.15953320474918,
+                      "completion_times": {
+                        "R1": 74.64468416511903,
+                        "R2": 33.09759121265577,
+                        "R3": 209.57582829827808,
+                        "R4": 305.2982791779717,
+                        "R5": 84.31743193778716,
+                        "R6": 181.64815483735234,
+                        "R7": 273.9262515006061,
+                        "R8": 278.76804450822334
+                      },
+                      "stopped_at": 305.2982791779717,
+                      "contacts": 0,
+                      "steps": 636,
+                      "reason": null,
+                      "commands": 42,
+                      "completion_std": 98.1003202353436
+                    },
+                    {
+                      "mode": "length",
+                      "wait_rule": "length",
+                      "action": "send_now",
+                      "action_name": "send_now",
+                      "fixed_LP_continuation": false,
+                      "wall_seconds": 0.4891983999987133,
+                      "execution_trace": {
+                        "wait_actions": [
+                          {
+                            "time": 0.0,
+                            "a": "R3",
+                            "b": "R1",
+                            "action": "send_now",
+                            "gate_a": [
+                              0,
+                              0.0
+                            ],
+                            "gate_b": [
+                              1,
+                              0.0
+                            ]
+                          },
+                          {
+                            "time": 4.417261042993862,
+                            "a": "R3",
+                            "b": "R2",
+                            "action": "send_now",
+                            "gate_a": [
+                              1,
+                              0.0
+                            ],
+                            "gate_b": [
+                              4,
+                              0.0
+                            ]
+                          }
+                        ],
+                        "waiting_choices": []
+                      },
+                      "completed": true,
+                      "makespan": 305.2982791779717,
+                      "mean_completion": 180.15953320474918,
+                      "completion_times": {
+                        "R1": 74.64468416511903,
+                        "R2": 33.09759121265577,
+                        "R3": 209.57582829827808,
+                        "R4": 305.2982791779717,
+                        "R5": 84.31743193778716,
+                        "R6": 181.64815483735234,
+                        "R7": 273.9262515006061,
+                        "R8": 278.76804450822334
+                      },
+                      "stopped_at": 305.2982791779717,
+                      "contacts": 0,
+                      "steps": 636,
+                      "reason": null,
+                      "commands": 42,
+                      "completion_std": 98.1003202353436
+                    },
+                    {
+                      "mode": "fifo",
+                      "wait_rule": "fifo",
+                      "action": "wait_for_B",
+                      "action_name": "wait_for_B",
+                      "fixed_LP_continuation": false,
+                      "wall_seconds": 0.4766481000006024,
+                      "execution_trace": {
+                        "wait_actions": [
+                          {
+                            "time": 0.0,
+                            "a": "R3",
+                            "b": "R1",
+                            "action": "wait_for_B",
+                            "gate_a": [
+                              0,
+                              0.0
+                            ],
+                            "gate_b": [
+                              1,
+                              0.0
+                            ]
+                          }
+                        ],
+                        "waiting_choices": []
+                      },
+                      "completed": true,
+                      "makespan": 402.05737038061096,
+                      "mean_completion": 197.16182789002568,
+                      "completion_times": {
+                        "R1": 60.03253559521104,
+                        "R2": 42.83355744014705,
+                        "R3": 332.86515417066573,
+                        "R4": 252.45622321789833,
+                        "R5": 84.31743193778716,
+                        "R6": 181.64815483735234,
+                        "R7": 221.0841955405327,
+                        "R8": 402.05737038061096
+                      },
+                      "stopped_at": 402.05737038061096,
+                      "contacts": 0,
+                      "steps": 639,
+                      "reason": null,
+                      "commands": 43,
+                      "completion_std": 122.28221228962565
+                    },
+                    {
+                      "mode": "length",
+                      "wait_rule": "fifo",
+                      "action": "wait_for_B",
+                      "action_name": "wait_for_B",
+                      "fixed_LP_continuation": true,
+                      "wall_seconds": 0.4832024999996065,
+                      "execution_trace": {
+                        "wait_actions": [
+                          {
+                            "time": 0.0,
+                            "a": "R3",
+                            "b": "R1",
+                            "action": "wait_for_B",
+                            "gate_a": [
+                              0,
+                              0.0
+                            ],
+                            "gate_b": [
+                              1,
+                              0.0
+                            ]
+                          }
+                        ],
+                        "waiting_choices": []
+                      },
+                      "completed": true,
+                      "makespan": 402.05737038061096,
+                      "mean_completion": 197.16182789002568,
+                      "completion_times": {
+                        "R1": 60.03253559521104,
+                        "R2": 42.83355744014705,
+                        "R3": 332.86515417066573,
+                        "R4": 252.45622321789833,
+                        "R5": 84.31743193778716,
+                        "R6": 181.64815483735234,
+                        "R7": 221.0841955405327,
+                        "R8": 402.05737038061096
+                      },
+                      "stopped_at": 402.05737038061096,
+                      "contacts": 0,
+                      "steps": 639,
+                      "reason": null,
+                      "commands": 43,
+                      "completion_std": 122.28221228962565
+                    },
+                    {
+                      "mode": "fifo",
+                      "wait_rule": "length",
+                      "action": "wait_for_B",
+                      "action_name": "wait_for_B",
+                      "fixed_LP_continuation": false,
+                      "wall_seconds": 0.47689339999851654,
+                      "execution_trace": {
+                        "wait_actions": [
+                          {
+                            "time": 0.0,
+                            "a": "R3",
+                            "b": "R1",
+                            "action": "wait_for_B",
+                            "gate_a": [
+                              0,
+                              0.0
+                            ],
+                            "gate_b": [
+                              1,
+                              0.0
+                            ]
+                          }
+                        ],
+                        "waiting_choices": []
+                      },
+                      "completed": true,
+                      "makespan": 402.05737038061096,
+                      "mean_completion": 197.16182789002568,
+                      "completion_times": {
+                        "R1": 60.03253559521104,
+                        "R2": 42.83355744014705,
+                        "R3": 332.86515417066573,
+                        "R4": 252.45622321789833,
+                        "R5": 84.31743193778716,
+                        "R6": 181.64815483735234,
+                        "R7": 221.0841955405327,
+                        "R8": 402.05737038061096
+                      },
+                      "stopped_at": 402.05737038061096,
+                      "contacts": 0,
+                      "steps": 639,
+                      "reason": null,
+                      "commands": 43,
+                      "completion_std": 122.28221228962565
+                    },
+                    {
+                      "mode": "length",
+                      "wait_rule": "length",
+                      "action": "wait_for_B",
+                      "action_name": "wait_for_B",
+                      "fixed_LP_continuation": false,
+                      "wall_seconds": 0.5164322999989963,
+                      "execution_trace": {
+                        "wait_actions": [
+                          {
+                            "time": 0.0,
+                            "a": "R3",
+                            "b": "R1",
+                            "action": "wait_for_B",
+                            "gate_a": [
+                              0,
+                              0.0
+                            ],
+                            "gate_b": [
+                              1,
+                              0.0
+                            ]
+                          }
+                        ],
+                        "waiting_choices": []
+                      },
+                      "completed": true,
+                      "makespan": 402.05737038061096,
+                      "mean_completion": 197.16182789002568,
+                      "completion_times": {
+                        "R1": 60.03253559521104,
+                        "R2": 42.83355744014705,
+                        "R3": 332.86515417066573,
+                        "R4": 252.45622321789833,
+                        "R5": 84.31743193778716,
+                        "R6": 181.64815483735234,
+                        "R7": 221.0841955405327,
+                        "R8": 402.05737038061096
+                      },
+                      "stopped_at": 402.05737038061096,
+                      "contacts": 0,
+                      "steps": 639,
+                      "reason": null,
+                      "commands": 43,
+                      "completion_std": 122.28221228962565
+                    }
+                  ],
+                  "wall_seconds": 3.913429799998994
+                },
+                {
+                  "time": 4.417261042993862,
+                  "kind": "wait_or_go",
+                  "selected_mode": "fifo",
+                  "selected_wait_rule": "fifo",
+                  "action_name": "send_now",
+                  "action": "send_now",
+                  "branches": [
+                    {
+                      "mode": "fifo",
+                      "wait_rule": "fifo",
+                      "action": "send_now",
+                      "action_name": "send_now",
+                      "fixed_LP_continuation": false,
+                      "wall_seconds": 0.42118760000084876,
+                      "execution_trace": {
+                        "wait_actions": [
+                          {
+                            "time": 0.0,
+                            "a": "R3",
+                            "b": "R1",
+                            "action": "send_now",
+                            "gate_a": [
+                              0,
+                              0.0
+                            ],
+                            "gate_b": [
+                              1,
+                              0.0
+                            ]
+                          },
+                          {
+                            "time": 4.417261042993862,
+                            "a": "R3",
+                            "b": "R2",
+                            "action": "send_now",
+                            "gate_a": [
+                              1,
+                              0.0
+                            ],
+                            "gate_b": [
+                              4,
+                              0.0
+                            ]
+                          }
+                        ],
+                        "waiting_choices": []
+                      },
+                      "completed": true,
+                      "makespan": 305.2982791779717,
+                      "mean_completion": 180.15953320474918,
+                      "completion_times": {
+                        "R1": 74.64468416511903,
+                        "R2": 33.09759121265577,
+                        "R3": 209.57582829827808,
+                        "R4": 305.2982791779717,
+                        "R5": 84.31743193778716,
+                        "R6": 181.64815483735234,
+                        "R7": 273.9262515006061,
+                        "R8": 278.76804450822334
+                      },
+                      "stopped_at": 305.2982791779717,
+                      "contacts": 0,
+                      "steps": 614,
+                      "reason": null,
+                      "commands": 42,
+                      "completion_std": 98.1003202353436
+                    },
+                    {
+                      "mode": "length",
+                      "wait_rule": "fifo",
+                      "action": "send_now",
+                      "action_name": "send_now",
+                      "fixed_LP_continuation": true,
+                      "wall_seconds": 0.4163349000009475,
+                      "execution_trace": {
+                        "wait_actions": [
+                          {
+                            "time": 0.0,
+                            "a": "R3",
+                            "b": "R1",
+                            "action": "send_now",
+                            "gate_a": [
+                              0,
+                              0.0
+                            ],
+                            "gate_b": [
+                              1,
+                              0.0
+                            ]
+                          },
+                          {
+                            "time": 4.417261042993862,
+                            "a": "R3",
+                            "b": "R2",
+                            "action": "send_now",
+                            "gate_a": [
+                              1,
+                              0.0
+                            ],
+                            "gate_b": [
+                              4,
+                              0.0
+                            ]
+                          }
+                        ],
+                        "waiting_choices": []
+                      },
+                      "completed": true,
+                      "makespan": 305.2982791779717,
+                      "mean_completion": 180.15953320474918,
+                      "completion_times": {
+                        "R1": 74.64468416511903,
+                        "R2": 33.09759121265577,
+                        "R3": 209.57582829827808,
+                        "R4": 305.2982791779717,
+                        "R5": 84.31743193778716,
+                        "R6": 181.64815483735234,
+                        "R7": 273.9262515006061,
+                        "R8": 278.76804450822334
+                      },
+                      "stopped_at": 305.2982791779717,
+                      "contacts": 0,
+                      "steps": 614,
+                      "reason": null,
+                      "commands": 42,
+                      "completion_std": 98.1003202353436
+                    },
+                    {
+                      "mode": "fifo",
+                      "wait_rule": "length",
+                      "action": "send_now",
+                      "action_name": "send_now",
+                      "fixed_LP_continuation": false,
+                      "wall_seconds": 0.42114460000084364,
+                      "execution_trace": {
+                        "wait_actions": [
+                          {
+                            "time": 0.0,
+                            "a": "R3",
+                            "b": "R1",
+                            "action": "send_now",
+                            "gate_a": [
+                              0,
+                              0.0
+                            ],
+                            "gate_b": [
+                              1,
+                              0.0
+                            ]
+                          },
+                          {
+                            "time": 4.417261042993862,
+                            "a": "R3",
+                            "b": "R2",
+                            "action": "send_now",
+                            "gate_a": [
+                              1,
+                              0.0
+                            ],
+                            "gate_b": [
+                              4,
+                              0.0
+                            ]
+                          }
+                        ],
+                        "waiting_choices": []
+                      },
+                      "completed": true,
+                      "makespan": 305.2982791779717,
+                      "mean_completion": 180.15953320474918,
+                      "completion_times": {
+                        "R1": 74.64468416511903,
+                        "R2": 33.09759121265577,
+                        "R3": 209.57582829827808,
+                        "R4": 305.2982791779717,
+                        "R5": 84.31743193778716,
+                        "R6": 181.64815483735234,
+                        "R7": 273.9262515006061,
+                        "R8": 278.76804450822334
+                      },
+                      "stopped_at": 305.2982791779717,
+                      "contacts": 0,
+                      "steps": 614,
+                      "reason": null,
+                      "commands": 42,
+                      "completion_std": 98.1003202353436
+                    },
+                    {
+                      "mode": "length",
+                      "wait_rule": "length",
+                      "action": "send_now",
+                      "action_name": "send_now",
+                      "fixed_LP_continuation": false,
+                      "wall_seconds": 0.4182340999977896,
+                      "execution_trace": {
+                        "wait_actions": [
+                          {
+                            "time": 0.0,
+                            "a": "R3",
+                            "b": "R1",
+                            "action": "send_now",
+                            "gate_a": [
+                              0,
+                              0.0
+                            ],
+                            "gate_b": [
+                              1,
+                              0.0
+                            ]
+                          },
+                          {
+                            "time": 4.417261042993862,
+                            "a": "R3",
+                            "b": "R2",
+                            "action": "send_now",
+                            "gate_a": [
+                              1,
+                              0.0
+                            ],
+                            "gate_b": [
+                              4,
+                              0.0
+                            ]
+                          }
+                        ],
+                        "waiting_choices": []
+                      },
+                      "completed": true,
+                      "makespan": 305.2982791779717,
+                      "mean_completion": 180.15953320474918,
+                      "completion_times": {
+                        "R1": 74.64468416511903,
+                        "R2": 33.09759121265577,
+                        "R3": 209.57582829827808,
+                        "R4": 305.2982791779717,
+                        "R5": 84.31743193778716,
+                        "R6": 181.64815483735234,
+                        "R7": 273.9262515006061,
+                        "R8": 278.76804450822334
+                      },
+                      "stopped_at": 305.2982791779717,
+                      "contacts": 0,
+                      "steps": 614,
+                      "reason": null,
+                      "commands": 42,
+                      "completion_std": 98.1003202353436
+                    },
+                    {
+                      "mode": "fifo",
+                      "wait_rule": "fifo",
+                      "action": "wait_for_B",
+                      "action_name": "wait_for_B",
+                      "fixed_LP_continuation": false,
+                      "wall_seconds": 0.4255721999979869,
+                      "execution_trace": {
+                        "wait_actions": [
+                          {
+                            "time": 0.0,
+                            "a": "R3",
+                            "b": "R1",
+                            "action": "send_now",
+                            "gate_a": [
+                              0,
+                              0.0
+                            ],
+                            "gate_b": [
+                              1,
+                              0.0
+                            ]
+                          },
+                          {
+                            "time": 4.417261042993862,
+                            "a": "R3",
+                            "b": "R2",
+                            "action": "wait_for_B",
+                            "gate_a": [
+                              1,
+                              0.0
+                            ],
+                            "gate_b": [
+                              4,
+                              0.0
+                            ]
+                          }
+                        ],
+                        "waiting_choices": [
+                          {
+                            "time": 8.834522085987723,
+                            "candidates": [
+                              "R3",
+                              "R2"
+                            ],
+                            "selected": "R3",
+                            "policy": "fifo"
+                          }
+                        ]
+                      },
+                      "completed": true,
+                      "makespan": 305.2982791779717,
+                      "mean_completion": 181.26384846549766,
+                      "completion_times": {
+                        "R1": 79.06194520811287,
+                        "R2": 37.514852255649636,
+                        "R3": 209.57582829827808,
+                        "R4": 305.2982791779717,
+                        "R5": 84.31743193778716,
+                        "R6": 181.64815483735234,
+                        "R7": 273.9262515006061,
+                        "R8": 278.76804450822334
+                      },
+                      "stopped_at": 305.2982791779717,
+                      "contacts": 0,
+                      "steps": 615,
+                      "reason": null,
+                      "commands": 42,
+                      "completion_std": 96.68716027485306
+                    },
+                    {
+                      "mode": "length",
+                      "wait_rule": "fifo",
+                      "action": "wait_for_B",
+                      "action_name": "wait_for_B",
+                      "fixed_LP_continuation": true,
+                      "wall_seconds": 0.41957360000014887,
+                      "execution_trace": {
+                        "wait_actions": [
+                          {
+                            "time": 0.0,
+                            "a": "R3",
+                            "b": "R1",
+                            "action": "send_now",
+                            "gate_a": [
+                              0,
+                              0.0
+                            ],
+                            "gate_b": [
+                              1,
+                              0.0
+                            ]
+                          },
+                          {
+                            "time": 4.417261042993862,
+                            "a": "R3",
+                            "b": "R2",
+                            "action": "wait_for_B",
+                            "gate_a": [
+                              1,
+                              0.0
+                            ],
+                            "gate_b": [
+                              4,
+                              0.0
+                            ]
+                          }
+                        ],
+                        "waiting_choices": [
+                          {
+                            "time": 8.834522085987723,
+                            "candidates": [
+                              "R3",
+                              "R2"
+                            ],
+                            "selected": "R3",
+                            "policy": "longest_remaining_distance"
+                          }
+                        ]
+                      },
+                      "completed": true,
+                      "makespan": 305.2982791779717,
+                      "mean_completion": 181.26384846549766,
+                      "completion_times": {
+                        "R1": 79.06194520811287,
+                        "R2": 37.514852255649636,
+                        "R3": 209.57582829827808,
+                        "R4": 305.2982791779717,
+                        "R5": 84.31743193778716,
+                        "R6": 181.64815483735234,
+                        "R7": 273.9262515006061,
+                        "R8": 278.76804450822334
+                      },
+                      "stopped_at": 305.2982791779717,
+                      "contacts": 0,
+                      "steps": 615,
+                      "reason": null,
+                      "commands": 42,
+                      "completion_std": 96.68716027485306
+                    },
+                    {
+                      "mode": "fifo",
+                      "wait_rule": "length",
+                      "action": "wait_for_B",
+                      "action_name": "wait_for_B",
+                      "fixed_LP_continuation": false,
+                      "wall_seconds": 0.42963919999965583,
+                      "execution_trace": {
+                        "wait_actions": [
+                          {
+                            "time": 0.0,
+                            "a": "R3",
+                            "b": "R1",
+                            "action": "send_now",
+                            "gate_a": [
+                              0,
+                              0.0
+                            ],
+                            "gate_b": [
+                              1,
+                              0.0
+                            ]
+                          },
+                          {
+                            "time": 4.417261042993862,
+                            "a": "R3",
+                            "b": "R2",
+                            "action": "wait_for_B",
+                            "gate_a": [
+                              1,
+                              0.0
+                            ],
+                            "gate_b": [
+                              4,
+                              0.0
+                            ]
+                          }
+                        ],
+                        "waiting_choices": [
+                          {
+                            "time": 8.834522085987723,
+                            "candidates": [
+                              "R3",
+                              "R2"
+                            ],
+                            "selected": "R3",
+                            "policy": "fifo"
+                          }
+                        ]
+                      },
+                      "completed": true,
+                      "makespan": 305.2982791779717,
+                      "mean_completion": 181.26384846549766,
+                      "completion_times": {
+                        "R1": 79.06194520811287,
+                        "R2": 37.514852255649636,
+                        "R3": 209.57582829827808,
+                        "R4": 305.2982791779717,
+                        "R5": 84.31743193778716,
+                        "R6": 181.64815483735234,
+                        "R7": 273.9262515006061,
+                        "R8": 278.76804450822334
+                      },
+                      "stopped_at": 305.2982791779717,
+                      "contacts": 0,
+                      "steps": 615,
+                      "reason": null,
+                      "commands": 42,
+                      "completion_std": 96.68716027485306
+                    },
+                    {
+                      "mode": "length",
+                      "wait_rule": "length",
+                      "action": "wait_for_B",
+                      "action_name": "wait_for_B",
+                      "fixed_LP_continuation": false,
+                      "wall_seconds": 0.43009560000064084,
+                      "execution_trace": {
+                        "wait_actions": [
+                          {
+                            "time": 0.0,
+                            "a": "R3",
+                            "b": "R1",
+                            "action": "send_now",
+                            "gate_a": [
+                              0,
+                              0.0
+                            ],
+                            "gate_b": [
+                              1,
+                              0.0
+                            ]
+                          },
+                          {
+                            "time": 4.417261042993862,
+                            "a": "R3",
+                            "b": "R2",
+                            "action": "wait_for_B",
+                            "gate_a": [
+                              1,
+                              0.0
+                            ],
+                            "gate_b": [
+                              4,
+                              0.0
+                            ]
+                          }
+                        ],
+                        "waiting_choices": [
+                          {
+                            "time": 8.834522085987723,
+                            "candidates": [
+                              "R3",
+                              "R2"
+                            ],
+                            "selected": "R3",
+                            "policy": "longest_remaining_distance"
+                          }
+                        ]
+                      },
+                      "completed": true,
+                      "makespan": 305.2982791779717,
+                      "mean_completion": 181.26384846549766,
+                      "completion_times": {
+                        "R1": 79.06194520811287,
+                        "R2": 37.514852255649636,
+                        "R3": 209.57582829827808,
+                        "R4": 305.2982791779717,
+                        "R5": 84.31743193778716,
+                        "R6": 181.64815483735234,
+                        "R7": 273.9262515006061,
+                        "R8": 278.76804450822334
+                      },
+                      "stopped_at": 305.2982791779717,
+                      "contacts": 0,
+                      "steps": 615,
+                      "reason": null,
+                      "commands": 42,
+                      "completion_std": 96.68716027485306
+                    }
+                  ],
+                  "wall_seconds": 3.385934499998257
+                }
+              ],
+              "execution_trace": {
+                "wait_actions": [
+                  {
+                    "time": 0.0,
+                    "a": "R3",
+                    "b": "R1",
+                    "action": "send_now",
+                    "gate_a": [
+                      0,
+                      0.0
+                    ],
+                    "gate_b": [
+                      1,
+                      0.0
+                    ]
+                  },
+                  {
+                    "time": 4.417261042993862,
+                    "a": "R3",
+                    "b": "R2",
+                    "action": "send_now",
+                    "gate_a": [
+                      1,
+                      0.0
+                    ],
+                    "gate_b": [
+                      4,
+                      0.0
+                    ]
+                  }
+                ],
+                "waiting_choices": []
+              },
+              "nested_lookahead": false,
+              "rollout_horizon": "system_completion",
+              "rollout_policy": "independent_current_action_future_wait_rule_and_waiting_priority",
+              "includes_previous_fixed_LP_continuation": true,
+              "lookahead_calls": 2,
+              "rollouts": 16,
+              "wait_decisions": 2,
+              "priority_decisions": 0,
+              "wall_seconds": 7.780110899999272,
+              "setup_seconds": 0.20386119999966468,
+              "total_seconds": 7.983972399997583,
+              "decision_seconds": 7.299364299997251,
+              "validation": {
+                "completed": true,
+                "contacts": 0,
+                "interval": 0.01,
+                "stop_on_collision": true,
+                "signature_matches": true
+              }
+            }
+          ],
+          "distinct_validated_trajectories": 1
+        },
+        {
+          "policy": "lookahead_mean",
+          "repetitions": 1,
+          "metrics": {
+            "makespan": {
+              "mean": 305.2982791779717,
+              "across_run_std": 0.0
+            },
+            "mean_completion": {
+              "mean": 180.15953320474918,
+              "across_run_std": 0.0
+            },
+            "completion_std": {
+              "mean": 98.1003202353436,
+              "across_run_std": 0.0
+            },
+            "wall_seconds": {
+              "mean": 7.836249099997076,
+              "across_run_std": 0.0
+            },
+            "setup_seconds": {
+              "mean": 0.1940528999984963,
+              "across_run_std": 0.0
+            },
+            "total_seconds": {
+              "mean": 8.030302199997095,
+              "across_run_std": 0.0
+            },
+            "decision_seconds": {
+              "mean": 7.347990699996444,
+              "across_run_std": 0.0
+            }
+          },
+          "trials": [
+            {
+              "completed": true,
+              "makespan": 305.2982791779717,
+              "mean_completion": 180.15953320474918,
+              "completion_times": {
+                "R1": 74.64468416511903,
+                "R2": 33.09759121265577,
+                "R3": 209.57582829827808,
+                "R4": 305.2982791779717,
+                "R5": 84.31743193778716,
+                "R6": 181.64815483735234,
+                "R7": 273.9262515006061,
+                "R8": 278.76804450822334
+              },
+              "stopped_at": 305.2982791779717,
+              "contacts": 0,
+              "steps": 636,
+              "reason": null,
+              "commands": 42,
+              "completion_std": 98.1003202353436,
+              "case": "sample_1",
+              "policy": "lookahead_mean",
+              "seed": 0,
+              "decisions": [
+                {
+                  "time": 0.0,
+                  "kind": "wait_or_go",
+                  "selected_mode": "fifo",
+                  "selected_wait_rule": "fifo",
+                  "action_name": "send_now",
+                  "action": "send_now",
+                  "branches": [
+                    {
+                      "mode": "fifo",
+                      "wait_rule": "fifo",
+                      "action": "send_now",
+                      "action_name": "send_now",
+                      "fixed_LP_continuation": false,
+                      "wall_seconds": 0.5040597999977763,
+                      "execution_trace": {
+                        "wait_actions": [
+                          {
+                            "time": 0.0,
+                            "a": "R3",
+                            "b": "R1",
+                            "action": "send_now",
+                            "gate_a": [
+                              0,
+                              0.0
+                            ],
+                            "gate_b": [
+                              1,
+                              0.0
+                            ]
+                          },
+                          {
+                            "time": 4.417261042993862,
+                            "a": "R3",
+                            "b": "R2",
+                            "action": "send_now",
+                            "gate_a": [
+                              1,
+                              0.0
+                            ],
+                            "gate_b": [
+                              4,
+                              0.0
+                            ]
+                          }
+                        ],
+                        "waiting_choices": []
+                      },
+                      "completed": true,
+                      "makespan": 305.2982791779717,
+                      "mean_completion": 180.15953320474918,
+                      "completion_times": {
+                        "R1": 74.64468416511903,
+                        "R2": 33.09759121265577,
+                        "R3": 209.57582829827808,
+                        "R4": 305.2982791779717,
+                        "R5": 84.31743193778716,
+                        "R6": 181.64815483735234,
+                        "R7": 273.9262515006061,
+                        "R8": 278.76804450822334
+                      },
+                      "stopped_at": 305.2982791779717,
+                      "contacts": 0,
+                      "steps": 636,
+                      "reason": null,
+                      "commands": 42,
+                      "completion_std": 98.1003202353436
+                    },
+                    {
+                      "mode": "length",
+                      "wait_rule": "fifo",
+                      "action": "send_now",
+                      "action_name": "send_now",
+                      "fixed_LP_continuation": true,
+                      "wall_seconds": 0.47945509999772185,
+                      "execution_trace": {
+                        "wait_actions": [
+                          {
+                            "time": 0.0,
+                            "a": "R3",
+                            "b": "R1",
+                            "action": "send_now",
+                            "gate_a": [
+                              0,
+                              0.0
+                            ],
+                            "gate_b": [
+                              1,
+                              0.0
+                            ]
+                          },
+                          {
+                            "time": 4.417261042993862,
+                            "a": "R3",
+                            "b": "R2",
+                            "action": "send_now",
+                            "gate_a": [
+                              1,
+                              0.0
+                            ],
+                            "gate_b": [
+                              4,
+                              0.0
+                            ]
+                          }
+                        ],
+                        "waiting_choices": []
+                      },
+                      "completed": true,
+                      "makespan": 305.2982791779717,
+                      "mean_completion": 180.15953320474918,
+                      "completion_times": {
+                        "R1": 74.64468416511903,
+                        "R2": 33.09759121265577,
+                        "R3": 209.57582829827808,
+                        "R4": 305.2982791779717,
+                        "R5": 84.31743193778716,
+                        "R6": 181.64815483735234,
+                        "R7": 273.9262515006061,
+                        "R8": 278.76804450822334
+                      },
+                      "stopped_at": 305.2982791779717,
+                      "contacts": 0,
+                      "steps": 636,
+                      "reason": null,
+                      "commands": 42,
+                      "completion_std": 98.1003202353436
+                    },
+                    {
+                      "mode": "fifo",
+                      "wait_rule": "length",
+                      "action": "send_now",
+                      "action_name": "send_now",
+                      "fixed_LP_continuation": false,
+                      "wall_seconds": 0.4755756000013207,
+                      "execution_trace": {
+                        "wait_actions": [
+                          {
+                            "time": 0.0,
+                            "a": "R3",
+                            "b": "R1",
+                            "action": "send_now",
+                            "gate_a": [
+                              0,
+                              0.0
+                            ],
+                            "gate_b": [
+                              1,
+                              0.0
+                            ]
+                          },
+                          {
+                            "time": 4.417261042993862,
+                            "a": "R3",
+                            "b": "R2",
+                            "action": "send_now",
+                            "gate_a": [
+                              1,
+                              0.0
+                            ],
+                            "gate_b": [
+                              4,
+                              0.0
+                            ]
+                          }
+                        ],
+                        "waiting_choices": []
+                      },
+                      "completed": true,
+                      "makespan": 305.2982791779717,
+                      "mean_completion": 180.15953320474918,
+                      "completion_times": {
+                        "R1": 74.64468416511903,
+                        "R2": 33.09759121265577,
+                        "R3": 209.57582829827808,
+                        "R4": 305.2982791779717,
+                        "R5": 84.31743193778716,
+                        "R6": 181.64815483735234,
+                        "R7": 273.9262515006061,
+                        "R8": 278.76804450822334
+                      },
+                      "stopped_at": 305.2982791779717,
+                      "contacts": 0,
+                      "steps": 636,
+                      "reason": null,
+                      "commands": 42,
+                      "completion_std": 98.1003202353436
+                    },
+                    {
+                      "mode": "length",
+                      "wait_rule": "length",
+                      "action": "send_now",
+                      "action_name": "send_now",
+                      "fixed_LP_continuation": false,
+                      "wall_seconds": 0.4683121000016399,
+                      "execution_trace": {
+                        "wait_actions": [
+                          {
+                            "time": 0.0,
+                            "a": "R3",
+                            "b": "R1",
+                            "action": "send_now",
+                            "gate_a": [
+                              0,
+                              0.0
+                            ],
+                            "gate_b": [
+                              1,
+                              0.0
+                            ]
+                          },
+                          {
+                            "time": 4.417261042993862,
+                            "a": "R3",
+                            "b": "R2",
+                            "action": "send_now",
+                            "gate_a": [
+                              1,
+                              0.0
+                            ],
+                            "gate_b": [
+                              4,
+                              0.0
+                            ]
+                          }
+                        ],
+                        "waiting_choices": []
+                      },
+                      "completed": true,
+                      "makespan": 305.2982791779717,
+                      "mean_completion": 180.15953320474918,
+                      "completion_times": {
+                        "R1": 74.64468416511903,
+                        "R2": 33.09759121265577,
+                        "R3": 209.57582829827808,
+                        "R4": 305.2982791779717,
+                        "R5": 84.31743193778716,
+                        "R6": 181.64815483735234,
+                        "R7": 273.9262515006061,
+                        "R8": 278.76804450822334
+                      },
+                      "stopped_at": 305.2982791779717,
+                      "contacts": 0,
+                      "steps": 636,
+                      "reason": null,
+                      "commands": 42,
+                      "completion_std": 98.1003202353436
+                    },
+                    {
+                      "mode": "fifo",
+                      "wait_rule": "fifo",
+                      "action": "wait_for_B",
+                      "action_name": "wait_for_B",
+                      "fixed_LP_continuation": false,
+                      "wall_seconds": 0.48429830000168295,
+                      "execution_trace": {
+                        "wait_actions": [
+                          {
+                            "time": 0.0,
+                            "a": "R3",
+                            "b": "R1",
+                            "action": "wait_for_B",
+                            "gate_a": [
+                              0,
+                              0.0
+                            ],
+                            "gate_b": [
+                              1,
+                              0.0
+                            ]
+                          }
+                        ],
+                        "waiting_choices": []
+                      },
+                      "completed": true,
+                      "makespan": 402.05737038061096,
+                      "mean_completion": 197.16182789002568,
+                      "completion_times": {
+                        "R1": 60.03253559521104,
+                        "R2": 42.83355744014705,
+                        "R3": 332.86515417066573,
+                        "R4": 252.45622321789833,
+                        "R5": 84.31743193778716,
+                        "R6": 181.64815483735234,
+                        "R7": 221.0841955405327,
+                        "R8": 402.05737038061096
+                      },
+                      "stopped_at": 402.05737038061096,
+                      "contacts": 0,
+                      "steps": 639,
+                      "reason": null,
+                      "commands": 43,
+                      "completion_std": 122.28221228962565
+                    },
+                    {
+                      "mode": "length",
+                      "wait_rule": "fifo",
+                      "action": "wait_for_B",
+                      "action_name": "wait_for_B",
+                      "fixed_LP_continuation": true,
+                      "wall_seconds": 0.4763886000000639,
+                      "execution_trace": {
+                        "wait_actions": [
+                          {
+                            "time": 0.0,
+                            "a": "R3",
+                            "b": "R1",
+                            "action": "wait_for_B",
+                            "gate_a": [
+                              0,
+                              0.0
+                            ],
+                            "gate_b": [
+                              1,
+                              0.0
+                            ]
+                          }
+                        ],
+                        "waiting_choices": []
+                      },
+                      "completed": true,
+                      "makespan": 402.05737038061096,
+                      "mean_completion": 197.16182789002568,
+                      "completion_times": {
+                        "R1": 60.03253559521104,
+                        "R2": 42.83355744014705,
+                        "R3": 332.86515417066573,
+                        "R4": 252.45622321789833,
+                        "R5": 84.31743193778716,
+                        "R6": 181.64815483735234,
+                        "R7": 221.0841955405327,
+                        "R8": 402.05737038061096
+                      },
+                      "stopped_at": 402.05737038061096,
+                      "contacts": 0,
+                      "steps": 639,
+                      "reason": null,
+                      "commands": 43,
+                      "completion_std": 122.28221228962565
+                    },
+                    {
+                      "mode": "fifo",
+                      "wait_rule": "length",
+                      "action": "wait_for_B",
+                      "action_name": "wait_for_B",
+                      "fixed_LP_continuation": false,
+                      "wall_seconds": 0.48635850000209757,
+                      "execution_trace": {
+                        "wait_actions": [
+                          {
+                            "time": 0.0,
+                            "a": "R3",
+                            "b": "R1",
+                            "action": "wait_for_B",
+                            "gate_a": [
+                              0,
+                              0.0
+                            ],
+                            "gate_b": [
+                              1,
+                              0.0
+                            ]
+                          }
+                        ],
+                        "waiting_choices": []
+                      },
+                      "completed": true,
+                      "makespan": 402.05737038061096,
+                      "mean_completion": 197.16182789002568,
+                      "completion_times": {
+                        "R1": 60.03253559521104,
+                        "R2": 42.83355744014705,
+                        "R3": 332.86515417066573,
+                        "R4": 252.45622321789833,
+                        "R5": 84.31743193778716,
+                        "R6": 181.64815483735234,
+                        "R7": 221.0841955405327,
+                        "R8": 402.05737038061096
+                      },
+                      "stopped_at": 402.05737038061096,
+                      "contacts": 0,
+                      "steps": 639,
+                      "reason": null,
+                      "commands": 43,
+                      "completion_std": 122.28221228962565
+                    },
+                    {
+                      "mode": "length",
+                      "wait_rule": "length",
+                      "action": "wait_for_B",
+                      "action_name": "wait_for_B",
+                      "fixed_LP_continuation": false,
+                      "wall_seconds": 0.5039241000013135,
+                      "execution_trace": {
+                        "wait_actions": [
+                          {
+                            "time": 0.0,
+                            "a": "R3",
+                            "b": "R1",
+                            "action": "wait_for_B",
+                            "gate_a": [
+                              0,
+                              0.0
+                            ],
+                            "gate_b": [
+                              1,
+                              0.0
+                            ]
+                          }
+                        ],
+                        "waiting_choices": []
+                      },
+                      "completed": true,
+                      "makespan": 402.05737038061096,
+                      "mean_completion": 197.16182789002568,
+                      "completion_times": {
+                        "R1": 60.03253559521104,
+                        "R2": 42.83355744014705,
+                        "R3": 332.86515417066573,
+                        "R4": 252.45622321789833,
+                        "R5": 84.31743193778716,
+                        "R6": 181.64815483735234,
+                        "R7": 221.0841955405327,
+                        "R8": 402.05737038061096
+                      },
+                      "stopped_at": 402.05737038061096,
+                      "contacts": 0,
+                      "steps": 639,
+                      "reason": null,
+                      "commands": 43,
+                      "completion_std": 122.28221228962565
+                    }
+                  ],
+                  "wall_seconds": 3.880495699999301
+                },
+                {
+                  "time": 4.417261042993862,
+                  "kind": "wait_or_go",
+                  "selected_mode": "fifo",
+                  "selected_wait_rule": "fifo",
+                  "action_name": "send_now",
+                  "action": "send_now",
+                  "branches": [
+                    {
+                      "mode": "fifo",
+                      "wait_rule": "fifo",
+                      "action": "send_now",
+                      "action_name": "send_now",
+                      "fixed_LP_continuation": false,
+                      "wall_seconds": 0.42251089999990654,
+                      "execution_trace": {
+                        "wait_actions": [
+                          {
+                            "time": 0.0,
+                            "a": "R3",
+                            "b": "R1",
+                            "action": "send_now",
+                            "gate_a": [
+                              0,
+                              0.0
+                            ],
+                            "gate_b": [
+                              1,
+                              0.0
+                            ]
+                          },
+                          {
+                            "time": 4.417261042993862,
+                            "a": "R3",
+                            "b": "R2",
+                            "action": "send_now",
+                            "gate_a": [
+                              1,
+                              0.0
+                            ],
+                            "gate_b": [
+                              4,
+                              0.0
+                            ]
+                          }
+                        ],
+                        "waiting_choices": []
+                      },
+                      "completed": true,
+                      "makespan": 305.2982791779717,
+                      "mean_completion": 180.15953320474918,
+                      "completion_times": {
+                        "R1": 74.64468416511903,
+                        "R2": 33.09759121265577,
+                        "R3": 209.57582829827808,
+                        "R4": 305.2982791779717,
+                        "R5": 84.31743193778716,
+                        "R6": 181.64815483735234,
+                        "R7": 273.9262515006061,
+                        "R8": 278.76804450822334
+                      },
+                      "stopped_at": 305.2982791779717,
+                      "contacts": 0,
+                      "steps": 614,
+                      "reason": null,
+                      "commands": 42,
+                      "completion_std": 98.1003202353436
+                    },
+                    {
+                      "mode": "length",
+                      "wait_rule": "fifo",
+                      "action": "send_now",
+                      "action_name": "send_now",
+                      "fixed_LP_continuation": true,
+                      "wall_seconds": 0.44000210000012885,
+                      "execution_trace": {
+                        "wait_actions": [
+                          {
+                            "time": 0.0,
+                            "a": "R3",
+                            "b": "R1",
+                            "action": "send_now",
+                            "gate_a": [
+                              0,
+                              0.0
+                            ],
+                            "gate_b": [
+                              1,
+                              0.0
+                            ]
+                          },
+                          {
+                            "time": 4.417261042993862,
+                            "a": "R3",
+                            "b": "R2",
+                            "action": "send_now",
+                            "gate_a": [
+                              1,
+                              0.0
+                            ],
+                            "gate_b": [
+                              4,
+                              0.0
+                            ]
+                          }
+                        ],
+                        "waiting_choices": []
+                      },
+                      "completed": true,
+                      "makespan": 305.2982791779717,
+                      "mean_completion": 180.15953320474918,
+                      "completion_times": {
+                        "R1": 74.64468416511903,
+                        "R2": 33.09759121265577,
+                        "R3": 209.57582829827808,
+                        "R4": 305.2982791779717,
+                        "R5": 84.31743193778716,
+                        "R6": 181.64815483735234,
+                        "R7": 273.9262515006061,
+                        "R8": 278.76804450822334
+                      },
+                      "stopped_at": 305.2982791779717,
+                      "contacts": 0,
+                      "steps": 614,
+                      "reason": null,
+                      "commands": 42,
+                      "completion_std": 98.1003202353436
+                    },
+                    {
+                      "mode": "fifo",
+                      "wait_rule": "length",
+                      "action": "send_now",
+                      "action_name": "send_now",
+                      "fixed_LP_continuation": false,
+                      "wall_seconds": 0.44772009999724105,
+                      "execution_trace": {
+                        "wait_actions": [
+                          {
+                            "time": 0.0,
+                            "a": "R3",
+                            "b": "R1",
+                            "action": "send_now",
+                            "gate_a": [
+                              0,
+                              0.0
+                            ],
+                            "gate_b": [
+                              1,
+                              0.0
+                            ]
+                          },
+                          {
+                            "time": 4.417261042993862,
+                            "a": "R3",
+                            "b": "R2",
+                            "action": "send_now",
+                            "gate_a": [
+                              1,
+                              0.0
+                            ],
+                            "gate_b": [
+                              4,
+                              0.0
+                            ]
+                          }
+                        ],
+                        "waiting_choices": []
+                      },
+                      "completed": true,
+                      "makespan": 305.2982791779717,
+                      "mean_completion": 180.15953320474918,
+                      "completion_times": {
+                        "R1": 74.64468416511903,
+                        "R2": 33.09759121265577,
+                        "R3": 209.57582829827808,
+                        "R4": 305.2982791779717,
+                        "R5": 84.31743193778716,
+                        "R6": 181.64815483735234,
+                        "R7": 273.9262515006061,
+                        "R8": 278.76804450822334
+                      },
+                      "stopped_at": 305.2982791779717,
+                      "contacts": 0,
+                      "steps": 614,
+                      "reason": null,
+                      "commands": 42,
+                      "completion_std": 98.1003202353436
+                    },
+                    {
+                      "mode": "length",
+                      "wait_rule": "length",
+                      "action": "send_now",
+                      "action_name": "send_now",
+                      "fixed_LP_continuation": false,
+                      "wall_seconds": 0.43073480000020936,
+                      "execution_trace": {
+                        "wait_actions": [
+                          {
+                            "time": 0.0,
+                            "a": "R3",
+                            "b": "R1",
+                            "action": "send_now",
+                            "gate_a": [
+                              0,
+                              0.0
+                            ],
+                            "gate_b": [
+                              1,
+                              0.0
+                            ]
+                          },
+                          {
+                            "time": 4.417261042993862,
+                            "a": "R3",
+                            "b": "R2",
+                            "action": "send_now",
+                            "gate_a": [
+                              1,
+                              0.0
+                            ],
+                            "gate_b": [
+                              4,
+                              0.0
+                            ]
+                          }
+                        ],
+                        "waiting_choices": []
+                      },
+                      "completed": true,
+                      "makespan": 305.2982791779717,
+                      "mean_completion": 180.15953320474918,
+                      "completion_times": {
+                        "R1": 74.64468416511903,
+                        "R2": 33.09759121265577,
+                        "R3": 209.57582829827808,
+                        "R4": 305.2982791779717,
+                        "R5": 84.31743193778716,
+                        "R6": 181.64815483735234,
+                        "R7": 273.9262515006061,
+                        "R8": 278.76804450822334
+                      },
+                      "stopped_at": 305.2982791779717,
+                      "contacts": 0,
+                      "steps": 614,
+                      "reason": null,
+                      "commands": 42,
+                      "completion_std": 98.1003202353436
+                    },
+                    {
+                      "mode": "fifo",
+                      "wait_rule": "fifo",
+                      "action": "wait_for_B",
+                      "action_name": "wait_for_B",
+                      "fixed_LP_continuation": false,
+                      "wall_seconds": 0.43475930000204244,
+                      "execution_trace": {
+                        "wait_actions": [
+                          {
+                            "time": 0.0,
+                            "a": "R3",
+                            "b": "R1",
+                            "action": "send_now",
+                            "gate_a": [
+                              0,
+                              0.0
+                            ],
+                            "gate_b": [
+                              1,
+                              0.0
+                            ]
+                          },
+                          {
+                            "time": 4.417261042993862,
+                            "a": "R3",
+                            "b": "R2",
+                            "action": "wait_for_B",
+                            "gate_a": [
+                              1,
+                              0.0
+                            ],
+                            "gate_b": [
+                              4,
+                              0.0
+                            ]
+                          }
+                        ],
+                        "waiting_choices": [
+                          {
+                            "time": 8.834522085987723,
+                            "candidates": [
+                              "R3",
+                              "R2"
+                            ],
+                            "selected": "R3",
+                            "policy": "fifo"
+                          }
+                        ]
+                      },
+                      "completed": true,
+                      "makespan": 305.2982791779717,
+                      "mean_completion": 181.26384846549766,
+                      "completion_times": {
+                        "R1": 79.06194520811287,
+                        "R2": 37.514852255649636,
+                        "R3": 209.57582829827808,
+                        "R4": 305.2982791779717,
+                        "R5": 84.31743193778716,
+                        "R6": 181.64815483735234,
+                        "R7": 273.9262515006061,
+                        "R8": 278.76804450822334
+                      },
+                      "stopped_at": 305.2982791779717,
+                      "contacts": 0,
+                      "steps": 615,
+                      "reason": null,
+                      "commands": 42,
+                      "completion_std": 96.68716027485306
+                    },
+                    {
+                      "mode": "length",
+                      "wait_rule": "fifo",
+                      "action": "wait_for_B",
+                      "action_name": "wait_for_B",
+                      "fixed_LP_continuation": true,
+                      "wall_seconds": 0.42755729999771575,
+                      "execution_trace": {
+                        "wait_actions": [
+                          {
+                            "time": 0.0,
+                            "a": "R3",
+                            "b": "R1",
+                            "action": "send_now",
+                            "gate_a": [
+                              0,
+                              0.0
+                            ],
+                            "gate_b": [
+                              1,
+                              0.0
+                            ]
+                          },
+                          {
+                            "time": 4.417261042993862,
+                            "a": "R3",
+                            "b": "R2",
+                            "action": "wait_for_B",
+                            "gate_a": [
+                              1,
+                              0.0
+                            ],
+                            "gate_b": [
+                              4,
+                              0.0
+                            ]
+                          }
+                        ],
+                        "waiting_choices": [
+                          {
+                            "time": 8.834522085987723,
+                            "candidates": [
+                              "R3",
+                              "R2"
+                            ],
+                            "selected": "R3",
+                            "policy": "longest_remaining_distance"
+                          }
+                        ]
+                      },
+                      "completed": true,
+                      "makespan": 305.2982791779717,
+                      "mean_completion": 181.26384846549766,
+                      "completion_times": {
+                        "R1": 79.06194520811287,
+                        "R2": 37.514852255649636,
+                        "R3": 209.57582829827808,
+                        "R4": 305.2982791779717,
+                        "R5": 84.31743193778716,
+                        "R6": 181.64815483735234,
+                        "R7": 273.9262515006061,
+                        "R8": 278.76804450822334
+                      },
+                      "stopped_at": 305.2982791779717,
+                      "contacts": 0,
+                      "steps": 615,
+                      "reason": null,
+                      "commands": 42,
+                      "completion_std": 96.68716027485306
+                    },
+                    {
+                      "mode": "fifo",
+                      "wait_rule": "length",
+                      "action": "wait_for_B",
+                      "action_name": "wait_for_B",
+                      "fixed_LP_continuation": false,
+                      "wall_seconds": 0.4295573000017612,
+                      "execution_trace": {
+                        "wait_actions": [
+                          {
+                            "time": 0.0,
+                            "a": "R3",
+                            "b": "R1",
+                            "action": "send_now",
+                            "gate_a": [
+                              0,
+                              0.0
+                            ],
+                            "gate_b": [
+                              1,
+                              0.0
+                            ]
+                          },
+                          {
+                            "time": 4.417261042993862,
+                            "a": "R3",
+                            "b": "R2",
+                            "action": "wait_for_B",
+                            "gate_a": [
+                              1,
+                              0.0
+                            ],
+                            "gate_b": [
+                              4,
+                              0.0
+                            ]
+                          }
+                        ],
+                        "waiting_choices": [
+                          {
+                            "time": 8.834522085987723,
+                            "candidates": [
+                              "R3",
+                              "R2"
+                            ],
+                            "selected": "R3",
+                            "policy": "fifo"
+                          }
+                        ]
+                      },
+                      "completed": true,
+                      "makespan": 305.2982791779717,
+                      "mean_completion": 181.26384846549766,
+                      "completion_times": {
+                        "R1": 79.06194520811287,
+                        "R2": 37.514852255649636,
+                        "R3": 209.57582829827808,
+                        "R4": 305.2982791779717,
+                        "R5": 84.31743193778716,
+                        "R6": 181.64815483735234,
+                        "R7": 273.9262515006061,
+                        "R8": 278.76804450822334
+                      },
+                      "stopped_at": 305.2982791779717,
+                      "contacts": 0,
+                      "steps": 615,
+                      "reason": null,
+                      "commands": 42,
+                      "completion_std": 96.68716027485306
+                    },
+                    {
+                      "mode": "length",
+                      "wait_rule": "length",
+                      "action": "wait_for_B",
+                      "action_name": "wait_for_B",
+                      "fixed_LP_continuation": false,
+                      "wall_seconds": 0.4303390999994008,
+                      "execution_trace": {
+                        "wait_actions": [
+                          {
+                            "time": 0.0,
+                            "a": "R3",
+                            "b": "R1",
+                            "action": "send_now",
+                            "gate_a": [
+                              0,
+                              0.0
+                            ],
+                            "gate_b": [
+                              1,
+                              0.0
+                            ]
+                          },
+                          {
+                            "time": 4.417261042993862,
+                            "a": "R3",
+                            "b": "R2",
+                            "action": "wait_for_B",
+                            "gate_a": [
+                              1,
+                              0.0
+                            ],
+                            "gate_b": [
+                              4,
+                              0.0
+                            ]
+                          }
+                        ],
+                        "waiting_choices": [
+                          {
+                            "time": 8.834522085987723,
+                            "candidates": [
+                              "R3",
+                              "R2"
+                            ],
+                            "selected": "R3",
+                            "policy": "longest_remaining_distance"
+                          }
+                        ]
+                      },
+                      "completed": true,
+                      "makespan": 305.2982791779717,
+                      "mean_completion": 181.26384846549766,
+                      "completion_times": {
+                        "R1": 79.06194520811287,
+                        "R2": 37.514852255649636,
+                        "R3": 209.57582829827808,
+                        "R4": 305.2982791779717,
+                        "R5": 84.31743193778716,
+                        "R6": 181.64815483735234,
+                        "R7": 273.9262515006061,
+                        "R8": 278.76804450822334
+                      },
+                      "stopped_at": 305.2982791779717,
+                      "contacts": 0,
+                      "steps": 615,
+                      "reason": null,
+                      "commands": 42,
+                      "completion_std": 96.68716027485306
+                    }
+                  ],
+                  "wall_seconds": 3.467494999997143
+                }
+              ],
+              "execution_trace": {
+                "wait_actions": [
+                  {
+                    "time": 0.0,
+                    "a": "R3",
+                    "b": "R1",
+                    "action": "send_now",
+                    "gate_a": [
+                      0,
+                      0.0
+                    ],
+                    "gate_b": [
+                      1,
+                      0.0
+                    ]
+                  },
+                  {
+                    "time": 4.417261042993862,
+                    "a": "R3",
+                    "b": "R2",
+                    "action": "send_now",
+                    "gate_a": [
+                      1,
+                      0.0
+                    ],
+                    "gate_b": [
+                      4,
+                      0.0
+                    ]
+                  }
+                ],
+                "waiting_choices": []
+              },
+              "nested_lookahead": false,
+              "rollout_horizon": "system_completion",
+              "rollout_policy": "independent_current_action_future_wait_rule_and_waiting_priority",
+              "includes_previous_fixed_LP_continuation": true,
+              "lookahead_calls": 2,
+              "rollouts": 16,
+              "wait_decisions": 2,
+              "priority_decisions": 0,
+              "wall_seconds": 7.836249099997076,
+              "setup_seconds": 0.1940528999984963,
+              "total_seconds": 8.030302199997095,
+              "decision_seconds": 7.347990699996444,
+              "validation": {
+                "completed": true,
+                "contacts": 0,
+                "interval": 0.01,
+                "stop_on_collision": true,
+                "signature_matches": true
+              }
+            }
+          ],
+          "distinct_validated_trajectories": 1
+        }
+      ],
+      "scope": "both_decision_types; automatic_safe_gates; finite_validated_portfolio",
+      "completion_std_definition": "population std across objects within each run",
+      "across_run_std_definition": "population std across random seeds",
+      "sample_number": 1,
+      "path_hash": "98be29ce0e3b29bbb6e3ee65251d8071f94aeb0e65e509e3073841abc23b9788",
+      "geometry": {
+        "directed_pairwise_interval_count": 52,
+        "min_pairwise_interval_m": 1.5000000009999965,
+        "mean_pairwise_interval_m": 4.403846155807695,
+        "max_pairwise_interval_m": 11.000000002,
+        "total_pairwise_interval_m": 229.00000010200017,
+        "per_path_union_interval_count": 26,
+        "mean_union_interference_ratio": 0.4053372820153256,
+        "interfering_pairs": 15,
+        "interference_edges": [
+          [
+            "R1",
+            "R2"
+          ],
+          [
+            "R1",
+            "R3"
+          ],
+          [
+            "R1",
+            "R4"
+          ],
+          [
+            "R2",
+            "R3"
+          ],
+          [
+            "R3",
+            "R4"
+          ],
+          [
+            "R3",
+            "R5"
+          ],
+          [
+            "R3",
+            "R6"
+          ],
+          [
+            "R3",
+            "R8"
+          ],
+          [
+            "R4",
+            "R5"
+          ],
+          [
+            "R4",
+            "R6"
+          ],
+          [
+            "R4",
+            "R7"
+          ],
+          [
+            "R4",
+            "R8"
+          ],
+          [
+            "R6",
+            "R7"
+          ],
+          [
+            "R6",
+            "R8"
+          ],
+          [
+            "R7",
+            "R8"
+          ]
+        ],
+        "components": [
+          [
+            "R1",
+            "R2",
+            "R3",
+            "R4",
+            "R5",
+            "R6",
+            "R7",
+            "R8"
+          ]
+        ],
+        "max_interference_degree": 6,
+        "connected": true,
+        "pairs": [
+          {
+            "i": "R1",
+            "j": "R2",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [
+              {
+                "start": [
+                  2,
+                  0.24999999949999996
+                ],
+                "end": [
+                  4,
+                  0.7500000005
+                ],
+                "length_m": 5.000000002
+              }
+            ],
+            "j_intervals": [
+              {
+                "start": [
+                  4,
+                  0.24999999950000173
+                ],
+                "end": [
+                  6,
+                  0.7500000004999983
+                ],
+                "length_m": 5.000000001999993
+              }
+            ]
+          },
+          {
+            "i": "R1",
+            "j": "R3",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [
+              {
+                "start": [
+                  1,
+                  0.24999999950000173
+                ],
+                "end": [
+                  4,
+                  0.7500000005
+                ],
+                "length_m": 7.000000001999997
+              }
+            ],
+            "j_intervals": [
+              {
+                "start": [
+                  0,
+                  0.2499999995
+                ],
+                "end": [
+                  3,
+                  0.7500000004999983
+                ],
+                "length_m": 7.000000001999997
+              }
+            ]
+          },
+          {
+            "i": "R1",
+            "j": "R4",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "F_ij": 1,
+            "i_intervals": [
+              {
+                "start": [
+                  12,
+                  0.24999999949999996
+                ],
+                "end": [
+                  13,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ],
+            "j_intervals": [
+              {
+                "start": [
+                  28,
+                  0.24999999950000173
+                ],
+                "end": [
+                  29,
+                  0.0
+                ],
+                "length_m": 1.5000000009999965
+              }
+            ]
+          },
+          {
+            "i": "R1",
+            "j": "R5",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [],
+            "j_intervals": []
+          },
+          {
+            "i": "R1",
+            "j": "R6",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [],
+            "j_intervals": []
+          },
+          {
+            "i": "R1",
+            "j": "R7",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [],
+            "j_intervals": []
+          },
+          {
+            "i": "R1",
+            "j": "R8",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [],
+            "j_intervals": []
+          },
+          {
+            "i": "R2",
+            "j": "R3",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [
+              {
+                "start": [
+                  4,
+                  0.24999999950000173
+                ],
+                "end": [
+                  7,
+                  0.7500000005
+                ],
+                "length_m": 7.000000001999997
+              }
+            ],
+            "j_intervals": [
+              {
+                "start": [
+                  1,
+                  0.24999999949999996
+                ],
+                "end": [
+                  4,
+                  0.7500000005
+                ],
+                "length_m": 7.000000002
+              }
+            ]
+          },
+          {
+            "i": "R2",
+            "j": "R4",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [],
+            "j_intervals": []
+          },
+          {
+            "i": "R2",
+            "j": "R5",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [],
+            "j_intervals": []
+          },
+          {
+            "i": "R2",
+            "j": "R6",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [],
+            "j_intervals": []
+          },
+          {
+            "i": "R2",
+            "j": "R7",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [],
+            "j_intervals": []
+          },
+          {
+            "i": "R2",
+            "j": "R8",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [],
+            "j_intervals": []
+          },
+          {
+            "i": "R3",
+            "j": "R4",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [
+              {
+                "start": [
+                  15,
+                  0.24999999949999996
+                ],
+                "end": [
+                  17,
+                  0.7500000005
+                ],
+                "length_m": 5.000000002000004
+              },
+              {
+                "start": [
+                  21,
+                  0.24999999949999996
+                ],
+                "end": [
+                  22,
+                  0.7500000005
+                ],
+                "length_m": 3.0000000020000073
+              },
+              {
+                "start": [
+                  24,
+                  0.24999999949999996
+                ],
+                "end": [
+                  25,
+                  0.7500000005
+                ],
+                "length_m": 3.0000000020000073
+              },
+              {
+                "start": [
+                  26,
+                  0.24999999949999996
+                ],
+                "end": [
+                  27,
+                  0.7500000005
+                ],
+                "length_m": 3.0000000020000073
+              }
+            ],
+            "j_intervals": [
+              {
+                "start": [
+                  13,
+                  0.24999999949999996
+                ],
+                "end": [
+                  14,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              },
+              {
+                "start": [
+                  15,
+                  0.24999999949999996
+                ],
+                "end": [
+                  16,
+                  0.7500000005
+                ],
+                "length_m": 3.0000000020000037
+              },
+              {
+                "start": [
+                  18,
+                  0.24999999949999996
+                ],
+                "end": [
+                  19,
+                  0.7500000005
+                ],
+                "length_m": 3.0000000020000073
+              },
+              {
+                "start": [
+                  21,
+                  0.24999999949999996
+                ],
+                "end": [
+                  23,
+                  0.7500000005
+                ],
+                "length_m": 5.000000002000007
+              }
+            ]
+          },
+          {
+            "i": "R3",
+            "j": "R5",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [
+              {
+                "start": [
+                  23,
+                  0.24999999949999996
+                ],
+                "end": [
+                  26,
+                  0.7500000005
+                ],
+                "length_m": 7.000000002000007
+              }
+            ],
+            "j_intervals": [
+              {
+                "start": [
+                  7,
+                  0.24999999949999996
+                ],
+                "end": [
+                  10,
+                  0.7500000005
+                ],
+                "length_m": 7.000000002
+              }
+            ]
+          },
+          {
+            "i": "R3",
+            "j": "R6",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [
+              {
+                "start": [
+                  26,
+                  0.24999999949999996
+                ],
+                "end": [
+                  30,
+                  0.7500000005
+                ],
+                "length_m": 9.000000002000007
+              }
+            ],
+            "j_intervals": [
+              {
+                "start": [
+                  28,
+                  0.24999999949999996
+                ],
+                "end": [
+                  32,
+                  0.7500000005
+                ],
+                "length_m": 9.000000002000007
+              }
+            ]
+          },
+          {
+            "i": "R3",
+            "j": "R7",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [],
+            "j_intervals": []
+          },
+          {
+            "i": "R3",
+            "j": "R8",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [
+              {
+                "start": [
+                  16,
+                  0.24999999949999996
+                ],
+                "end": [
+                  18,
+                  0.7500000005
+                ],
+                "length_m": 5.000000002000007
+              },
+              {
+                "start": [
+                  22,
+                  0.24999999949999996
+                ],
+                "end": [
+                  23,
+                  0.7500000005
+                ],
+                "length_m": 3.0000000020000073
+              },
+              {
+                "start": [
+                  27,
+                  0.24999999949999996
+                ],
+                "end": [
+                  28,
+                  0.7500000005
+                ],
+                "length_m": 3.0000000020000073
+              },
+              {
+                "start": [
+                  29,
+                  0.24999999949999996
+                ],
+                "end": [
+                  31,
+                  0.7500000005
+                ],
+                "length_m": 5.000000002000007
+              }
+            ],
+            "j_intervals": [
+              {
+                "start": [
+                  6,
+                  0.24999999949999996
+                ],
+                "end": [
+                  8,
+                  0.7500000005
+                ],
+                "length_m": 5.000000002
+              },
+              {
+                "start": [
+                  9,
+                  0.24999999949999996
+                ],
+                "end": [
+                  10,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              },
+              {
+                "start": [
+                  14,
+                  0.24999999949999996
+                ],
+                "end": [
+                  15,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              },
+              {
+                "start": [
+                  18,
+                  0.24999999949999996
+                ],
+                "end": [
+                  20,
+                  0.7500000005
+                ],
+                "length_m": 5.000000002000007
+              }
+            ]
+          },
+          {
+            "i": "R4",
+            "j": "R5",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [
+              {
+                "start": [
+                  15,
+                  0.24999999949999996
+                ],
+                "end": [
+                  16,
+                  0.7500000005
+                ],
+                "length_m": 3.0000000020000037
+              }
+            ],
+            "j_intervals": [
+              {
+                "start": [
+                  8,
+                  0.24999999949999996
+                ],
+                "end": [
+                  9,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ]
+          },
+          {
+            "i": "R4",
+            "j": "R6",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [
+              {
+                "start": [
+                  11,
+                  0.24999999949999996
+                ],
+                "end": [
+                  14,
+                  0.7500000005
+                ],
+                "length_m": 7.000000002
+              }
+            ],
+            "j_intervals": [
+              {
+                "start": [
+                  31,
+                  0.24999999949999996
+                ],
+                "end": [
+                  34,
+                  0.7500000005
+                ],
+                "length_m": 7.000000002000007
+              }
+            ]
+          },
+          {
+            "i": "R4",
+            "j": "R7",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              1
+            ],
+            "F_ij": 1,
+            "i_intervals": [
+              {
+                "start": [
+                  17,
+                  0.24999999949999996
+                ],
+                "end": [
+                  18,
+                  0.7500000005
+                ],
+                "length_m": 3.0000000020000073
+              }
+            ],
+            "j_intervals": [
+              {
+                "start": [
+                  17,
+                  0.24999999949999996
+                ],
+                "end": [
+                  18,
+                  0.0
+                ],
+                "length_m": 1.5000000010000036
+              }
+            ]
+          },
+          {
+            "i": "R4",
+            "j": "R8",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [
+              {
+                "start": [
+                  8,
+                  0.24999999949999996
+                ],
+                "end": [
+                  9,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              },
+              {
+                "start": [
+                  16,
+                  0.24999999949999996
+                ],
+                "end": [
+                  17,
+                  0.7500000005
+                ],
+                "length_m": 3.0000000020000073
+              },
+              {
+                "start": [
+                  21,
+                  0.24999999949999996
+                ],
+                "end": [
+                  22,
+                  0.7500000005
+                ],
+                "length_m": 3.0000000020000073
+              }
+            ],
+            "j_intervals": [
+              {
+                "start": [
+                  5,
+                  0.24999999949999996
+                ],
+                "end": [
+                  6,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              },
+              {
+                "start": [
+                  13,
+                  0.24999999949999996
+                ],
+                "end": [
+                  14,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              },
+              {
+                "start": [
+                  18,
+                  0.24999999949999996
+                ],
+                "end": [
+                  19,
+                  0.7500000005
+                ],
+                "length_m": 3.0000000020000073
+              }
+            ]
+          },
+          {
+            "i": "R5",
+            "j": "R6",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [],
+            "j_intervals": []
+          },
+          {
+            "i": "R5",
+            "j": "R7",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [],
+            "j_intervals": []
+          },
+          {
+            "i": "R5",
+            "j": "R8",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [],
+            "j_intervals": []
+          },
+          {
+            "i": "R6",
+            "j": "R7",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [
+              {
+                "start": [
+                  20,
+                  0.24999999949999996
+                ],
+                "end": [
+                  21,
+                  0.7500000005
+                ],
+                "length_m": 3.0000000020000073
+              },
+              {
+                "start": [
+                  22,
+                  0.24999999949999996
+                ],
+                "end": [
+                  23,
+                  0.7500000005
+                ],
+                "length_m": 3.0000000020000073
+              }
+            ],
+            "j_intervals": [
+              {
+                "start": [
+                  12,
+                  0.24999999949999996
+                ],
+                "end": [
+                  13,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              },
+              {
+                "start": [
+                  14,
+                  0.24999999949999996
+                ],
+                "end": [
+                  15,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ]
+          },
+          {
+            "i": "R6",
+            "j": "R8",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [
+              {
+                "start": [
+                  5,
+                  0.24999999949999996
+                ],
+                "end": [
+                  7,
+                  0.7500000005
+                ],
+                "length_m": 5.000000002
+              },
+              {
+                "start": [
+                  24,
+                  0.24999999949999996
+                ],
+                "end": [
+                  26,
+                  0.7500000005
+                ],
+                "length_m": 5.000000002000007
+              },
+              {
+                "start": [
+                  27,
+                  0.24999999949999996
+                ],
+                "end": [
+                  29,
+                  0.7500000005
+                ],
+                "length_m": 5.000000002000007
+              },
+              {
+                "start": [
+                  30,
+                  0.24999999949999996
+                ],
+                "end": [
+                  31,
+                  0.7500000005
+                ],
+                "length_m": 3.0000000020000073
+              }
+            ],
+            "j_intervals": [
+              {
+                "start": [
+                  7,
+                  0.24999999949999996
+                ],
+                "end": [
+                  12,
+                  0.7500000005
+                ],
+                "length_m": 11.000000002
+              },
+              {
+                "start": [
+                  23,
+                  0.24999999949999996
+                ],
+                "end": [
+                  25,
+                  0.7500000005
+                ],
+                "length_m": 5.000000002000007
+              }
+            ]
+          },
+          {
+            "i": "R7",
+            "j": "R8",
+            "endpoint_flags": [
+              0,
+              0,
+              0,
+              0
+            ],
+            "F_ij": 1,
+            "i_intervals": [
+              {
+                "start": [
+                  0,
+                  0.2499999995
+                ],
+                "end": [
+                  1,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ],
+            "j_intervals": [
+              {
+                "start": [
+                  1,
+                  0.24999999949999996
+                ],
+                "end": [
+                  2,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ]
+          }
+        ],
+        "per_path": {
+          "R1": {
+            "length_m": 32.0,
+            "union_intervals": [
+              {
+                "start": [
+                  1,
+                  0.24999999950000173
+                ],
+                "end": [
+                  4,
+                  0.7500000005
+                ],
+                "length_m": 7.000000001999997
+              },
+              {
+                "start": [
+                  12,
+                  0.24999999949999996
+                ],
+                "end": [
+                  13,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              }
+            ],
+            "union_interval_count": 2,
+            "union_interference_m": 10.000000003999997,
+            "interference_ratio": 0.3125000001249999
+          },
+          "R2": {
+            "length_m": 18.0,
+            "union_intervals": [
+              {
+                "start": [
+                  4,
+                  0.24999999950000173
+                ],
+                "end": [
+                  7,
+                  0.7500000005
+                ],
+                "length_m": 7.000000001999997
+              }
+            ],
+            "union_interval_count": 1,
+            "union_interference_m": 7.000000001999997,
+            "interference_ratio": 0.3888888889999998
+          },
+          "R3": {
+            "length_m": 66.0,
+            "union_intervals": [
+              {
+                "start": [
+                  0,
+                  0.2499999995
+                ],
+                "end": [
+                  4,
+                  0.7500000005
+                ],
+                "length_m": 9.000000002
+              },
+              {
+                "start": [
+                  15,
+                  0.24999999949999996
+                ],
+                "end": [
+                  18,
+                  0.7500000005
+                ],
+                "length_m": 7.000000002000004
+              },
+              {
+                "start": [
+                  21,
+                  0.24999999949999996
+                ],
+                "end": [
+                  31,
+                  0.7500000005
+                ],
+                "length_m": 21.000000002000007
+              }
+            ],
+            "union_interval_count": 3,
+            "union_interference_m": 37.00000000600001,
+            "interference_ratio": 0.5606060606969698
+          },
+          "R4": {
+            "length_m": 58.0,
+            "union_intervals": [
+              {
+                "start": [
+                  8,
+                  0.24999999949999996
+                ],
+                "end": [
+                  9,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              },
+              {
+                "start": [
+                  11,
+                  0.24999999949999996
+                ],
+                "end": [
+                  14,
+                  0.7500000005
+                ],
+                "length_m": 7.000000002
+              },
+              {
+                "start": [
+                  15,
+                  0.24999999949999996
+                ],
+                "end": [
+                  19,
+                  0.7500000005
+                ],
+                "length_m": 9.000000002000004
+              },
+              {
+                "start": [
+                  21,
+                  0.24999999949999996
+                ],
+                "end": [
+                  23,
+                  0.7500000005
+                ],
+                "length_m": 5.000000002000007
+              },
+              {
+                "start": [
+                  28,
+                  0.24999999950000173
+                ],
+                "end": [
+                  29,
+                  0.0
+                ],
+                "length_m": 1.5000000009999965
+              }
+            ],
+            "union_interval_count": 5,
+            "union_interference_m": 25.500000009000008,
+            "interference_ratio": 0.43965517256896564
+          },
+          "R5": {
+            "length_m": 38.0,
+            "union_intervals": [
+              {
+                "start": [
+                  7,
+                  0.24999999949999996
+                ],
+                "end": [
+                  10,
+                  0.7500000005
+                ],
+                "length_m": 7.000000002
+              }
+            ],
+            "union_interval_count": 1,
+            "union_interference_m": 7.000000002,
+            "interference_ratio": 0.18421052636842106
+          },
+          "R6": {
+            "length_m": 72.0,
+            "union_intervals": [
+              {
+                "start": [
+                  5,
+                  0.24999999949999996
+                ],
+                "end": [
+                  7,
+                  0.7500000005
+                ],
+                "length_m": 5.000000002
+              },
+              {
+                "start": [
+                  20,
+                  0.24999999949999996
+                ],
+                "end": [
+                  21,
+                  0.7500000005
+                ],
+                "length_m": 3.0000000020000073
+              },
+              {
+                "start": [
+                  22,
+                  0.24999999949999996
+                ],
+                "end": [
+                  23,
+                  0.7500000005
+                ],
+                "length_m": 3.0000000020000073
+              },
+              {
+                "start": [
+                  24,
+                  0.24999999949999996
+                ],
+                "end": [
+                  26,
+                  0.7500000005
+                ],
+                "length_m": 5.000000002000007
+              },
+              {
+                "start": [
+                  27,
+                  0.24999999949999996
+                ],
+                "end": [
+                  34,
+                  0.7500000005
+                ],
+                "length_m": 15.000000002000007
+              }
+            ],
+            "union_interval_count": 5,
+            "union_interference_m": 31.00000001000003,
+            "interference_ratio": 0.43055555569444487
+          },
+          "R7": {
+            "length_m": 36.0,
+            "union_intervals": [
+              {
+                "start": [
+                  0,
+                  0.2499999995
+                ],
+                "end": [
+                  1,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              },
+              {
+                "start": [
+                  12,
+                  0.24999999949999996
+                ],
+                "end": [
+                  13,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              },
+              {
+                "start": [
+                  14,
+                  0.24999999949999996
+                ],
+                "end": [
+                  15,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              },
+              {
+                "start": [
+                  17,
+                  0.24999999949999996
+                ],
+                "end": [
+                  18,
+                  0.0
+                ],
+                "length_m": 1.5000000010000036
+              }
+            ],
+            "union_interval_count": 4,
+            "union_interference_m": 10.500000007000004,
+            "interference_ratio": 0.2916666668611112
+          },
+          "R8": {
+            "length_m": 52.0,
+            "union_intervals": [
+              {
+                "start": [
+                  1,
+                  0.24999999949999996
+                ],
+                "end": [
+                  2,
+                  0.7500000005
+                ],
+                "length_m": 3.000000002
+              },
+              {
+                "start": [
+                  5,
+                  0.24999999949999996
+                ],
+                "end": [
+                  12,
+                  0.7500000005
+                ],
+                "length_m": 15.000000002
+              },
+              {
+                "start": [
+                  13,
+                  0.24999999949999996
+                ],
+                "end": [
+                  15,
+                  0.7500000005
+                ],
+                "length_m": 5.000000002
+              },
+              {
+                "start": [
+                  18,
+                  0.24999999949999996
+                ],
+                "end": [
+                  20,
+                  0.7500000005
+                ],
+                "length_m": 5.000000002000007
+              },
+              {
+                "start": [
+                  23,
+                  0.24999999949999996
+                ],
+                "end": [
+                  25,
+                  0.7500000005
+                ],
+                "length_m": 5.000000002000007
+              }
+            ],
+            "union_interval_count": 5,
+            "union_interference_m": 33.000000010000015,
+            "interference_ratio": 0.6346153848076926
+          }
+        }
+      },
+      "reference_candidates": 13
+    }
+  ]
+}

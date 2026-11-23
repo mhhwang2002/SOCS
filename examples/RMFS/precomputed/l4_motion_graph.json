@@ -1,0 +1,943 @@
+{
+  "schema_version": 1,
+  "fingerprint": "6679404b41d4888ad5c7a7c14c1b72dbab72edd4faabbab764a9a89d5c7e78d0",
+  "units": {
+    "length": "metre",
+    "time": "second",
+    "heading": "degree"
+  },
+  "boundary_condition": "rest_to_rest; no stops at intermediate points",
+  "traffic_delay_included": false,
+  "turn_time_included": false,
+  "turn_time_rule": "abs(shortest_heading_change_deg) / profile.yaw_rate",
+  "profiles": {
+    "empty": {
+      "acceleration": 0.41,
+      "deceleration": 0.41,
+      "yaw_rate": 45.0,
+      "speed": 2.0
+    },
+    "loaded": {
+      "acceleration": 0.37,
+      "deceleration": 0.37,
+      "yaw_rate": 30.0,
+      "speed": 2.0
+    }
+  },
+  "nodes": [
+    {
+      "id": [
+        0,
+        0
+      ],
+      "position_m": [
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": [
+        0,
+        1
+      ],
+      "position_m": [
+        0.0,
+        2.0
+      ]
+    },
+    {
+      "id": [
+        0,
+        2
+      ],
+      "position_m": [
+        0.0,
+        4.0
+      ]
+    },
+    {
+      "id": [
+        0,
+        3
+      ],
+      "position_m": [
+        0.0,
+        6.0
+      ]
+    },
+    {
+      "id": [
+        1,
+        0
+      ],
+      "position_m": [
+        2.0,
+        0.0
+      ]
+    },
+    {
+      "id": [
+        2,
+        0
+      ],
+      "position_m": [
+        4.0,
+        0.0
+      ]
+    },
+    {
+      "id": [
+        3,
+        0
+      ],
+      "position_m": [
+        6.0,
+        0.0
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": [
+        0,
+        0
+      ],
+      "target": [
+        0,
+        1
+      ],
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "intermediate_points": [],
+      "kind": "original",
+      "length_m": 2.0,
+      "entry_heading_deg": 90.0,
+      "exit_heading_deg": 90.0,
+      "travel_time_s": {
+        "empty": 4.417261042993862,
+        "loaded": 4.649905549752772
+      }
+    },
+    {
+      "source": [
+        0,
+        0
+      ],
+      "target": [
+        0,
+        2
+      ],
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ]
+      ],
+      "intermediate_points": [
+        [
+          0,
+          1
+        ]
+      ],
+      "kind": "pass_through",
+      "length_m": 4.0,
+      "entry_heading_deg": 90.0,
+      "exit_heading_deg": 90.0,
+      "travel_time_s": {
+        "empty": 6.246950475544242,
+        "loaded": 6.575959492214292
+      }
+    },
+    {
+      "source": [
+        0,
+        0
+      ],
+      "target": [
+        0,
+        3
+      ],
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ]
+      ],
+      "intermediate_points": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ]
+      ],
+      "kind": "pass_through",
+      "length_m": 6.0,
+      "entry_heading_deg": 90.0,
+      "exit_heading_deg": 90.0,
+      "travel_time_s": {
+        "empty": 7.6509205567600596,
+        "loaded": 8.053872662568292
+      }
+    },
+    {
+      "source": [
+        0,
+        0
+      ],
+      "target": [
+        1,
+        0
+      ],
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "intermediate_points": [],
+      "kind": "original",
+      "length_m": 2.0,
+      "entry_heading_deg": 0.0,
+      "exit_heading_deg": 0.0,
+      "travel_time_s": {
+        "empty": 4.417261042993862,
+        "loaded": 4.649905549752772
+      }
+    },
+    {
+      "source": [
+        0,
+        0
+      ],
+      "target": [
+        2,
+        0
+      ],
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ]
+      ],
+      "intermediate_points": [
+        [
+          1,
+          0
+        ]
+      ],
+      "kind": "pass_through",
+      "length_m": 4.0,
+      "entry_heading_deg": 0.0,
+      "exit_heading_deg": 0.0,
+      "travel_time_s": {
+        "empty": 6.246950475544242,
+        "loaded": 6.575959492214292
+      }
+    },
+    {
+      "source": [
+        0,
+        0
+      ],
+      "target": [
+        3,
+        0
+      ],
+      "path": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ]
+      ],
+      "intermediate_points": [
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ]
+      ],
+      "kind": "pass_through",
+      "length_m": 6.0,
+      "entry_heading_deg": 0.0,
+      "exit_heading_deg": 0.0,
+      "travel_time_s": {
+        "empty": 7.6509205567600596,
+        "loaded": 8.053872662568292
+      }
+    },
+    {
+      "source": [
+        0,
+        1
+      ],
+      "target": [
+        0,
+        0
+      ],
+      "path": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "intermediate_points": [],
+      "kind": "original",
+      "length_m": 2.0,
+      "entry_heading_deg": -90.0,
+      "exit_heading_deg": -90.0,
+      "travel_time_s": {
+        "empty": 4.417261042993862,
+        "loaded": 4.649905549752772
+      }
+    },
+    {
+      "source": [
+        0,
+        1
+      ],
+      "target": [
+        0,
+        2
+      ],
+      "path": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ]
+      ],
+      "intermediate_points": [],
+      "kind": "original",
+      "length_m": 2.0,
+      "entry_heading_deg": 90.0,
+      "exit_heading_deg": 90.0,
+      "travel_time_s": {
+        "empty": 4.417261042993862,
+        "loaded": 4.649905549752772
+      }
+    },
+    {
+      "source": [
+        0,
+        1
+      ],
+      "target": [
+        0,
+        3
+      ],
+      "path": [
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ]
+      ],
+      "intermediate_points": [
+        [
+          0,
+          2
+        ]
+      ],
+      "kind": "pass_through",
+      "length_m": 4.0,
+      "entry_heading_deg": 90.0,
+      "exit_heading_deg": 90.0,
+      "travel_time_s": {
+        "empty": 6.246950475544242,
+        "loaded": 6.575959492214292
+      }
+    },
+    {
+      "source": [
+        0,
+        2
+      ],
+      "target": [
+        0,
+        1
+      ],
+      "path": [
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "intermediate_points": [],
+      "kind": "original",
+      "length_m": 2.0,
+      "entry_heading_deg": -90.0,
+      "exit_heading_deg": -90.0,
+      "travel_time_s": {
+        "empty": 4.417261042993862,
+        "loaded": 4.649905549752772
+      }
+    },
+    {
+      "source": [
+        0,
+        2
+      ],
+      "target": [
+        0,
+        0
+      ],
+      "path": [
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "intermediate_points": [
+        [
+          0,
+          1
+        ]
+      ],
+      "kind": "pass_through",
+      "length_m": 4.0,
+      "entry_heading_deg": -90.0,
+      "exit_heading_deg": -90.0,
+      "travel_time_s": {
+        "empty": 6.246950475544242,
+        "loaded": 6.575959492214292
+      }
+    },
+    {
+      "source": [
+        0,
+        2
+      ],
+      "target": [
+        0,
+        3
+      ],
+      "path": [
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          3
+        ]
+      ],
+      "intermediate_points": [],
+      "kind": "original",
+      "length_m": 2.0,
+      "entry_heading_deg": 90.0,
+      "exit_heading_deg": 90.0,
+      "travel_time_s": {
+        "empty": 4.417261042993862,
+        "loaded": 4.649905549752772
+      }
+    },
+    {
+      "source": [
+        0,
+        3
+      ],
+      "target": [
+        0,
+        2
+      ],
+      "path": [
+        [
+          0,
+          3
+        ],
+        [
+          0,
+          2
+        ]
+      ],
+      "intermediate_points": [],
+      "kind": "original",
+      "length_m": 2.0,
+      "entry_heading_deg": -90.0,
+      "exit_heading_deg": -90.0,
+      "travel_time_s": {
+        "empty": 4.417261042993862,
+        "loaded": 4.649905549752772
+      }
+    },
+    {
+      "source": [
+        0,
+        3
+      ],
+      "target": [
+        0,
+        1
+      ],
+      "path": [
+        [
+          0,
+          3
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "intermediate_points": [
+        [
+          0,
+          2
+        ]
+      ],
+      "kind": "pass_through",
+      "length_m": 4.0,
+      "entry_heading_deg": -90.0,
+      "exit_heading_deg": -90.0,
+      "travel_time_s": {
+        "empty": 6.246950475544242,
+        "loaded": 6.575959492214292
+      }
+    },
+    {
+      "source": [
+        0,
+        3
+      ],
+      "target": [
+        0,
+        0
+      ],
+      "path": [
+        [
+          0,
+          3
+        ],
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "intermediate_points": [
+        [
+          0,
+          2
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "kind": "pass_through",
+      "length_m": 6.0,
+      "entry_heading_deg": -90.0,
+      "exit_heading_deg": -90.0,
+      "travel_time_s": {
+        "empty": 7.6509205567600596,
+        "loaded": 8.053872662568292
+      }
+    },
+    {
+      "source": [
+        1,
+        0
+      ],
+      "target": [
+        0,
+        0
+      ],
+      "path": [
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "intermediate_points": [],
+      "kind": "original",
+      "length_m": 2.0,
+      "entry_heading_deg": 180.0,
+      "exit_heading_deg": 180.0,
+      "travel_time_s": {
+        "empty": 4.417261042993862,
+        "loaded": 4.649905549752772
+      }
+    },
+    {
+      "source": [
+        1,
+        0
+      ],
+      "target": [
+        2,
+        0
+      ],
+      "path": [
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ]
+      ],
+      "intermediate_points": [],
+      "kind": "original",
+      "length_m": 2.0,
+      "entry_heading_deg": 0.0,
+      "exit_heading_deg": 0.0,
+      "travel_time_s": {
+        "empty": 4.417261042993862,
+        "loaded": 4.649905549752772
+      }
+    },
+    {
+      "source": [
+        1,
+        0
+      ],
+      "target": [
+        3,
+        0
+      ],
+      "path": [
+        [
+          1,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ]
+      ],
+      "intermediate_points": [
+        [
+          2,
+          0
+        ]
+      ],
+      "kind": "pass_through",
+      "length_m": 4.0,
+      "entry_heading_deg": 0.0,
+      "exit_heading_deg": 0.0,
+      "travel_time_s": {
+        "empty": 6.246950475544242,
+        "loaded": 6.575959492214292
+      }
+    },
+    {
+      "source": [
+        2,
+        0
+      ],
+      "target": [
+        1,
+        0
+      ],
+      "path": [
+        [
+          2,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "intermediate_points": [],
+      "kind": "original",
+      "length_m": 2.0,
+      "entry_heading_deg": 180.0,
+      "exit_heading_deg": 180.0,
+      "travel_time_s": {
+        "empty": 4.417261042993862,
+        "loaded": 4.649905549752772
+      }
+    },
+    {
+      "source": [
+        2,
+        0
+      ],
+      "target": [
+        0,
+        0
+      ],
+      "path": [
+        [
+          2,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "intermediate_points": [
+        [
+          1,
+          0
+        ]
+      ],
+      "kind": "pass_through",
+      "length_m": 4.0,
+      "entry_heading_deg": 180.0,
+      "exit_heading_deg": 180.0,
+      "travel_time_s": {
+        "empty": 6.246950475544242,
+        "loaded": 6.575959492214292
+      }
+    },
+    {
+      "source": [
+        2,
+        0
+      ],
+      "target": [
+        3,
+        0
+      ],
+      "path": [
+        [
+          2,
+          0
+        ],
+        [
+          3,
+          0
+        ]
+      ],
+      "intermediate_points": [],
+      "kind": "original",
+      "length_m": 2.0,
+      "entry_heading_deg": 0.0,
+      "exit_heading_deg": 0.0,
+      "travel_time_s": {
+        "empty": 4.417261042993862,
+        "loaded": 4.649905549752772
+      }
+    },
+    {
+      "source": [
+        3,
+        0
+      ],
+      "target": [
+        2,
+        0
+      ],
+      "path": [
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ]
+      ],
+      "intermediate_points": [],
+      "kind": "original",
+      "length_m": 2.0,
+      "entry_heading_deg": 180.0,
+      "exit_heading_deg": 180.0,
+      "travel_time_s": {
+        "empty": 4.417261042993862,
+        "loaded": 4.649905549752772
+      }
+    },
+    {
+      "source": [
+        3,
+        0
+      ],
+      "target": [
+        1,
+        0
+      ],
+      "path": [
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "intermediate_points": [
+        [
+          2,
+          0
+        ]
+      ],
+      "kind": "pass_through",
+      "length_m": 4.0,
+      "entry_heading_deg": 180.0,
+      "exit_heading_deg": 180.0,
+      "travel_time_s": {
+        "empty": 6.246950475544242,
+        "loaded": 6.575959492214292
+      }
+    },
+    {
+      "source": [
+        3,
+        0
+      ],
+      "target": [
+        0,
+        0
+      ],
+      "path": [
+        [
+          3,
+          0
+        ],
+        [
+          2,
+          0
+        ],
+        [
+          1,
+          0
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "intermediate_points": [
+        [
+          2,
+          0
+        ],
+        [
+          1,
+          0
+        ]
+      ],
+      "kind": "pass_through",
+      "length_m": 6.0,
+      "entry_heading_deg": 180.0,
+      "exit_heading_deg": 180.0,
+      "travel_time_s": {
+        "empty": 7.6509205567600596,
+        "loaded": 8.053872662568292
+      }
+    }
+  ],
+  "counts": {
+    "nodes": 7,
+    "original_arcs": 12,
+    "pass_through_arcs": 12,
+    "total_arcs": 24
+  }
+}
