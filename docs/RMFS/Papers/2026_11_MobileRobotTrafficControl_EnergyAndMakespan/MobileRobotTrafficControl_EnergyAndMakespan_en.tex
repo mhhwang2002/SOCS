@@ -14,7 +14,7 @@ to Minimize Energy Consumption and Makespan}
 \maketitle
 
 \begin{abstract}
-We study traffic control for mobile robots on prescribed paths with two
+We study traffic control for mobile robots following approved paths with two
 objectives: reducing fleet battery energy consumption and makespan. Swept
 regions identify spatial interference and determine which parts of a route
 can be approved together. A Discrete Event System Specification (DEVS)
@@ -24,11 +24,13 @@ before further movement with allowing rolling passage. We separately vary whethe
 may serve as temporary stopping points. Preliminary simulations show two
 effects of parking inside an intersection: it can delay crossing traffic,
 and it can free an upstream intersection and let a queue pass. We estimate
-battery energy from executed motion histories for rack-carrying robots under
-explicit mass, power, and drive assumptions. In both layouts,
+battery energy from executed motion histories under
+explicit mass, power, and drive assumptions. In both small layouts,
 allowing rolling passage reduces estimated energy and makespan relative to
 requiring a stop under the same policy for stopping in the intersection. The preferred stopping policy depends
-on the layout.
+on the layout. In a warehouse simulation with 30 robots and 100 orders,
+allowing both rolling passage and intersection stopping yields the lowest
+makespan and estimated energy among the four policies tested.
 \end{abstract}
 
 \section{Related work}
@@ -176,6 +178,7 @@ specified observation horizon. The objectives are
 \[
  C_{\max}=\max_i C_i,\qquad E_{\mathrm{fleet}}=\sum_i E_i.
 \]
+Equation~\eqref{eq:robot-energy} in Section~\ref{sec:energy-model} gives the calculation of $E_i$.
 We report both objectives for each policy. The energy estimates apply to the
 assumed power model and the executed profiles.
 
@@ -198,13 +201,14 @@ motion profile. The \emph{Stopping in intersection} policy independently determi
 
 \section{Experimental evaluation of makespan and energy}
 \subsection{Experimental design and energy model}
-For each layout we vary \emph{Rolling passage} and \emph{Stopping in intersection} in a $2\times2$ comparison. The initial configuration and routes stay
+\label{sec:energy-model}
+For each small layout we vary \emph{Rolling passage} and \emph{Stopping in intersection} in a $2\times2$ comparison. The initial configuration and routes stay
 fixed within each comparison. Each stopping policy uses a validated reference
 execution, which can change the passage order. The blocker departs at 16~s
 in the three-robot single-crossing case and at 32~s in the five-robot
 two-crossing case. Its release is determined by sensor feedback.
 
-In the reported experiments every robot carries a rack. The MiR600 chassis
+In the small-layout experiments every robot carries a rack. The MiR600 chassis
 mass is 240~kg and the rated maximum
 payload is 600~kg~\cite{mir600}. We set the rack mass to 300~kg, half that
 rating, giving a total moving mass of 540~kg per robot. The manufacturer
@@ -216,15 +220,17 @@ braking values, so we set each braking magnitude equal to its acceleration
 limit as a model assumption. The masses, speed limits, acceleration and
 braking values, and power-model parameters are supplied through
 \nolinkurl{Data/mir600_energy_inputs.json}. All alternatives use the same
-collision envelope. The routes include no lifting, lowering, or rotation.
+collision envelope. The small-layout routes consist of straight movements.
 
 Following the physical decomposition of AGV power in~\cite{meissner2020},
 we estimate electrical draw on a level floor using
-\[
- P_i(t)=P_{\mathrm{aux}}+
- \frac{\max\{0,m_i[a_i(t)+c_r g]v_i(t)\}}{\eta},\qquad
- E_i=\frac{1}{3600}\int_0^{C_i}P_i(t)\,dt\quad\text{(Wh)}.
-\]
+\begin{align}
+ P_i(t)&=P_{\mathrm{aux}}+
+ \frac{\max\{0,m_i[a_i(t)+c_r g]v_i(t)\}}{\eta},
+ \label{eq:robot-power}\\
+ E_i&=\frac{1}{3600}\int_0^{C_i}P_i(t)\,dt\quad\text{(Wh)}.
+ \label{eq:robot-energy}
+\end{align}
 We use $P_{\mathrm{aux}}=40$~W, $c_r=0.025$, $g=9.81$~$\mathrm{m/s^2}$, and
 $\eta=0.75$. We assume no regenerative recovery. Auxiliary power is charged
 from time zero through each robot's own final arrival. This accounts for all
@@ -237,7 +243,7 @@ intervals. No rendering-frame values enter the integral.
 
 \subsection{Results}
 
-Each alternative is followed by the executed speed profiles and cumulative
+For the two small layouts, each alternative is followed by the executed speed profiles and cumulative
 battery energy. The energy plot includes every robot and the fleet sum.
 Axes are shared across the four alternatives within each layout. Each robot's
 energy stays constant after final arrival.
@@ -268,20 +274,20 @@ their swept paths. The table reports makespan and estimated fleet battery energy
 \toprule
 \shortstack[l]{Rolling\\passage} & \shortstack[l]{Stopping in\\intersection} & \shortstack[r]{Makespan\\(s)} & \shortstack[r]{Energy\\(Wh)}\\
 \midrule
-Forbidden & Allowed   & 33.881 & 2.869\\
 Forbidden & Forbidden & 32.009 & 2.714\\
-Allowed & Allowed   & 30.413 & 2.795\\
 Allowed & Forbidden & 28.157 & 2.562\\
+Forbidden & Allowed   & 33.881 & 2.869\\
+Allowed & Allowed   & 30.413 & 2.795\\
 \bottomrule
 \end{tabular}
 \end{minipage}
 \end{table}
 
 \clearpage
-\noindent\ProfilePair{Rolling passage: Forbidden\newline Stopping in intersection: Allowed}{one_crossing_stop_first_allow}\hfill%
-\ProfilePair{Rolling passage: Forbidden\newline Stopping in intersection: Forbidden}{one_crossing_stop_first_forbid}\par\medskip
-\noindent\ProfilePair{Rolling passage: Allowed\newline Stopping in intersection: Allowed}{one_crossing_push_pull_allow}\hfill%
+\noindent\ProfilePair{Rolling passage: Forbidden\newline Stopping in intersection: Forbidden}{one_crossing_stop_first_forbid}\hfill%
 \ProfilePair{Rolling passage: Allowed\newline Stopping in intersection: Forbidden}{one_crossing_push_pull_forbid}\par\medskip
+\noindent\ProfilePair{Rolling passage: Forbidden\newline Stopping in intersection: Allowed}{one_crossing_stop_first_allow}\hfill%
+\ProfilePair{Rolling passage: Allowed\newline Stopping in intersection: Allowed}{one_crossing_push_pull_allow}\par\medskip
 
 \clearpage
 \subsubsection{Two crossings}
@@ -300,20 +306,20 @@ the two robots waiting to cross behind R1. Energy is the fleet total.}
 \toprule
 \shortstack[l]{Rolling\\passage} & \shortstack[l]{Stopping in\\intersection} & \shortstack[r]{Makespan\\(s)} & \shortstack[r]{Energy\\(Wh)}\\
 \midrule
-Forbidden & Allowed   & 49.881 & 4.683\\
 Forbidden & Forbidden & 62.763 & 5.090\\
-Allowed & Allowed   & 46.413 & 4.437\\
 Allowed & Forbidden & 54.563 & 4.824\\
+Forbidden & Allowed   & 49.881 & 4.683\\
+Allowed & Allowed   & 46.413 & 4.437\\
 \bottomrule
 \end{tabular}
 \end{minipage}
 \end{table}
 
 \clearpage
-\noindent\ProfilePair{Rolling passage: Forbidden\newline Stopping in intersection: Allowed}{two_crossings_stop_first_allow}\hfill%
-\ProfilePair{Rolling passage: Forbidden\newline Stopping in intersection: Forbidden}{two_crossings_stop_first_forbid}\par\medskip
-\noindent\ProfilePair{Rolling passage: Allowed\newline Stopping in intersection: Allowed}{two_crossings_push_pull_allow}\hfill%
+\noindent\ProfilePair{Rolling passage: Forbidden\newline Stopping in intersection: Forbidden}{two_crossings_stop_first_forbid}\hfill%
 \ProfilePair{Rolling passage: Allowed\newline Stopping in intersection: Forbidden}{two_crossings_push_pull_forbid}\par\medskip
+\noindent\ProfilePair{Rolling passage: Forbidden\newline Stopping in intersection: Allowed}{two_crossings_stop_first_allow}\hfill%
+\ProfilePair{Rolling passage: Allowed\newline Stopping in intersection: Allowed}{two_crossings_push_pull_allow}\par\medskip
 
 \subsubsection{Comparison across layouts}
 In the single-crossing layout, the robot that stops in the intersection
@@ -326,7 +332,7 @@ Forbidding the stop gives the lowest observed makespan and estimated energy
 for one crossing (Table~\ref{tab:one-crossing-results}). Allowing the buffer
 gives the lowest values for two crossings (Table~\ref{tab:two-crossings-results}).
 
-All eight combinations completed. We replayed the DEVS-only runs with
+All eight small-layout runs completed. We replayed the DEVS-only runs with
 collision checks at 0.01 and 0.1~s intervals. No contacts were detected in the
 replays, and makespan and energy agreed to a relative and absolute tolerance
 of $10^{-10}$ in the reported units. These are model estimates. Physical
@@ -336,6 +342,103 @@ optimality. The reproducer is
 \begin{quote}\small\ttfamily
 python -m examples.RMFS.Tests.run\_crossing\_energy\_comparison --load rack
 \end{quote}
+
+\clearpage
+\subsubsection{Warehouse order workflow}
+We applied the same $2\times2$ policy design to the warehouse workflow with
+30 robots, 100 orders, and seed 0. Each run used the same initial layout and
+order generator. The controller dispatched orders in FIFO order and planned
+routes as work became available. Dispatch timing, rack assignments, and
+executed routes could vary with the policy. The controller segmented routes
+at warehouse junctions and checked swept-region clearance before each
+movement authorization. Every run finished all orders, returned all racks,
+and brought every robot home. Makespan is measured through the last home
+arrival. These runs used discrete-event execution without periodic sampling.
+
+\begin{table}[H]
+\centering
+\small
+\caption{Warehouse results for 30 robots and 100 orders. Energy is the
+estimated battery draw for the whole fleet.}
+\label{tab:warehouse-results}
+\begin{tabular}{@{}lllrr@{}}
+\toprule
+Alternative & Rolling passage & \shortstack[l]{Stopping in\\intersection}
+& \shortstack[r]{Makespan\\(s)} & \shortstack[r]{Energy\\(Wh)}\\
+\midrule
+A & Forbidden & Forbidden & 5,380.354 & 2,179.777\\
+B & Allowed   & Forbidden & 5,139.850 & 2,116.786\\
+C & Forbidden & Allowed   & 5,405.854 & 2,236.167\\
+D & Allowed   & Allowed   & 3,038.332 & 1,526.333\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The energy calculation uses 240~kg for unloaded motion and 540~kg for
+rack-carrying motion. Lift and lower completion events determine when the
+mass changes. Auxiliary power is counted through each robot's final home
+arrival. The estimate includes translational traction and auxiliary power.
+
+Alternative D achieved the lowest makespan and estimated fleet energy.
+With rolling passage allowed, permitting intersection stops reduced
+makespan by 40.9\% and estimated energy by 27.9\% from B to D
+(Table~\ref{tab:warehouse-results}). From A to C, permitting such stops
+increased makespan by 0.5\% and estimated energy by 2.6\%. The policy
+effect therefore depended on rolling passage in this workload. Allowing an
+approved movement to end inside a junction gives the controller more
+opportunities to grant a shorter movement and extend it as space clears.
+Figure~\ref{fig:warehouse-top} shows the warehouse at the 50th shipment
+under Alternatives A and D.
+
+\clearpage
+\begin{figure}[H]
+\centering
+\includegraphics[width=.84\linewidth]{warehouse_top_A.png}\par
+\smallskip
+{\small (a) Alternative A (Forbidden, Forbidden), 50th shipment at 2,580.872~s.}\par
+\medskip
+\includegraphics[width=.84\linewidth]{warehouse_top_D.png}\par
+\smallskip
+{\small (b) Alternative D (Allowed, Allowed), 50th shipment at 1,568.365~s.}
+\caption{Top views of the 30-robot warehouse at the 50th shipment.
+Colored regions show each robot's remaining swept path.}
+\label{fig:warehouse-top}
+\end{figure}
+\clearpage
+\section{Conclusion}
+We implemented a swept-path traffic controller that exposes two separate
+operating choices: whether a robot may pass its approach stopping point
+without stopping, and whether it may wait inside an intersection. In the
+DEVS model, a pre-braking request or an actual clearance report can trigger
+a movement extension. The energy evaluation integrates the executed
+translation profiles and auxiliary power, with load changes recorded by
+the lift and lower events in the warehouse workflow.
+
+The controlled layouts showed why the location of a stop matters. In the
+single-crossing layout, a robot waiting inside the intersection delayed
+cross traffic. In the two-crossing layout, using the forward intersection
+as a temporary buffer freed the upstream crossing. With rolling passage
+allowed, the last robot in the upstream queue cleared that crossing at
+15.485~s with the buffer and 50.177~s without it
+(Tables~\ref{tab:one-crossing-results} and~\ref{tab:two-crossings-results}).
+
+In the 30-robot, 100-order warehouse run, Alternative D, which allowed
+both rolling passage and stopping in intersections, achieved the lowest
+makespan and estimated fleet energy of the four tested policies
+(Table~\ref{tab:warehouse-results}). Relative to Alternative A, which
+forbade both options, D reduced makespan from 5,380.354 to 3,038.332~s
+(43.5\%) and estimated fleet energy from 2,179.777 to 1,526.333~Wh
+(30.0\%). Allowing intersection stops while requiring an approach stop
+increased both measures in the same workload. The warehouse comparison
+therefore shows that the effect of allowing intersection stops depends on
+the rolling-passage policy.
+
+The warehouse findings apply to the tested layout and order workload.
+Dispatch timing and routes could vary with policy in the warehouse.
+The energy values are simulation estimates for translational traction and
+auxiliary power. Physical battery measurements and additional workloads
+would test how well the reported savings transfer to other operating
+conditions.
 
 \begin{thebibliography}{99}
 \bibitem{odonnell1989}

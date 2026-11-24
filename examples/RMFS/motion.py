@@ -1,6 +1,7 @@
 """Analytical stop-to-stop profiles used by the robot and its point sensor."""
 
 from dataclasses import dataclass
+from functools import cached_property
 from math import sqrt
 
 
@@ -142,21 +143,21 @@ class ExtendedProfile:
     deceleration: float
     speed: float
 
-    @property
+    @cached_property
     def offset(self):
         return self.original.distance_at(self.switch_time)
 
-    @property
+    @cached_property
     def tail(self):
         return MovingProfile(self.length-self.offset,
                              self.original.velocity_at(self.switch_time),
                              self.acceleration, self.deceleration, self.speed)
 
-    @property
+    @cached_property
     def duration(self):
         return self.switch_time+self.tail.duration
 
-    @property
+    @cached_property
     def brake_start(self):
         return self.switch_time+self.tail.brake_start
 
@@ -173,4 +174,3 @@ class ExtendedProfile:
     def time_at_distance(self, distance):
         return (self.original.time_at_distance(distance) if distance <= self.offset else
                 self.switch_time+self.tail.time_at_distance(distance-self.offset))
-

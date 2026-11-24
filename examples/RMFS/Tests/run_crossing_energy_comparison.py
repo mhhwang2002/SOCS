@@ -70,9 +70,15 @@ def cumulative_energy(config, mass, intervals, arrival, time):
 
 def evaluate(config, case, loaded, push_pull, allow_stops, interval):
     collector, paths = collect_motion(config, case, loaded, push_pull, allow_stops, interval)
+    arrivals, energy = fleet_energy(config, collector, paths, loaded)
+    return max(arrivals.values()), sum(energy.values())
+
+
+def fleet_energy(config, collector, paths, loaded):
+    """Integrate translational traction and auxiliary draw for each robot."""
     mass = config['robot_mass_kg'] + config['rack_mass_kg'] * loaded
     arrivals = {name: collector.arrival_time(name, route[-1]) for name, route in paths.items()}
-    energy = 0.
+    energy = {}
     for name, route in paths.items():
         intervals = tuple(collector.motion_intervals(name))
         expected_distance = sum(dist(a, b) for a, b in zip(route, route[1:]))
@@ -80,8 +86,8 @@ def evaluate(config, case, loaded, push_pull, allow_stops, interval):
                        for start, end, origin, p in intervals)
         if not isclose(distance, expected_distance):
             raise RuntimeError(f'{name}: recorded profiles do not cover the assigned route.')
-        energy += cumulative_energy(config, mass, intervals, arrivals[name], arrivals[name])
-    return max(arrivals.values()), energy
+        energy[name] = cumulative_energy(config, mass, intervals, arrivals[name], arrivals[name])
+    return arrivals, energy
 
 
 def main():

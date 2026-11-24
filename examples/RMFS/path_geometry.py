@@ -5,6 +5,7 @@ handles 2D axis-aligned translation of a fixed rectangular footprint. Other
 backends can provide Region implementations without changing Sweep or TuplePath.
 """
 
+from functools import lru_cache
 from dataclasses import dataclass
 from math import isfinite
 from typing import Protocol
@@ -205,6 +206,7 @@ class RectangularFootprint:
             raise ValueError("Footprint dimensions must be positive and finite.")
 
 
+@lru_cache(maxsize=32768)
 def sweep_2d(subpath, footprint=RectangularFootprint(), policy=GeometryPolicy()):
     """Exact union of segment boxes, with optional physical inflation."""
     if subpath.path.dimension != 2:

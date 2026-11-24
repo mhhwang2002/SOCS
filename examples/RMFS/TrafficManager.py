@@ -108,6 +108,13 @@ class TrafficManager:
         self._build_tasks()
         self.reset(time, reset_roadmap=False)
 
+    def _combine_initial_prefix(self):
+        return True
+
+    def _advance_parts(self, path):
+        return tuple(Subpath(path, PathPosition(i), PathPosition(i + 1))
+                     for i in range(len(path.vertices) - 1))
+
     def append_route(self, name, path, time, *, advance=False):
         """Append a new leg without resetting other robots or their commands."""
         if not self.event_release or name in self.awaiting:
@@ -116,8 +123,7 @@ class TrafficManager:
             raise ValueError("A movement leg needs at least two points.")
         self.roadmap.replace_robot_path(name, path, time)
         start_stage = len(self.tuple_path.stages)
-        parts = (tuple(Subpath(path, PathPosition(i), PathPosition(i+1))
-                       for i in range(len(path.vertices)-1)) if advance else
+        parts = (self._advance_parts(path) if advance else
                  (Subpath(path, PathPosition(0), PathPosition(len(path.vertices)-1)),))
         rows = []
         for part in parts:
@@ -129,7 +135,7 @@ class TrafficManager:
         for offset, part in enumerate(parts):
             self.tasks = (*self.tasks, (start_stage+offset, name, part))
             self.task_sweeps = (*self.task_sweeps, sweep_2d(part, self.footprints[name], self.policy))
-        if advance:
+        if advance and self._combine_initial_prefix():
             self.command_blocks = (*(self.command_blocks or ()),
                                    (start_stage, start_stage+len(parts)))
         self.done = False
@@ -223,11 +229,14 @@ class TrafficManager:
             indices.append(index)
             end = part.end
             point = sweep_2d(Subpath(part.path,end,end),self.footprints[name],self.policy)
-            if all(other == name or not point.intersects(
-                    sweep_2d(self.roadmap.remaining_subpath(other),self.footprints[other],self.policy),
-                    self.policy.tolerance) for other in self.roadmap.paths):
+            if self._extension_endpoint_clear(name, point):
                 return Subpath(approved.path,approved.start,end),tuple(indices)
         return None
+
+    def _extension_endpoint_clear(self, name, point):
+        return all(other == name or not point.intersects(
+                    sweep_2d(self.roadmap.remaining_subpath(other),self.footprints[other],self.policy),
+                    self.policy.tolerance) for other in self.roadmap.paths)
 
     def passage_request(self, name, stop, time):
         approved = self.roadmap.robots[name]['approved_path']
@@ -249,15 +258,13 @@ class TrafficManager:
         if not self.task_control or self.halted:
             return
         pending = []
-        for index,(stage,name,part) in enumerate(self.tasks):
-            if index in self.issued_tasks:
-                continue
-            if any(k not in self.finished_tasks for k,(_,owner,_) in
-                   enumerate(self.tasks[:index]) if owner == name
-                   and k not in self.command_tasks.get(name,())):
-                continue
-            self.task_wait_since.setdefault(index,time)
-            pending.append(index)
+        blocked_owners = set()
+        for index, (_, name, _) in enumerate(self.tasks):
+            if index not in self.issued_tasks and name not in blocked_owners:
+                self.task_wait_since.setdefault(index, time)
+                pending.append(index)
+            if index not in self.finished_tasks and index not in self.command_tasks.get(name, ()):
+                blocked_owners.add(name)
         # FIFO orders only candidates; the validated precedence and physical
         # occupancy guard remain mandatory. Ties follow tuple object order.
         object_rank = {name:i for i,name in enumerate(self.tuple_path.object_names)}
@@ -327,9 +334,10 @@ class TrafficManager:
             self.command_tasks[name] = tuple(indices)
             self.awaiting.add(name)
             self.stage = max(self.stage,stage)
+        incomplete = {stage for i, (stage, _, _) in enumerate(self.tasks)
+                      if i not in self.finished_tasks}
         self.completed_stages = [stage for stage in range(len(self.tuple_path.stages))
-                                 if all(k in self.finished_tasks for k,(s,_,_) in
-                                        enumerate(self.tasks) if s == stage)]
+                                 if stage not in incomplete]
         self.done = len(self.finished_tasks) == len(self.tasks)
 
     def _prepare_wait_heading(self, name, part, time):

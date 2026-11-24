@@ -21,7 +21,8 @@ class RMFSController(DEVSph):
                  layout=None, rack_positions=None, motion_graph=None, seed=0,
                  initial_headings=None, full_cycle=False, workstations=None,
                  service_duration=3.0, departure_policy='destination-clear', safe_prefix=False,
-                 motion_extension=True, flexible_crossing=False, crossing_policy='fifo'):
+                 motion_extension=True, flexible_crossing=False, crossing_policy='fifo',
+                 traffic_manager_type=TrafficManager):
         super().__init__("RMFSController")
         self.planning_error = planning_error
         self.initial_paths = dict(paths)
@@ -50,7 +51,7 @@ class RMFSController(DEVSph):
             self.path_planner = RobotPathPlanner(self.roadmap, motion_graph)
             self.add_input_ports("?orders")
             self._reset_orders()
-        self.traffic_manager = TrafficManager(self.roadmap, tuple_path,
+        self.traffic_manager = traffic_manager_type(self.roadmap, tuple_path,
                                              event_release=event_release,footprints=footprints,
                                              command_blocks=command_blocks, preorient=True,
                                              safe_prefix=safe_prefix,motion_extension=motion_extension,
@@ -253,7 +254,7 @@ class RMFSController(DEVSph):
             self._leg_arrived(name)
         else:
             self.traffic_manager.append_route(name, Path(name, route), self.tNow,
-                                              advance=self.departure_policy == 'advance')
+                                              advance=self.departure_policy == 'advance' or self.traffic_manager.safe_prefix)
         return True
 
     def _dispatch_cycle_orders(self):
@@ -357,7 +358,9 @@ class RMFSController(DEVSph):
 
     def _cycle_event(self, event):
         manager = self.traffic_manager
-        if event.port == "?orders":
+        if event.port == "?warehouse_push_choice":
+            manager.choose_push(event.value, self.tNow)
+        elif event.port == "?orders":
             orders = tuple(event.value)
             if self.received_orders or len(set(orders)) != len(orders):
                 raise ValueError("Expected one initial batch of unique orders.")
@@ -366,6 +369,9 @@ class RMFSController(DEVSph):
             self._cycle_log("orders_received", count=len(orders))
         else:
             for name in self.roadmap.paths:
+                if event.port == f"?passage_request_{name}":
+                    manager.passage_request(name, event.value, self.tNow)
+                    break
                 if event.port == f"?arrived_{name}":
                     path = self.roadmap.paths[name].vertices
                     approved = self.roadmap.robots[name]['approved_path']
