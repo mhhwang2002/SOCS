@@ -1,0 +1,628 @@
+{
+  "metrics": {
+    "fastest": {
+      "free_flow_total_s": 151.23852047273567,
+      "crossings": 0,
+      "reverse_runs": 4,
+      "reverse_length_m": 54.900000000000006,
+      "crossing_overlap_s": 0.0,
+      "reverse_overlap_s": 59.737435163434796,
+      "occupancy_overlap_s": 59.737435163434796,
+      "makespan_s": 86.09074807506954,
+      "energy_wh": 6.070461745446571
+    },
+    "sweep-aware": {
+      "free_flow_total_s": 158.94751190706805,
+      "crossings": 1,
+      "reverse_runs": 2,
+      "reverse_length_m": 15.375,
+      "crossing_overlap_s": 0.0,
+      "reverse_overlap_s": 13.183954928053847,
+      "occupancy_overlap_s": 13.183954928053847,
+      "makespan_s": 63.92566623249732,
+      "energy_wh": 5.77456472341329
+    },
+    "no-head-on": {
+      "free_flow_total_s": 164.42832978304284,
+      "crossings": 1,
+      "reverse_runs": 0,
+      "reverse_length_m": 0.0,
+      "crossing_overlap_s": 0.0,
+      "reverse_overlap_s": 0.0,
+      "occupancy_overlap_s": 0.0,
+      "makespan_s": 88.50631653988857,
+      "energy_wh": 6.343273615717637
+    },
+    "right-first": {
+      "free_flow_total_s": 157.01315408800406,
+      "crossings": 1,
+      "reverse_runs": 1,
+      "reverse_length_m": 13.725000000000001,
+      "crossing_overlap_s": 0.0,
+      "reverse_overlap_s": 19.566009058867834,
+      "occupancy_overlap_s": 19.566009058867834,
+      "makespan_s": 73.30287973337198,
+      "energy_wh": 5.911396549342758
+    },
+    "alternating": {
+      "free_flow_total_s": 162.12729853912643,
+      "crossings": 2,
+      "reverse_runs": 1,
+      "reverse_length_m": 1.6499999999999986,
+      "crossing_overlap_s": 0.0,
+      "reverse_overlap_s": 0.10481783650732268,
+      "occupancy_overlap_s": 0.10481783650732268,
+      "makespan_s": 71.86663292104072,
+      "energy_wh": 6.005548598413778
+    },
+    "no-head-on-R1-R3-R2-R4": {
+      "free_flow_total_s": 155.00593858338124,
+      "crossings": 3,
+      "reverse_runs": 0,
+      "reverse_length_m": 0.0,
+      "crossing_overlap_s": 0.0,
+      "reverse_overlap_s": 0.0,
+      "occupancy_overlap_s": 0.0,
+      "makespan_s": 82.23187853056581,
+      "energy_wh": 6.127514339409705
+    },
+    "sweep-R1-R3-R4-R2": {
+      "free_flow_total_s": 159.36231647762594,
+      "crossings": 1,
+      "reverse_runs": 2,
+      "reverse_length_m": 15.375,
+      "crossing_overlap_s": 0.0,
+      "reverse_overlap_s": 19.67082689537516,
+      "occupancy_overlap_s": 19.67082689537516,
+      "makespan_s": 75.43248178420374,
+      "energy_wh": 5.902418229543361
+    },
+    "no-head-on-R1-R3-R4-R2": {
+      "free_flow_total_s": 161.89819017088274,
+      "crossings": 1,
+      "reverse_runs": 0,
+      "reverse_length_m": 0.0,
+      "crossing_overlap_s": 0.0,
+      "reverse_overlap_s": 0.0,
+      "occupancy_overlap_s": 0.0,
+      "makespan_s": 76.42923229120687,
+      "energy_wh": 6.043514053990694
+    },
+    "sweep-R1-R4-R2-R3": {
+      "free_flow_total_s": 154.77683021513752,
+      "crossings": 2,
+      "reverse_runs": 0,
+      "reverse_length_m": 0.0,
+      "crossing_overlap_s": 0.0,
+      "reverse_overlap_s": 0.0,
+      "occupancy_overlap_s": 0.0,
+      "makespan_s": 81.46821594137411,
+      "energy_wh": 6.156994655106714
+    },
+    "sweep-R1-R4-R3-R2": {
+      "free_flow_total_s": 154.65584138387322,
+      "crossings": 3,
+      "reverse_runs": 2,
+      "reverse_length_m": 29.450000000000003,
+      "crossing_overlap_s": 0.0,
+      "reverse_overlap_s": 33.55974464712439,
+      "occupancy_overlap_s": 33.55974464712439,
+      "makespan_s": 69.12336877922057,
+      "energy_wh": 5.842246071978164
+    },
+    "no-head-on-R1-R4-R3-R2": {
+      "free_flow_total_s": 160.07195188879814,
+      "crossings": 5,
+      "reverse_runs": 0,
+      "reverse_length_m": 0.0,
+      "crossing_overlap_s": 0.0,
+      "reverse_overlap_s": 0.0,
+      "occupancy_overlap_s": 0.0,
+      "makespan_s": 91.27129860138909,
+      "energy_wh": 6.54542112576174
+    },
+    "sweep-R2-R1-R3-R4": {
+      "free_flow_total_s": 159.06850073833235,
+      "crossings": 1,
+      "reverse_runs": 2,
+      "reverse_length_m": 15.375,
+      "crossing_overlap_s": 0.0,
+      "reverse_overlap_s": 19.566009058867834,
+      "occupancy_overlap_s": 19.566009058867834,
+      "makespan_s": 69.47989133145683,
+      "energy_wh": 5.766754144660576
+    },
+    "no-head-on-R2-R1-R3-R4": {
+      "free_flow_total_s": 164.54931861430714,
+      "crossings": 0,
+      "reverse_runs": 0,
+      "reverse_length_m": 0.0,
+      "crossing_overlap_s": 0.0,
+      "reverse_overlap_s": 0.0,
+      "occupancy_overlap_s": 0.0,
+      "makespan_s": 81.8343347826269,
+      "energy_wh": 6.199616294118021
+    },
+    "sweep-R2-R3-R1-R4": {
+      "free_flow_total_s": 157.42795865856192,
+      "crossings": 1,
+      "reverse_runs": 0,
+      "reverse_length_m": 0.0,
+      "crossing_overlap_s": 0.0,
+      "reverse_overlap_s": 0.0,
+      "occupancy_overlap_s": 0.0,
+      "makespan_s": 73.70571641258029,
+      "energy_wh": 5.941441313229049
+    },
+    "sweep-R2-R3-R4-R1": {
+      "free_flow_total_s": 159.48330530889024,
+      "crossings": 0,
+      "reverse_runs": 2,
+      "reverse_length_m": 15.375,
+      "crossing_overlap_s": 0.0,
+      "reverse_overlap_s": 13.28877276456117,
+      "occupancy_overlap_s": 13.28877276456117,
+      "makespan_s": 69.8946959020147,
+      "energy_wh": 5.771363084333441
+    },
+    "sweep-R2-R4-R3-R1": {
+      "free_flow_total_s": 159.84284352055442,
+      "crossings": 1,
+      "reverse_runs": 1,
+      "reverse_length_m": 13.725000000000001,
+      "crossing_overlap_s": 0.0,
+      "reverse_overlap_s": 14.183954928053847,
+      "occupancy_overlap_s": 14.183954928053847,
+      "makespan_s": 65.7553556650477,
+      "energy_wh": 5.828587813242244
+    },
+    "no-head-on-R2-R4-R3-R1": {
+      "free_flow_total_s": 160.07195188879814,
+      "crossings": 4,
+      "reverse_runs": 0,
+      "reverse_length_m": 0.0,
+      "crossing_overlap_s": 0.0,
+      "reverse_overlap_s": 0.0,
+      "occupancy_overlap_s": 0.0,
+      "makespan_s": 88.212500800595,
+      "energy_wh": 6.482832274703034
+    },
+    "no-head-on-R3-R1-R2-R4": {
+      "free_flow_total_s": 162.1920059101763,
+      "crossings": 2,
+      "reverse_runs": 0,
+      "reverse_length_m": 0.0,
+      "crossing_overlap_s": 0.0,
+      "reverse_overlap_s": 0.0,
+      "occupancy_overlap_s": 0.0,
+      "makespan_s": 60.24436856958692,
+      "energy_wh": 5.903457356497094
+    },
+    "sweep-R3-R2-R1-R4": {
+      "free_flow_total_s": 157.30696982729762,
+      "crossings": 0,
+      "reverse_runs": 1,
+      "reverse_length_m": 13.725000000000001,
+      "crossing_overlap_s": 0.0,
+      "reverse_overlap_s": 12.993735588256557,
+      "occupancy_overlap_s": 12.993735588256557,
+      "makespan_s": 56.0346072910689,
+      "energy_wh": 5.4213134443253
+    },
+    "no-head-on-R3-R2-R1-R4": {
+      "free_flow_total_s": 157.01315408800406,
+      "crossings": 0,
+      "reverse_runs": 0,
+      "reverse_length_m": 0.0,
+      "crossing_overlap_s": 0.0,
+      "reverse_overlap_s": 0.0,
+      "occupancy_overlap_s": 0.0,
+      "makespan_s": 47.75535133835614,
+      "energy_wh": 5.371241433739602
+    },
+    "sweep-R3-R2-R4-R1": {
+      "free_flow_total_s": 159.36231647762594,
+      "crossings": 1,
+      "reverse_runs": 1,
+      "reverse_length_m": 1.6499999999999986,
+      "crossing_overlap_s": 0.0,
+      "reverse_overlap_s": 0.0,
+      "occupancy_overlap_s": 0.0,
+      "makespan_s": 57.41467913703654,
+      "energy_wh": 5.738730924662641
+    },
+    "no-head-on-R3-R4-R1-R2": {
+      "free_flow_total_s": 164.42832978304284,
+      "crossings": 0,
+      "reverse_runs": 0,
+      "reverse_length_m": 0.0,
+      "crossing_overlap_s": 0.0,
+      "reverse_overlap_s": 0.0,
+      "occupancy_overlap_s": 0.0,
+      "makespan_s": 76.11887209519872,
+      "energy_wh": 6.241662570736796
+    },
+    "sweep-R4-R1-R2-R3": {
+      "free_flow_total_s": 152.06812961385145,
+      "crossings": 2,
+      "reverse_runs": 2,
+      "reverse_length_m": 27.450000000000003,
+      "crossing_overlap_s": 0.0,
+      "reverse_overlap_s": 26.177690516310403,
+      "occupancy_overlap_s": 26.177690516310403,
+      "makespan_s": 74.31962367091539,
+      "energy_wh": 5.763495160222142
+    },
+    "no-head-on-R4-R1-R2-R3": {
+      "free_flow_total_s": 154.77683021513752,
+      "crossings": 2,
+      "reverse_runs": 0,
+      "reverse_length_m": 0.0,
+      "crossing_overlap_s": 0.0,
+      "reverse_overlap_s": 0.0,
+      "occupancy_overlap_s": 0.0,
+      "makespan_s": 49.34645961722199,
+      "energy_wh": 5.472181822043692
+    },
+    "sweep-R4-R1-R3-R2": {
+      "free_flow_total_s": 160.19294072006244,
+      "crossings": 5,
+      "reverse_runs": 1,
+      "reverse_length_m": 15.925000000000004,
+      "crossing_overlap_s": 0.0,
+      "reverse_overlap_s": 20.666009058867832,
+      "occupancy_overlap_s": 20.666009058867832,
+      "makespan_s": 78.18253711323742,
+      "energy_wh": 6.110794859918699
+    },
+    "no-head-on-R4-R1-R3-R2": {
+      "free_flow_total_s": 157.42795865856192,
+      "crossings": 2,
+      "reverse_runs": 0,
+      "reverse_length_m": 0.0,
+      "crossing_overlap_s": 0.0,
+      "reverse_overlap_s": 0.0,
+      "occupancy_overlap_s": 0.0,
+      "makespan_s": 87.57996967723304,
+      "energy_wh": 6.326756123093568
+    },
+    "sweep-R4-R2-R1-R3": {
+      "free_flow_total_s": 157.42795865856192,
+      "crossings": 1,
+      "reverse_runs": 1,
+      "reverse_length_m": 13.725000000000001,
+      "crossing_overlap_s": 0.0,
+      "reverse_overlap_s": 19.566009058867838,
+      "occupancy_overlap_s": 19.566009058867838,
+      "makespan_s": 66.76864806495277,
+      "energy_wh": 5.814632667503082
+    },
+    "sweep-R4-R2-R3-R1": {
+      "free_flow_total_s": 160.486756459356,
+      "crossings": 4,
+      "reverse_runs": 0,
+      "reverse_length_m": 0.0,
+      "crossing_overlap_s": 0.0,
+      "reverse_overlap_s": 0.0,
+      "occupancy_overlap_s": 0.0,
+      "makespan_s": 87.08009048497466,
+      "energy_wh": 6.434874570027112
+    },
+    "sweep-R4-R3-R1-R2": {
+      "free_flow_total_s": 159.96383235181872,
+      "crossings": 2,
+      "reverse_runs": 1,
+      "reverse_length_m": 13.725000000000001,
+      "crossing_overlap_s": 0.0,
+      "reverse_overlap_s": 12.993735588256556,
+      "occupancy_overlap_s": 12.993735588256556,
+      "makespan_s": 66.17016023560558,
+      "energy_wh": 5.90981589949757
+    },
+    "no-head-on-R4-R3-R1-R2": {
+      "free_flow_total_s": 167.3790080468575,
+      "crossings": 4,
+      "reverse_runs": 0,
+      "reverse_length_m": 0.0,
+      "crossing_overlap_s": 0.0,
+      "reverse_overlap_s": 0.0,
+      "occupancy_overlap_s": 0.0,
+      "makespan_s": 77.28723400078232,
+      "energy_wh": 6.4416982927740065
+    }
+  },
+  "orders": {
+    "spatial": [
+      "no-head-on-R3-R2-R1-R4",
+      "sweep-R2-R3-R1-R4",
+      "no-head-on-R4-R1-R2-R3",
+      "sweep-R1-R4-R2-R3",
+      "no-head-on-R4-R1-R3-R2",
+      "no-head-on-R3-R4-R1-R2",
+      "no-head-on-R1-R3-R2-R4",
+      "no-head-on-R2-R1-R3-R4",
+      "no-head-on-R1-R3-R4-R2",
+      "no-head-on",
+      "sweep-R3-R2-R1-R4",
+      "no-head-on-R3-R1-R2-R4",
+      "no-head-on-R2-R4-R3-R1",
+      "right-first",
+      "no-head-on-R1-R4-R3-R2",
+      "sweep-R4-R2-R1-R3",
+      "sweep-R4-R2-R3-R1",
+      "sweep-R3-R2-R4-R1",
+      "no-head-on-R4-R3-R1-R2",
+      "sweep-R2-R4-R3-R1",
+      "fastest",
+      "sweep-R2-R3-R4-R1",
+      "sweep-aware",
+      "sweep-R2-R1-R3-R4",
+      "sweep-R1-R3-R4-R2",
+      "sweep-R4-R3-R1-R2",
+      "sweep-R4-R1-R2-R3",
+      "alternating",
+      "sweep-R1-R4-R3-R2",
+      "sweep-R4-R1-R3-R2"
+    ],
+    "spatiotemporal": [
+      "no-head-on-R3-R2-R1-R4",
+      "sweep-R2-R3-R1-R4",
+      "no-head-on-R4-R1-R2-R3",
+      "sweep-R1-R4-R2-R3",
+      "no-head-on-R4-R1-R3-R2",
+      "no-head-on-R3-R4-R1-R2",
+      "no-head-on-R1-R3-R2-R4",
+      "no-head-on-R2-R1-R3-R4",
+      "no-head-on-R1-R3-R4-R2",
+      "no-head-on",
+      "no-head-on-R3-R1-R2-R4",
+      "no-head-on-R2-R4-R3-R1",
+      "no-head-on-R1-R4-R3-R2",
+      "sweep-R4-R2-R3-R1",
+      "sweep-R3-R2-R4-R1",
+      "no-head-on-R4-R3-R1-R2",
+      "sweep-R3-R2-R1-R4",
+      "right-first",
+      "sweep-R4-R2-R1-R3",
+      "sweep-R2-R4-R3-R1",
+      "sweep-R2-R3-R4-R1",
+      "sweep-aware",
+      "sweep-R4-R3-R1-R2",
+      "alternating",
+      "sweep-R2-R1-R3-R4",
+      "fastest",
+      "sweep-R1-R3-R4-R2",
+      "sweep-R4-R1-R2-R3",
+      "sweep-R1-R4-R3-R2",
+      "sweep-R4-R1-R3-R2"
+    ]
+  },
+  "reference": {
+    "makespan_s": [
+      "no-head-on-R3-R2-R1-R4",
+      "no-head-on-R4-R1-R2-R3",
+      "sweep-R3-R2-R1-R4",
+      "sweep-R3-R2-R4-R1",
+      "no-head-on-R3-R1-R2-R4",
+      "sweep-aware",
+      "sweep-R2-R4-R3-R1",
+      "sweep-R4-R3-R1-R2",
+      "sweep-R4-R2-R1-R3",
+      "sweep-R1-R4-R3-R2",
+      "sweep-R2-R1-R3-R4",
+      "sweep-R2-R3-R4-R1",
+      "alternating",
+      "right-first",
+      "sweep-R2-R3-R1-R4",
+      "sweep-R4-R1-R2-R3",
+      "sweep-R1-R3-R4-R2",
+      "no-head-on-R3-R4-R1-R2",
+      "no-head-on-R1-R3-R4-R2",
+      "no-head-on-R4-R3-R1-R2",
+      "sweep-R4-R1-R3-R2",
+      "sweep-R1-R4-R2-R3",
+      "no-head-on-R2-R1-R3-R4",
+      "no-head-on-R1-R3-R2-R4",
+      "fastest",
+      "sweep-R4-R2-R3-R1",
+      "no-head-on-R4-R1-R3-R2",
+      "no-head-on-R2-R4-R3-R1",
+      "no-head-on",
+      "no-head-on-R1-R4-R3-R2"
+    ],
+    "energy_wh": [
+      "no-head-on-R3-R2-R1-R4",
+      "sweep-R3-R2-R1-R4",
+      "no-head-on-R4-R1-R2-R3",
+      "sweep-R3-R2-R4-R1",
+      "sweep-R4-R1-R2-R3",
+      "sweep-R2-R1-R3-R4",
+      "sweep-R2-R3-R4-R1",
+      "sweep-aware",
+      "sweep-R4-R2-R1-R3",
+      "sweep-R2-R4-R3-R1",
+      "sweep-R1-R4-R3-R2",
+      "sweep-R1-R3-R4-R2",
+      "no-head-on-R3-R1-R2-R4",
+      "sweep-R4-R3-R1-R2",
+      "right-first",
+      "sweep-R2-R3-R1-R4",
+      "alternating",
+      "no-head-on-R1-R3-R4-R2",
+      "fastest",
+      "sweep-R4-R1-R3-R2",
+      "no-head-on-R1-R3-R2-R4",
+      "sweep-R1-R4-R2-R3",
+      "no-head-on-R2-R1-R3-R4",
+      "no-head-on-R3-R4-R1-R2",
+      "no-head-on-R4-R1-R3-R2",
+      "no-head-on",
+      "sweep-R4-R2-R3-R1",
+      "no-head-on-R4-R3-R1-R2",
+      "no-head-on-R2-R4-R3-R1",
+      "no-head-on-R1-R4-R3-R2"
+    ]
+  },
+  "comparison": {
+    "spatial": {
+      "5": {
+        "candidates": [
+          "no-head-on-R3-R2-R1-R4",
+          "sweep-R2-R3-R1-R4",
+          "no-head-on-R4-R1-R2-R3",
+          "sweep-R1-R4-R2-R3",
+          "no-head-on-R4-R1-R3-R2"
+        ],
+        "top_five_retained": {
+          "makespan_s": 2,
+          "energy_wh": 2
+        },
+        "best_included": {
+          "makespan_s": true,
+          "energy_wh": true
+        },
+        "best_result": {
+          "makespan_s": 47.75535133835614,
+          "energy_wh": 5.371241433739602
+        }
+      },
+      "10": {
+        "candidates": [
+          "no-head-on-R3-R2-R1-R4",
+          "sweep-R2-R3-R1-R4",
+          "no-head-on-R4-R1-R2-R3",
+          "sweep-R1-R4-R2-R3",
+          "no-head-on-R4-R1-R3-R2",
+          "no-head-on-R3-R4-R1-R2",
+          "no-head-on-R1-R3-R2-R4",
+          "no-head-on-R2-R1-R3-R4",
+          "no-head-on-R1-R3-R4-R2",
+          "no-head-on"
+        ],
+        "top_five_retained": {
+          "makespan_s": 2,
+          "energy_wh": 2
+        },
+        "best_included": {
+          "makespan_s": true,
+          "energy_wh": true
+        },
+        "best_result": {
+          "makespan_s": 47.75535133835614,
+          "energy_wh": 5.371241433739602
+        }
+      },
+      "15": {
+        "candidates": [
+          "no-head-on-R3-R2-R1-R4",
+          "sweep-R2-R3-R1-R4",
+          "no-head-on-R4-R1-R2-R3",
+          "sweep-R1-R4-R2-R3",
+          "no-head-on-R4-R1-R3-R2",
+          "no-head-on-R3-R4-R1-R2",
+          "no-head-on-R1-R3-R2-R4",
+          "no-head-on-R2-R1-R3-R4",
+          "no-head-on-R1-R3-R4-R2",
+          "no-head-on",
+          "sweep-R3-R2-R1-R4",
+          "no-head-on-R3-R1-R2-R4",
+          "no-head-on-R2-R4-R3-R1",
+          "right-first",
+          "no-head-on-R1-R4-R3-R2"
+        ],
+        "top_five_retained": {
+          "makespan_s": 4,
+          "energy_wh": 3
+        },
+        "best_included": {
+          "makespan_s": true,
+          "energy_wh": true
+        },
+        "best_result": {
+          "makespan_s": 47.75535133835614,
+          "energy_wh": 5.371241433739602
+        }
+      }
+    },
+    "spatiotemporal": {
+      "5": {
+        "candidates": [
+          "no-head-on-R3-R2-R1-R4",
+          "sweep-R2-R3-R1-R4",
+          "no-head-on-R4-R1-R2-R3",
+          "sweep-R1-R4-R2-R3",
+          "no-head-on-R4-R1-R3-R2"
+        ],
+        "top_five_retained": {
+          "makespan_s": 2,
+          "energy_wh": 2
+        },
+        "best_included": {
+          "makespan_s": true,
+          "energy_wh": true
+        },
+        "best_result": {
+          "makespan_s": 47.75535133835614,
+          "energy_wh": 5.371241433739602
+        }
+      },
+      "10": {
+        "candidates": [
+          "no-head-on-R3-R2-R1-R4",
+          "sweep-R2-R3-R1-R4",
+          "no-head-on-R4-R1-R2-R3",
+          "sweep-R1-R4-R2-R3",
+          "no-head-on-R4-R1-R3-R2",
+          "no-head-on-R3-R4-R1-R2",
+          "no-head-on-R1-R3-R2-R4",
+          "no-head-on-R2-R1-R3-R4",
+          "no-head-on-R1-R3-R4-R2",
+          "no-head-on"
+        ],
+        "top_five_retained": {
+          "makespan_s": 2,
+          "energy_wh": 2
+        },
+        "best_included": {
+          "makespan_s": true,
+          "energy_wh": true
+        },
+        "best_result": {
+          "makespan_s": 47.75535133835614,
+          "energy_wh": 5.371241433739602
+        }
+      },
+      "15": {
+        "candidates": [
+          "no-head-on-R3-R2-R1-R4",
+          "sweep-R2-R3-R1-R4",
+          "no-head-on-R4-R1-R2-R3",
+          "sweep-R1-R4-R2-R3",
+          "no-head-on-R4-R1-R3-R2",
+          "no-head-on-R3-R4-R1-R2",
+          "no-head-on-R1-R3-R2-R4",
+          "no-head-on-R2-R1-R3-R4",
+          "no-head-on-R1-R3-R4-R2",
+          "no-head-on",
+          "no-head-on-R3-R1-R2-R4",
+          "no-head-on-R2-R4-R3-R1",
+          "no-head-on-R1-R4-R3-R2",
+          "sweep-R4-R2-R3-R1",
+          "sweep-R3-R2-R4-R1"
+        ],
+        "top_five_retained": {
+          "makespan_s": 4,
+          "energy_wh": 3
+        },
+        "best_included": {
+          "makespan_s": true,
+          "energy_wh": true
+        },
+        "best_result": {
+          "makespan_s": 47.75535133835614,
+          "energy_wh": 5.371241433739602
+        }
+      }
+    }
+  }
+}

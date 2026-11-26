@@ -5,7 +5,7 @@ handles 2D axis-aligned translation of a fixed rectangular footprint. Other
 backends can provide Region implementations without changing Sweep or TuplePath.
 """
 
-from functools import lru_cache
+from functools import cached_property, lru_cache
 from dataclasses import dataclass
 from math import isfinite
 from typing import Protocol
@@ -190,9 +190,29 @@ class Sweep:
         if self.dimension < 1 or any(r.dimension != self.dimension for r in self.regions):
             raise ValueError("Sweep region dimensions must agree.")
 
+    @cached_property
+    def rectangles_2d(self):
+        if self.dimension != 2 or not self.regions or any(type(r) is not AABB for r in self.regions):
+            return None
+        boxes = tuple((*r.lower, *r.upper) for r in self.regions)
+        return (min(b[0] for b in boxes), min(b[1] for b in boxes),
+                max(b[2] for b in boxes), max(b[3] for b in boxes)), boxes
+
     def intersects(self, other, tolerance=0.0):
         if self.dimension != other.dimension:
             raise ValueError("Sweep dimensions differ.")
+        first, second = self.rectangles_2d, other.rectangles_2d
+        if first is not None and second is not None and isfinite(tolerance) and tolerance >= 0:
+            (ax, ay, bx, by), left = first
+            (cx, cy, dx, dy), right = second
+            if ax > dx + tolerance or cx > bx + tolerance or ay > dy + tolerance or cy > by + tolerance:
+                return False
+            for ax, ay, bx, by in left:
+                for cx, cy, dx, dy in right:
+                    if (ax <= dx + tolerance and cx <= bx + tolerance
+                            and ay <= dy + tolerance and cy <= by + tolerance):
+                        return True
+            return False
         return any(a.intersects(b, tolerance) for a in self.regions for b in other.regions)
 
 

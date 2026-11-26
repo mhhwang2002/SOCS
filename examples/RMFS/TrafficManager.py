@@ -2,10 +2,12 @@
 
 from collections import deque
 from copy import deepcopy
+from itertools import chain
 from math import atan2, degrees, radians, cos, sin, dist
 
 from .path_geometry import (GeometryPolicy, RectangularFootprint, Subpath, PathPosition,
                             TuplePath, sweep_2d, include_path_points)
+from .sweep_backend import SweepBackend
 
 
 class TrafficManager:
@@ -32,6 +34,7 @@ class TrafficManager:
         self.footprints = {name:(footprints or {}).get(name,RectangularFootprint())
                            for name in tuple_path.object_names}
         self.policy = GeometryPolicy()
+        self.sweep_backend = SweepBackend()
         self._build_tasks()
         self.reset(0.0)
 
@@ -173,35 +176,37 @@ class TrafficManager:
                         self.footprints[name],self.policy)
 
     def _can_start(self, index):
-        stage,name,part = self.tasks[index]
+        stage,name,_ = self.tasks[index]
         candidate = self.task_sweeps[index]
         # Preserve the reference plan's order for potentially interfering
         # tasks. Earlier active tasks may release their passed prefix; future
         # earlier tasks retain their full reservation until actually passed.
-        for other_index,(other_stage,other,other_part) in enumerate(self.tasks):
-            if (self.flexible_crossing or other == name or other_stage >= stage
-                    or other_index in self.finished_tasks):
-                continue
-            if not self.event_release:
+        earlier = (() if self.flexible_crossing else
+                   ((other_index, other, part)
+                    for other_index, (other_stage, other, part) in enumerate(self.tasks)
+                    if other != name and other_stage < stage and other_index not in self.finished_tasks))
+        if not self.event_release:
+            if any(earlier):
                 return False  # original stage barrier, independent of command grouping
-            occupied = (self._remaining_sweep(other,other_part)
-                        if other_index in self.issued_tasks else self.task_sweeps[other_index])
-            if candidate.intersects(occupied,self.policy.tolerance):
-                return False
+            earlier = ()
+        reservations = (self._remaining_sweep(other, part)
+                        if other_index in self.issued_tasks else self.task_sweeps[other_index]
+                        for other_index, other, part in earlier)
+        return not self.sweep_backend.intersects_any(
+            candidate, chain(reservations, self._occupied_sweeps(name)), self.policy.tolerance)
+
+    def _occupied_sweeps(self, name):
         # Physical occupancy includes idle objects and final parked bodies.
         # Later active tasks are also checked; approval never teleports them.
         for other,record in self.roadmap.robots.items():
             if other == name:
                 continue
             if other in self.active_tasks:
-                occupied = self._remaining_sweep(other,record["approved_path"])
+                yield self._remaining_sweep(other,record["approved_path"])
             else:
                 progress = record["released_progress"]
-                occupied = sweep_2d(Subpath(self.roadmap.paths[other],progress,progress),
-                                    self.footprints[other],self.policy)
-            if candidate.intersects(occupied,self.policy.tolerance):
-                return False
-        return True
+                yield sweep_2d(Subpath(self.roadmap.paths[other],progress,progress),
+                               self.footprints[other],self.policy)
 
     def _released_extension(self, name, first):
         """A collinear extension authorized by present clearance, never prediction."""
@@ -240,9 +245,9 @@ class TrafficManager:
         if self.allow_crossing_stops:
             # _can_start has already checked occupancy and required precedence.
             return True
-        return all(other == name or not point.intersects(
-                    sweep_2d(self.roadmap.remaining_subpath(other),self.footprints[other],self.policy),
-                    self.policy.tolerance) for other in self.roadmap.paths)
+        remaining = (sweep_2d(self.roadmap.remaining_subpath(other), self.footprints[other], self.policy)
+                     for other in self.roadmap.paths if other != name)
+        return not self.sweep_backend.intersects_any(point, remaining, self.policy.tolerance)
 
     def passage_request(self, name, stop, time):
         approved = self.roadmap.robots[name]['approved_path']

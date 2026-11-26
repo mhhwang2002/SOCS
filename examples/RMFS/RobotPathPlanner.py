@@ -36,6 +36,23 @@ def _overlap_length(bounds, regions, padding):
     return length
 
 
+def _sweep_intervals(regions, axis, across, padding):
+    """Merge one sweep's projected occupancy along a fixed roadmap line."""
+    cross_axis = 1 - axis
+    intervals = sorted((region.lower[axis] - padding[axis], region.upper[axis] + padding[axis])
+                       for region in regions
+                       if region.lower[cross_axis] - padding[cross_axis] <= across
+                       <= region.upper[cross_axis] + padding[cross_axis])
+    merged = []
+    for start, end in intervals:
+        if merged and start <= merged[-1][1]:
+            if end > merged[-1][1]:
+                merged[-1] = (merged[-1][0], end)
+        else:
+            merged.append((start, end))
+    return merged
+
+
 class RobotPathPlanner:
     def __init__(self, roadmap, graph):
         self.roadmap = roadmap  # The exact same blackboard used by TrafficManager.
@@ -91,6 +108,7 @@ class RobotPathPlanner:
         mode = "loaded" if loaded else "empty"
         limits = self.graph["profiles"][mode]
         padding = (hx + margin + tolerance, hy + margin + tolerance)
+        sweep_lines = {}
         initial = (self.by_position[start], self.roadmap.robots[robot].get("heading_deg"))
         target = self.by_position[goal]
         costs, previous = {initial: 0.0}, {}
@@ -116,8 +134,15 @@ class RobotPathPlanner:
                 if not safe(bounds):
                     continue
                 if bounds not in traffic_costs:
+                    axis = 0 if bounds[0] != bounds[1] else 1
+                    low, high = bounds[2 * axis:2 * axis + 2]
+                    line = axis, bounds[2 * (1 - axis)]
+                    if line not in sweep_lines:
+                        sweep_lines[line] = [interval for regions in traffic_sweeps
+                                             for interval in _sweep_intervals(regions, *line, padding)]
                     traffic_costs[bounds] = sum(
-                        _overlap_length(bounds, regions, padding) for regions in traffic_sweeps
+                        max(0., min(high, end) - max(low, start))
+                        for start, end in sweep_lines[line]
                     ) / limits["speed"]
                 direction = edge["entry_heading_deg"]
                 turn = 0 if heading is None else abs((direction-heading+180) % 360-180)

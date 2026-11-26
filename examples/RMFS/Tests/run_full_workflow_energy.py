@@ -25,7 +25,14 @@ def run(robot_count, order_count, seed, config, *, lookahead_depth=0, lookahead_
         if completed >= reported + 10:
             print(f'Returned {completed}/{order_count} racks at {engine.tNow:.3f} s', flush=True)
             reported = completed
+    return summarize_run(engine, collector, order_count, config)
+
+
+def summarize_run(engine, collector, order_count, config):
+    model = engine.model
+    controller = model.controller
     if (controller.completed_orders != order_count
+            or model.collision_history
             or any(status != 'home' for status in controller.robot_status.values())):
         raise RuntimeError('Warehouse run ended with unfinished work.')
     totals = [0., 0.]
