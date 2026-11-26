@@ -77,3 +77,8 @@ The current scope is moving objects that advance in order along given fixed path
 4. Study efficiency and optimality after establishing correctness and eventual completion. **TargetDate: Ongoing (from 2026-11-20)**
 
 See [DoneListTheory_en.md](DoneListTheory_en.md) for completed work and its scope.
+
+## Deferred research — Deadlock analysis
+
+- Define deadlock as indefinite stopping before the destination and identify when the existing warehouse route registration, approval precedence, and resource reservations prevent it.
+- Seek local conditions for deadlock freedom in route generation and fixed-path control. Check the conditions against counterexamples before considering fleet-wide search.

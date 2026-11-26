@@ -1,7 +1,9 @@
 """Geometry identities, independent reachability oracle and existing Frogy cases."""
 
 from dataclasses import replace
+from importlib import import_module
 from itertools import combinations, product
+from math import isfinite
 
 import pytest
 
@@ -9,7 +11,50 @@ from examples.RMFS.path_geometry import (
     AABB, GeometryPolicy, InterferenceSet, Path, PathPosition, ProgressInterval,
     RectangularFootprint, Subpath, Sweep, interference_2d, sweep_2d,
 )
-from examples.RMFS.wait_duplication import WaitDuplicationSolver
+from examples.RMFS.wait_duplication import WaitDuplicationSolver, completion_after_approval
+from socs.devs.TESEngin import TESEnginBase
+
+
+def test_deadlock_avoiding_manager_executes_fixed_paths():
+    example = import_module("examples.RMFS.Tests.02_12_RobotPath_ControlledAlternating")
+    model, robots, _ = example.create_model(deadlock_avoidance=True)
+    manager = model.controller.traffic_manager
+    engine = TESEnginBase(model, TimeIntervalAnimation=.1)
+    engine.bVerbose = False
+    snapshot = engine.capture_snapshot()
+    assert manager.completion_witness
+    for _ in range(3000):
+        if not isfinite(model.tNext):
+            break
+        engine.execute_one_step()
+    else:
+        pytest.fail("Deadlock-avoiding control did not finish.")
+    assert manager.done
+    assert not model.collision_history
+    for robot in robots:
+        goal = manager.roadmap.paths[robot.name].vertices[-1]
+        assert robot._variable.current_position == goal
+    engine.restore_snapshot(snapshot)
+    assert manager.completion_witness and not manager.done
+
+
+def test_crossing_approval_keeps_completion_available():
+    red = Path("R", ((-4, 0), (-2, 0), (0, 0), (2, 0)))
+    blue = Path("B", ((0, -4), (0, -2), (0, 0), (0, 2)))
+    red_through = Subpath(red, PathPosition(0), PathPosition(3))
+    blue_through = Subpath(blue, PathPosition(0), PathPosition(3))
+    assert completion_after_approval({"R": red_through, "B": blue.point(0)}).status == "feasible"
+    assert completion_after_approval({"R": red_through, "B": blue_through}).status == "infeasible"
+
+
+def test_disjoint_corridor_entry_can_remove_completion():
+    red = Path("R", ((0, 2), (0, 0), (2, 0), (4, 0), (6, 0), (6, 2)))
+    blue = Path("B", ((6, -2), (6, 0), (4, 0), (2, 0), (0, 0), (0, -2)))
+    red_entry = Subpath(red, PathPosition(0), PathPosition(1))
+    blue_entry = Subpath(blue, PathPosition(0), PathPosition(1))
+    assert not sweep_2d(red_entry).intersects(sweep_2d(blue_entry))
+    assert completion_after_approval({"R": red_entry, "B": blue.point(0)}).status == "feasible"
+    assert completion_after_approval({"R": red_entry, "B": blue_entry}).status == "infeasible"
 
 
 def test_nd_paths_and_position_normalization():

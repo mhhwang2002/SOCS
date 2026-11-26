@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from itertools import combinations
 from time import perf_counter
 
-from .path_geometry import (GeometryPolicy, PathPosition, RectangularFootprint,
+from .path_geometry import (GeometryPolicy, Path, PathPosition, RectangularFootprint,
                             Subpath, TuplePath, sweep_2d)
 
 
@@ -22,6 +22,35 @@ class SearchResult:
     checked_transitions: int
     elapsed_seconds: float
     reason: str | None = None
+
+
+def completion_after_approval(approvals, footprints=None, *, policy=GeometryPolicy()):
+    """Check a tentative batch of remaining approvals on fixed paths.
+
+    Pass one Subpath per robot, including a point subpath for each waiting
+    robot. A feasible result witnesses completion after all approved robots
+    reach their endpoints. The caller must preserve the witness or recheck
+    later approvals before issuing them.
+    """
+    shapes = footprints or {}
+    reserved = {
+        name: sweep_2d(part, shapes.get(name, RectangularFootprint()), policy)
+        for name, part in approvals.items()
+    }
+    if any(a.intersects(b, policy.tolerance) for a, b in combinations(reserved.values(), 2)):
+        return SearchResult("infeasible", None, (), 0, 0, 0.,
+                            "Tentative remaining approvals intersect.")
+
+    # Treat each approved endpoint as the start of its robot's residual path.
+    residual = {
+        name: Path(name, (part.path.at(part.end), *part.path.vertices[part.end.segment + 1:]))
+        for name, part in approvals.items()
+    }
+    solver = WaitDuplicationSolver(residual, shapes, policy=policy)
+    result = solver.solve()
+    if result.status == "feasible":
+        solver.validate(result)
+    return result
 
 
 class WaitDuplicationSolver:

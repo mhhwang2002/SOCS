@@ -88,8 +88,13 @@ def test_clearance_only_example_starts_all_three_and_completes():
         pytest.fail('Fleet did not complete.')
     assert all('!motion_status' not in robot.OP for robot in robots)
     assert not any('motion_status' in port for port in model.controller.IP)
-    stops = [e for e in road.history if e['event']=='arrived' and e['robot']=='R2']
-    assert stops[0]['position'] == (4.,4.)
+    r2_stops = [e['position'] for e in road.history
+                if e['event']=='arrived' and e['robot']=='R2']
+    assert r2_stops == [(10.,4.)]
+    r1_arrival = next(e for e in road.history if e['event']=='arrived' and e['robot']=='R1')
+    r2_extension = next(e for e in road.history
+                        if e['event']=='extension_reserved' and e['robot']=='R2')
+    assert r2_extension['time'] == pytest.approx(r1_arrival['time'])
     for name,expected in [('R3',[.75,1.75,4.75,7.75]),('R2',[.75,4.75,6.75,8.75])]:
         axis = 1 if name=='R3' else 0
         positions = [e['position'][axis] for e in road.history if e['event']=='released' and e['robot']==name]

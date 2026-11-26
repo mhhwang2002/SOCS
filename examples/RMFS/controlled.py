@@ -4,6 +4,7 @@ from .GridPath import CONTROL_POINTS
 from .MRobot import MRobot
 from .PSensor import PSensor
 from .RMFSController import RMFSController
+from .TrafficManager import TrafficManager
 from .model import RMFS
 from .path_geometry import Path, RectangularFootprint, TuplePath
 from .wait_duplication import WaitDuplicationSolver
@@ -15,7 +16,8 @@ def create_controlled_model(robot_paths, *, name="RMFS_WaitDuplication", lift_up
                             grid=None, allow_no_plan=False, plan_builder=None,
                             merge_sweeps=False, event_release=False,
                             safe_prefix=False, motion_extension=True, passage_push=False,
-                            flexible_crossing=False, crossing_policy='fifo', motion_limits=None):
+                            flexible_crossing=False, crossing_policy='fifo', motion_limits=None,
+                            traffic_manager_type=TrafficManager):
     points_map = CONTROL_POINTS if grid is None else grid["control_points"]
     paths = {name: Path(name, tuple(points_map[p] for p in points))
              for name, points in robot_paths.items()}
@@ -46,7 +48,8 @@ def create_controlled_model(robot_paths, *, name="RMFS_WaitDuplication", lift_up
                                 safe_prefix=safe_prefix,motion_extension=motion_extension,
                                 flexible_crossing=flexible_crossing, crossing_policy=crossing_policy,
                                 footprints={name:shape for name in paths},
-                                command_blocks=model.merge_blocks, initial_headings=initial_headings)
+                                command_blocks=model.merge_blocks, initial_headings=initial_headings,
+                                traffic_manager_type=traffic_manager_type)
     model.controller = controller
     model.plan_result = result
     robots = tuple(MRobot(name, route[0], lift_up=lift_up, rack_size=rack_size,

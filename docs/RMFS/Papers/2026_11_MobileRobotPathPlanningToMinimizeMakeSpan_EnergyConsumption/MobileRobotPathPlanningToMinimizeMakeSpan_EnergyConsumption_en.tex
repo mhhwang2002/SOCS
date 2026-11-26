@@ -1,0 +1,197 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs,longtable,array}
+\usepackage[hidelinks]{hyperref}
+
+\title{Mobile Robot Path Planning to Minimize Makespan and Energy Consumption}
+\author{}
+\date{November 2026}
+
+\begin{document}
+\maketitle
+
+\section{Related Work}
+
+Shortest-path studies differ in what a path cost represents. A length-based
+search minimizes travel distance on the graph. A kinematic search can instead
+minimize travel time by accounting for heading, speed, and acceleration.
+Congestion-weighted search estimates the desirability of a route under traffic.
+Time-indexed planning represents when a robot can traverse a segment or occupy
+a vertex. These formulations answer different questions even when they use
+the same roadmap.
+
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.16\linewidth}
+                    >{\raggedright\arraybackslash}p{.30\linewidth}
+                    >{\raggedright\arraybackslash}p{.25\linewidth}
+                    >{\raggedright\arraybackslash}p{.23\linewidth}@{}}
+\caption{Path search, representation of travel time and traffic, and contributions.}
+\label{tab:related-work}\\
+\toprule
+Study & Path search and cost & Representation of time or traffic & Contribution and scope \\
+\midrule
+\endfirsthead
+\toprule
+Study & Path search and cost & Representation of time or traffic & Contribution and scope \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+Seifert et al.\ \cite{seifert1995} &
+Runs a separate discrete-event subsimulation for each promising route.
+Selects the route with the shortest simulated travel time. &
+Starts each run from the current AGV system state and simulates
+until the requesting AGV reaches its destination. &
+Uses simulation lookahead directly in the routing decision.
+A travel-time lower bound can eliminate further trials. \\ \addlinespace
+Klaas et al.\ \cite{klaas2011} &
+Computes incremental shortest paths and selects a rerouting rule
+when a conflict is predicted. &
+Offline discrete-event lookahead evaluates alternative rules
+and supplies training examples for a knowledge base. &
+Uses the learned knowledge base online to account for longer-term
+effects of local routing decisions. \\ \addlinespace
+Ma et al.\ \cite{ma2019} &
+Priority-Based Search branches on partial priority orders. Individual routes
+are planned subject to the paths of higher-priority agents. &
+Conflicts in planned trajectories determine which priority constraints are added. &
+Shows how to search over priority orders in discrete MAPF. The search has
+limitations on completeness and optimality. \\ \addlinespace
+Andreychuk et al.\ \cite{andreychuk2019} &
+Continuous-time Conflict-Based Search replans individual minimum-duration
+paths with Safe Interval Path Planning (SIPP). &
+Unsafe intervals derived from continuous-time conflicts constrain actions. &
+Optimizes the sum of action durations under its motion model. The experiments
+use constant-speed translation and omit turn dynamics. \\ \addlinespace
+Li et al.\ \cite{li2021} &
+Rolling-Horizon Collision Resolution repeatedly solves a windowed MAPF problem. &
+Conflict resolution is limited to a finite planning horizon as new goals arrive. &
+Demonstrates scalable lifelong planning in warehouses. System performance is
+evaluated by throughput. \\ \addlinespace
+Ali and Yakovlev \cite{ali2021} &
+Prioritized SIPP searches with discretized motion states that include
+heading and speed. &
+Acceleration and deceleration constrain arrival times. Safe intervals
+represent the trajectories of higher-priority robots. &
+Demonstrates planning with kinematic constraints. Energy is outside the
+route objective. \\ \addlinespace
+Lou et al.\ \cite{lou2023} &
+Dijkstra generates initial routes and Yen's algorithm generates alternatives
+for conflict resolution. &
+Predicted node visit times support conflict checks in a digital-twin system. &
+Combines AGV task scheduling and alternative routing. Provides a precedent
+for using a digital twin in route selection. \\ \addlinespace
+Chen et al.\ \cite{chen2024} &
+Graph search creates guide paths with costs for opposing flows and
+congestion. A coordination policy executes movements. &
+Flow counts from guide paths serve as congestion indicators. &
+Improves lifelong MAPF throughput. Its congestion costs do not directly
+produce arrival times. \\ \addlinespace
+Zang et al.\ \cite{zang2025} &
+A learned model updates guidance-graph weights. The planner uses these
+weights to guide movement and route search. &
+Recent traffic or guide-path usage informs the weight updates. &
+Uses learning to adapt routing costs and improve throughput. The model
+outputs guidance weights rather than robot arrival times. \\ \addlinespace
+Combrink et al.\ \cite{combrink2025} &
+Combines continuous-time search with asynchronous prioritized planning
+for lifelong operation. &
+Plans timed trajectories for volumetric agents under a planning budget. &
+Extends continuous-time coordination to repeated tasks and evaluates
+throughput. Energy is outside the route objective. \\ \addlinespace
+Meissner and Massalski \cite{meissner2020} &
+Develops and experimentally evaluates a model of AGV energy consumption. &
+Vehicle operating inputs determine the energy estimate. &
+Provides a basis for energy evaluation of candidate routes. The study
+does not solve the multi-robot routing problem. \\ \addlinespace
+Thalaivar et al.\ \cite{thalaivar2026} &
+Compares A*, particle swarm optimization, and gravitational search in an
+AGV scheduling framework. &
+Uses a unit-speed travel-time proxy. Inter-AGV collision avoidance is
+outside the planner. &
+Compares makespan, energy, and distance. Also studies multi-objective
+task assignment with NSGA-II. \\
+\end{longtable}
+\normalsize
+
+\paragraph{Implications for route generation.}
+For initial dispatch without a rack and for dispatch immediately after rack
+drop-off, a free-flow planner can use an unloaded motion model to score
+straight runs and heading changes. The predicted travel time should preserve
+speed across consecutive collinear arcs when motion is uninterrupted.
+Residual swept paths can inform the generation of candidates with less
+potential interference. A digital-twin lookahead can then evaluate each set of
+candidate routes from the same fleet state and under the same traffic-control
+policy. The resulting makespan and fleet energy should be reported separately.
+This comparison distinguishes the single-robot free-flow travel time used
+during search from the fleet outcomes that emerge during execution.
+
+\begin{thebibliography}{99}
+\bibitem{seifert1995}
+R. W. Seifert, M. G. Kay, and J. R. Wilson.
+Evaluation of AGV Routing Strategies Using Hierarchical Simulation.
+\emph{Winter Simulation Conference}, 1995.
+\href{https://informs-sim.org/wsc95papers/1995_0129.pdf}{Paper}.
+
+\bibitem{klaas2011}
+A. Klaas, C. Laroque, M. Fischer, and W. Dangelmaier.
+Simulation Aided, Knowledge Based Routing for AGVs in a Distribution Warehouse.
+\emph{Winter Simulation Conference}, 2011.
+\href{https://www.informs-sim.org/wsc11papers/149.pdf}{Paper}.
+
+\bibitem{ma2019}
+H. Ma et al. Searching with Consistent Prioritization for Multi-Agent
+Path Finding. \emph{AAAI}, 2019.
+\href{https://arxiv.org/abs/1812.06356}{Paper}.
+
+\bibitem{andreychuk2019}
+A. Andreychuk, K. Yakovlev, D. Atzmon, and R. Stern.
+Multi-Agent Pathfinding with Continuous Time. \emph{IJCAI}, 2019.
+\href{https://www.ijcai.org/proceedings/2019/6}{Paper}.
+
+\bibitem{li2021}
+J. Li et al. Lifelong Multi-Agent Path Finding in Large-Scale Warehouses.
+\emph{AAAI}, 2021.
+\href{https://arxiv.org/abs/2005.07371}{Paper}.
+
+\bibitem{ali2021}
+Z. A. Ali and K. Yakovlev. Prioritized Multi-Agent Path Finding for
+Differential Drive Robots. \emph{ICR}, 2021.
+\href{https://arxiv.org/abs/2108.05145}{Paper}.
+
+\bibitem{lou2023}
+P. Lou et al. Digital-Twin-Driven AGV Scheduling and Routing in Automated
+Container Terminals. \emph{Mathematics}, vol. 11, no. 12, article 2678, 2023.
+\href{https://doi.org/10.3390/math11122678}{Paper}.
+
+\bibitem{chen2024}
+Z. Chen, D. Harabor, J. Li, and P. J. Stuckey. Traffic Flow Optimisation
+for Lifelong Multi-Agent Path Finding. \emph{AAAI}, 2024.
+\href{https://ojs.aaai.org/index.php/AAAI/article/view/30054}{Paper}.
+
+\bibitem{zang2025}
+H. Zang et al. Online Guidance Graph Optimization for Lifelong Multi-Agent
+Path Finding. \emph{AAAI}, 2025.
+\href{https://ojs.aaai.org/index.php/AAAI/article/view/33614}{Paper}.
+
+\bibitem{combrink2025}
+A. Combrink, S. F. Roselli, and M. Fabian. Prioritized Planning for
+Continuous-time Lifelong Multi-agent Pathfinding. 2025.
+\href{https://arxiv.org/abs/2503.13175}{Paper}.
+
+\bibitem{meissner2020}
+M. Mei{\ss}ner and L. Massalski. Modeling the Electrical Power and Energy
+Consumption of Automated Guided Vehicles to Improve the Energy Efficiency of
+Production Systems. \emph{International Journal of Advanced Manufacturing
+Technology}, vol. 110, pp. 481--498, 2020.
+\href{https://doi.org/10.1007/s00170-020-05796-8}{Paper}.
+
+\bibitem{thalaivar2026}
+P. C. Thalaivar et al. Multi-Objective AGV Task Allocation and Path Planning:
+Evaluation of Deterministic and Metaheuristic Algorithms. \emph{Automation},
+vol. 7, no. 6, article 191, 2026.
+\href{https://www.mdpi.com/2673-4052/7/6/191}{Paper}.
+\end{thebibliography}
+
+\end{document}

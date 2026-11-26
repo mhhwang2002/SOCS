@@ -165,6 +165,7 @@ class RMFSController(DEVSph):
         paths = {name: Path(name, (record["reported_position"],))
                  for name, record in self.roadmap.robots.items()}
         selected = []
+        traffic_routes = []
         # FIFO orders, robot ID tie order, seeded random rack choice.
         for name in self.initial_paths:
             if not self.pending_orders:
@@ -179,7 +180,8 @@ class RMFSController(DEVSph):
                 assignment = dict(order=self.pending_orders[0], rack=rack,
                                   rack_position=tuple(self.rack_positions[rack]))
                 try:
-                    route = self.path_planner.plan(name, assignment, blocked_positions=blocked)
+                    route = self.path_planner.plan(name, assignment, blocked_positions=blocked,
+                                                   traffic_routes=traffic_routes)
                 except ValueError:
                     continue
                 self.pending_orders.popleft()
@@ -189,6 +191,8 @@ class RMFSController(DEVSph):
                 paths[name] = Path(name, route)
                 if len(route) > 1:
                     selected.append(name)
+                    traffic_routes.append(Subpath(paths[name], PathPosition(0),
+                                                  PathPosition(len(route) - 1)))
                 self.order_history.append(dict(event="assigned", time=self.tNow,
                                                robot=name, **assignment))
                 break
@@ -227,20 +231,19 @@ class RMFSController(DEVSph):
                    for other in self.roadmap.paths if other != name)
 
     def _plan_leg(self, name, goal, *, loaded):
-        if self.departure_policy == 'advance':
-            # Geometry first; TrafficManager grants only the safe prefix.
-            try:
-                return self.path_planner.plan(name, {'goal_position': goal}, loaded=loaded)
-            except ValueError:
+        blocked = []
+        if self.departure_policy == 'destination-clear':
+            if not self._target_clear(name, goal):
                 return None
-        if not self._target_clear(name, goal):
-            return None
-        blocked = [record["reported_position"] for other, record in self.roadmap.robots.items()
-                   if other != name]
-        blocked += [path.vertices[-1] for other, path in self.roadmap.paths.items() if other != name]
+            blocked = [record["reported_position"] for other, record in self.roadmap.robots.items()
+                       if other != name]
+            blocked += [path.vertices[-1] for other, path in self.roadmap.paths.items() if other != name]
+        traffic_routes = (self.roadmap.remaining_subpath(other)
+                          for other in self.roadmap.paths if other != name)
         try:
             return self.path_planner.plan(name, {"goal_position": goal},
-                                          blocked_positions=blocked, loaded=loaded)
+                                          blocked_positions=blocked, loaded=loaded,
+                                          traffic_routes=traffic_routes)
         except ValueError:
             return None
 

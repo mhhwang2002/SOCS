@@ -186,6 +186,8 @@ def main(path=PATH, *, name="01_01_RobotPath_Straight", no_rack=False,
                                help='skip sweep geometry rendering; keep traffic control unchanged')
     sweep_options.add_argument('--show-sweeps', dest='hide_sweeps', action='store_false')
     parser.set_defaults(hide_sweeps=False)
+    parser.add_argument('--show-approved-sweeps', action='store_true',
+                        help='highlight the unreleased portion of approved movements')
     parser.add_argument('--fps',type=int,default=render_fps,help='viewer frames per second (independent of DEVS time)')
     parser.add_argument('--model-style', choices=('wire', 'surface'), default='wire',
                         help='rack/chassis drawing style; eyes remain solid (V toggles)')
@@ -233,13 +235,13 @@ def main(path=PATH, *, name="01_01_RobotPath_Straight", no_rack=False,
         TransparencyAttrib,
     )
 
-    def draw_sweep(parent, points, rack_size, color):
+    def draw_sweep(parent, points, rack_size, color, *, height=.022, opacity=.23):
         data = GeomVertexData("path sweep", GeomVertexFormat.getV3(), Geom.UHStatic)
         writer = GeomVertexWriter(data,"vertex")
         triangles = GeomTriangles(Geom.UHStatic)
         for index,(left,bottom,right,top) in enumerate(path_sweep_rectangles(points,rack_size)):
             for x,y in ((left,bottom),(right,bottom),(right,top),(left,top)):
-                writer.addData3(x,y,.022)
+                writer.addData3(x,y,height)
             first = index*4
             triangles.addVertices(first,first+1,first+2)
             triangles.addVertices(first,first+2,first+3)
@@ -248,7 +250,7 @@ def main(path=PATH, *, name="01_01_RobotPath_Straight", no_rack=False,
         node = GeomNode("path sweep")
         node.addGeom(geom)
         result = parent.attachNewNode(node)
-        result.setColor(*color[:3],.23)
+        result.setColor(*color[:3],opacity)
         result.setTransparency(TransparencyAttrib.MAlpha)
         result.setDepthWrite(False)
         result.setTwoSided(True)
@@ -491,6 +493,9 @@ def main(path=PATH, *, name="01_01_RobotPath_Straight", no_rack=False,
             self.show_sweeps = not args.hide_sweeps
             self.route_lines = {}
             self.sweep_progress = {}
+            self.show_approved_sweeps = args.show_approved_sweeps
+            self.approved_sweeps = {}
+            self.approved_progress = {}
             self.route_colors = dict(zip(self.routes,route_colors))
             robots_by_name = {robot.name: robot for robot in self.robots}
             for index,(robot_name,route_path) in enumerate(self.routes.items()):
@@ -560,6 +565,7 @@ def main(path=PATH, *, name="01_01_RobotPath_Straight", no_rack=False,
             self.accept("i",self.camera_view,["iso"])
             self.accept("h",self.toggle_info)
             self.accept("s",self.toggle_sweeps)
+            self.accept("g", self.toggle_approved_sweeps)
             self.accept("+",self.zoom,[1.15])
             self.accept("=",self.zoom,[1.15])
             self.accept("-",self.zoom,[1/1.15])
@@ -622,6 +628,45 @@ def main(path=PATH, *, name="01_01_RobotPath_Straight", no_rack=False,
                     self.sweeps[robot.name] = draw_sweep(
                         self.render, coordinates, robot.rack_size, self.route_colors[robot.name])
             self.draw(self.display_time)
+
+        def toggle_approved_sweeps(self):
+            self.show_approved_sweeps = not self.show_approved_sweeps
+            if not self.show_approved_sweeps:
+                for node in self.approved_sweeps.values():
+                    node.removeNode()
+                self.approved_sweeps.clear()
+                self.approved_progress.clear()
+            self.draw(self.display_time)
+
+        def draw_approved_sweep(self, roadmap, name):
+            record = roadmap.robots[name]
+            approved = record["approved_path"]
+            progress = record["released_progress"]
+            state = (approved, progress)
+            if self.approved_progress.get(name) == state:
+                return
+            self.approved_progress[name] = state
+            old = self.approved_sweeps.pop(name, None)
+            if old is not None:
+                old.removeNode()
+            if approved is None or progress >= approved.end:
+                return
+            points = roadmap.remaining_subpath(name, approved.end).coordinates()
+            footprint = roadmap.footprints[name]
+            margin = 2 * roadmap.policy.safety_margin
+            color = self.route_colors[name]
+            node = draw_sweep(
+                self.render, points, (footprint.width + margin, footprint.depth + margin),
+                color, height=.028)
+            x, y = points[-1]
+            marker = LineSegs()
+            marker.setThickness(2.5)
+            marker.setColor(*color[:3], 1)
+            marker.moveTo(x, y + .18, .055)
+            for dx, dy in ((.18, 0), (0, -.18), (-.18, 0), (0, .18)):
+                marker.drawTo(x + dx, y + dy, .055)
+            node.attachNewNode(marker.create()).setColorOff()
+            self.approved_sweeps[name] = node
 
         def toggle_info(self):
             if self.status.isHidden():
@@ -703,6 +748,8 @@ def main(path=PATH, *, name="01_01_RobotPath_Straight", no_rack=False,
             if roadmap is not None:
                 for robot in self.robots:
                     name = robot.name
+                    if self.show_approved_sweeps:
+                        self.draw_approved_sweep(roadmap, name)
                     progress = (roadmap.paths[name], roadmap.robots[name]["released_progress"])
                     if self.sweep_progress.get(name) == progress:
                         continue
@@ -820,7 +867,8 @@ def main(path=PATH, *, name="01_01_RobotPath_Straight", no_rack=False,
                 "T = Top | I = Iso | Esc = Close\n"
                 "H = Info | +/- = Zoom | Arrows = Pan\n"
                 + passage
-                + ("S = Sweeps ON (toggle)\n" if self.show_sweeps else "S = Sweeps OFF (toggle)\n")
+                + f"S = Remaining sweeps [{'ON' if self.show_sweeps else 'OFF'}] | "
+                + f"G = Approved sweeps [{'ON' if self.show_approved_sweeps else 'OFF'}]\n"
                 + f"t = {time:.4f} s | Speed {speed}{done} | Rack {'OFF' if args.no_rack else 'ON'}\n"
                 + "\n".join(robot_lines) + "\n"
                 + f"Collision check {'ON' if args.collision_check else 'OFF'} | "

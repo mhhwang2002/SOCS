@@ -80,3 +80,8 @@ Preserve existing runnable examples and experimental results. Discuss substantia
 - Compare planned versus realized arrival times, computation cost, and fleet makespan across repeated tasks and reproducible scenarios. Establish a new-path baseline before claiming improvements from lookahead or optimized control. **TargetDate: 2026-12-07**
 
 See [DoneListImplementation_en.md](DoneListImplementation_en.md) for completed implementation and validation scope.
+
+## Deferred research — Deadlock avoidance
+
+- Evaluate low-cost deadlock-avoidance rules for route admission and approval extensions. Start with opposite-direction single aisles and waits for the next order leg.
+- Evaluate the optional completion-plan search on cases where local rules are insufficient. Measure its computation cost before considering warehouse deployment.

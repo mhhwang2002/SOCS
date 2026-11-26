@@ -11,7 +11,8 @@ from .path_geometry import (GeometryPolicy, RectangularFootprint, Subpath, PathP
 class TrafficManager:
     def __init__(self, roadmap, tuple_path, *, event_release=False, footprints=None,
                  command_blocks=None, preorient=False, safe_prefix=False, motion_extension=True,
-                 flexible_crossing=False, crossing_policy='fifo'):
+                 flexible_crossing=False, crossing_policy='fifo', allow_crossing_stops=False,
+                 extend_after_turn=False):
         self.roadmap = roadmap
         self.tuple_path = tuple_path
         if tuple(roadmap.paths) != tuple_path.object_names:
@@ -21,6 +22,8 @@ class TrafficManager:
         self.preorient = preorient
         self.safe_prefix = safe_prefix
         self.motion_extension = motion_extension
+        self.extend_after_turn = extend_after_turn
+        self.allow_crossing_stops = allow_crossing_stops
         self.flexible_crossing = flexible_crossing
         if crossing_policy not in ('fifo', 'lp') or (crossing_policy == 'lp' and not flexible_crossing):
             raise ValueError('LP is available for the validated flexible crossing experiment only.')
@@ -216,8 +219,8 @@ class TrafficManager:
                 if not length or any(abs((y-x)/length-d)>1e-8 for x,y,d in zip(a,b,direction)):
                     return False
             return True
-        if not straight(points):
-            return None  # Commands containing turns retain their planned stops.
+        if not self.extend_after_turn and not straight(points):
+            return None
         end,indices = approved.end,[]
         for index in range(first,len(self.tasks)):
             _,owner,part = self.tasks[index]
@@ -234,6 +237,9 @@ class TrafficManager:
         return None
 
     def _extension_endpoint_clear(self, name, point):
+        if self.allow_crossing_stops:
+            # _can_start has already checked occupancy and required precedence.
+            return True
         return all(other == name or not point.intersects(
                     sweep_2d(self.roadmap.remaining_subpath(other),self.footprints[other],self.policy),
                     self.policy.tolerance) for other in self.roadmap.paths)

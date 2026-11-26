@@ -10,14 +10,21 @@ def _key(value):
     return tuple(map(_key, value)) if isinstance(value, list) else value
 
 
+def _bounds(a, b):
+    return min(a[0], b[0]), max(a[0], b[0]), min(a[1], b[1]), max(a[1], b[1])
+
+
 def _overlap_length(bounds, regions, padding):
     """Length of a straight run inside the other robot's expanded sweep."""
     axis = 0 if bounds[0] != bounds[1] else 1
     low, high = bounds[2 * axis:2 * axis + 2]
-    across = bounds[2 * (1 - axis)]
+    cross_axis = 1 - axis
+    across = bounds[2 * cross_axis]
     intervals = []
     for region in regions:
-        if region.lower[1 - axis] - padding[1 - axis] <= across <= region.upper[1 - axis] + padding[1 - axis]:
+        cross_low = region.lower[cross_axis] - padding[cross_axis]
+        cross_high = region.upper[cross_axis] + padding[cross_axis]
+        if cross_low <= across <= cross_high:
             start = max(low, region.lower[axis] - padding[axis])
             end = min(high, region.upper[axis] + padding[axis])
             if start < end:
@@ -77,8 +84,7 @@ class RobotPathPlanner:
                     for x0, x1, y0, y1 in obstacles)
             return clear_edges[bounds]
 
-        if not safe((start[0], start[0], start[1], start[1])) or not safe(
-                (goal[0], goal[0], goal[1], goal[1])):
+        if not safe(_bounds(start, start)) or not safe(_bounds(goal, goal)):
             raise ValueError("No route with clear start and destination.")
         if start == goal:
             return (start,)
@@ -106,8 +112,7 @@ class RobotPathPlanner:
                 return tuple(path)
             for edge in self.outgoing[vertex]:
                 nxt = _key(edge["target"])
-                a, b = self.points[vertex], self.points[nxt]
-                bounds = (min(a[0], b[0]), max(a[0], b[0]), min(a[1], b[1]), max(a[1], b[1]))
+                bounds = _bounds(self.points[vertex], self.points[nxt])
                 if not safe(bounds):
                     continue
                 if bounds not in traffic_costs:

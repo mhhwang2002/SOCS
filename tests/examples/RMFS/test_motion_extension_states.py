@@ -1,6 +1,6 @@
 """State-boundary regressions for command-only motion extension (no lookahead)."""
 from copy import deepcopy
-from math import inf, isfinite
+from math import atan2, inf, isfinite, radians, sqrt
 from types import SimpleNamespace
 
 import pytest
@@ -167,6 +167,21 @@ def test_extension_before_first_motion_plan_is_not_lost(heading):
     assert [position for _,position in events(p,'?arrived')] == [(8.,0.)]
     assert len(events(p,'?plan')) == 1
     assert p.robot._variable.profile.length == 8.
+
+
+@pytest.mark.parametrize("loaded", [False, True])
+def test_small_entry_rotation_accelerates_and_brakes_without_cruising(loaded):
+    path = ((0., 0.), (4., 0.))
+    p = plant(path, loaded=loaded, heading=5.)
+    send(p, '?command', path)
+    advance(p, 0.)
+    assert p.robot.phase == 'RotateTo'
+    acceleration_time = sqrt(radians(5.) / 2.5)
+    started = events(p, '?rotation_started')[0][0]
+    direction = p.robot.direction_at(started + acceleration_time / 2)
+    assert atan2(direction[1], direction[0]) == pytest.approx(radians(5.) * 7 / 8)
+    finish(p)
+    assert events(p, '?rotation_finished')[0][0] - started == pytest.approx(2 * acceleration_time)
 
 
 def test_stopped_robot_receives_new_command_starting_from_rest():

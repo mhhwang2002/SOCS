@@ -1,4 +1,4 @@
-"""One physical mobile robot, driven by an event-scheduled straight profile."""
+"""One physical mobile robot with event-scheduled translation and rotation."""
 
 from math import atan2, cos, degrees, dist, inf, isfinite, radians, sin
 
@@ -7,6 +7,12 @@ from socs.devs.TESBase import PortValue
 
 from .GridPath import CONTROL_POINTS
 from .motion import EMPTY, LOADED, StraightProfile, ExtendedProfile
+
+
+# Simulation calibration for 90-degree rest-to-rest turns of 2 s empty and 3 s loaded.
+_EMPTY_YAW_SPEED = 0.9758578862150818  # rad/s
+_LOADED_YAW_SPEED = 0.5663685541487754  # rad/s
+_YAW_ACCELERATION = 2.5  # rad/s², also used for braking
 
 
 class MRobot(DEVSph):
@@ -37,7 +43,7 @@ class MRobot(DEVSph):
             "orientation_only": False, "orientation_target": None,
             "run_start_index": 0, "run_end_index": 0,
             "turn_start_time": 0.0, "turn_duration": 0.0,
-            "turn_angle": 0.0, "turn_start_heading": 0.0,
+            "turn_angle": 0.0, "turn_start_heading": 0.0, "turn_profile": None,
             "collision_partners": (), "collision_active": False,
             "motion_plan_pending": False,
             "passage_requested_end": None,
@@ -335,7 +341,11 @@ class MRobot(DEVSph):
         v.turn_start_heading = degrees(atan2(v.current_dir[1], v.current_dir[0]))
         target = degrees(atan2(direction[1], direction[0]))
         v.turn_angle = (target-v.turn_start_heading+180) % 360-180
-        v.turn_duration = abs(v.turn_angle)/self.motion_limits.yaw_rate
+        angle = radians(abs(v.turn_angle))
+        yaw_speed = _LOADED_YAW_SPEED if v.lift_up else _EMPTY_YAW_SPEED
+        v.turn_profile = (StraightProfile(angle, _YAW_ACCELERATION, _YAW_ACCELERATION, yaw_speed)
+                          if angle else None)
+        v.turn_duration = v.turn_profile.duration if v.turn_profile else 0.0
 
     def finish_rotation(self, event):
         v = self._variable
@@ -356,9 +366,10 @@ class MRobot(DEVSph):
         v = self._variable
         if self.phase != "RotateTo":
             return v.current_dir
-        fraction = (1.0 if v.turn_duration == 0 else
-                    min(1.0, max(0.0, (time-v.turn_start_time)/v.turn_duration)))
-        angle = radians(v.turn_start_heading+v.turn_angle*fraction)
+        angle = radians(v.turn_start_heading)
+        if v.turn_profile is not None:
+            offset = v.turn_profile.distance_at(time-v.turn_start_time)
+            angle += -offset if v.turn_angle < 0 else offset
         return cos(angle), sin(angle)
 
     def advance_segment(self, event):

@@ -11,7 +11,7 @@ class WarehouseTrafficManager(TrafficManager):
         self.crossings = frozenset(layout['control_points'][point]
                                    for point, neighbours in layout['adjacency'].items()
                                    if len(neighbours) >= 3)
-        super().__init__(roadmap, tuple_path, **options)
+        super().__init__(roadmap, tuple_path, allow_crossing_stops=stopping_allowed, **options)
 
     def _combine_initial_prefix(self):
         return False
@@ -34,13 +34,6 @@ class WarehouseTrafficManager(TrafficManager):
                 limits.add(index + 1)
         positions = tuple(PathPosition(index) for index in sorted(limits))
         return tuple(Subpath(path, first, last) for first, last in zip(positions, positions[1:]))
-
-    def _extension_endpoint_clear(self, name, point):
-        if self.stopping_allowed:
-            # _can_start already checks actual occupancy and hard precedence.
-            return True
-        return super()._extension_endpoint_clear(name, point)
-
 
     def reset(self, time, **options):
         self.pending_push = None
